@@ -155,7 +155,7 @@ CREATE TABLE `tquestionanswer` (
   `answerer_birthday` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '出生年月',
   `answerer_address` varchar(100) NOT NULL COMMENT '住址',
   `answerer_phone` varchar(32) NOT NULL COMMENT '联系电话',   
-  `zip_code` varchar(32) NOT NULL COMMENT '身份证',
+  `zip_code` varchar(32) NOT NULL COMMENT '邮政编码',
   `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
   `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_by` varchar(32) DEFAULT NULL COMMENT '更新者',
