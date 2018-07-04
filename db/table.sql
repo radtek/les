@@ -202,7 +202,7 @@ CREATE TABLE `tmaterial` (
   `remarks` varchar(64) DEFAULT NULL COMMENT '备注信息',
   `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='询问笔录项目';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='视听资料';
 
 -- ----------------------------
 -- Table structure for tsignature
@@ -218,4 +218,4 @@ CREATE TABLE `tsignature` (
   `remarks` varchar(64) DEFAULT NULL COMMENT '备注信息',
   `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='询问笔录项目';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='签名库';
