@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wxjs.les.modules.qa.dao.QuestionanswerDao">
+    
+	<sql id="questionanswerColumns">
+		a.id AS "id",
+		a.case_cause AS "caseCause",
+		a.from_date AS "fromDate",
+		a.to_date AS "toDate",
+		a.location AS "location",
+		a.quizzer AS "quizzer",
+		a.recorder AS "recorder",
+		a.answerer AS "answerer",
+		a.answerer_sex AS "answererSex",
+		a.answerer_code AS "answererCode",
+		a.answerer_organization AS "answererOrganization",
+		a.answerer_post AS "answererPost",
+		a.answerer_birthday AS "answererBirthday",
+		a.answerer_address AS "answererAddress",
+		a.answerer_phone AS "answererPhone",
+		a.zip_code AS "zipCode",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="questionanswerJoins">
+	</sql>
+    
+	<select id="get" resultType="Questionanswer">
+		SELECT 
+			<include refid="questionanswerColumns"/>
+		FROM tquestionanswer a
+		<include refid="questionanswerJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Questionanswer">
+		SELECT 
+			<include refid="questionanswerColumns"/>
+		FROM tquestionanswer a
+		<include refid="questionanswerJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="caseCause != null and caseCause != ''">
+				AND a.case_cause = #{caseCause}
+			</if>
+			<if test="toDate != null and toDate != ''">
+				AND a.to_date = #{toDate}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Questionanswer">
+		SELECT 
+			<include refid="questionanswerColumns"/>
+		FROM tquestionanswer a
+		<include refid="questionanswerJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO tquestionanswer(
+			case_cause,
+			from_date,
+			to_date,
+			location,
+			quizzer,
+			recorder,
+			answerer,
+			answerer_sex,
+			answerer_code,
+			answerer_organization,
+			answerer_post,
+			answerer_birthday,
+			answerer_address,
+			answerer_phone,
+			zip_code,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{caseCause},
+			#{fromDate},
+			#{toDate},
+			#{location},
+			#{quizzer},
+			#{recorder},
+			#{answerer},
+			#{answererSex},
+			#{answererCode},
+			#{answererOrganization},
+			#{answererPost},
+			#{answererBirthday},
+			#{answererAddress},
+			#{answererPhone},
+			#{zipCode},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE tquestionanswer SET 	
+			case_cause = #{caseCause},
+			from_date = #{fromDate},
+			to_date = #{toDate},
+			location = #{location},
+			quizzer = #{quizzer},
+			recorder = #{recorder},
+			answerer = #{answerer},
+			answerer_sex = #{answererSex},
+			answerer_code = #{answererCode},
+			answerer_organization = #{answererOrganization},
+			answerer_post = #{answererPost},
+			answerer_birthday = #{answererBirthday},
+			answerer_address = #{answererAddress},
+			answerer_phone = #{answererPhone},
+			zip_code = #{zipCode},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE tquestionanswer SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
