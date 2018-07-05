@@ -15,4 +15,6 @@ import org.wxjs.les.modules.qa.entity.Questionanswer;
 @MyBatisDao
 public interface QuestionanswerDao extends CrudDao<Questionanswer> {
 	
+	public void updateQa(Questionanswer questionanswer);
+	
 }

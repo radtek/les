@@ -14,8 +14,6 @@ import org.wxjs.les.common.service.CrudService;
 import org.wxjs.les.common.utils.StringUtils;
 import org.wxjs.les.modules.qa.entity.Questionanswer;
 import org.wxjs.les.modules.qa.dao.QuestionanswerDao;
-import org.wxjs.les.modules.qa.entity.QuestionanswerItem;
-import org.wxjs.les.modules.qa.dao.QuestionanswerItemDao;
 
 /**
  * 询问笔录Service
@@ -25,13 +23,9 @@ import org.wxjs.les.modules.qa.dao.QuestionanswerItemDao;
 @Service
 @Transactional(readOnly = true)
 public class QuestionanswerService extends CrudService<QuestionanswerDao, Questionanswer> {
-
-	@Autowired
-	private QuestionanswerItemDao questionanswerItemDao;
 	
 	public Questionanswer get(String id) {
 		Questionanswer questionanswer = super.get(id);
-		questionanswer.setQuestionanswerItemList(questionanswerItemDao.findList(new QuestionanswerItem(questionanswer)));
 		return questionanswer;
 	}
 	
@@ -46,29 +40,21 @@ public class QuestionanswerService extends CrudService<QuestionanswerDao, Questi
 	@Transactional(readOnly = false)
 	public void save(Questionanswer questionanswer) {
 		super.save(questionanswer);
-		for (QuestionanswerItem questionanswerItem : questionanswer.getQuestionanswerItemList()){
-			if (questionanswerItem.getId() == null){
-				continue;
-			}
-			if (QuestionanswerItem.DEL_FLAG_NORMAL.equals(questionanswerItem.getDelFlag())){
-				if (StringUtils.isBlank(questionanswerItem.getId())){
-					questionanswerItem.setQaId(questionanswer);
-					questionanswerItem.preInsert();
-					questionanswerItemDao.insert(questionanswerItem);
-				}else{
-					questionanswerItem.preUpdate();
-					questionanswerItemDao.update(questionanswerItem);
-				}
-			}else{
-				questionanswerItemDao.delete(questionanswerItem);
-			}
-		}
+	}
+	
+	@Transactional(readOnly = false)
+	public void saveInfo(Questionanswer questionanswer) {
+		super.save(questionanswer);
+	}
+	
+	@Transactional(readOnly = false)
+	public void saveQa(Questionanswer questionanswer) {
+		dao.updateQa(questionanswer);
 	}
 	
 	@Transactional(readOnly = false)
 	public void delete(Questionanswer questionanswer) {
 		super.delete(questionanswer);
-		questionanswerItemDao.delete(new QuestionanswerItem(questionanswer));
 	}
 	
 }

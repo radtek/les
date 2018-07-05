@@ -156,6 +156,7 @@ CREATE TABLE `tquestionanswer` (
   `answerer_address` varchar(100) NOT NULL COMMENT '住址',
   `answerer_phone` varchar(32) NOT NULL COMMENT '联系电话',   
   `zip_code` varchar(32) NOT NULL COMMENT '邮政编码',
+  `qa_content` text DEFAULT NULL COMMENT '问答',
   `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
   `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_by` varchar(32) DEFAULT NULL COMMENT '更新者',
@@ -164,23 +165,6 @@ CREATE TABLE `tquestionanswer` (
   `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='询问笔录';
-
--- ----------------------------
--- Table structure for tquestionanswer_item
--- ----------------------------
-DROP TABLE IF EXISTS `tquestionanswer_item`;
-CREATE TABLE `tquestionanswer_item` (
-  `id` int(11) NOT NULL auto_increment  COMMENT '编号',
-  `qa_id` int(11) NOT NULL COMMENT '询问笔录编号', 
-  `qa_content` varchar(500) NOT NULL COMMENT '问答',
-  `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
-  `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_by` varchar(32) DEFAULT NULL COMMENT '更新者',
-  `update_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
-  `remarks` varchar(64) DEFAULT NULL COMMENT '备注信息',
-  `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='询问笔录项目';
 
 -- ----------------------------
 -- Table structure for tmaterial
@@ -210,7 +194,8 @@ CREATE TABLE `tmaterial` (
 DROP TABLE IF EXISTS `tsignature`;
 CREATE TABLE `tsignature` (
   `id` varchar(64) NOT NULL COMMENT 'uuid',
-  `signature` blob NOT NULL COMMENT '签名',
+  `title` varchar(100) NOT NULL COMMENT '头',
+  `signature` text NOT NULL COMMENT '签名',
   `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
   `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_by` varchar(32) DEFAULT NULL COMMENT '更新者',

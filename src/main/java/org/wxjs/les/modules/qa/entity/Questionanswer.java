@@ -34,7 +34,7 @@ public class Questionanswer extends DataEntity<Questionanswer> {
 	private String answererAddress;		// 住址
 	private String answererPhone;		// 联系电话
 	private String zipCode;		// 身份证
-	private List<QuestionanswerItem> questionanswerItemList = Lists.newArrayList();		// 子表列表
+	private String qaContent;
 	
 	public Questionanswer() {
 		super();
@@ -178,12 +178,12 @@ public class Questionanswer extends DataEntity<Questionanswer> {
 	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
 	}
-	
-	public List<QuestionanswerItem> getQuestionanswerItemList() {
-		return questionanswerItemList;
+
+	public String getQaContent() {
+		return qaContent;
 	}
 
-	public void setQuestionanswerItemList(List<QuestionanswerItem> questionanswerItemList) {
-		this.questionanswerItemList = questionanswerItemList;
+	public void setQaContent(String qaContent) {
+		this.qaContent = qaContent;
 	}
 }

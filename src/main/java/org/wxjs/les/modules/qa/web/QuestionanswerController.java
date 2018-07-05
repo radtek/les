@@ -60,6 +60,20 @@ public class QuestionanswerController extends BaseController {
 		model.addAttribute("questionanswer", questionanswer);
 		return "modules/qa/questionanswerForm";
 	}
+	
+	@RequiresPermissions("qa:questionanswer:view")
+	@RequestMapping(value = "infoTab")
+	public String infoTab(Questionanswer questionanswer, Model model) {
+		model.addAttribute("questionanswer", questionanswer);
+		return "modules/qa/questionanswerInfoTab";
+	}
+	
+	@RequiresPermissions("qa:questionanswer:view")
+	@RequestMapping(value = "qaTab")
+	public String qaTab(Questionanswer questionanswer, Model model) {
+		model.addAttribute("questionanswer", questionanswer);
+		return "modules/qa/questionanswerQaTab";
+	}
 
 	@RequiresPermissions("qa:questionanswer:edit")
 	@RequestMapping(value = "save")
@@ -73,11 +87,38 @@ public class QuestionanswerController extends BaseController {
 	}
 	
 	@RequiresPermissions("qa:questionanswer:edit")
+	@RequestMapping(value = "saveInfo")
+	public String saveInfo(Questionanswer questionanswer, Model model, RedirectAttributes redirectAttributes) {
+		if (!beanValidator(model, questionanswer)){
+			return form(questionanswer, model);
+		}
+		questionanswerService.saveInfo(questionanswer);
+		addMessage(redirectAttributes, "保存成功");
+		return "redirect:"+Global.getAdminPath()+"/qa/questionanswer/infoTab?id="+questionanswer.getId();
+	}
+	
+	@RequiresPermissions("qa:questionanswer:edit")
+	@RequestMapping(value = "saveQa")
+	public String saveQa(Questionanswer questionanswer, Model model, RedirectAttributes redirectAttributes) {
+
+		questionanswerService.saveQa(questionanswer);
+		
+		logger.debug("saveQa...");
+		addMessage(redirectAttributes, "保存成功");
+		return "redirect:"+Global.getAdminPath()+"/qa/questionanswer/qaTab?id="+questionanswer.getId();
+	}
+	
+	@RequiresPermissions("qa:questionanswer:edit")
 	@RequestMapping(value = "delete")
 	public String delete(Questionanswer questionanswer, RedirectAttributes redirectAttributes) {
 		questionanswerService.delete(questionanswer);
 		addMessage(redirectAttributes, "删除询问笔录成功");
 		return "redirect:"+Global.getAdminPath()+"/qa/questionanswer/?repage";
+	}
+
+	@RequestMapping(value = "test")
+	public String test(RedirectAttributes redirectAttributes) {
+		return "/modules/test/signature";
 	}
 
 }

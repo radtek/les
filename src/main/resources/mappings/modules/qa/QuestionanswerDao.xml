@@ -19,6 +19,7 @@
 		a.answerer_address AS "answererAddress",
 		a.answerer_phone AS "answererPhone",
 		a.zip_code AS "zipCode",
+		a.qa_content AS "qaContent",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -83,7 +84,7 @@
 		</choose>
 	</select>
 	
-	<insert id="insert">
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="org.wxjs.les.modules.qa.entity.Questionanswer">
 		INSERT INTO tquestionanswer(
 			case_cause,
 			from_date,
@@ -151,6 +152,14 @@
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="updateQa">
+		UPDATE tquestionanswer SET 	
+			qa_content = #{qaContent},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate}
 		WHERE id = #{id}
 	</update>
 	

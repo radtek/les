@@ -64,11 +64,8 @@
 	</style>
 </head>
 <body>
-	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/qa/questionanswer/">询问笔录列表</a></li>
-		<li class="active"><a href="${ctx}/qa/questionanswer/form?id=${questionanswer.id}">询问笔录<shiro:hasPermission name="qa:questionanswer:edit">${not empty questionanswer.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="qa:questionanswer:edit">查看</shiro:lacksPermission></a></li>
-	</ul><br/>
-	<form:form id="inputForm" modelAttribute="questionanswer" action="${ctx}/qa/questionanswer/save" method="post" class="form-horizontal">
+	<les:questionanswer tab="info" qaId="${questionanswer.id }" isNew="${questionanswer.isNewRecord }"></les:questionanswer>
+	<form:form id="inputForm" modelAttribute="questionanswer" action="${ctx}/qa/questionanswer/saveInfo" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">
@@ -197,56 +194,8 @@
 				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="64" class="input-xxlarge "/>
 			</div>
 		</div>
-			<div class="control-group">
-				<label class="control-label control-tight">询问笔录项目：</label>
-				<div class="controls controls-tight">
-					<table id="contentTable" class="table table-striped table-bordered table-condensed">
-						<thead>
-							<tr>
-								<th class="hide"></th>
-								<th>问答</th>
-								<th>备注信息</th>
-								<shiro:hasPermission name="qa:questionanswer:edit"><th width="10">&nbsp;</th></shiro:hasPermission>
-							</tr>
-						</thead>
-						<tbody id="questionanswerItemList">
-						</tbody>
-						<shiro:hasPermission name="qa:questionanswer:edit"><tfoot>
-							<tr><td colspan="4"><a href="javascript:" onclick="addRow('#questionanswerItemList', questionanswerItemRowIdx, questionanswerItemTpl);questionanswerItemRowIdx = questionanswerItemRowIdx + 1;" class="btn">新增</a></td></tr>
-						</tfoot></shiro:hasPermission>
-					</table>
-					<script type="text/template" id="questionanswerItemTpl">//<!--
-						<tr id="questionanswerItemList{{idx}}">
-							<td class="hide">
-								<input id="questionanswerItemList{{idx}}_id" name="questionanswerItemList[{{idx}}].id" type="hidden" value="{{row.id}}"/>
-								<input id="questionanswerItemList{{idx}}_delFlag" name="questionanswerItemList[{{idx}}].delFlag" type="hidden" value="0"/>
-							</td>
-							<td>
-								<input id="questionanswerItemList{{idx}}_qaContent" name="questionanswerItemList[{{idx}}].qaContent" type="text" value="{{row.qaContent}}" maxlength="500" class="input-small required"/>
-							</td>
-							<td>
-								<textarea id="questionanswerItemList{{idx}}_remarks" name="questionanswerItemList[{{idx}}].remarks" rows="4" maxlength="64" class="input-small ">{{row.remarks}}</textarea>
-							</td>
-							<shiro:hasPermission name="qa:questionanswer:edit"><td class="text-center" width="10">
-								{{#delBtn}}<span class="close" onclick="delRow(this, '#questionanswerItemList{{idx}}')" title="删除">&times;</span>{{/delBtn}}
-							</td></shiro:hasPermission>
-						</tr>//-->
-					</script>
-					<script type="text/javascript">
-						var questionanswerItemRowIdx = 0, questionanswerItemTpl = $("#questionanswerItemTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
-						$(document).ready(function() {
-							var data = ${fns:toJson(questionanswer.questionanswerItemList)};
-							for (var i=0; i<data.length; i++){
-								addRow('#questionanswerItemList', questionanswerItemRowIdx, questionanswerItemTpl, data[i]);
-								questionanswerItemRowIdx = questionanswerItemRowIdx + 1;
-							}
-						});
-					</script>
-				</div>
-			</div>
 		<div class="form-actions">
 			<shiro:hasPermission name="qa:questionanswer:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
-			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>
 </body>

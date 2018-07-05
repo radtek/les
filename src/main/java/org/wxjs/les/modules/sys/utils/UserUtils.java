@@ -10,7 +10,6 @@ import org.apache.shiro.UnavailableSecurityManagerException;
 import org.apache.shiro.session.InvalidSessionException;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
-
 import org.wxjs.les.common.service.BaseService;
 import org.wxjs.les.common.utils.CacheUtils;
 import org.wxjs.les.common.utils.SpringContextHolder;
@@ -25,6 +24,8 @@ import org.wxjs.les.modules.sys.entity.Office;
 import org.wxjs.les.modules.sys.entity.Role;
 import org.wxjs.les.modules.sys.entity.User;
 import org.wxjs.les.modules.sys.security.SystemAuthorizingRealm.Principal;
+
+import com.google.common.collect.Lists;
 
 /**
  * 用户工具类
@@ -317,5 +318,13 @@ public class UserUtils {
 //		}
 //		return new HashMap<String, Object>();
 //	}
+	
+	public static List<User> getUserByOffice(String office_id){
+		List<User> list = Lists.newArrayList();
+		User user = new User();
+		user.setOffice(new Office(office_id));
+		list = userDao.findUserByOfficeId(user);
+		return list;
+	}
 	
 }

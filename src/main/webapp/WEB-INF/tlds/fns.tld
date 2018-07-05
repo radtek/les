@@ -252,4 +252,12 @@
     <example>${fns:getDeductionItems()}</example>  
   </function>  
   
+  <function>
+    <description>获取人员列表</description>
+    <name>getUserByOffice</name>
+    <function-class>org.wxjs.les.modules.sys.utils.UserUtils</function-class>
+    <function-signature>java.util.List getUserByOffice(java.lang.String)</function-signature>
+    <example>${fns:getUserByOffice(office)}</example>  
+  </function>  
+  
 </taglib>

@@ -19,7 +19,7 @@
 <body>
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/qa/questionanswer/">询问笔录列表</a></li>
-		<shiro:hasPermission name="qa:questionanswer:edit"><li><a href="${ctx}/qa/questionanswer/form">询问笔录添加</a></li></shiro:hasPermission>
+		<shiro:hasPermission name="qa:questionanswer:edit"><li><a href="${ctx}/qa/questionanswer/infoTab">询问笔录添加</a></li></shiro:hasPermission>
 	</ul>
 	<form:form id="searchForm" modelAttribute="questionanswer" action="${ctx}/qa/questionanswer/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
@@ -51,24 +51,23 @@
 				<th>地点</th>
 				<th>被询问人</th>
 				<th>更新时间</th>
-				<th>备注信息</th>
 				<shiro:hasPermission name="qa:questionanswer:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
 		<tbody>
 		<c:forEach items="${page.list}" var="questionanswer">
 			<tr>
-				<td><a href="${ctx}/qa/questionanswer/form?id=${questionanswer.id}">
+				<td>
 					${questionanswer.id}
-				</a></td>
+				</td>
 				<td>
 					${questionanswer.caseCause}
 				</td>
 				<td>
-					<fmt:formatDate value="${questionanswer.fromDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+					<fmt:formatDate value="${questionanswer.fromDate}" pattern="yyyy-MM-dd HH:mm"/>
 				</td>
 				<td>
-					<fmt:formatDate value="${questionanswer.toDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+					<fmt:formatDate value="${questionanswer.toDate}" pattern="yyyy-MM-dd HH:mm"/>
 				</td>
 				<td>
 					${questionanswer.location}
@@ -79,11 +78,8 @@
 				<td>
 					<fmt:formatDate value="${questionanswer.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
-				<td>
-					${questionanswer.remarks}
-				</td>
 				<shiro:hasPermission name="qa:questionanswer:edit"><td>
-    				<a href="${ctx}/qa/questionanswer/form?id=${questionanswer.id}">修改</a>
+    				<a href="${ctx}/qa/questionanswer/infoTab?id=${questionanswer.id}">修改</a>
 					<a href="${ctx}/qa/questionanswer/delete?id=${questionanswer.id}" onclick="return confirmx('确认要删除该询问笔录吗？', this.href)">删除</a>
 				</td></shiro:hasPermission>
 			</tr>
