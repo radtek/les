@@ -3,13 +3,20 @@
  */
 package org.wxjs.les.modules.qa.entity;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
+
 import java.util.Date;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.List;
+
 import com.google.common.collect.Lists;
 
 import org.wxjs.les.common.persistence.DataEntity;
+import org.wxjs.les.common.utils.IdGen;
+import org.wxjs.les.modules.base.entity.Signature;
 
 /**
  * 询问笔录Entity
@@ -35,6 +42,8 @@ public class Questionanswer extends DataEntity<Questionanswer> {
 	private String answererPhone;		// 联系电话
 	private String zipCode;		// 身份证
 	private String qaContent;
+	private Signature qsig = new Signature();
+	private Signature asig = new Signature();
 	
 	public Questionanswer() {
 		super();
@@ -186,4 +195,21 @@ public class Questionanswer extends DataEntity<Questionanswer> {
 	public void setQaContent(String qaContent) {
 		this.qaContent = qaContent;
 	}
+
+	public Signature getQsig() {
+		return qsig;
+	}
+
+	public void setQsig(Signature qsig) {
+		this.qsig = qsig;
+	}
+
+	public Signature getAsig() {
+		return asig;
+	}
+
+	public void setAsig(Signature asig) {
+		this.asig = asig;
+	}
+	
 }

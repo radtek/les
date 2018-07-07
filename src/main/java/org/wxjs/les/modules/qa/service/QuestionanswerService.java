@@ -8,10 +8,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.service.CrudService;
 import org.wxjs.les.common.utils.StringUtils;
+import org.wxjs.les.modules.base.service.SignatureService;
 import org.wxjs.les.modules.qa.entity.Questionanswer;
 import org.wxjs.les.modules.qa.dao.QuestionanswerDao;
 
@@ -24,8 +24,18 @@ import org.wxjs.les.modules.qa.dao.QuestionanswerDao;
 @Transactional(readOnly = true)
 public class QuestionanswerService extends CrudService<QuestionanswerDao, Questionanswer> {
 	
+	@Autowired
+	private SignatureService signatureService;
+	
 	public Questionanswer get(String id) {
 		Questionanswer questionanswer = super.get(id);
+		/*
+		//load sig
+		if(questionanswer!=null){
+			questionanswer.setQsig(signatureService.get(questionanswer.getQsig().getId()));
+			questionanswer.setAsig(signatureService.get(questionanswer.getAsig().getId()));
+		}
+		*/
 		return questionanswer;
 	}
 	
@@ -44,7 +54,7 @@ public class QuestionanswerService extends CrudService<QuestionanswerDao, Questi
 	
 	@Transactional(readOnly = false)
 	public void saveInfo(Questionanswer questionanswer) {
-		super.save(questionanswer);
+		this.save(questionanswer);
 	}
 	
 	@Transactional(readOnly = false)

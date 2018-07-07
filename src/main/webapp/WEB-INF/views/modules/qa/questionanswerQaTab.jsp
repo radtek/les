@@ -5,16 +5,6 @@
 	<title>询问笔录管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
-		$(document).ready(function() {
-			//$("#name").focus();
-			$("#inputForm").validate({
-				submitHandler: function(form){
-					loading('正在提交，请稍等...');
-					form.submit();
-				},
-				errorContainer: "#messageBox"
-			});
-		});
 		
 		function addQA(){
 			$("#qaContent").val($("#qaContent").val() + "\n\r问：\n\r答：");
@@ -64,14 +54,36 @@
 				<label class="control-label control-tight"></label>
 				<div class="controls controls-tight">
 				 <form:textarea path="qaContent" style="width:800px;height:600px;"/>
-				 <BR><BR>
-				 <input id="btnAddQA" class="btn" type="button" value="添加问答" onclick="addQA()"/>
 				</div>
 			</div>
+			<div class="control-group">
+				<label class="control-label control-tight"></label>
+				<div class="controls" style="text-align:center;">
+				 <input id="btnAddQA" class="btn" type="button" value="添加问答" onclick="addQA()" />
+				</div>
+			</div>	
 		<div class="form-actions">
-		    
 			<shiro:hasPermission name="qa:questionanswer:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
-		</div>
+		</div>			
+		<div class="control-group container-fluid nopadding">
+			<div class="row-fluid">			
+				<div class="span6">		
+			<label class="control-label">被询问人签名：</label>
+			<div class="controls controls-tight">
+				<les:signatureLoader sig="${questionanswer.asig}"></les:signatureLoader>
+				<les:signatureModal></les:signatureModal>
+			</div>
+		        </div> 
+				<div class="span6">		
+			<label class="control-label">调查询问人签名：</label>
+			<div class="controls controls-tight">
+			    <les:signatureLoader sig="${questionanswer.qsig}"></les:signatureLoader>
+			</div>
+		        </div>
+		    </div>
+		</div>		
+					
+
 	</form:form>
 </body>
 </html>

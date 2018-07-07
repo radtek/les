@@ -41,13 +41,12 @@
         i.src = "data:" + datapair[0] + "," + datapair[1] 
         $(i).appendTo($("#image")) // append the image (SVG) to DOM.
         
-        $("#imageSig").attr("src","data:" + datapair[0] + "," + datapair[1]) ;
     }
  
     function reset(){
         var $sigdiv = $("#signature");
         $sigdiv.jSignature("reset");
-		$("#image img").remove();
+		//$("#image img").remove();
     }
     
     function show(){
@@ -64,9 +63,7 @@
 <button type="button" onclick="reset()">清除</button>
 <button type="button" onclick="show()">显示</button>
 <div id="image" style="margin:20px"></div>
-<div id="image" style="margin:20px">
-<img id="imageSig"  height="100px" width="200px" />
-</div>
+
 <div id="datapair0" style="margin:20px"></div>
 <div id="datapair1" style="margin:20px"></div>
 </body>

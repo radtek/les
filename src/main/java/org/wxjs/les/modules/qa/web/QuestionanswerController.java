@@ -71,6 +71,9 @@ public class QuestionanswerController extends BaseController {
 	@RequiresPermissions("qa:questionanswer:view")
 	@RequestMapping(value = "qaTab")
 	public String qaTab(Questionanswer questionanswer, Model model) {
+		
+		//logger.debug("questionanswer.getAsig().toString():{}", questionanswer.getAsig().toString());
+		
 		model.addAttribute("questionanswer", questionanswer);
 		return "modules/qa/questionanswerQaTab";
 	}

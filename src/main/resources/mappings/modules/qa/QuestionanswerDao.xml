@@ -20,6 +20,14 @@
 		a.answerer_phone AS "answererPhone",
 		a.zip_code AS "zipCode",
 		a.qa_content AS "qaContent",
+		a.q_sig AS "qsig.id",
+		s1.title AS "qsig.title",
+		s1.signature AS "qsig.signature",
+		s1.update_date AS "qsig.updateDate",
+		a.a_sig AS "asig.id",
+	    s2.title AS "asig.title",
+		s2.signature AS "asig.signature",
+		s2.update_date AS "asig.updateDate",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -29,6 +37,8 @@
 	</sql>
 	
 	<sql id="questionanswerJoins">
+	    LEFT JOIN tsignature s1 on s1.id=a.q_sig
+	    LEFT JOIN tsignature s2 on s2.id=a.a_sig
 	</sql>
     
 	<select id="get" resultType="Questionanswer">
@@ -101,6 +111,8 @@
 			answerer_address,
 			answerer_phone,
 			zip_code,
+			q_sig,
+		    a_sig,
 			create_by,
 			create_date,
 			update_by,
@@ -123,6 +135,8 @@
 			#{answererAddress},
 			#{answererPhone},
 			#{zipCode},
+			#{qsig.id},
+			#{asig.id},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
