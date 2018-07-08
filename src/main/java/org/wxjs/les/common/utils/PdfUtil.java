@@ -115,6 +115,38 @@ public class PdfUtil {
     	return table;
     }
     
+    public static PdfPTable generateTableRow(String[] strs, Font rowFont, float[] widths, int tableWidth, int textAlign, float bordWidth, float minimumHeight) throws DocumentException{
+    	int columns = widths.length;
+    	//int rows = items.size()+1;
+    	
+        PdfPTable table = new PdfPTable(columns);
+        table.setWidths(widths);
+        table.setWidthPercentage(tableWidth);
+        
+        Phrase phrase;
+        PdfPCell cell;
+	
+        if(strs!=null){
+        	//write items
+
+    		for(String str:strs){
+            	phrase = new Phrase(str, rowFont);
+            	cell = new PdfPCell(phrase);
+            	cell.setBorderWidth(bordWidth);
+            	cell.setHorizontalAlignment(textAlign);
+            	
+            	if(minimumHeight>0){
+            		cell.setMinimumHeight(minimumHeight);
+            	}
+
+            	table.addCell(cell);
+    		}
+       	
+        }
+    	
+    	return table;
+    } 
+    
     private static boolean isMoneyArea(String str){
     	boolean flag = false;
     	if(StringUtils.isBlank(str)){

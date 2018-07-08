@@ -23,37 +23,14 @@
 				}
 			});
 		});
-		function addRow(list, idx, tpl, row){
-			$(list).append(Mustache.render(tpl, {
-				idx: idx, delBtn: true, row: row
-			}));
-			$(list+idx).find("select").each(function(){
-				$(this).val($(this).attr("data-value"));
-			});
-			$(list+idx).find("input[type='checkbox'], input[type='radio']").each(function(){
-				var ss = $(this).attr("data-value").split(',');
-				for (var i=0; i<ss.length; i++){
-					if($(this).val() == ss[i]){
-						$(this).attr("checked","checked");
-					}
-				}
-			});
-		}
-		function delRow(obj, prefix){
-			var id = $(prefix+"_id");
-			var delFlag = $(prefix+"_delFlag");
-			if (id.val() == ""){
-				$(obj).parent().parent().remove();
-			}else if(delFlag.val() == "0"){
-				delFlag.val("1");
-				$(obj).html("&divide;").attr("title", "撤销删除");
-				$(obj).parent().parent().addClass("error");
-			}else if(delFlag.val() == "1"){
-				delFlag.val("0");
-				$(obj).html("&times;").attr("title", "删除");
-				$(obj).parent().parent().removeClass("error");
-			}
-		}
+		
+	    function exportPdf(){
+
+			$("#inputForm").attr("action","${ctx}/qa/questionanswer/exportPDF");
+			$("#inputForm").submit();
+	    	
+	    }
+
 	</script>
 	
 	<style type="text/css">
@@ -64,6 +41,7 @@
 	</style>
 </head>
 <body>
+    <input id="btnExportPdf" class="btn btn-primary" type="button" value="导出PDF " onclick="exportPdf()"/>
 	<les:questionanswer tab="info" qaId="${questionanswer.id }" isNew="${questionanswer.isNewRecord }"></les:questionanswer>
 	<form:form id="inputForm" modelAttribute="questionanswer" action="${ctx}/qa/questionanswer/saveInfo" method="post" class="form-horizontal">
 		<form:hidden path="id"/>

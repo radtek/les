@@ -40,7 +40,7 @@
     
     function saveSignature(){
     	var sigbox = $("#signatureBox");
-    	var datapair = sigbox.jSignature("getData", "svgbase64");
+    	var datapair = sigbox.jSignature("getData", "image");
     	
     	var json = {};
     	json["id"] = $("#sigId").val();

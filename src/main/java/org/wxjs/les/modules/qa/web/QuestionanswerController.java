@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.web.BaseController;
+import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.StringUtils;
 import org.wxjs.les.modules.qa.entity.Questionanswer;
+import org.wxjs.les.modules.qa.export.QaExport;
 import org.wxjs.les.modules.qa.service.QuestionanswerService;
 
 /**
@@ -117,6 +118,27 @@ public class QuestionanswerController extends BaseController {
 		questionanswerService.delete(questionanswer);
 		addMessage(redirectAttributes, "删除询问笔录成功");
 		return "redirect:"+Global.getAdminPath()+"/qa/questionanswer/?repage";
+	}
+	
+	@RequiresPermissions("qa:questionanswer:view")
+	@RequestMapping(value = "exportPDF")
+	public String exportPDF(Questionanswer questionanswer, HttpServletResponse response,  Model model, RedirectAttributes redirectAttributes) {
+		
+		Questionanswer qa = questionanswerService.get(questionanswer.getId());
+		
+		model.addAttribute("questionanswer", qa);
+		
+		try {
+            String fileName = "询问笔录"+DateUtils.getDate("yyyyMMddHHmmss")+".pdf";
+            QaExport export = new QaExport(qa);
+            export.write(response, fileName);
+    		return null;
+		} catch (Exception e) {
+			logger.error("导出失败", e);
+			addMessage(redirectAttributes, "导出失败！失败信息："+e.getMessage());
+		}		
+
+		return "modules/qa/questionanswerInfoTab";
 	}
 
 	@RequestMapping(value = "test")
