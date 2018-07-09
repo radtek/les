@@ -20,7 +20,7 @@ import org.wxjs.les.common.web.BaseController;
 import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.StringUtils;
 import org.wxjs.les.modules.qa.entity.Questionanswer;
-import org.wxjs.les.modules.qa.export.QaExport;
+import org.wxjs.les.modules.qa.export.QuestionanswerExport;
 import org.wxjs.les.modules.qa.service.QuestionanswerService;
 
 /**
@@ -130,7 +130,7 @@ public class QuestionanswerController extends BaseController {
 		
 		try {
             String fileName = "询问笔录"+DateUtils.getDate("yyyyMMddHHmmss")+".pdf";
-            QaExport export = new QaExport(qa);
+            QuestionanswerExport export = new QuestionanswerExport(qa);
             export.write(response, fileName);
     		return null;
 		} catch (Exception e) {

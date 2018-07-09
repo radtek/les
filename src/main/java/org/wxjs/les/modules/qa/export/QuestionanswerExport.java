@@ -37,9 +37,9 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import com.lowagie.text.Image;
 
-public class QaExport {
+public class QuestionanswerExport {
 	
-	private static Logger log = LoggerFactory.getLogger(QaExport.class);
+	private static Logger log = LoggerFactory.getLogger(QuestionanswerExport.class);
 	
 	private final static int tableWidth = 90;
 	
@@ -51,7 +51,7 @@ public class QaExport {
 	
 	private Questionanswer qa;
 	
-	public QaExport( Questionanswer qa){
+	public QuestionanswerExport( Questionanswer qa){
 		this.qa = qa;
 	}
 	
@@ -201,7 +201,7 @@ public class QaExport {
 	 * @param fileName 输出文件名
 	 * @throws DocumentException 
 	 */
-	public QaExport write(HttpServletResponse response, String fileName) throws IOException, DocumentException{
+	public QuestionanswerExport write(HttpServletResponse response, String fileName) throws IOException, DocumentException{
 		response.reset();
         response.setContentType("application/octet-stream; charset=utf-8");
         response.setHeader("Content-Disposition", "attachment; filename="+Encodes.urlEncode(fileName));
@@ -214,7 +214,7 @@ public class QaExport {
 	 * @param fileName 输出文件名
 	 * @throws DocumentException 
 	 */
-	public QaExport writeFile(String name) throws FileNotFoundException, IOException, DocumentException{
+	public QuestionanswerExport writeFile(String name) throws FileNotFoundException, IOException, DocumentException{
 		FileOutputStream os = new FileOutputStream(name);
 		this.generate(os);
 		return this;
