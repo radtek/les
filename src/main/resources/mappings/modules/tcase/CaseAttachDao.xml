@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wxjs.les.modules.tcase.dao.CaseAttachDao">
+    
+	<sql id="caseAttachColumns">
+		a.id AS "id",
+		a.case_id AS "caseId",
+		a.attach_type AS "attachType",
+		a.filename AS "filename",
+		a.filepath AS "filepath",
+		a.flow_node AS "flowNode",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="caseAttachJoins">
+	</sql>
+    
+	<select id="get" resultType="CaseAttach">
+		SELECT 
+			<include refid="caseAttachColumns"/>
+		FROM tcase_attach a
+		<include refid="caseAttachJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="CaseAttach">
+		SELECT 
+			<include refid="caseAttachColumns"/>
+		FROM tcase_attach a
+		<include refid="caseAttachJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="CaseAttach">
+		SELECT 
+			<include refid="caseAttachColumns"/>
+		FROM tcase_attach a
+		<include refid="caseAttachJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO tcase_attach(
+			case_id,
+			attach_type,
+			filename,
+			filepath,
+			flow_node,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{caseId},
+			#{attachType},
+			#{filename},
+			#{filepath},
+			#{flowNode},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE tcase_attach SET 	
+			case_id = #{caseId},
+			attach_type = #{attachType},
+			filename = #{filename},
+			filepath = #{filepath},
+			flow_node = #{flowNode},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE tcase_attach SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -98,7 +98,6 @@ public class User extends DataEntity<User> {
 	}
 
 	@JsonIgnore
-	@NotNull(message="归属公司不能为空")
 	public Office getCompany() {
 		return company;
 	}
@@ -316,58 +315,6 @@ public class User extends DataEntity<User> {
 	
 	public static boolean isAdmin(String id){
 		return id != null && "1".equals(id);
-	}
-	
-	public boolean getIsMatchfeeAdmin(){
-		return id != null && "2".equals(id);
-	}
-	
-	/**
-	 * 是否政府用户
-	 * @return
-	 */
-	public boolean getIsZfUser(){
-		return !this.getIsQyUser();
-	}
-	
-	/**
-	 * 是否企业用户
-	 * @return
-	 */
-	public boolean getIsQyUser(){
-		return "3".equals(this.id);
-	}
-	
-	/**
-	 * 是否审核员
-	 * @return
-	 */
-	public boolean getIsShy(){
-		boolean flag = false;
-		List<String> roleIds = this.getRoleIdList();
-		
-		for(String roleId : roleIds){
-			if("4".equals(roleId) || "2".equals(roleId)){
-				flag = true;
-				break;
-			}
-		}
-		
-		return flag;
-	}
-	
-	public boolean getIsYwy(){
-		boolean flag = false;
-		List<String> roleIds = this.getRoleIdList();
-		
-		for(String roleId : roleIds){
-			if("5".equals(roleId) || "4".equals(roleId) || "2".equals(roleId)){
-				flag = true;
-				break;
-			}
-		}
-		
-		return flag;
 	}
 	
 	@Override

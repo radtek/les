@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wxjs.les.modules.tcase.dao.CaseNotifyDao">
+    
+	<sql id="caseNotifyColumns">
+		a.id AS "id",
+		a.case_id AS "caseId",
+		a.notify_type AS "notifyType",
+		a.year AS "year",
+		a.seq AS "seq",
+		a.party_name AS "partyName",
+		a.content AS "content",
+		a.launch_dept AS "launchDept",
+		a.launch_date AS "launchDate",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="caseNotifyJoins">
+	</sql>
+    
+	<select id="get" resultType="CaseNotify">
+		SELECT 
+			<include refid="caseNotifyColumns"/>
+		FROM tcase_notify a
+		<include refid="caseNotifyJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="CaseNotify">
+		SELECT 
+			<include refid="caseNotifyColumns"/>
+		FROM tcase_notify a
+		<include refid="caseNotifyJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="caseId != null and caseId != ''">
+				AND a.case_id = #{caseId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="CaseNotify">
+		SELECT 
+			<include refid="caseNotifyColumns"/>
+		FROM tcase_notify a
+		<include refid="caseNotifyJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO tcase_notify(
+			case_id,
+			notify_type,
+			year,
+			seq,
+			party_name,
+			content,
+			launch_dept,
+			launch_date,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{caseId},
+			#{notifyType},
+			#{year},
+			#{seq},
+			#{partyName},
+			#{content},
+			#{launchDept},
+			#{launchDate},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE tcase_notify SET 	
+			case_id = #{caseId},
+			notify_type = #{notifyType},
+			year = #{year},
+			seq = #{seq},
+			party_name = #{partyName},
+			content = #{content},
+			launch_dept = #{launchDept},
+			launch_date = #{launchDate},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE tcase_notify SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

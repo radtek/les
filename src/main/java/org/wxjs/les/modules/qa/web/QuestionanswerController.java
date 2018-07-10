@@ -94,7 +94,7 @@ public class QuestionanswerController extends BaseController {
 	@RequestMapping(value = "saveInfo")
 	public String saveInfo(Questionanswer questionanswer, Model model, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, questionanswer)){
-			return form(questionanswer, model);
+			return infoTab(questionanswer, model);
 		}
 		questionanswerService.saveInfo(questionanswer);
 		addMessage(redirectAttributes, "保存成功");

@@ -14,9 +14,12 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.wxjs.les.common.persistence.DataEntity;
 import org.wxjs.les.common.utils.IdGen;
 import org.wxjs.les.modules.base.entity.Signature;
+import org.wxjs.les.modules.sys.entity.User;
 
 /**
  * 询问笔录Entity
@@ -25,12 +28,15 @@ import org.wxjs.les.modules.base.entity.Signature;
  */
 public class Questionanswer extends DataEntity<Questionanswer> {
 	
+	protected Logger logger = LoggerFactory.getLogger(getClass());
+	
 	private static final long serialVersionUID = 1L;
 	private String caseCause;		// 案由
 	private Date fromDate;		// 开始时间
 	private Date toDate;		// 结束时间
 	private String location;		// 地点
 	private String quizzer;		// 调查询问人
+	
 	private String recorder;		// 记录人
 	private String answerer;		// 被询问人
 	private String answererSex;		// 性别
@@ -98,6 +104,32 @@ public class Questionanswer extends DataEntity<Questionanswer> {
 		this.quizzer = quizzer;
 	}
 	
+	public List<String> getQuizzerList() {
+		List<String> quizzerList = Lists.newArrayList();
+		if(!StringUtils.isEmpty(this.quizzer)){
+			String[] strs = this.quizzer.split(",");
+			for(String str : strs){
+				
+				logger.debug("getQuizzerList entity.getName():{}", str);
+				
+				quizzerList.add(str);
+			}
+		}
+		
+		return quizzerList;
+	}
+
+	public void setQuizzerList(List<String> quizzerList) {
+		StringBuffer buffer = new StringBuffer();
+		for(String name : quizzerList){
+			buffer.append(",").append(name);
+			
+			logger.debug("setQuizzerList entity.getName():{}", name);
+			
+		}
+		this.quizzer = buffer.substring(1);
+	}
+
 	@Length(min=0, max=32, message="记录人长度必须介于 0 和 32 之间")
 	public String getRecorder() {
 		return recorder;

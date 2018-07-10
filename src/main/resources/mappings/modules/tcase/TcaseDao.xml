@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wxjs.les.modules.tcase.dao.TcaseDao">
+    
+	<sql id="tcaseColumns">
+		a.id AS "id",
+		a.case_id AS "caseId",
+		a.accepter AS "accepter",
+		a.accept_date AS "acceptDate",
+		a.case_source AS "caseSource",
+		a.party_type AS "partyType",
+		a.org_name AS "orgName",
+		a.org_agent AS "orgAgent",
+		a.org_code AS "orgCode",
+		a.org_responsible_person AS "orgResponsiblePerson",
+		a.org_address AS "orgAddress",
+		a.org_phone AS "orgPhone",
+		a.psn_name AS "psnName",
+		a.psn_organization AS "psnOrganization",
+		a.psn_code AS "psnCode",
+		a.psn_post AS "psnPost",
+		a.psn_address AS "psnAddress",
+		a.psn_phone AS "psnPhone",
+		a.psn_sex AS "psnSex",
+		a.case_happen_date AS "caseHappenDate",
+		a.case_happen_address AS "caseHappenAddress",
+		a.project_code AS "projectCode",
+		a.project_name AS "projectName",
+		a.case_cause AS "caseCause",
+		a.case_summary AS "caseSummary",
+		a.case_handler AS "caseHandler",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="tcaseJoins">
+	</sql>
+    
+	<select id="get" resultType="Tcase">
+		SELECT 
+			<include refid="tcaseColumns"/>
+		FROM tcase a
+		<include refid="tcaseJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Tcase">
+		SELECT 
+			<include refid="tcaseColumns"/>
+		FROM tcase a
+		<include refid="tcaseJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="acceptDate != null and acceptDate != ''">
+				AND a.accept_date = #{acceptDate}
+			</if>
+			<if test="orgName != null and orgName != ''">
+				AND a.org_name = #{orgName}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Tcase">
+		SELECT 
+			<include refid="tcaseColumns"/>
+		FROM tcase a
+		<include refid="tcaseJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO tcase(
+			case_id,
+			accepter,
+			accept_date,
+			case_source,
+			party_type,
+			org_name,
+			org_agent,
+			org_code,
+			org_responsible_person,
+			org_address,
+			org_phone,
+			psn_name,
+			psn_organization,
+			psn_code,
+			psn_post,
+			psn_address,
+			psn_phone,
+			psn_sex,
+			case_happen_date,
+			case_happen_address,
+			project_code,
+			project_name,
+			case_cause,
+			case_summary,
+			case_handler,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{caseId},
+			#{accepter},
+			#{acceptDate},
+			#{caseSource},
+			#{partyType},
+			#{orgName},
+			#{orgAgent},
+			#{orgCode},
+			#{orgResponsiblePerson},
+			#{orgAddress},
+			#{orgPhone},
+			#{psnName},
+			#{psnOrganization},
+			#{psnCode},
+			#{psnPost},
+			#{psnAddress},
+			#{psnPhone},
+			#{psnSex},
+			#{caseHappenDate},
+			#{caseHappenAddress},
+			#{projectCode},
+			#{projectName},
+			#{caseCause},
+			#{caseSummary},
+			#{caseHandler},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE tcase SET 	
+			case_id = #{caseId},
+			accepter = #{accepter},
+			accept_date = #{acceptDate},
+			case_source = #{caseSource},
+			party_type = #{partyType},
+			org_name = #{orgName},
+			org_agent = #{orgAgent},
+			org_code = #{orgCode},
+			org_responsible_person = #{orgResponsiblePerson},
+			org_address = #{orgAddress},
+			org_phone = #{orgPhone},
+			psn_name = #{psnName},
+			psn_organization = #{psnOrganization},
+			psn_code = #{psnCode},
+			psn_post = #{psnPost},
+			psn_address = #{psnAddress},
+			psn_phone = #{psnPhone},
+			psn_sex = #{psnSex},
+			case_happen_date = #{caseHappenDate},
+			case_happen_address = #{caseHappenAddress},
+			project_code = #{projectCode},
+			project_name = #{projectName},
+			case_cause = #{caseCause},
+			case_summary = #{caseSummary},
+			case_handler = #{caseHandler},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE tcase SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

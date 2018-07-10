@@ -77,7 +77,7 @@
 				<div class="span7">		
 			<label class="control-label control-tight">调查询问人：</label>
 			<div class="controls controls-tight">
-				<form:checkboxes path="quizzer" items="${fns:getUserByOffice('')}" itemLabel="name" itemValue="id" htmlEscape="false" class="required"/>
+				<form:checkboxes path="quizzerList" items="${fns:getUserByOffice('')}" itemLabel="name" itemValue="name" htmlEscape="false" class="required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		        </div>

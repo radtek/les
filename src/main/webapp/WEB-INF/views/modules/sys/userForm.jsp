@@ -53,15 +53,17 @@
 			<label class="control-label">部门:</label>
 			<div class="controls">
                 <sys:treeselect id="office" name="office.id" value="${user.office.id}" labelName="office.name" labelValue="${user.office.name}"
-					title="部门" url="/sys/office/treeData?type=2" cssClass="required" notAllowSelectParent="true"/>
+					title="部门" url="/sys/office/treeData?type=2" cssClass="required" notAllowSelectParent="false"/>
 			</div>
 		</div>
+		<!--  
 		<div class="control-group">
 			<label class="control-label">工号:</label>
 			<div class="controls">
 				<form:input path="no" htmlEscape="false" maxlength="50"/>
 			</div>
 		</div>
+		-->
 		<div class="control-group">
 			<label class="control-label">姓名:</label>
 			<div class="controls">
@@ -109,7 +111,8 @@
 		<div class="control-group">
 			<label class="control-label">手机:</label>
 			<div class="controls">
-				<form:input path="mobile" htmlEscape="false" maxlength="100"/>
+				<form:input path="mobile" htmlEscape="false" maxlength="100" class="required"/>
+				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
