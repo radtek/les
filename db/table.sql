@@ -1,4 +1,15 @@
 -- ----------------------------
+-- Table structure for tsequence
+-- ----------------------------
+
+DROP TABLE IF EXISTS tsequence;
+CREATE TABLE tsequence
+(
+  name    varchar(100) COMMENT '关键字',
+  nextid  int(11) default 1 COMMENT '编号'
+);
+
+-- ----------------------------
 -- Table structure for tcase
 -- ----------------------------
 DROP TABLE IF EXISTS `tcase`;
@@ -9,20 +20,20 @@ CREATE TABLE `tcase` (
   `accept_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '受理时间',
   `case_source` varchar(100) NOT NULL COMMENT '案件来源',
   `party_type` varchar(32) NOT NULL COMMENT '当事人类型',
-  `org_name` varchar(100) NOT NULL COMMENT '名称',
-  `org_agent` varchar(32) NOT NULL COMMENT '法定代表人',
-  `org_code` varchar(32) NOT NULL COMMENT '统一社会信用代码',
-  `org_responsible_person` varchar(100) NOT NULL COMMENT '负责人',
-  `org_address` varchar(100) NOT NULL COMMENT '住址',
-  `org_phone` varchar(32) NOT NULL COMMENT '联系电话', 
-  `psn_name` varchar(32) NOT NULL COMMENT '姓名',
-  `psn_organization` varchar(100) NOT NULL COMMENT '工作单位',
-  `psn_code` varchar(32) NOT NULL COMMENT '身份证',
-  `psn_post` varchar(100) NOT NULL COMMENT '职务',
-  `psn_address` varchar(100) NOT NULL COMMENT '住址',
-  `psn_phone` varchar(32) NOT NULL COMMENT '联系电话', 
-  `psn_sex` varchar(8) NOT NULL COMMENT '性别', 
-  `case_happen_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '案发时间',
+  `org_name` varchar(100) NULL COMMENT '名称',
+  `org_agent` varchar(32) NULL COMMENT '法定代表人',
+  `org_code` varchar(32) NULL COMMENT '统一社会信用代码',
+  `org_responsible_person` varchar(100) NULL COMMENT '负责人',
+  `org_address` varchar(100) NULL COMMENT '住址',
+  `org_phone` varchar(32) NULL COMMENT '联系电话', 
+  `psn_name` varchar(32) NULL COMMENT '姓名',
+  `psn_organization` varchar(100) NULL COMMENT '工作单位',
+  `psn_code` varchar(32) NULL COMMENT '身份证',
+  `psn_post` varchar(100) NULL COMMENT '职务',
+  `psn_address` varchar(100) NULL COMMENT '住址',
+  `psn_phone` varchar(32) NULL COMMENT '联系电话', 
+  `psn_sex` varchar(8) NULL COMMENT '性别', 
+  `case_happen_date` varchar(32) NOT NULL COMMENT '案发时间',
   `case_happen_address` varchar(100) NOT NULL COMMENT '案发地点',
   `project_code` varchar(32) NOT NULL COMMENT '案件所涉项目代码',
   `project_name` varchar(100) NOT NULL COMMENT '案件所涉项目名称',
@@ -69,7 +80,7 @@ CREATE TABLE `tcase_notify` (
   `year` varchar(8) NOT NULL COMMENT '年份',
   `seq` varchar(8) NOT NULL COMMENT '流水号',
   `party_name` varchar(100) NOT NULL COMMENT '名称',
-  `content` varchar(1000) NOT NULL COMMENT '正文',
+  `content` text NOT NULL COMMENT '正文',
   `launch_dept` varchar(100) NOT NULL COMMENT '发证部门',
   `launch_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '发证时间',
   `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
@@ -82,6 +93,29 @@ CREATE TABLE `tcase_notify` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='案件告知书';
 
 -- ----------------------------
+-- Table structure for tcase_decision
+-- ----------------------------
+DROP TABLE IF EXISTS `tcase_decision`;
+CREATE TABLE `tcase_decision` (
+  `id` int(11) NOT NULL auto_increment  COMMENT '编号',
+  `case_id` varchar(32) NOT NULL COMMENT '案件编号',
+  `notify_type` varchar(8) NOT NULL COMMENT '告知书类型',
+  `year` varchar(8) NOT NULL COMMENT '年份',
+  `seq` varchar(8) NOT NULL COMMENT '流水号',
+  `party_name` varchar(100) NOT NULL COMMENT '名称',
+  `content` text NOT NULL COMMENT '正文',
+  `launch_dept` varchar(100) NOT NULL COMMENT '发证部门',
+  `launch_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '发证时间',
+  `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_by` varchar(32) DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  `remarks` varchar(64) DEFAULT NULL COMMENT '备注信息',
+  `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='案件决定书';
+
+-- ----------------------------
 -- Table structure for tsitecheck
 -- ----------------------------
 DROP TABLE IF EXISTS `tsitecheck`;
@@ -92,6 +126,7 @@ CREATE TABLE `tsitecheck` (
   `develop_phone` varchar(32) NOT NULL COMMENT '建设单位联系人电话',
   `construction_org` varchar(100) NOT NULL COMMENT '施工单位',
   `construction_contact` varchar(32) NOT NULL COMMENT '施工单位联系人',
+  `construction_phone` varchar(32) NOT NULL COMMENT '施工单位联系人电话',
   `project_name` varchar(100) NOT NULL COMMENT '工程名称',
   `project_address` varchar(100) NOT NULL COMMENT '工程地址',
   `site_situation` varchar(500) NOT NULL COMMENT '现场检查工程情况',
@@ -99,6 +134,8 @@ CREATE TABLE `tsitecheck` (
   `site_check_result` varchar(500) NOT NULL COMMENT '现场踏勘情况',
   `checker` varchar(32) NOT NULL COMMENT '勘查人',
   `check_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '勘查时间',
+  `checker_sig` varchar(64) NOT NULL COMMENT '勘查人签名',
+  `party_sig` varchar(64) NOT NULL COMMENT '当事人签名',  
   `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
   `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_by` varchar(32) DEFAULT NULL COMMENT '更新者',
