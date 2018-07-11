@@ -39,7 +39,7 @@ CREATE TABLE `tcase` (
   `project_name` varchar(100) NOT NULL COMMENT '案件所涉项目名称',
   `case_cause` varchar(200) NOT NULL COMMENT '案由',
   `case_summary` varchar(500) NOT NULL COMMENT '案情摘要',
-  `case_handler` varchar(200) NOT NULL COMMENT '办案人',
+  `case_handler` varchar(100) NOT NULL COMMENT '办案人',
   `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
   `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_by` varchar(32) DEFAULT NULL COMMENT '更新者',
