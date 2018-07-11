@@ -41,12 +41,7 @@
 		    padding-left: 0px;
 		    padding-right: 0px;
 		}
-		h3{
-		    font-size:24px;
-		}
-		h4{
-		    font-size:22px;
-		}			
+			
 	</style>
 </head>
 <body>
