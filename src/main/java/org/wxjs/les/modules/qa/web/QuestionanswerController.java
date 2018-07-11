@@ -76,7 +76,7 @@ public class QuestionanswerController extends BaseController {
 		//logger.debug("questionanswer.getAsig().toString():{}", questionanswer.getAsig().toString());
 		
 		model.addAttribute("questionanswer", questionanswer);
-		return "modules/qa/questionanswerQaTab";
+		return "modules/qa/questionanswerInfoTab";
 	}
 
 	@RequiresPermissions("qa:questionanswer:edit")

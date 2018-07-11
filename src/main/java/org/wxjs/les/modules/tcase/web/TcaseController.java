@@ -58,11 +58,10 @@ public class TcaseController extends BaseController {
 	@RequiresPermissions("case:tcase:view")
 	@RequestMapping(value = "form")
 	public String form(Tcase tcase, Model model) {
-		if(tcase!=null && StringUtils.isEmpty(tcase.getPartyType())){
-			tcase.setPartyType("单位");
-		}
 		if(tcase.getIsNewRecord()){
+			tcase.setPartyType("单位");
 			tcase.setAcceptDate(Calendar.getInstance().getTime());
+			tcase.setPsnSex("男");
 		}
 		model.addAttribute("tcase", tcase);
 		return "modules/tcase/tcaseForm";

@@ -7,7 +7,7 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			//$("#name").focus();
-			$("#inputForm").validate({
+			$("#infoInputForm").validate({
 				submitHandler: function(form){
 					loading('正在提交，请稍等...');
 					form.submit();
@@ -26,34 +26,51 @@
 		
 	    function exportPdf(){
 
-			$("#inputForm").attr("action","${ctx}/qa/questionanswer/exportPDF");
-			$("#inputForm").submit();
+			$("#infoInputForm").attr("action","${ctx}/qa/questionanswer/exportPDF");
+			$("#infoInputForm").submit();
 	    	
 	    }
 
+		function addQA(){
+			$("#qaContent").val($("#qaContent").val() + "\n\r问：\n\r答：");
+		}
 	</script>
 	
 	<style type="text/css">
 		.nopadding {
 		    padding-left: 0px;
 		    padding-right: 0px;
+		}
+		h3{
+		    font-size:24px;
+		}
+		h4{
+		    font-size:22px;
 		}			
 	</style>
 </head>
 <body>
+    
+    <h3>询问笔录</h3>
+    <div style="text-align:center">
     <input id="btnExportPdf" class="btn btn-primary" type="button" value="导出PDF " onclick="exportPdf()"/>
-	<les:questionanswer tab="info" qaId="${questionanswer.id }" isNew="${questionanswer.isNewRecord }"></les:questionanswer>
-	<form:form id="inputForm" modelAttribute="questionanswer" action="${ctx}/qa/questionanswer/saveInfo" method="post" class="form-horizontal">
+    </div>
+
+	<h4>基本信息</h4>
+	<sys:message content="${message}"/>
+	<form:form id="infoInputForm" modelAttribute="questionanswer" action="${ctx}/qa/questionanswer/saveInfo" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
-		<sys:message content="${message}"/>		
+				
 		<div class="control-group">
 			<label class="control-label control-tight">案由：</label>
 			<div class="controls controls-tight">
-				<form:input path="caseCause" htmlEscape="false" maxlength="200" class="input-xxlarge required"/>
+				<form:textarea path="caseCause" htmlEscape="false"  style="width:800px;height:80px;" class="required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group container-fluid nopadding">
+			<div class="row-fluid">
+				<div class="span6">		
 			<label class="control-label control-tight">询问时间：</label>
 			<div class="controls controls-tight">
 				<input name="fromDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate required"
@@ -64,14 +81,16 @@
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',isShowClear:false});"/>	
 				<span class="help-inline"><font color="red">*</font> </span>				
 			</div>
-		</div>
-		<div class="control-group">
+		        </div>
+				<div class="span6">		
 			<label class="control-label control-tight">询问地点：</label>
 			<div class="controls controls-tight">
 				<form:input path="location" htmlEscape="false" maxlength="100" class="input-xxlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
-		</div>
+		        </div>
+		    </div>
+		</div>			
 		<div class="control-group container-fluid nopadding">
 			<div class="row-fluid">
 				<div class="span7">		
@@ -166,15 +185,55 @@
 		        </div>
 		    </div>
 		</div>		
-		<div class="control-group">
-			<label class="control-label control-tight">备注信息：</label>
-			<div class="controls controls-tight">
-				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="64" class="input-xxlarge "/>
-			</div>
-		</div>
 		<div class="form-actions">
-			<shiro:hasPermission name="qa:questionanswer:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+			<shiro:hasPermission name="qa:questionanswer:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保存基本信息"/>&nbsp;</shiro:hasPermission>
 		</div>
 	</form:form>
+	<h4>问答记录</h4>
+	<form:form id="qaInputForm" modelAttribute="questionanswer" action="${ctx}/qa/questionanswer/saveQa" method="post" class="form-horizontal">
+		<form:hidden path="id"/>
+
+			<div class="control-group">
+				<label class="control-label">询问笔录项目：</label>
+				<div class="controls controls-tight">
+				</div>
+				
+			</div>		
+
+			<div class="control-group">
+				<label class="control-label control-tight"></label>
+				<div class="controls controls-tight">
+				 <form:textarea path="qaContent" style="width:800px;height:600px;"/>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label control-tight"></label>
+				<div class="controls" style="text-align:center;">
+				 <input id="btnAddQA" class="btn" type="button" value="添加问答" onclick="addQA()" />
+				</div>
+			</div>	
+		<div class="form-actions">
+			<shiro:hasPermission name="qa:questionanswer:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存询问笔录"/>&nbsp;</shiro:hasPermission>
+		</div>			
+		<div class="control-group container-fluid nopadding">
+			<div class="row-fluid">			
+				<div class="span6">		
+			<label class="control-label">被询问人签名：</label>
+			<div class="controls controls-tight">
+				<les:signatureLoader sig="${questionanswer.asig}"></les:signatureLoader>
+				<les:signatureModal></les:signatureModal>
+			</div>
+		        </div> 
+				<div class="span6">		
+			<label class="control-label">调查询问人签名：</label>
+			<div class="controls controls-tight">
+			    <les:signatureLoader sig="${questionanswer.qsig}"></les:signatureLoader>
+			</div>
+		        </div>
+		    </div>
+		</div>		
+					
+
+	</form:form>	
 </body>
 </html>
