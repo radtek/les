@@ -17,10 +17,8 @@
 	</script>
 </head>
 <body>
-	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/case/tcase/">案件列表</a></li>
-		<shiro:hasPermission name="case:tcase:edit"><li><a href="${ctx}/case/tcase/form">案件添加</a></li></shiro:hasPermission>
-	</ul>
+    <h3>案件列表</h3>
+	
 	<form:form id="searchForm" modelAttribute="tcase" action="${ctx}/case/tcase/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
@@ -33,7 +31,9 @@
 			<li><label>名称：</label>
 				<form:input path="orgName" htmlEscape="false" maxlength="100" class="input-medium"/>
 			</li>
-			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
+			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
+			<input class="btn btn-primary" type="button" value="启动新案件 " onclick="window.location.href='${ctx}/case/tcase/form'"/>
+			</li>
 			<li class="clearfix"></li>
 		</ul>
 	</form:form>
@@ -41,15 +41,11 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>事项编号</th>
-				<th>受理人</th>
-				<th>受理时间</th>
-				<th>案件来源</th>
-				<th>当事人类型</th>
-				<th>名称</th>
-				<th>法定代表人</th>
-				<th>更新时间</th>
-				<th>备注信息</th>
+				<th>当事人</th>
+				<th>项目名称</th>
+				<th>事项名称</th>
+				<th>当前阶段</th>
+				<th>阶段状态</th>
 				<shiro:hasPermission name="case:tcase:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
@@ -57,32 +53,20 @@
 		<c:forEach items="${page.list}" var="tcase">
 			<tr>
 				<td><a href="${ctx}/case/tcase/form?id=${tcase.id}">
-					${tcase.caseId}
+					${tcase.orgName}
 				</a></td>
 				<td>
-					${tcase.accepter}
+					${tcase.projectName}
 				</td>
 				<td>
-					<fmt:formatDate value="${tcase.acceptDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+					${tcase.caseCause}
 				</td>
 				<td>
-					${tcase.caseSource}
+					${fns:getDictLabel(tcase.caseStage, 'case_stage', '')}
 				</td>
 				<td>
-					${tcase.partyType}
-				</td>
-				<td>
-					${tcase.orgName}
-				</td>
-				<td>
-					${tcase.orgAgent}
-				</td>
-				<td>
-					<fmt:formatDate value="${tcase.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
-				</td>
-				<td>
-					${tcase.remarks}
-				</td>
+					${fns:getDictLabel(tcase.caseStageStatus, 'case_stage_status', '')}
+				</td>				
 				<shiro:hasPermission name="case:tcase:edit"><td>
     				<a href="${ctx}/case/tcase/form?id=${tcase.id}">修改</a>
 					<a href="${ctx}/case/tcase/delete?id=${tcase.id}" onclick="return confirmx('确认要删除该案件吗？', this.href)">删除</a>

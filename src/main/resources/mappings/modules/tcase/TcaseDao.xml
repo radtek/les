@@ -29,6 +29,7 @@
 		a.case_cause AS "caseCause",
 		a.case_summary AS "caseSummary",
 		a.case_handler AS "caseHandler",
+		a.case_stage AS "caseStage",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -117,6 +118,7 @@
 			case_cause,
 			case_summary,
 			case_handler,
+			case_stage,
 			create_by,
 			create_date,
 			update_by,
@@ -149,6 +151,7 @@
 			#{caseCause},
 			#{caseSummary},
 			#{caseHandler},
+			#{caseStage},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -185,11 +188,50 @@
 			case_cause = #{caseCause},
 			case_summary = #{caseSummary},
 			case_handler = #{caseHandler},
+			case_stage = #{caseStage},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks}
 		WHERE id = #{id}
 	</update>
+	
+	<update id="updateStage4Start">
+		UPDATE tcase SET
+			case_stage = #{caseStage},
+		<choose>
+			<when test="caseStage == '10'">
+				proc_inst_id_10 = #{procInstId},
+			</when>
+			<when test="caseStage == '20'">
+				proc_inst_id_20 = #{procInstId},
+			</when>
+			<when test="caseStage == '30'">
+				proc_inst_id_30 = #{procInstId},
+			</when>
+			<when test="caseStage == '40'">
+				proc_inst_id_40 = #{procInstId},
+			</when>
+			<when test="caseStage == '50'">
+				proc_inst_id_50 = #{procInstId},
+			</when>
+			<when test="caseStage == '60'">
+				proc_inst_id_60 = #{procInstId},
+			</when>
+			<when test="caseStage == '70'">
+				proc_inst_id_70 = #{procInstId},
+			</when>			
+			<otherwise>
+			</otherwise>
+		</choose>
+		    case_stage_status = '0'		
+		WHERE id = #{id}
+	</update>	
+	
+	<update id="updateStage4Finish">
+		UPDATE tcase SET
+			case_stage_status = '1'
+		WHERE id = #{id}
+	</update>	
 	
 	<update id="delete">
 		UPDATE tcase SET 

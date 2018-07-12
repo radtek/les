@@ -48,6 +48,20 @@ public class Tcase extends DataEntity<Tcase> {
 	private String caseCause;		// 案由
 	private String caseSummary;		// 案情摘要
 	private String caseHandler;		// 办案人
+	private String caseStage;       //事项类型
+
+	private String caseStageStatus;		// 事项类型状态
+	private String procInstId10;		// 受理流程号
+	private String procInstId20;		// 立案流程号
+	private String procInstId30;		// 受理流程号
+	private String procInstId40;		// 告知流程号
+	private String procInstId50;		// 决定流程号
+	private String procInstId60;		// 结案流程号
+	private String procInstId70;		// 结束流程号
+	private String procInstIdSerious;		// 重大流程号
+	private String procInstIdCancel;		// 撤销流程号
+	
+	private String procInstId;		// 流程号
 	
 	public Tcase() {
 		super();
@@ -298,6 +312,102 @@ public class Tcase extends DataEntity<Tcase> {
 			buffer.append(",").append(name);
 		}
 		this.caseHandler = buffer.substring(1);
+	}
+
+	public String getCaseStage() {
+		return caseStage;
+	}
+
+	public void setCaseStage(String caseStage) {
+		this.caseStage = caseStage;
+	}
+
+	public String getCaseStageStatus() {
+		return caseStageStatus;
+	}
+
+	public void setCaseStageStatus(String caseStageStatus) {
+		this.caseStageStatus = caseStageStatus;
+	}
+
+	public String getProcInstId10() {
+		return procInstId10;
+	}
+
+	public void setProcInstId10(String procInstId10) {
+		this.procInstId10 = procInstId10;
+	}
+
+	public String getProcInstId20() {
+		return procInstId20;
+	}
+
+	public void setProcInstId20(String procInstId20) {
+		this.procInstId20 = procInstId20;
+	}
+
+	public String getProcInstId30() {
+		return procInstId30;
+	}
+
+	public void setProcInstId30(String procInstId30) {
+		this.procInstId30 = procInstId30;
+	}
+
+	public String getProcInstId40() {
+		return procInstId40;
+	}
+
+	public void setProcInstId40(String procInstId40) {
+		this.procInstId40 = procInstId40;
+	}
+
+	public String getProcInstId50() {
+		return procInstId50;
+	}
+
+	public void setProcInstId50(String procInstId50) {
+		this.procInstId50 = procInstId50;
+	}
+
+	public String getProcInstId60() {
+		return procInstId60;
+	}
+
+	public void setProcInstId60(String procInstId60) {
+		this.procInstId60 = procInstId60;
+	}
+
+	public String getProcInstId70() {
+		return procInstId70;
+	}
+
+	public void setProcInstId70(String procInstId70) {
+		this.procInstId70 = procInstId70;
+	}
+
+	public String getProcInstIdSerious() {
+		return procInstIdSerious;
+	}
+
+	public void setProcInstIdSerious(String procInstIdSerious) {
+		this.procInstIdSerious = procInstIdSerious;
+	}
+
+	public String getProcInstIdCancel() {
+		return procInstIdCancel;
+	}
+
+	public void setProcInstIdCancel(String procInstIdCancel) {
+		this.procInstIdCancel = procInstIdCancel;
+	}
+
+	public String getProcInstId() {
+		return procInstId;
+	}
+
+	public void setProcInstId(String procInstId) {
+		this.procInstId = procInstId;
 	}
 	
 }

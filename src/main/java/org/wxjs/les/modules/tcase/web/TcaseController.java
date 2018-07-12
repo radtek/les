@@ -62,6 +62,8 @@ public class TcaseController extends BaseController {
 			tcase.setPartyType("单位");
 			tcase.setAcceptDate(Calendar.getInstance().getTime());
 			tcase.setPsnSex("男");
+			tcase.setCaseStage("10");
+			tcase.setCaseStageStatus("0");
 		}
 		model.addAttribute("tcase", tcase);
 		return "modules/tcase/tcaseForm";

@@ -37,10 +37,10 @@
 	</script>
 </head>
 <body>
-	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/case/tcase/">案件列表</a></li>
-		<li class="active"><a href="${ctx}/case/tcase/form?id=${tcase.id}">案件<shiro:hasPermission name="case:tcase:edit">${not empty tcase.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="case:tcase:edit">查看</shiro:lacksPermission></a></li>
-	</ul><br/>
+	<h3>案件管理</h3>
+    <div style="text-align:right;margin-right:30px;">
+        <input class="btn btn-primary" type="button" value="返回 " onclick="window.location.href='${ctx}/case/tcase/'"/>
+    </div>		
 	<form:form id="inputForm" modelAttribute="tcase" action="${ctx}/case/tcase/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>	
@@ -58,7 +58,8 @@
 				<div class="span6">		
 			<label class="control-label">事项类型：</label>
 			<div class="controls controls-tight">
-				
+				<form:hidden path="caseStage"/>
+				${fns:getDictLabel(tcase.caseStage, 'case_stage', '')}
 			</div>
 		        </div>
 		    </div>
@@ -108,8 +109,8 @@
 		</div>	
         <!-- org begin -->
         
-        <c:if test="${tcase.partyType ne '单位'}"><div id="info4Org" style="border:1px solid #3366FF;display:none"></c:if>
-        <c:if test="${tcase.partyType eq '单位'}"><div id="info4Org" style="border:1px solid #3366FF;"></c:if>
+        <c:if test="${tcase.partyType ne '单位'}"><div id="info4Org" class="partyBox" style="display:none"></c:if>
+        <c:if test="${tcase.partyType eq '单位'}"><div id="info4Org" class="partyBox"></c:if>
 		
 		<div class="control-group container-fluid nopadding">
 			<div class="row-fluid">
@@ -169,8 +170,8 @@
 		</div><!-- org end -->
 		<!-- individual begin -->
 		
-        <c:if test="${tcase.partyType ne '个人'}"><div id="info4Individual" style="border:1px solid #3366FF; display:none"></c:if>
-        <c:if test="${tcase.partyType eq '个人'}"><div id="info4Individual" style="border:1px solid #3366FF;"></c:if>		
+        <c:if test="${tcase.partyType ne '个人'}"><div id="info4Individual" class="partyBox" style="display:none"></c:if>
+        <c:if test="${tcase.partyType eq '个人'}"><div id="info4Individual" class="partyBox"></c:if>		
 		
 		<div class="control-group container-fluid nopadding">
 			<div class="row-fluid">
@@ -265,8 +266,7 @@
 				<div class="span12">		
 			<label class="control-label">案件所涉项目名称：</label>
 			<div class="controls controls-tight">
-			    <form:input path="projectCode" htmlEscape="false" maxlength="32" class="input-xlarge required"/>
-				<form:input path="projectName" htmlEscape="false" maxlength="100" class="input-xlarge required"/>
+				<form:input path="projectName" htmlEscape="false" maxlength="100" class="input-xxlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		        </div>
@@ -292,12 +292,6 @@
 			<div class="controls controls-tight">
                 <form:checkboxes path="caseHandlerList" items="${fns:getUserByOffice('')}" itemLabel="name" itemValue="name" htmlEscape="false" class="required"/>				
 				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">备注信息：</label>
-			<div class="controls controls-tight">
-				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="64" class="input-xxlarge "/>
 			</div>
 		</div>
 		<div class="form-actions">

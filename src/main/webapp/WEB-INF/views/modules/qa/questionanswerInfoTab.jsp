@@ -208,7 +208,7 @@
 				</div>
 			</div>	
 		<div class="form-actions">
-			<shiro:hasPermission name="qa:questionanswer:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存询问笔录"/>&nbsp;</shiro:hasPermission>
+			<shiro:hasPermission name="qa:questionanswer:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保存询问笔录"/>&nbsp;</shiro:hasPermission>
 		</div>			
 		<div class="control-group container-fluid nopadding">
 			<div class="row-fluid">			
