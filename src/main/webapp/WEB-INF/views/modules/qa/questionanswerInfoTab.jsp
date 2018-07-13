@@ -4,6 +4,9 @@
 <head>
 	<title>询问笔录管理</title>
 	<meta name="decorator" content="default"/>
+	
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"> 
+	
 	<script type="text/javascript">
 		$(document).ready(function() {
 			//$("#name").focus();

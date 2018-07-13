@@ -63,7 +63,7 @@
 <input type="hidden" id="sigId" value=""/>
 
 <!-- 模态框（Modal） -->
-<div class="modal fade" id="sigModal" style="width:550px;height:450px;">
+<div class="modal fade" id="sigModal" style="width:550px;height:450px;display:none;">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
