@@ -40,7 +40,9 @@
 	<h3>案件管理</h3>
     <div style="text-align:right;margin-right:30px;">
         <input class="btn btn-primary" type="button" value="返回 " onclick="window.location.href='${ctx}/case/tcase/'"/>
-    </div>		
+    </div>	
+    <les:caseSummary></les:caseSummary>
+    <les:caseTab tab="info" id="${tcase.id}"></les:caseTab>	
 	<form:form id="inputForm" modelAttribute="tcase" action="${ctx}/case/tcase/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>	

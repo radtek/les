@@ -37,8 +37,8 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 	@Transactional(readOnly = false)
 	public void save(Tcase tcase) {
 		if(tcase.getIsNewRecord()){
-			tcase.setCaseId(SequenceUtils.fetchCaseSeqStr());
-			logger.debug("tcase.getCaseId():{}",tcase.getCaseId());
+			tcase.setCaseSeq(SequenceUtils.fetchCaseSeqStr());
+			logger.debug("tcase.getCaseSeq():{}",tcase.getCaseSeq());
 		}
 		super.save(tcase);
 	}

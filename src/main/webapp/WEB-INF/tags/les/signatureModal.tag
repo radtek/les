@@ -9,7 +9,7 @@
 
 	$(function(){
 		
-		initial();
+		//initial();
 	})
 	
 	function initial(){
@@ -29,6 +29,7 @@
     }
 	
 	function loadModal(sigId){
+		initial();
 		$("#sigId").val(sigId);
 		resetSignature();
 	}

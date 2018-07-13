@@ -4,7 +4,7 @@
     
 	<sql id="tcaseColumns">
 		a.id AS "id",
-		a.case_id AS "caseId",
+		a.case_seq AS "caseSeq",
 		a.accepter AS "accepter",
 		a.accept_date AS "acceptDate",
 		a.case_source AS "caseSource",
@@ -93,7 +93,7 @@
 	
 	<insert id="insert">
 		INSERT INTO tcase(
-			case_id,
+			case_seq,
 			accepter,
 			accept_date,
 			case_source,
@@ -126,7 +126,7 @@
 			remarks,
 			del_flag
 		) VALUES (
-			#{caseId},
+			#{caseSeq},
 			#{accepter},
 			#{acceptDate},
 			#{caseSource},
@@ -163,7 +163,7 @@
 	
 	<update id="update">
 		UPDATE tcase SET 	
-			case_id = #{caseId},
+			case_seq = #{caseSeq},
 			accepter = #{accepter},
 			accept_date = #{acceptDate},
 			case_source = #{caseSource},

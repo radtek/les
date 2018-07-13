@@ -23,7 +23,7 @@ import org.wxjs.les.modules.sys.entity.User;
 public class Tcase extends DataEntity<Tcase> {
 	
 	private static final long serialVersionUID = 1L;
-	private String caseId;		// 事项编号
+	private String caseSeq;		// 事项编号
 	private String accepter;		// 受理人
 	private Date acceptDate;		// 受理时间
 	private String caseSource;		// 案件来源
@@ -70,15 +70,15 @@ public class Tcase extends DataEntity<Tcase> {
 	public Tcase(String id){
 		super(id);
 	}
-
-	public String getCaseId() {
-		return caseId;
-	}
-
-	public void setCaseId(String caseId) {
-		this.caseId = caseId;
-	}
 	
+	public String getCaseSeq() {
+		return caseSeq;
+	}
+
+	public void setCaseSeq(String caseSeq) {
+		this.caseSeq = caseSeq;
+	}
+
 	@Length(min=1, max=32, message="受理人长度必须介于 1 和 32 之间")
 	public String getAccepter() {
 		return accepter;

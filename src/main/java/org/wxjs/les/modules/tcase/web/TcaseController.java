@@ -4,6 +4,7 @@
 package org.wxjs.les.modules.tcase.web;
 
 import java.util.Calendar;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,8 +21,12 @@ import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.web.BaseController;
 import org.wxjs.les.common.utils.StringUtils;
+import org.wxjs.les.modules.tcase.entity.CaseAttach;
 import org.wxjs.les.modules.tcase.entity.Tcase;
+import org.wxjs.les.modules.tcase.service.CaseAttachService;
 import org.wxjs.les.modules.tcase.service.TcaseService;
+
+import com.google.common.collect.Lists;
 
 /**
  * 案件Controller
@@ -34,6 +39,9 @@ public class TcaseController extends BaseController {
 
 	@Autowired
 	private TcaseService tcaseService;
+	
+	@Autowired
+	private CaseAttachService caseAttachService;
 	
 	@ModelAttribute
 	public Tcase get(@RequestParam(required=false) String id) {
@@ -68,6 +76,39 @@ public class TcaseController extends BaseController {
 		model.addAttribute("tcase", tcase);
 		return "modules/tcase/tcaseForm";
 	}
+	
+	@RequiresPermissions("case:tcase:view")
+	@RequestMapping(value = "infoTab")
+	public String infoTab(Tcase tcase, Model model) {
+		if(tcase.getIsNewRecord()){
+			tcase.setPartyType("单位");
+			tcase.setAcceptDate(Calendar.getInstance().getTime());
+			tcase.setPsnSex("男");
+			tcase.setCaseStage("10");
+			tcase.setCaseStageStatus("0");
+		}
+		model.addAttribute("tcase", tcase);
+		return "modules/tcase/tcaseInfoTab";
+	}
+	
+	@RequiresPermissions("case:tcase:view")
+	@RequestMapping(value = "attachTab")
+	public String attachTab(Tcase tcase, Model model) {
+		model.addAttribute("tcase", tcase);
+		
+		CaseAttach caseAttach = new CaseAttach();
+		caseAttach.setCaseId(tcase.getId());
+		List<CaseAttach> attachlist = caseAttachService.findList(caseAttach);
+		model.addAttribute("attachlist", attachlist);
+		return "modules/tcase/tcaseAttachTab";
+	}
+	
+	@RequiresPermissions("case:tcase:view")
+	@RequestMapping(value = "flowTab")
+	public String flowTab(Tcase tcase, Model model) {
+		model.addAttribute("tcase", tcase);
+		return "modules/tcase/tcaseFlowTab";
+	}
 
 	@RequiresPermissions("case:tcase:edit")
 	@RequestMapping(value = "save")
@@ -77,7 +118,7 @@ public class TcaseController extends BaseController {
 		}
 		tcaseService.save(tcase);
 		addMessage(redirectAttributes, "保存案件成功");
-		return "redirect:"+Global.getAdminPath()+"/case/tcase/?repage";
+		return "redirect:"+Global.getAdminPath()+"/case/tcase/?id="+tcase.getId();
 	}
 	
 	@RequiresPermissions("case:tcase:edit")
@@ -85,7 +126,7 @@ public class TcaseController extends BaseController {
 	public String delete(Tcase tcase, RedirectAttributes redirectAttributes) {
 		tcaseService.delete(tcase);
 		addMessage(redirectAttributes, "删除案件成功");
-		return "redirect:"+Global.getAdminPath()+"/case/tcase/?repage";
+		return "redirect:"+Global.getAdminPath()+"/case/tcase/infoTab?repage";
 	}
 
 }

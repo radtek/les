@@ -28,24 +28,6 @@
     <sequenceFlow id="sid-9F94226C-0770-4E49-A64B-E6DD414CEF17" name="通过" sourceRef="sid-44B65C17-2439-4C5E-B404-8D5C1B3CD22A" targetRef="sid-B61C936E-F27C-4023-BCB0-CDD43CF27CFA">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${jcbarOp=='pass'}]]></conditionExpression>
     </sequenceFlow>
-    <endEvent id="cancelendevent1" name="CancelEnd">
-      <cancelEventDefinition></cancelEventDefinition>
-    </endEvent>
-    <sequenceFlow id="flow1" name="取消" sourceRef="sid-44B65C17-2439-4C5E-B404-8D5C1B3CD22A" targetRef="cancelendevent1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${jcbarOp=='cancel'}]]></conditionExpression>
-    </sequenceFlow>
-    <endEvent id="cancelendevent2" name="CancelEnd">
-      <cancelEventDefinition></cancelEventDefinition>
-    </endEvent>
-    <endEvent id="cancelendevent3" name="CancelEnd">
-      <cancelEventDefinition></cancelEventDefinition>
-    </endEvent>
-    <sequenceFlow id="flow2" name="取消" sourceRef="sid-60F5DD1C-C7B6-4E45-980F-9B6467D64C46" targetRef="cancelendevent2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${jcksfzrOp=='cancel'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow3" name="取消" sourceRef="sid-C47DC249-F311-4B69-A5E0-CF054BA1472F" targetRef="cancelendevent3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${zdfzrOp=='cancel'}]]></conditionExpression>
-    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_caseAcceptanceProcess">
     <bpmndi:BPMNPlane bpmnElement="caseAcceptanceProcess" id="BPMNPlane_caseAcceptanceProcess">
@@ -72,15 +54,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="sid-619AB5A8-D242-4294-AC3D-8211F3FCA239" id="BPMNShape_sid-619AB5A8-D242-4294-AC3D-8211F3FCA239">
         <omgdc:Bounds height="35.0" width="35.0" x="900.0" y="168.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="cancelendevent1" id="BPMNShape_cancelendevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="348.0" y="75.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="cancelendevent2" id="BPMNShape_cancelendevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="580.0" y="75.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="cancelendevent3" id="BPMNShape_cancelendevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="810.0" y="75.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="sid-60689434-EF4F-4210-A888-9C047100FA6C" id="BPMNEdge_sid-60689434-EF4F-4210-A888-9C047100FA6C">
         <omgdi:waypoint x="155.0" y="186.0"></omgdi:waypoint>
@@ -135,27 +108,6 @@
         <omgdi:waypoint x="432.0" y="186.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="14.0" width="24.0" x="384.0" y="193.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="365.0" y="166.0"></omgdi:waypoint>
-        <omgdi:waypoint x="365.0" y="110.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="24.0" x="370.0" y="141.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="597.0" y="166.0"></omgdi:waypoint>
-        <omgdi:waypoint x="597.0" y="110.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="24.0" x="600.0" y="141.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="827.0" y="166.0"></omgdi:waypoint>
-        <omgdi:waypoint x="827.0" y="110.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="24.0" x="835.0" y="147.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>

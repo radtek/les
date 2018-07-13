@@ -47,7 +47,7 @@
 <body>
     
     <h3>询问笔录</h3>
-    <div style="text-align:center">
+    <div style="text-align:right;margin-right:30px;">
     <input id="btnExportPdf" class="btn btn-primary" type="button" value="导出PDF " onclick="exportPdf()"/>
     </div>
 

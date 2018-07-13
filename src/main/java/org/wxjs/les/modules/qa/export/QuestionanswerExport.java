@@ -92,7 +92,15 @@ public class QuestionanswerExport {
             document.add(table);
             
             //时间
-            items = new String[]{"时间：", DateUtils.formatDate(this.qa.getFromDate(),"yyyy-MM-dd HH:mm:ss")+"至"+DateUtils.formatDate(this.qa.getToDate(),"yyyy-MM-dd HH:mm:ss")};
+            String fromDate = "";
+            if(this.qa.getFromDate()!=null){
+            	fromDate = DateUtils.formatDate(this.qa.getFromDate(),"yyyy-MM-dd HH:mm:ss");
+            }
+            String toDate = "";
+            if(this.qa.getToDate()!=null){
+            	toDate = DateUtils.formatDate(this.qa.getToDate(),"yyyy-MM-dd HH:mm:ss");
+            }
+            items = new String[]{"时间：", fromDate+"至"+toDate};
             table = PdfUtil.generateTableRow(items, PdfUtil.getTextFont(true), new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);           
             document.add(table);
 	        

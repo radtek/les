@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef">
-  <process id="caseAcceptanceProcess" name="案件受理流程" isExecutable="true">
+  <process id="caseFinishProcess" name="案件结束流程" isExecutable="true">
     <startEvent id="start" name="��ʼ"></startEvent>
     <userTask id="sid-8A4472D0-CDFC-42C4-808D-76FE57E55826" name="办案人启动、填写备考表" activiti:candidateGroups="jcbar"></userTask>
     <sequenceFlow id="sid-60689434-EF4F-4210-A888-9C047100FA6C" sourceRef="start" targetRef="sid-8A4472D0-CDFC-42C4-808D-76FE57E55826"></sequenceFlow>
@@ -16,8 +16,8 @@
     </sequenceFlow>
     <sequenceFlow id="flow1" sourceRef="sid-8A4472D0-CDFC-42C4-808D-76FE57E55826" targetRef="sid-B61C936E-F27C-4023-BCB0-CDD43CF27CFA"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_caseAcceptanceProcess">
-    <bpmndi:BPMNPlane bpmnElement="caseAcceptanceProcess" id="BPMNPlane_caseAcceptanceProcess">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_caseFinishProcess">
+    <bpmndi:BPMNPlane bpmnElement="caseFinishProcess" id="BPMNPlane_caseFinishProcess">
       <bpmndi:BPMNShape bpmnElement="start" id="BPMNShape_start">
         <omgdc:Bounds height="35.0" width="35.0" x="120.0" y="169.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -45,7 +45,7 @@
         <omgdi:waypoint x="617.0" y="186.0"></omgdi:waypoint>
         <omgdi:waypoint x="660.0" y="185.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="616.0" y="193.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="24.0" x="616.0" y="193.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sid-5A2E2F10-C49E-4672-BC9D-18B330F265D8" id="BPMNEdge_sid-5A2E2F10-C49E-4672-BC9D-18B330F265D8">
@@ -54,7 +54,7 @@
         <omgdi:waypoint x="252.0" y="283.0"></omgdi:waypoint>
         <omgdi:waypoint x="251.0" y="226.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="600.0" y="219.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="24.0" x="600.0" y="219.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
