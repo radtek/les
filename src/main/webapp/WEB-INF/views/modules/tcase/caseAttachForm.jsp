@@ -32,6 +32,7 @@
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="caseAttach" action="${ctx}/case/caseAttach/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
+		<form:hidden path="caseId"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">
 			<label class="control-label">案件编号：</label>

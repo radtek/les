@@ -20,6 +20,12 @@
     <les:caseTab tab="attach" id="${tcase.id}"></les:caseTab>    
 
 	<sys:message content="${message}"/>
+	<form:form modelAttribute="" action="" method="post" class="breadcrumb form-search">
+		<ul class="ul-form">
+		    <input class="btn btn-primary" type="button" value="添加资料" onclick="window.location.href='${ctx}/case/caseAttach/form?caseId=${tcase.id}'"/>
+			<li class="clearfix"></li>
+		</ul>
+	</form:form>	
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>

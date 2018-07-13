@@ -38,19 +38,6 @@ CREATE TABLE `tcase` (
   `project_code` varchar(32) NULL COMMENT '案件所涉项目代码',
   `project_name` varchar(100) NOT NULL COMMENT '案件所涉项目名称',
   `case_cause` varchar(200) NOT NULL COMMENT '案由',
-  `case_summary` varchar(500) NOT NULL COMMENT '案情摘要',
-  `case_handler` varchar(100) NOT NULL COMMENT '办案人',
-  `case_stage` varchar(8) NULL COMMENT '事项类型',
-  `case_stage_status` varchar(8) NULL COMMENT '事项类型状态',
-  `proc_inst_id_10` varchar(64) NULL COMMENT '受理流程号',
-  `proc_inst_id_20` varchar(64) NULL COMMENT '立案流程号',
-  `proc_inst_id_30` varchar(64) NULL COMMENT '受理流程号',
-  `proc_inst_id_40` varchar(64) NULL COMMENT '告知流程号',
-  `proc_inst_id_50` varchar(64) NULL COMMENT '决定流程号',
-  `proc_inst_id_60` varchar(64) NULL COMMENT '结案流程号',
-  `proc_inst_id_70` varchar(64) NULL COMMENT '结束流程号',
-  `proc_inst_id_serious` varchar(64) NULL COMMENT '重大流程号',
-  `proc_inst_id_cancel` varchar(64) NULL COMMENT '撤销流程号',
   `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
   `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_by` varchar(32) DEFAULT NULL COMMENT '更新者',
@@ -59,6 +46,27 @@ CREATE TABLE `tcase` (
   `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='案件';
+
+-- ----------------------------
+-- Table structure for tcase_process
+-- ----------------------------
+DROP TABLE IF EXISTS `tcase_process`;
+CREATE TABLE `tcase_process` (
+  `id` int(11) NOT NULL auto_increment  COMMENT '编号',
+  `case_id` varchar(32) NOT NULL COMMENT '案件编号',
+  `case_summary` varchar(500) NOT NULL COMMENT '案情摘要',
+  `case_handler` varchar(100) NOT NULL COMMENT '办案人',
+  `case_stage` varchar(8) NULL COMMENT '事项类型',
+  `case_stage_status` varchar(8) NULL COMMENT '事项类型状态',
+  `proc_inst_id` varchar(64) NULL COMMENT '受理流程号',
+  `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_by` varchar(32) DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  `remarks` varchar(64) DEFAULT NULL COMMENT '备注信息',
+  `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='案件流程';
 
 -- ----------------------------
 -- Table structure for tcase_attach

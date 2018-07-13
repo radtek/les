@@ -46,7 +46,7 @@ public class CaseAttachController extends BaseController {
 		return entity;
 	}
 	
-	@RequiresPermissions("case:caseAttach:view")
+	@RequiresPermissions("case:case:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(CaseAttach caseAttach, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<CaseAttach> page = caseAttachService.findPage(new Page<CaseAttach>(request, response), caseAttach); 
@@ -54,14 +54,17 @@ public class CaseAttachController extends BaseController {
 		return "modules/tcase/caseAttachList";
 	}
 
-	@RequiresPermissions("case:caseAttach:view")
+	@RequiresPermissions("case:case:view")
 	@RequestMapping(value = "form")
 	public String form(CaseAttach caseAttach, Model model) {
+		
+		logger.debug("caseAttach.getCaseId():{}", caseAttach.getCaseId());
+		
 		model.addAttribute("caseAttach", caseAttach);
 		return "modules/tcase/caseAttachForm";
 	}
 
-	@RequiresPermissions("case:caseAttach:edit")
+	@RequiresPermissions("case:case:edit")
 	@RequestMapping(value = "save")
 	public String save(CaseAttach caseAttach, Model model, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, caseAttach)){
@@ -72,7 +75,7 @@ public class CaseAttachController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/case/caseAttach/?repage";
 	}
 	
-	@RequiresPermissions("case:caseAttach:edit")
+	@RequiresPermissions("case:case:edit")
 	@RequestMapping(value = "delete")
 	public String delete(CaseAttach caseAttach, RedirectAttributes redirectAttributes) {
 		caseAttachService.delete(caseAttach);

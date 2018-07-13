@@ -23,3 +23,8 @@ div.borderedBox{
 	margin:10px 10px 10px 10px;
 	padding:10px 10px 0px 10px;
 }
+
+.control-label-nopadding{
+	padding-top:3px;
+	padding-bottom:3px;
+}
