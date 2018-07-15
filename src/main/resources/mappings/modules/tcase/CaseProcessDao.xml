@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wxjs.les.modules.tcase.dao.CaseProcessDao">
+    
+	<sql id="caseProcessColumns">
+		a.id AS "id",
+		a.case_id AS "caseId",
+		a.case_summary AS "caseSummary",
+		a.case_handler AS "caseHandler",
+		a.case_stage AS "caseStage",
+		a.case_stage_status AS "caseStageStatus",
+		a.proc_inst_id AS "procInstId",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="caseProcessJoins">
+	</sql>
+    
+	<select id="get" resultType="CaseProcess">
+		SELECT 
+			<include refid="caseProcessColumns"/>
+		FROM tcase_process a
+		<include refid="caseProcessJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="CaseProcess">
+		SELECT 
+			<include refid="caseProcessColumns"/>
+		FROM tcase_process a
+		<include refid="caseProcessJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="caseId != null and caseId != ''">
+				AND a.case_id = #{caseId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.case_stage
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="CaseProcess">
+		SELECT 
+			<include refid="caseProcessColumns"/>
+		FROM tcase_process a
+		<include refid="caseProcessJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	
+	<select id="findCurrentProcesses" resultType="CaseProcess">
+		SELECT 
+			<include refid="caseProcessColumns"/>
+		FROM v_current_case_process a
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="caseId != null and caseId != ''">
+				AND a.case_id = #{caseId}
+			</if>
+		</where>		
+		ORDER BY a.case_id, a.id
+	</select>	
+	
+	<insert id="insert">
+		INSERT INTO tcase_process(
+			case_id,
+			case_summary,
+			case_handler,
+			case_stage,
+			case_stage_status,
+			proc_inst_id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{caseId},
+			#{caseSummary},
+			#{caseHandler},
+			#{caseStage},
+			#{caseStageStatus},
+			#{procInstId},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+
+	<insert id="initProcess">
+		INSERT INTO tcase_process(
+			case_id,
+			case_stage,
+			case_stage_status,
+			del_flag
+		) SELECT #{caseId},value,'0','0'
+			FROM sys_dict a
+			WHERE a.type='case_stage'
+			ORDER BY a.sort
+	</insert>
+	
+	<update id="update">
+		UPDATE tcase_process SET 	
+			case_id = #{caseId},
+			case_summary = #{caseSummary},
+			case_handler = #{caseHandler},
+			case_stage = #{caseStage},
+			case_stage_status = #{caseStageStatus},
+			proc_inst_id = #{procInstId},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE tcase_process SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

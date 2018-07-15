@@ -20,43 +20,44 @@
     <les:caseTab tab="attach" id="${tcase.id}"></les:caseTab>    
 
 	<sys:message content="${message}"/>
-	<form:form modelAttribute="" action="" method="post" class="breadcrumb form-search">
-		<ul class="ul-form">
-		    <input class="btn btn-primary" type="button" value="添加资料" onclick="window.location.href='${ctx}/case/caseAttach/form?caseId=${tcase.id}'"/>
-			<li class="clearfix"></li>
-		</ul>
-	</form:form>	
+	
+	<div style="margin:10px 60px 10px 0;text-align:right">
+	    <shiro:hasPermission name="case:tcase:edit">
+	    <input class="btn btn-primary" type="button" value="添加资料" onclick="window.location.href='${ctx}/case/caseAttach/form?caseId=${tcase.id}'"/>
+	    </shiro:hasPermission>	   
+	</div>	
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
+			    <th>序号</th>
 			    <th>流程点</th>
 				<th>资料类型</th>
 				<th>文件名称</th>
 				<th>添加人</th>
-				<th>更新时间</th>
-				<shiro:hasPermission name="tcase:caseAttach:edit"><th>操作</th></shiro:hasPermission>
+				<th>添加时间</th>
+				<shiro:hasPermission name="case:tcase:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
 		<tbody>
-		<c:forEach items="${attachlist}" var="caseAttach">
+		<c:forEach items="${attachlist}" var="caseAttach" varStatus="status">
 			<tr>
+			    <td>${status.index + 1}</td>
 				<td>
 					${caseAttach.flowNode}
 				</td>			
 				<td>
-				    ${caseAttach.attachType}
+				    ${fns:getDictLabel(caseAttach.attachType, 'case_stage_filetype', '')}
 				</td>
 				<td>
-					${caseAttach.filename}
+					<a href="${caseAttach.filepath}" target="_blank">${caseAttach.filename}</a>
 				</td>
 				<td>
 					${caseAttach.createBy.name}
 				</td>
 				<td>
-					<fmt:formatDate value="${caseAttach.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+					<fmt:formatDate value="${caseAttach.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
-				<shiro:hasPermission name="tcase:caseAttach:edit"><td>
-    				<a href="${ctx}/tcase/caseAttach/form?id=${caseAttach.id}">修改</a>
+				<shiro:hasPermission name="case:tcase:edit"><td>
 					<a href="${ctx}/tcase/caseAttach/delete?id=${caseAttach.id}" onclick="return confirmx('确认要删除该案件资料吗？', this.href)">删除</a>
 				</td></shiro:hasPermission>
 			</tr>

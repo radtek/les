@@ -41,7 +41,9 @@
     <div style="text-align:right;margin-right:30px;">
         <input class="btn btn-primary" type="button" value="返回 " onclick="window.location.href='${ctx}/case/tcase/'"/>
     </div>	
+    <c:if test="${not empty tcase.id}">
     <les:caseSummary></les:caseSummary>
+    </c:if>
     <les:caseTab tab="info" id="${tcase.id}"></les:caseTab>	
 	<form:form id="inputForm" modelAttribute="tcase" action="${ctx}/case/tcase/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
@@ -60,8 +62,8 @@
 				<div class="span6">		
 			<label class="control-label">事项类型：</label>
 			<div class="controls controls-tight">
-				<form:hidden path="caseStage"/>
-				${fns:getDictLabel(tcase.caseStage, 'case_stage', '')}
+				<form:hidden path="caseProcess.caseStage"/>
+				${fns:getDictLabel(tcase.caseProcess.caseStage, 'case_stage', '')}
 			</div>
 		        </div>
 		    </div>
@@ -200,7 +202,7 @@
 				<div class="span6">		
 			<label class="control-label">性别：</label>
 			<div class="controls controls-tight">
-				<form:input path="psnSex" htmlEscape="false" maxlength="8" class="input-xlarge required"/>
+				<form:radiobuttons path="psnSex" items="${fns:getDictList('sex')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		        </div>
@@ -273,29 +275,40 @@
 			</div>
 		        </div>
 		    </div>
-		</div>	
-
-		<div class="control-group">
+		</div>
+		<div class="control-group container-fluid nopadding">
+			<div class="row-fluid">
+				<div class="span12">		
 			<label class="control-label">案由：</label>
 			<div class="controls controls-tight">
 				<form:textarea path="caseCause" htmlEscape="false"  style="width:800px;height:80px;" class="required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
+		        </div>
+		    </div>
 		</div>
-		<div class="control-group">
+		<div class="control-group container-fluid nopadding">
+			<div class="row-fluid">
+				<div class="span12">		
 			<label class="control-label">案情摘要：</label>
 			<div class="controls controls-tight">
-				<form:textarea path="caseSummary" htmlEscape="false"  style="width:800px;height:80px;" class="required"/>
+				<form:textarea path="caseProcess.caseSummary" htmlEscape="false"  style="width:800px;height:80px;" class="required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
+		        </div>
+		    </div>
 		</div>
-		<div class="control-group">
+		<div class="control-group container-fluid nopadding">
+			<div class="row-fluid">
+				<div class="span12">		
 			<label class="control-label">办案人：</label>
 			<div class="controls controls-tight">
-                <form:checkboxes path="caseHandlerList" items="${fns:getUserByOffice('')}" itemLabel="name" itemValue="name" htmlEscape="false" class="required"/>				
+                <form:checkboxes path="caseProcess.caseHandlerList" items="${fns:getUserByOffice('')}" itemLabel="name" itemValue="name" htmlEscape="false" class="required"/>				
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
-		</div>
+		        </div>
+		    </div>
+		</div>	
 		<div class="form-actions">
 			<shiro:hasPermission name="case:tcase:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>

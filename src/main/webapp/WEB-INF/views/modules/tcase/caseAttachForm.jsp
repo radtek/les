@@ -26,39 +26,24 @@
 	</script>
 </head>
 <body>
-	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/case/caseAttach/">案件资料列表</a></li>
-		<li class="active"><a href="${ctx}/case/caseAttach/form?id=${caseAttach.id}">案件资料<shiro:hasPermission name="case:caseAttach:edit">${not empty caseAttach.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="case:caseAttach:edit">查看</shiro:lacksPermission></a></li>
-	</ul><br/>
+	<h3>资料附件</h3>
+	<les:caseSummary></les:caseSummary>
 	<form:form id="inputForm" modelAttribute="caseAttach" action="${ctx}/case/caseAttach/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<form:hidden path="caseId"/>
-		<sys:message content="${message}"/>		
-		<div class="control-group">
-			<label class="control-label">案件编号：</label>
-			<div class="controls">
-				<form:input path="caseId" htmlEscape="false" maxlength="32" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
+		<sys:message content="${message}"/>
 		<div class="control-group">
 			<label class="control-label">资料类型：</label>
 			<div class="controls">
-				<form:input path="attachType" htmlEscape="false" maxlength="100" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">文件名称：</label>
-			<div class="controls">
-				<form:input path="filename" htmlEscape="false" maxlength="100" class="input-xlarge required"/>
+				<form:radiobuttons path="attachType" items="${fns:getDictList('case_stage_filetype')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">保存路径：</label>
 			<div class="controls">
-				<form:input path="filepath" htmlEscape="false" maxlength="300" class="input-xlarge required"/>
+				<form:hidden id="filepath" path="filepath" htmlEscape="false" maxlength="256" class="input-xlarge"/>
+				<sys:ckfinder input="filepath" type="files" uploadPath="/${caseAttach.caseId}" selectMultiple="false"/>				
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
@@ -76,7 +61,7 @@
 			</div>
 		</div>
 		<div class="form-actions">
-			<shiro:hasPermission name="case:caseAttach:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+			<shiro:hasPermission name="case:tcase:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>

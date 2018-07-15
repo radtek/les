@@ -14,9 +14,6 @@ import org.wxjs.les.modules.tcase.entity.Tcase;
  */
 @MyBatisDao
 public interface TcaseDao extends CrudDao<Tcase> {
-	
-	public void updateStage4Start(Tcase tcase);
-	
-	public void updateStage4Finish(Tcase tcase);
+
 	
 }

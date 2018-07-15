@@ -41,20 +41,19 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
+			    <th>序号</th>
 				<th>当事人</th>
 				<th>项目名称</th>
 				<th>事项名称</th>
 				<th>当前阶段</th>
-				<th>阶段状态</th>
 				<shiro:hasPermission name="case:tcase:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
 		<tbody>
-		<c:forEach items="${page.list}" var="tcase">
+		<c:forEach items="${page.list}" var="tcase" varStatus="status">
 			<tr>
-				<td><a href="${ctx}/case/tcase/form?id=${tcase.id}">
-					${tcase.orgName}
-				</a></td>
+			    <td>${status.index + 1}</td>
+				<td>${tcase.orgName}</td>
 				<td>
 					${tcase.projectName}
 				</td>
@@ -62,10 +61,11 @@
 					${tcase.caseCause}
 				</td>
 				<td>
-					${fns:getDictLabel(tcase.caseStage, 'case_stage', '')}
-				</td>
-				<td>
-					${fns:getDictLabel(tcase.caseStageStatus, 'case_stage_status', '')}
+					<c:forEach items="${tcase.currentCaseProcess}" var="process" varStatus="pstatus">
+					<c:if test="${pstatus.index gt 0}"><BR></c:if>
+					${fns:getDictLabel(process.caseStage, 'case_stage', '无')},
+					状态：${fns:getDictLabel(process.caseStageStatus, 'case_stage_status', '无')}		
+					</c:forEach>
 				</td>				
 				<shiro:hasPermission name="case:tcase:edit"><td>
     				<a href="${ctx}/case/tcase/infoTab?id=${tcase.id}">修改</a>

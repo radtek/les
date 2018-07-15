@@ -10,6 +10,7 @@
 		a.filepath AS "filepath",
 		a.flow_node AS "flowNode",
 		a.create_by AS "createBy.id",
+		u.name AS "createBy.name",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
@@ -18,6 +19,7 @@
 	</sql>
 	
 	<sql id="caseAttachJoins">
+	    LEFT JOIN sys_user u on u.id=a.create_by
 	</sql>
     
 	<select id="get" resultType="CaseAttach">

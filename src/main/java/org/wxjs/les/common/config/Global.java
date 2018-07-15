@@ -183,18 +183,21 @@ public class Global {
     }
     
     
-    public static final String CHARGE_STATUS_EDIT = "00";
-    public static final String CHARGE_STATUS_REJECT = "05";
-    public static final String CHARGE_STATUS_TO_CALCULATE = "10";
-    public static final String CHARGE_STATUS_TO_APPROVE = "20";
-    public static final String CHARGE_STATUS_TO_UPLOAD = "30";
-    public static final String CHARGE_STATUS_TO_CONFIRM = "35";
-    public static final String CHARGE_STATUS_CONFIRMED = "40";
-    //public static final String CHARGE_STATUS_CONFIRMED_TODO = "50";
-    public static final String CHARGE_STATUS_CLOSE = "90";
+    public static final String CASE_STAGE_STATUS_NOSTART = "0";
+    public static final String CASE_STAGE_STATUS_STARTED = "1";
+    public static final String CASE_STAGE_STATUS_FINISHED = "2";
+    public static final String CASE_STAGE_STATUS_CANCELED = "9";
     
-    //public static final String DecimalFormat = "#.##";
-    //public static final String DecimalFormat = "#,##0.00";
+    public static final String CASE_STAGE_ACCEPTANCE = "10";
+    public static final String CASE_STAGE_INITIAL = "20";
+    public static final String CASE_STAGE_HANDLE = "30";
+    public static final String CASE_STAGE_NOTIFY = "40";
+    public static final String CASE_STAGE_DECISION = "50";
+    public static final String CASE_STAGE_SETTLE = "60";
+    public static final String CASE_STAGE_FINISH = "70";
+    
+    public static final String CASE_STAGE_SERIOUS = "110";
+    public static final String CASE_STAGE_CANCEL = "120";
     
     public static final String DecimalFormat = "#.##";
 	

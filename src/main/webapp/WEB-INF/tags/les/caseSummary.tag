@@ -15,7 +15,7 @@
 				<div class="span4">		
 			<label class="control-label">事项类型：</label>
 			<div class="controls controls-tight">
-				<input value="${fns:getDictLabel(tcase.caseStage, 'case_stage', '')}" readonly="readonly" class="input-large">
+				<input value="${fns:getDictLabel(tcase.caseProcess.caseStage, 'case_stage', '')}" readonly="readonly" class="input-large">
 			</div>
 		        </div>
 				<div class="span4">		

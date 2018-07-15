@@ -22,8 +22,10 @@ import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.web.BaseController;
 import org.wxjs.les.common.utils.StringUtils;
 import org.wxjs.les.modules.tcase.entity.CaseAttach;
+import org.wxjs.les.modules.tcase.entity.CaseProcess;
 import org.wxjs.les.modules.tcase.entity.Tcase;
 import org.wxjs.les.modules.tcase.service.CaseAttachService;
+import org.wxjs.les.modules.tcase.service.CaseProcessService;
 import org.wxjs.les.modules.tcase.service.TcaseService;
 
 import com.google.common.collect.Lists;
@@ -42,6 +44,9 @@ public class TcaseController extends BaseController {
 	
 	@Autowired
 	private CaseAttachService caseAttachService;
+	
+	@Autowired
+	private CaseProcessService caseProcessService;
 	
 	@ModelAttribute
 	public Tcase get(@RequestParam(required=false) String id) {
@@ -70,8 +75,8 @@ public class TcaseController extends BaseController {
 			tcase.setPartyType("单位");
 			tcase.setAcceptDate(Calendar.getInstance().getTime());
 			tcase.setPsnSex("男");
-			tcase.setCaseStage("10");
-			tcase.setCaseStageStatus("0");
+			//tcase.setCaseStage("10");
+			//tcase.setCaseStageStatus("0");
 		}
 		model.addAttribute("tcase", tcase);
 		return "modules/tcase/tcaseForm";
@@ -84,8 +89,8 @@ public class TcaseController extends BaseController {
 			tcase.setPartyType("单位");
 			tcase.setAcceptDate(Calendar.getInstance().getTime());
 			tcase.setPsnSex("男");
-			tcase.setCaseStage("10");
-			tcase.setCaseStageStatus("0");
+			//tcase.setCaseStage("10");
+			//tcase.setCaseStageStatus("0");
 		}
 		model.addAttribute("tcase", tcase);
 		return "modules/tcase/tcaseInfoTab";
@@ -96,6 +101,7 @@ public class TcaseController extends BaseController {
 	public String attachTab(Tcase tcase, Model model) {
 		model.addAttribute("tcase", tcase);
 		
+		//load attach info
 		CaseAttach caseAttach = new CaseAttach();
 		caseAttach.setCaseId(tcase.getId());
 		List<CaseAttach> attachlist = caseAttachService.findList(caseAttach);
@@ -104,10 +110,31 @@ public class TcaseController extends BaseController {
 	}
 	
 	@RequiresPermissions("case:tcase:view")
-	@RequestMapping(value = "flowTab")
-	public String flowTab(Tcase tcase, Model model) {
+	@RequestMapping(value = "processTab")
+	public String processTab(Tcase tcase, Model model) {
 		model.addAttribute("tcase", tcase);
-		return "modules/tcase/tcaseFlowTab";
+		
+		//load process info
+		CaseProcess caseProcess = new CaseProcess();
+		caseProcess.setCaseId(tcase.getId());
+		List<CaseProcess> processlist = caseProcessService.findList(caseProcess);
+		
+		List<CaseProcess> punishProcesslist = Lists.newArrayList();
+		List<CaseProcess> independentProcesslist = Lists.newArrayList();
+		
+		for(CaseProcess process : processlist){
+			if(Global.CASE_STAGE_SERIOUS.equals(process.getCaseStage()) 
+			|| Global.CASE_STAGE_CANCEL.equals(process.getCaseStage())){
+				independentProcesslist.add(process);
+			}else{
+				punishProcesslist.add(process);
+			}
+		}
+		
+		model.addAttribute("processlist", punishProcesslist);
+		model.addAttribute("independentProcesslist", independentProcesslist);
+		
+		return "modules/tcase/tcaseProcessTab";
 	}
 
 	@RequiresPermissions("case:tcase:edit")
@@ -118,7 +145,7 @@ public class TcaseController extends BaseController {
 		}
 		tcaseService.save(tcase);
 		addMessage(redirectAttributes, "保存案件成功");
-		return "redirect:"+Global.getAdminPath()+"/case/tcase/?id="+tcase.getId();
+		return "redirect:"+Global.getAdminPath()+"/case/tcase/infoTab?id="+tcase.getId();
 	}
 	
 	@RequiresPermissions("case:tcase:edit")

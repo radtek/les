@@ -46,22 +46,10 @@ public class Tcase extends DataEntity<Tcase> {
 	private String projectCode;		// 案件所涉项目代码
 	private String projectName;		// 案件所涉项目名称
 	private String caseCause;		// 案由
-	private String caseSummary;		// 案情摘要
-	private String caseHandler;		// 办案人
-	private String caseStage;       //事项类型
-
-	private String caseStageStatus;		// 事项类型状态
-	private String procInstId10;		// 受理流程号
-	private String procInstId20;		// 立案流程号
-	private String procInstId30;		// 受理流程号
-	private String procInstId40;		// 告知流程号
-	private String procInstId50;		// 决定流程号
-	private String procInstId60;		// 结案流程号
-	private String procInstId70;		// 结束流程号
-	private String procInstIdSerious;		// 重大流程号
-	private String procInstIdCancel;		// 撤销流程号
 	
-	private String procInstId;		// 流程号
+	private CaseProcess caseProcess; //
+	
+	private List<CaseProcess> currentCaseProcess = Lists.newArrayList(); //当前process
 	
 	public Tcase() {
 		super();
@@ -275,139 +263,23 @@ public class Tcase extends DataEntity<Tcase> {
 	public void setCaseCause(String caseCause) {
 		this.caseCause = caseCause;
 	}
-	
-	@Length(min=1, max=500, message="案情摘要长度必须介于 1 和 500 之间")
-	public String getCaseSummary() {
-		return caseSummary;
+
+	public CaseProcess getCaseProcess() {
+		return caseProcess;
 	}
 
-	public void setCaseSummary(String caseSummary) {
-		this.caseSummary = caseSummary;
-	}
-	
-	@Length(min=1, max=200, message="办案人长度必须介于 1 和 200 之间")
-	public String getCaseHandler() {
-		return caseHandler;
+	public void setCaseProcess(CaseProcess caseProcess) {
+		this.caseProcess = caseProcess;
 	}
 
-	public void setCaseHandler(String caseHandler) {
-		this.caseHandler = caseHandler;
-	}
-	
-	public List<String> getCaseHandlerList() {
-		List<String> list = Lists.newArrayList();
-		if(!StringUtils.isEmpty(this.caseHandler)){
-			String[] strs = this.caseHandler.split(",");
-			for(String str : strs){
-				list.add(str);
-			}
-		}
-		
-		return list;
+	public List<CaseProcess> getCurrentCaseProcess() {
+		return currentCaseProcess;
 	}
 
-	public void setCaseHandlerList(List<String> list) {
-		StringBuffer buffer = new StringBuffer();
-		for(String name : list){
-			buffer.append(",").append(name);
-		}
-		this.caseHandler = buffer.substring(1);
+	public void setCurrentCaseProcess(List<CaseProcess> currentCaseProcess) {
+		this.currentCaseProcess = currentCaseProcess;
 	}
 
-	public String getCaseStage() {
-		return caseStage;
-	}
 
-	public void setCaseStage(String caseStage) {
-		this.caseStage = caseStage;
-	}
-
-	public String getCaseStageStatus() {
-		return caseStageStatus;
-	}
-
-	public void setCaseStageStatus(String caseStageStatus) {
-		this.caseStageStatus = caseStageStatus;
-	}
-
-	public String getProcInstId10() {
-		return procInstId10;
-	}
-
-	public void setProcInstId10(String procInstId10) {
-		this.procInstId10 = procInstId10;
-	}
-
-	public String getProcInstId20() {
-		return procInstId20;
-	}
-
-	public void setProcInstId20(String procInstId20) {
-		this.procInstId20 = procInstId20;
-	}
-
-	public String getProcInstId30() {
-		return procInstId30;
-	}
-
-	public void setProcInstId30(String procInstId30) {
-		this.procInstId30 = procInstId30;
-	}
-
-	public String getProcInstId40() {
-		return procInstId40;
-	}
-
-	public void setProcInstId40(String procInstId40) {
-		this.procInstId40 = procInstId40;
-	}
-
-	public String getProcInstId50() {
-		return procInstId50;
-	}
-
-	public void setProcInstId50(String procInstId50) {
-		this.procInstId50 = procInstId50;
-	}
-
-	public String getProcInstId60() {
-		return procInstId60;
-	}
-
-	public void setProcInstId60(String procInstId60) {
-		this.procInstId60 = procInstId60;
-	}
-
-	public String getProcInstId70() {
-		return procInstId70;
-	}
-
-	public void setProcInstId70(String procInstId70) {
-		this.procInstId70 = procInstId70;
-	}
-
-	public String getProcInstIdSerious() {
-		return procInstIdSerious;
-	}
-
-	public void setProcInstIdSerious(String procInstIdSerious) {
-		this.procInstIdSerious = procInstIdSerious;
-	}
-
-	public String getProcInstIdCancel() {
-		return procInstIdCancel;
-	}
-
-	public void setProcInstIdCancel(String procInstIdCancel) {
-		this.procInstIdCancel = procInstIdCancel;
-	}
-
-	public String getProcInstId() {
-		return procInstId;
-	}
-
-	public void setProcInstId(String procInstId) {
-		this.procInstId = procInstId;
-	}
 	
 }

@@ -14,13 +14,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.web.BaseController;
 import org.wxjs.les.common.utils.StringUtils;
 import org.wxjs.les.modules.tcase.entity.CaseAttach;
+import org.wxjs.les.modules.tcase.entity.Tcase;
 import org.wxjs.les.modules.tcase.service.CaseAttachService;
+import org.wxjs.les.modules.tcase.service.TcaseService;
 
 /**
  * 案件资料Controller
@@ -34,6 +35,9 @@ public class CaseAttachController extends BaseController {
 	@Autowired
 	private CaseAttachService caseAttachService;
 	
+	@Autowired
+	private TcaseService caseService;
+	
 	@ModelAttribute
 	public CaseAttach get(@RequestParam(required=false) String id) {
 		CaseAttach entity = null;
@@ -46,7 +50,7 @@ public class CaseAttachController extends BaseController {
 		return entity;
 	}
 	
-	@RequiresPermissions("case:case:view")
+	@RequiresPermissions("case:tcase:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(CaseAttach caseAttach, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<CaseAttach> page = caseAttachService.findPage(new Page<CaseAttach>(request, response), caseAttach); 
@@ -54,33 +58,46 @@ public class CaseAttachController extends BaseController {
 		return "modules/tcase/caseAttachList";
 	}
 
-	@RequiresPermissions("case:case:view")
+	@RequiresPermissions("case:tcase:view")
 	@RequestMapping(value = "form")
 	public String form(CaseAttach caseAttach, Model model) {
 		
+		String caseId = caseAttach.getCaseId();
 		logger.debug("caseAttach.getCaseId():{}", caseAttach.getCaseId());
 		
+		Tcase tcase = caseService.get(caseId);
+		
 		model.addAttribute("caseAttach", caseAttach);
+		
+		model.addAttribute("tcase", tcase);
+		
 		return "modules/tcase/caseAttachForm";
 	}
 
-	@RequiresPermissions("case:case:edit")
+	@RequiresPermissions("case:tcase:edit")
 	@RequestMapping(value = "save")
 	public String save(CaseAttach caseAttach, Model model, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, caseAttach)){
 			return form(caseAttach, model);
 		}
+		String filename = "";
+		String filepath = caseAttach.getFilepath();
+		if(!StringUtils.isEmpty(filepath)){
+			filename = filepath.substring(filepath.lastIndexOf("/")+1);
+		}
+		caseAttach.setFilename(filename);
+		
 		caseAttachService.save(caseAttach);
 		addMessage(redirectAttributes, "保存案件资料成功");
-		return "redirect:"+Global.getAdminPath()+"/case/caseAttach/?repage";
+		return "redirect:"+Global.getAdminPath()+"/case/tcase/attachTab?id="+caseAttach.getCaseId();
 	}
 	
-	@RequiresPermissions("case:case:edit")
+	@RequiresPermissions("case:tcase:edit")
 	@RequestMapping(value = "delete")
 	public String delete(CaseAttach caseAttach, RedirectAttributes redirectAttributes) {
 		caseAttachService.delete(caseAttach);
 		addMessage(redirectAttributes, "删除案件资料成功");
-		return "redirect:"+Global.getAdminPath()+"/case/caseAttach/?repage";
+		return "redirect:"+Global.getAdminPath()+"/case/caseAttach/?id="+caseAttach.getCaseId();
 	}
 
 }
