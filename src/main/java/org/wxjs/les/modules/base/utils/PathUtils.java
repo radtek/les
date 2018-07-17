@@ -24,9 +24,5 @@ public class PathUtils {
 		return rst;
 		
 	}
-	
-	public static void main(String[] args){
-		System.out.println(getRealPath("|/les/userfiles/1/images/test/test/IMG_20160430_104933.jpg"));
-	}
 
 }
