@@ -167,7 +167,7 @@
 				<div class="span6">		
 			<label class="control-label">勘察人签名：</label>
 			<div class="controls controls-tight">
-				<les:signatureLoader sig="${tsitecheck.checkerSig}"></les:signatureLoader>
+				<les:signatureLoader sig="${tsitecheck.checkerSig}" path="checkerSig.id"></les:signatureLoader>
 				<les:signatureModal></les:signatureModal>
 			</div>
 		        </div> 
@@ -175,8 +175,7 @@
 				<div class="span6">		
 			<label class="control-label">当事人签名：</label>
 			<div class="controls controls-tight">
-			    <les:signatureLoader sig="${tsitecheck.partySig}"></les:signatureLoader>
-				<les:signatureModal></les:signatureModal>
+			    <les:signatureLoader sig="${tsitecheck.partySig}" path="partySig.id"></les:signatureLoader>
 			</div>
 		        </div>
 		    </div>
