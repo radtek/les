@@ -130,9 +130,10 @@
 			</div>
 		</div>
 	
-	
-	<div class="control-group container-fluid nopadding">
-			<div class="row-fluid">			
+		<!--     
+		<div class="control-group container-fluid nopadding">
+			<div class="row-fluid">	
+					
 				<div class="span6">		
 			<label class="control-label">勘察人签名：</label>
 			<div class="controls controls-tight">
@@ -140,6 +141,7 @@
 				<les:signatureModal></les:signatureModal>
 			</div>
 		        </div> 
+		        
 				<div class="span6">		
 			<label class="control-label">当事人签名：</label>
 			<div class="controls controls-tight">
@@ -149,29 +151,9 @@
 		        </div>
 		    </div>
 		</div>		
-	<!--  
-	<div class="control-group container-fluid nopadding">
-		<div class="control-group">
-			<div class="span6">
-			<label class="control-label">勘察人签名：</label>
-			<div class="controls">
-				<form:input path="checkerSig" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-			</div>
-		</div>
-		
-		<div class="control-group">
-			<div class="span6">
-			<label class="control-label">当事人签名：</label>
-			<div class="controls">
-				<form:input path="partySig" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-			</div>
-		</div>
-		</div>
-		-->	
+		-->
+	
+	
 
 	</form:form>
 	

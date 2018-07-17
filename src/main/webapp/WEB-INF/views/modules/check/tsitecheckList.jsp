@@ -70,7 +70,7 @@
 				<form:input path="projectAddress" htmlEscape="false" maxlength="200" class="input-medium"/>
 			</li>
 			
-			<li><label>勘察人：</label>
+			<li><label>勘查人：</label>
 				<form:input path="checker" htmlEscape="false" maxlength="200" class="input-medium"/>
 			</li>
 			<li>
@@ -96,7 +96,7 @@
 				<th>施工单位</th>
 				<th>施工单位负责人及电话</th>
 				<th>工程地址</th>
-				<th>勘察人</th>
+				<th>勘查人</th>
 				<th>踏勘时间</th>
 				<th>操作</th>
 			</tr>
@@ -131,6 +131,7 @@
 					<fmt:formatDate value="${tsitecheck.checkDate}" pattern="yyyy-MM-dd "/>
 				</td>
 				<shiro:hasPermission name="check:tsitecheck:edit"><td>
+					<a href="${ctx}/check/tsitecheck/form?id=${tsitecheck.id}">打印</a>
     				<a href="${ctx}/check/tsitecheck/form?id=${tsitecheck.id}">修改</a>
 					<a href="${ctx}/check/tsitecheck/delete?id=${tsitecheck.id}" onclick="return confirmx('确认要删除该现场踏勘信息吗？', this.href)">删除</a>
 				</td></shiro:hasPermission>

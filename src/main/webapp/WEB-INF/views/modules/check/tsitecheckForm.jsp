@@ -6,11 +6,12 @@
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			//$("#name").focus();
+			$("#name").focus();
 			$("#inputForm").validate({
 				submitHandler: function(form){
 					loading('正在提交，请稍等...');
 					form.submit();
+					closeLoading();
 				},
 				errorContainer: "#messageBox",
 				errorPlacement: function(error, element) {
@@ -23,14 +24,22 @@
 				}
 			});
 		});
+		 function exportPdf(){
+				$("#inputForm").attr("action","${ctx}/check/tsitecheck/exportPDF");
+				$("#inputForm").submit();
+		    }
+		 
 	</script>
 </head>
 <body>
 	
 	<h3>现场踏勘情况</h3>
-    <div style="text-align:center">
+    <div style="text-align:right" >
     <input id="btnExportPdf" class="btn btn-primary" type="button" value="导出PDF " onclick="exportPdf()"/>
     </div>
+	
+	<h4>基本信息</h4>
+	<sys:message content="${message}"/>
 	
 	<form:form id="inputForm" modelAttribute="tsitecheck" action="${ctx}/check/tsitecheck/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
@@ -86,8 +95,8 @@
 					<form:input path="constructionPhone" htmlEscape="false" maxlength="32" class="input-medium required"/>
 					<span class="help-inline"><font color="red">*</font> </span>
 				</div>
-		      	  </div>
-		    </div>
+		      	  	</div>
+		   		 </div>
 		   </div>
 		   
 		   <div class="control-group container-fluid nopadding"> 
@@ -110,52 +119,73 @@
 			    </div>
 		    </div>
 		
-		
 		<div class="control-group">
-			<label class="control-label">现场检查情况：</label>
-			<div class="controls">
-				<form:textarea path="siteSituation" htmlEscape="false" rows="2" maxlength="128" style="width:800px;height:80px;"/>
+			<label class="control-label control-tight">现场检查情况：</label>
+			<div class="controls controls-tight">
+				<form:textarea path="siteSituation" htmlEscape="false"   rows="2" maxlength="128" style="width:800px;height:80px;" class="required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">现场踏勘示意图:</label>
-			<div class="controls">
+	
+		<div class="control-group ">
+			<label class="control-label control-tight">现场踏勘示意图:</label>
+			<div class="controls controls-tight">
 				<form:hidden id="nameImage" path="sitePicture" htmlEscape="false" maxlength="255" class="input-xlarge"/>
 				<sys:ckfinder input="nameImage" type="images" uploadPath="/test/test" selectMultiple="true"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
+		
 		<div class="control-group">
-			<label class="control-label">现场踏勘情况：</label>
-			<div class="controls">
-				<form:textarea path="siteCheckResult" htmlEscape="false" rows="2" maxlength="128" style="width:800px;height:80px;"/>
+			<label class="control-label control-tight">现场踏勘情况：</label>
+			<div class="controls controls-tight">
+				<form:textarea path="siteCheckResult" htmlEscape="false"   rows="2" maxlength="128" style="width:800px;height:80px;" class="required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
-	<div class="control-group">
-			<label class="control-label">勘查人：</label>
-			<div class="controls">
+		
+		<div class="control-group">
+			<label class="control-label control-tight">勘查人：</label>
+			<div class="controls controls-tight">
 				<form:input path="checker" htmlEscape="false" maxlength="32" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 
 		<div class="control-group">
-			<label class="control-label">勘查时间：</label>
-			<div class="controls">
+			<label class="control-label control-tight">勘查时间：</label>
+			<div class="controls controls-tight">
 				<input name="checkDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate "
 					value="<fmt:formatDate value="${tsitecheck.checkDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
 			</div>
-		</div>				
-
-		<div class="form-actions">
-			<shiro:hasPermission name="check:tsitecheck:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
-			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
-		</div>
+		</div>	
 		
-
+		<div class="control-group container-fluid nopadding">
+			<div class="row-fluid">	
+					
+				<div class="span6">		
+			<label class="control-label">勘察人签名：</label>
+			<div class="controls controls-tight">
+				<les:signatureLoader sig="${tsitecheck.checkerSig}"></les:signatureLoader>
+				<les:signatureModal></les:signatureModal>
+			</div>
+		        </div> 
+		        
+				<div class="span6">		
+			<label class="control-label">当事人签名：</label>
+			<div class="controls controls-tight">
+			    <les:signatureLoader sig="${tsitecheck.partySig}"></les:signatureLoader>
+				<les:signatureModal></les:signatureModal>
+			</div>
+		        </div>
+		    </div>
+		</div>		
+					
+		<div class="form-actions" align="center">
+			<shiro:hasPermission name="check:tsitecheck:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/> 
+		</div>	
 	</form:form>
 </body>
 </html>
