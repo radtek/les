@@ -10,6 +10,7 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import org.wxjs.les.common.persistence.DataEntity;
+import org.wxjs.les.modules.base.entity.Signature;
 
 /**
  * 现场踏勘Entity
@@ -33,11 +34,11 @@ public class Tsitecheck extends DataEntity<Tsitecheck> {
 	private String siteCheckResult;		// 现场踏勘情况
 	private String checker;		// 勘查人
 	private Date checkDate;		// 勘查时间
-	private String checkerSig;		// 勘察人签名
-	private String partySig;		// 当事人签名
 	private Date beginDate;
 	private Date endDate;
 	
+	private Signature checkerSig = new Signature(); // 勘察人签名
+	private Signature partySig = new Signature();		// 当事人签名
 	
 	public Date getBeginDate() {
 		return beginDate;
@@ -188,23 +189,22 @@ public class Tsitecheck extends DataEntity<Tsitecheck> {
 	public void setCheckDate(Date checkDate) {
 		this.checkDate = checkDate;
 	}
-	
-	@Length(min=1, max=64, message="勘察人签名长度必须介于 1 和 64 之间")
-	public String getCheckerSig() {
+
+	public Signature getCheckerSig() {
 		return checkerSig;
 	}
 
-	public void setCheckerSig(String checkerSig) {
+	public void setCheckerSig(Signature checkerSig) {
 		this.checkerSig = checkerSig;
 	}
-	
-	@Length(min=1, max=64, message="当事人签名长度必须介于 1 和 64 之间")
-	public String getPartySig() {
+
+	public Signature getPartySig() {
 		return partySig;
 	}
 
-	public void setPartySig(String partySig) {
+	public void setPartySig(Signature partySig) {
 		this.partySig = partySig;
 	}
+	
 	
 }

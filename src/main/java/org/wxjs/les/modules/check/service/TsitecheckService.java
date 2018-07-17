@@ -5,6 +5,7 @@ package org.wxjs.les.modules.check.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +13,7 @@ import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.service.CrudService;
 import org.wxjs.les.modules.check.entity.Tsitecheck;
 import org.wxjs.les.modules.qa.entity.Questionanswer;
+import org.wxjs.les.modules.base.service.SignatureService;
 import org.wxjs.les.modules.check.dao.TsitecheckDao;
 
 /**
@@ -23,6 +25,7 @@ import org.wxjs.les.modules.check.dao.TsitecheckDao;
 @Transactional(readOnly = true)
 public class TsitecheckService extends CrudService<TsitecheckDao, Tsitecheck> {
 
+	
 	public Tsitecheck get(String id) {
 		return super.get(id);
 	}
@@ -34,6 +37,7 @@ public class TsitecheckService extends CrudService<TsitecheckDao, Tsitecheck> {
 	public Page<Tsitecheck> findPage(Page<Tsitecheck> page, Tsitecheck tsitecheck) {
 		return super.findPage(page, tsitecheck);
 	}
+	
 	
 	@Transactional(readOnly = false)
 	public void save(Tsitecheck tsitecheck) {

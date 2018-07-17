@@ -6,6 +6,7 @@ package org.wxjs.les.modules.check.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +25,7 @@ import org.wxjs.les.modules.check.entity.Tsitecheck;
 import org.wxjs.les.modules.check.export.TsitecheckExport;
 import org.wxjs.les.modules.check.service.TsitecheckService;
 import org.wxjs.les.modules.qa.entity.Questionanswer;
+import org.wxjs.les.modules.qa.export.QuestionanswerExport;
 
 /**
  * 现场踏勘Controller
@@ -36,6 +38,8 @@ public class TsitecheckController extends BaseController {
 
 	@Autowired
 	private TsitecheckService tsitecheckService;
+	
+	
 	
 	@ModelAttribute
 	public Tsitecheck get(@RequestParam(required=false) String id) {
@@ -83,7 +87,7 @@ public class TsitecheckController extends BaseController {
 		}
 		tsitecheckService.saveInfo(tsitecheck);
 		addMessage(redirectAttributes, "保存成功");
-		return "redirect:"+Global.getAdminPath()+"/check/tsitecheck/Form?id="+tsitecheck.getId();
+		return "redirect:"+Global.getAdminPath()+"/check/tsitecheck/form?id="+tsitecheck.getId();
 	}
 	
 	
@@ -95,16 +99,18 @@ public class TsitecheckController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/check/tsitecheck/?repage";
 	}
 	
+	
+	
 	@RequiresPermissions("check:tsitecheck:view")
 	@RequestMapping(value = "exportPDF")
 	public String exportPDF(Tsitecheck tsitecheck, HttpServletResponse response,  Model model, RedirectAttributes redirectAttributes) {
-		
 		Tsitecheck check = tsitecheckService.get(tsitecheck.getId());
-		
 		model.addAttribute("tsitecheck", check);
 		try {
             String fileName = "现场踏勘"+DateUtils.getDate("yyyyMMddHHmmss")+".pdf";
             TsitecheckExport export = new TsitecheckExport(check);
+            export.write(response, fileName);
+           
     		return null;
 		} catch (Exception e) {
 			logger.error("导出失败", e);
