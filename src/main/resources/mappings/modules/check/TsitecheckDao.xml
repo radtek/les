@@ -17,8 +17,14 @@
 		a.site_check_result AS "siteCheckResult",
 		a.checker AS "checker",
 		a.check_date AS "checkDate",
-		a.checker_sig AS "checkerSig",
-		a.party_sig AS "partySig",
+		
+		a.checker_sig AS "checkerSig.id",
+		s1.title AS "checkerSig.title",
+		s1.signature AS "checkerSig.signature",
+	    s2.title AS "partySig.title",
+		s2.signature AS "partySig.signature",
+		a.party_sig AS "partySig.id",
+		
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -28,7 +34,13 @@
 	</sql>
 	
 	<sql id="tsitecheckJoins">
+		 LEFT JOIN tsignature s1 on s1.id=a.checker_sig
+	    LEFT JOIN tsignature s2 on s2.id=a.party_sig
 	</sql>
+    
+    
+	   
+	
     
 	<select id="get" resultType="Tsitecheck">
 		SELECT 
@@ -151,8 +163,8 @@
 			#{siteCheckResult},
 			#{checker},
 			#{checkDate},
-			#{checkerSig},
-			#{partySig},
+			#{checkerSig.id},
+			#{partySig.id},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -177,8 +189,10 @@
 			site_check_result = #{siteCheckResult},
 			checker = #{checker},
 			check_date = #{checkDate},
+			<!--  
 			checker_sig = #{checkerSig},
 			party_sig = #{partySig},
+			-->
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks}
