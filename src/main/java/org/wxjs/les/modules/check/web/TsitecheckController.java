@@ -76,6 +76,7 @@ public class TsitecheckController extends BaseController {
 		}
 		tsitecheckService.save(tsitecheck);
 		addMessage(redirectAttributes, "保存现场踏勘信息成功");
+		
 		return "redirect:"+Global.getAdminPath()+"/check/tsitecheck/?repage";
 	}
 	
@@ -99,8 +100,6 @@ public class TsitecheckController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/check/tsitecheck/?repage";
 	}
 	
-	
-	
 	@RequiresPermissions("check:tsitecheck:view")
 	@RequestMapping(value = "exportPDF")
 	public String exportPDF(Tsitecheck tsitecheck, HttpServletResponse response,  Model model, RedirectAttributes redirectAttributes) {
@@ -110,7 +109,6 @@ public class TsitecheckController extends BaseController {
             String fileName = "现场踏勘"+DateUtils.getDate("yyyyMMddHHmmss")+".pdf";
             TsitecheckExport export = new TsitecheckExport(check);
             export.write(response, fileName);
-           
     		return null;
 		} catch (Exception e) {
 			logger.error("导出失败", e);

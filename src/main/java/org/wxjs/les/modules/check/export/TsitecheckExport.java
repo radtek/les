@@ -20,9 +20,10 @@ import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.utils.Encodes;
 import org.wxjs.les.common.utils.IdGen;
 import org.wxjs.les.common.utils.PdfUtil;
+import org.wxjs.les.modules.base.utils.PathUtils;
 import org.wxjs.les.modules.check.entity.Tsitecheck;
 
-
+import com.lowagie.text.BadElementException;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
@@ -61,7 +62,7 @@ public class TsitecheckExport {
         document=new Document(PageSize.A4);
         writer = PdfWriter.getInstance(document, os);
         document.open();
-       
+        PdfPCell cell = new PdfPCell() ;
         //添加标题
         paragraph=new Paragraph("现场踏勘情况", PdfUtil.getTitle1Font(true));
         paragraph.setAlignment(Paragraph.ALIGN_CENTER);
@@ -72,41 +73,61 @@ public class TsitecheckExport {
         
         
         //建设单位
-        items=new String[] {"建设单位：",tsitecheck.getDevelopOrg(),"联系人姓名：",tsitecheck.getDevelopContact(),"联系人电话：",tsitecheck.getDevelopPhone()};
+        items=new String[] {"建设单位",tsitecheck.getDevelopOrg(),"联系人姓名",tsitecheck.getDevelopContact(),"联系人电话",tsitecheck.getDevelopPhone()};
         table=PdfUtil.generateTableRow(items, PdfUtil.getTextFont(true), new float[]{0.15f, 0.3f, 0.1f, 0.15f, 0.15f, 0.15f}, tableWidth, Element.ALIGN_LEFT, borderWidth,0);
         document.add(table);
         //施工单位
-        items=new String[] {"施工单位：",tsitecheck.getConstructionOrg(),"联系人姓名：",tsitecheck.getConstructionContact(),"联系人电话：",tsitecheck.getConstructionPhone()};
+        items=new String[] {"施工单位",tsitecheck.getConstructionOrg(),"联系人姓名",tsitecheck.getConstructionContact(),"联系人电话",tsitecheck.getConstructionPhone()};
         table=PdfUtil.generateTableRow(items, PdfUtil.getTextFont(true), new float[]{0.15f, 0.3f, 0.1f, 0.15f, 0.15f, 0.15f}, tableWidth, Element.ALIGN_LEFT, borderWidth,0);
         document.add(table);
         
         //工程名称
         items=new String[] {"工程名称",tsitecheck.getProjectName()};
-        table=PdfUtil.generateTableRow(items, PdfUtil.getTextFont(true), new float[] {0.1f,0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);        
+        table=PdfUtil.generateTableRow(items, PdfUtil.getTextFont(true), new float[] {0.16f,0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);        
         document.add(table);
         
         //工程地址
         items=new String[] {"工程地址",tsitecheck.getProjectAddress()};
-        table=PdfUtil.generateTableRow(items, PdfUtil.getTextFont(true), new float[] {0.1f,0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);        
+        table=PdfUtil.generateTableRow(items, PdfUtil.getTextFont(true), new float[] {0.16f,0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);        
         document.add(table);
         
         //现场检查情况
         items=new String[] {"现场检查情况",tsitecheck.getSiteSituation()};
-        table=PdfUtil.generateTableRow(items, PdfUtil.getTextFont(true), new float[] {0.1f,0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);        
+        table=PdfUtil.generateTableRow(items, PdfUtil.getTextFont(true), new float[] {0.16f,0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);        
         document.add(table);
         
         //现场踏勘示意图
-//        table=new PdfPTable(2);
-//        Image image=Image.getInstance("/les/userfiles/1/images/test/test/link.jpg");
-//        table.addCell(image);
-        items=new String[] {"现场踏勘示意图",tsitecheck.getSitePicture()};
-        table=PdfUtil.generateTableRow(items, PdfUtil.getTextFont(true), new float[] {0.1f,0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);        
+        /**
+         * |/les/userfiles/1/images/test/test/link.jpg|/les/userfiles/1/images/test/test/%E6%B5%8B%E8%AF%95.png
+         */
+        String str=tsitecheck.getSitePicture();
+        table=checkPicture(str, table, cell,phrase);
         document.add(table);
-      
         
+        
+       /** 
+        * 只能打印单张
+        table=new PdfPTable(2);
+        table.setWidths(new float[] {0.15f,0.8f});
+        table.setWidthPercentage(tableWidth);
+        phrase=new Phrase("现场探勘示意图",PdfUtil.getTextFont(true));
+        cell=new PdfPCell(phrase);
+        cell.setBorderWidth(borderWidth);
+        cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        String Sitepath=tsitecheck.getSitePicture();
+        String imagePath=PathUtils.getRealPath(Sitepath);
+        Image image=Image.getInstance(imagePath);
+        style(image);
+        image.setAlignment(Image.ALIGN_CENTER); 
+        table.addCell(cell);
+        table.addCell(image);
+       //  document.add(image);
+        document.add(table);
+        **/
+     
         //现场踏勘情况
         items=new String[] {"现场踏勘情况",tsitecheck.getSiteCheckResult()};
-        table=PdfUtil.generateTableRow(items, PdfUtil.getTextFont(true), new float[] {0.1f,0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);        
+        table=PdfUtil.generateTableRow(items, PdfUtil.getTextFont(true), new float[] {0.16f,0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);        
         document.add(table);
         
         /**
@@ -158,13 +179,68 @@ public class TsitecheckExport {
        document.add(table);
        * 
          */
-        
        if(document!=null) {
     	   document.close();
        }
-       
      }
-	 
+	
+	//图片比例
+	private void style(Image image) {
+		float imageHeight=image.getScaledHeight();
+        float imageWidth=image.getScaledWidth();
+        int i=0;
+        while(imageHeight>80||imageWidth>80){
+        	image.scalePercent(80-i);
+        	i++;
+        	imageHeight=image.getScaledHeight();
+        	imageWidth=image.getScaledWidth();
+        }
+	}
+	
+	
+	private PdfPTable checkPicture(String str,PdfPTable table, PdfPCell cell,Phrase phrase) throws MalformedURLException, IOException, DocumentException  {
+		String[] items=str.split("\\|");
+		 table.setWidthPercentage(tableWidth);
+		    phrase = new Phrase("现场探勘示意图",PdfUtil.getTextFont(true));
+			cell=new PdfPCell(phrase);
+			cell.setBorderWidth(borderWidth);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+	       
+		int length=items.length-1;  //由于每个图片的地址前面都有\，所以真正是图片地址的个数要length-1
+			if(length%2==1) {		//当表单里面是一张图片
+				String sitePath=items[1];
+				String imagePath=PathUtils.getRealPath(sitePath);
+				Image image=Image.getInstance(imagePath);
+		        table=new PdfPTable(2);
+		        table.setWidths(new float[] {0.15f,0.8f});
+		        style(image);
+		        image.setAlignment(Image.ALIGN_CENTER); 
+		        table.addCell(cell);
+		        table.addCell(image);
+			}
+			//2张图片
+			else {                
+				for(int i=1;i<items.length;i++) {
+					String sitePath=items[i];
+					String imagePath=PathUtils.getRealPath(sitePath);
+					Image image=Image.getInstance(imagePath);
+					table=new PdfPTable(3);
+					table.setWidths(new float[] {0.15f,0.4f,0.4f});
+					style(image);
+					if(i%2==1) {
+						image.setAlignment(Image.ALIGN_CENTER); 
+					}else {
+						image.setAlignment(Image.ALIGN_RIGHT);
+					}
+			        table.addCell(cell);
+			        table.addCell(image);
+				}
+			}
+		return table;
+	}
+	
+	
+	
 	private PdfPCell getContentCell(String content,int align) {
 		Phrase phrase=new Phrase(content,PdfUtil.getTextFont(false));
 		PdfPCell cell = new PdfPCell(phrase);
@@ -173,6 +249,8 @@ public class TsitecheckExport {
 		return cell;
 		
 	}
+	
+	
 	
 	/**
 	 * 输出到客户端
@@ -202,6 +280,7 @@ public class TsitecheckExport {
     public TsitecheckExport writeFile(String name) throws DocumentException, IOException {
  	   	FileOutputStream os = new FileOutputStream(name);
 		this.generate(os);
+		
 		return this;
 	}
     
