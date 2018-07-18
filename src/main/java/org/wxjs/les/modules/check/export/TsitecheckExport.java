@@ -100,9 +100,16 @@ public class TsitecheckExport {
         /**
          * |/les/userfiles/1/images/test/test/link.jpg|/les/userfiles/1/images/test/test/%E6%B5%8B%E8%AF%95.png
          */
+        items=new String[] {"现场踏勘示意图"};
+        table=PdfUtil.generateTableRow(items, PdfUtil.getTextFont(true), new float[] {1.06f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);        
+        document.add(table);  
+        
         String str=tsitecheck.getSitePicture();
-        table=checkPicture(str, table, cell,phrase);
-        document.add(table);
+        if(str.length()>1){
+            table=checkPicture(str);
+            document.add(table);        	
+        }
+
         
         
        /** 
@@ -198,44 +205,36 @@ public class TsitecheckExport {
 	}
 	
 	
-	private PdfPTable checkPicture(String str,PdfPTable table, PdfPCell cell,Phrase phrase) throws MalformedURLException, IOException, DocumentException  {
-		String[] items=str.split("\\|");
-		 table.setWidthPercentage(tableWidth);
-		    phrase = new Phrase("现场探勘示意图",PdfUtil.getTextFont(true));
-			cell=new PdfPCell(phrase);
-			cell.setBorderWidth(borderWidth);
-			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+	private PdfPTable checkPicture(String str) throws MalformedURLException, IOException, DocumentException  {
+		PdfPTable table;
+		String[] items=str.substring(1).split("\\|");
+		
+		if(items.length==1){
+			table=new PdfPTable(1);
+			String sitePath=str;
+			String imagePath=PathUtils.getRealPath(sitePath);
+			Image image=Image.getInstance(imagePath);
 	       
-		int length=items.length-1;  //由于每个图片的地址前面都有\，所以真正是图片地址的个数要length-1
-			if(length%2==1) {		//当表单里面是一张图片
-				String sitePath=items[1];
+	        table.setWidths(new float[] {1.0f});
+	        style(image);
+	        image.setAlignment(Image.ALIGN_CENTER);
+	        table.addCell(image);			
+		}else{
+			table=new PdfPTable(2);
+			
+			for(String sitePath : items){
 				String imagePath=PathUtils.getRealPath(sitePath);
 				Image image=Image.getInstance(imagePath);
-		        table=new PdfPTable(2);
-		        table.setWidths(new float[] {0.15f,0.8f});
+		        
+		        table.setWidths(new float[] {0.5f, 0.5f});
 		        style(image);
-		        image.setAlignment(Image.ALIGN_CENTER); 
-		        table.addCell(cell);
-		        table.addCell(image);
+		        image.setAlignment(Image.ALIGN_CENTER);
+		        table.addCell(image);				
 			}
-			//2张图片
-			else {                
-				for(int i=1;i<items.length;i++) {
-					String sitePath=items[i];
-					String imagePath=PathUtils.getRealPath(sitePath);
-					Image image=Image.getInstance(imagePath);
-					table=new PdfPTable(3);
-					table.setWidths(new float[] {0.15f,0.4f,0.4f});
-					style(image);
-					if(i%2==1) {
-						image.setAlignment(Image.ALIGN_CENTER); 
-					}else {
-						image.setAlignment(Image.ALIGN_RIGHT);
-					}
-			        table.addCell(cell);
-			        table.addCell(image);
-				}
-			}
+				
+			
+		}
+
 		return table;
 	}
 	
