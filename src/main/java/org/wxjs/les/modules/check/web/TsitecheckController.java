@@ -88,7 +88,7 @@ public class TsitecheckController extends BaseController {
 		}
 		tsitecheckService.saveInfo(tsitecheck);
 		addMessage(redirectAttributes, "保存成功");
-		return "redirect:"+Global.getAdminPath()+"/check/tsitecheck/form?id="+tsitecheck.getId();
+		return "redirect:"+Global.getAdminPath()+"/check/tsitecheck/?repage";
 	}
 	
 	

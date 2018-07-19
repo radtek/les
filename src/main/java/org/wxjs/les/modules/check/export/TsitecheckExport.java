@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.utils.Encodes;
+import org.wxjs.les.common.utils.FileUtils;
 import org.wxjs.les.common.utils.IdGen;
 import org.wxjs.les.common.utils.PdfUtil;
 import org.wxjs.les.modules.base.utils.PathUtils;
@@ -31,6 +32,9 @@ import com.lowagie.text.Image;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
+import com.lowagie.text.Rectangle;
+import com.lowagie.text.pdf.AcroFields;
+import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfCell;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
@@ -74,70 +78,54 @@ public class TsitecheckExport {
         
         //建设单位
         items=new String[] {"建设单位",tsitecheck.getDevelopOrg(),"联系人姓名",tsitecheck.getDevelopContact(),"联系人电话",tsitecheck.getDevelopPhone()};
-        table=PdfUtil.generateTableRow(items, PdfUtil.getTextFont(true), new float[]{0.15f, 0.3f, 0.1f, 0.15f, 0.15f, 0.15f}, tableWidth, Element.ALIGN_LEFT, borderWidth,0);
+        table=PdfUtil.generateTableRow(items, PdfUtil.getTextFont(true), new float[]{0.15f, 0.25f, 0.15f, 0.15f, 0.15f, 0.15f}, tableWidth, Element.ALIGN_LEFT, borderWidth,0);
         document.add(table);
         //施工单位
         items=new String[] {"施工单位",tsitecheck.getConstructionOrg(),"联系人姓名",tsitecheck.getConstructionContact(),"联系人电话",tsitecheck.getConstructionPhone()};
-        table=PdfUtil.generateTableRow(items, PdfUtil.getTextFont(true), new float[]{0.15f, 0.3f, 0.1f, 0.15f, 0.15f, 0.15f}, tableWidth, Element.ALIGN_LEFT, borderWidth,0);
+        table=PdfUtil.generateTableRow(items, PdfUtil.getTextFont(true), new float[]{0.15f, 0.25f, 0.15f, 0.15f, 0.15f, 0.15f}, tableWidth, Element.ALIGN_LEFT, borderWidth,0);
         document.add(table);
         
         //工程名称
         items=new String[] {"工程名称",tsitecheck.getProjectName()};
-        table=PdfUtil.generateTableRow(items, PdfUtil.getTextFont(true), new float[] {0.16f,0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);        
+        table=PdfUtil.generateTableRow(items, PdfUtil.getTextFont(true), new float[] {0.15f,0.85f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);        
         document.add(table);
         
         //工程地址
         items=new String[] {"工程地址",tsitecheck.getProjectAddress()};
-        table=PdfUtil.generateTableRow(items, PdfUtil.getTextFont(true), new float[] {0.16f,0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);        
+        table=PdfUtil.generateTableRow(items, PdfUtil.getTextFont(true), new float[] {0.15f,0.85f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);        
         document.add(table);
         
         //现场检查情况
         items=new String[] {"现场检查情况",tsitecheck.getSiteSituation()};
-        table=PdfUtil.generateTableRow(items, PdfUtil.getTextFont(true), new float[] {0.16f,0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);        
+        table=PdfUtil.generateTableRow(items, PdfUtil.getTextFont(true), new float[] {0.15f,0.85f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);        
         document.add(table);
         
         //现场踏勘示意图
         /**
          * |/les/userfiles/1/images/test/test/link.jpg|/les/userfiles/1/images/test/test/%E6%B5%8B%E8%AF%95.png
          */
-        String str=tsitecheck.getSitePicture();
-        table=checkPicture(str, table, cell,phrase);
-        document.add(table);
-        
-        
-       /** 
-        * 只能打印单张
-        table=new PdfPTable(2);
-        table.setWidths(new float[] {0.15f,0.8f});
-        table.setWidthPercentage(tableWidth);
-        phrase=new Phrase("现场探勘示意图",PdfUtil.getTextFont(true));
-        cell=new PdfPCell(phrase);
-        cell.setBorderWidth(borderWidth);
-        cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-        String Sitepath=tsitecheck.getSitePicture();
-        String imagePath=PathUtils.getRealPath(Sitepath);
-        Image image=Image.getInstance(imagePath);
-        style(image);
-        image.setAlignment(Image.ALIGN_CENTER); 
-        table.addCell(cell);
-        table.addCell(image);
-       //  document.add(image);
-        document.add(table);
-        **/
-     
+	      String str=tsitecheck.getSitePicture();
+	      if(str.length()>1){
+            table=checkPicture(str,phrase,cell);
+            document.add(table);        	
+	      }
         //现场踏勘情况
+        
         items=new String[] {"现场踏勘情况",tsitecheck.getSiteCheckResult()};
-        table=PdfUtil.generateTableRow(items, PdfUtil.getTextFont(true), new float[] {0.16f,0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);        
+        table=PdfUtil.generateTableRow(items, PdfUtil.getTextFont(true), new float[] {0.15f,0.85f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);        
         document.add(table);
         
-        /**
+        
         
        //签名
+        /**
+        
        Image checkerSig=null;
      
        try {
     	   String filename=this.base64StringToImage(this.tsitecheck.getCheckerSig().getSignature());
     	   checkerSig=Image.getInstance(filename);
+    	   FileUtils.deleteFile(filename);
        } catch (MalformedURLException e) {
 			log.error("checkerSig error",e);
        } catch (IOException e) {
@@ -149,6 +137,7 @@ public class TsitecheckExport {
        try {
     	   String filename=this.base64StringToImage(this.tsitecheck.getPartySig().getSignature());
     	   partySig=Image.getInstance(filename);
+    	   FileUtils.deleteFile(filename);
        } catch (MalformedURLException e) {
 			log.error("partySig error",e);
        } catch (IOException e) {
@@ -158,9 +147,7 @@ public class TsitecheckExport {
        table=new PdfPTable(4);
        table.setWidths(new float[] {0.2f,0.3f,0.2f,0.3f});
        table.setWidthPercentage(tableWidth);
-       
-       PdfPCell cell;
-       
+            
        phrase=new Phrase("勘查人（签名）",PdfUtil.getTextFont(true));
        cell=new PdfPCell(phrase);
        cell.setBorderWidth(borderWidth);
@@ -177,8 +164,9 @@ public class TsitecheckExport {
        table.addCell(cell);
        table.addCell(partySig);
        document.add(table);
-       * 
+        * 
          */
+       
        if(document!=null) {
     	   document.close();
        }
@@ -186,56 +174,67 @@ public class TsitecheckExport {
 	
 	//图片比例
 	private void style(Image image) {
-		float imageHeight=image.getScaledHeight();
-        float imageWidth=image.getScaledWidth();
-        int i=0;
-        while(imageHeight>80||imageWidth>80){
-        	image.scalePercent(80-i);
-        	i++;
-        	imageHeight=image.getScaledHeight();
-        	imageWidth=image.getScaledWidth();
-        }
+		float heigth=image.getHeight();
+		float width=image.getWidth();
+		int percent=getPercent(heigth, width);
+		image.scalePercent(percent);
+	}
+	
+	public int getPercent(float h,float w)
+	{
+		int p=0;
+		float p2=0.0f;
+		if(h>w)
+		{
+			p2=250/h*100;
+		}
+		else
+		{
+			p2=170/w*100;
+		}
+		p=Math.round(p2);
+		return p;
 	}
 	
 	
-	private PdfPTable checkPicture(String str,PdfPTable table, PdfPCell cell,Phrase phrase) throws MalformedURLException, IOException, DocumentException  {
-		String[] items=str.split("\\|");
-		 table.setWidthPercentage(tableWidth);
-		    phrase = new Phrase("现场探勘示意图",PdfUtil.getTextFont(true));
-			cell=new PdfPCell(phrase);
-			cell.setBorderWidth(borderWidth);
-			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-	       
-		int length=items.length-1;  //由于每个图片的地址前面都有\，所以真正是图片地址的个数要length-1
-			if(length%2==1) {		//当表单里面是一张图片
-				String sitePath=items[1];
+	private PdfPTable checkPicture(String str,Phrase phrase,PdfPCell cell) throws MalformedURLException, IOException, DocumentException  {
+		PdfPTable table=null;
+		String[] items=str.substring(1).split("\\|");
+   		
+		if(items.length==1){
+			table=new PdfPTable(2);
+			table.setWidthPercentage(tableWidth);
+		    phrase=new Phrase("现场探勘示意图",PdfUtil.getTextFont(true));
+	        cell=new PdfPCell(phrase);
+	        cell.setBorderWidth(borderWidth);
+	        cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+	        table.setWidths(new float[] {0.15f,0.85f});
+	        
+		    String sitePath=str;
+			String imagePath=PathUtils.getRealPath(sitePath);
+			Image image=Image.getInstance(imagePath);
+			style(image);
+			
+	        image.setAlignment(Image.ALIGN_CENTER);
+	        table.addCell(cell);
+	        table.addCell(image);	
+		}else{
+			table=new PdfPTable(3);
+			table.setWidthPercentage(tableWidth);
+			phrase=new Phrase("现场探勘示意图",PdfUtil.getTextFont(true));
+	        cell=new PdfPCell(phrase);
+	        cell.setBorderWidth(borderWidth);
+	        cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+	        table.addCell(cell);
+	        table.setWidths(new float[] {0.14f,0.43f, 0.43f});
+			for(String sitePath : items){
 				String imagePath=PathUtils.getRealPath(sitePath);
 				Image image=Image.getInstance(imagePath);
-		        table=new PdfPTable(2);
-		        table.setWidths(new float[] {0.15f,0.8f});
-		        style(image);
-		        image.setAlignment(Image.ALIGN_CENTER); 
-		        table.addCell(cell);
+				style(image);
+		        image.setAlignment(Image.ALIGN_CENTER);
 		        table.addCell(image);
 			}
-			//2张图片
-			else {                
-				for(int i=1;i<items.length;i++) {
-					String sitePath=items[i];
-					String imagePath=PathUtils.getRealPath(sitePath);
-					Image image=Image.getInstance(imagePath);
-					table=new PdfPTable(3);
-					table.setWidths(new float[] {0.15f,0.4f,0.4f});
-					style(image);
-					if(i%2==1) {
-						image.setAlignment(Image.ALIGN_CENTER); 
-					}else {
-						image.setAlignment(Image.ALIGN_RIGHT);
-					}
-			        table.addCell(cell);
-			        table.addCell(image);
-				}
-			}
+		}
 		return table;
 	}
 	
@@ -247,7 +246,6 @@ public class TsitecheckExport {
 		cell.setBorderWidth(0);
 		cell.setHorizontalAlignment(align);
 		return cell;
-		
 	}
 	
 	
@@ -268,8 +266,6 @@ public class TsitecheckExport {
 		return this;
 		
 	}
-	
-	
 	
 	/**
 	 * 输出到文件
