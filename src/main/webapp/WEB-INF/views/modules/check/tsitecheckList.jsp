@@ -111,14 +111,14 @@
 					${tsitecheck.developOrg}
 				</td>
 				<td>
-					${tsitecheck.developContact} </br>
+					${tsitecheck.developContact}&nbsp; &nbsp; 
 					${tsitecheck.developPhone}
 				</td>
 				<td>
 					${tsitecheck.constructionOrg}
 				</td>
 				<td>
-					${tsitecheck.constructionContact}</br>
+					${tsitecheck.constructionContact}&nbsp; &nbsp; 
 					${tsitecheck.constructionPhone}
 				</td>
 				<td>
