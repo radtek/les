@@ -186,12 +186,10 @@ public class TsitecheckExport {
 	{
 		int p=0;
 		float p2=0.0f;
-		if(h>w)
-		{
+		if(h>w){
 			p2=250/h*100;
 		}
-		else
-		{
+		else{
 			p2=170/w*100;
 		}
 		p=Math.round(p2);
