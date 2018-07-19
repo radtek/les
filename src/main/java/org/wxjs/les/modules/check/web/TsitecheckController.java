@@ -6,6 +6,8 @@ package org.wxjs.les.modules.check.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.activiti.engine.impl.Page;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,17 +17,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import org.wxjs.les.common.config.Global;
-import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.web.BaseController;
-import org.wxjs.les.common.utils.DateUtils;
-import org.wxjs.les.common.utils.StringUtils;
 import org.wxjs.les.modules.check.entity.Tsitecheck;
-import org.wxjs.les.modules.check.export.TsitecheckExport;
 import org.wxjs.les.modules.check.service.TsitecheckService;
-import org.wxjs.les.modules.qa.entity.Questionanswer;
-import org.wxjs.les.modules.qa.export.QuestionanswerExport;
+
 
 /**
  * 现场踏勘Controller
