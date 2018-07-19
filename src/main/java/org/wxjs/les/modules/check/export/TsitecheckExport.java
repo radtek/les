@@ -1,4 +1,4 @@
-package org.wxjs.les.modules.check.export;
+﻿package org.wxjs.les.modules.check.export;
 
 
 import java.awt.image.BufferedImage;
@@ -104,11 +104,13 @@ public class TsitecheckExport {
         /**
          * |/les/userfiles/1/images/test/test/link.jpg|/les/userfiles/1/images/test/test/%E6%B5%8B%E8%AF%95.png
          */
+
 	      String str=tsitecheck.getSitePicture();
 	      if(str.length()>1){
             table=checkPicture(str,phrase,cell);
             document.add(table);        	
 	      }
+     
         //现场踏勘情况
         
         items=new String[] {"现场踏勘情况",tsitecheck.getSiteCheckResult()};
@@ -197,6 +199,7 @@ public class TsitecheckExport {
 	}
 	
 	
+
 	private PdfPTable checkPicture(String str,Phrase phrase,PdfPCell cell) throws MalformedURLException, IOException, DocumentException  {
 		PdfPTable table=null;
 		String[] items=str.substring(1).split("\\|");
@@ -237,8 +240,8 @@ public class TsitecheckExport {
 		}
 		return table;
 	}
-	
-	
+
+
 	
 	private PdfPCell getContentCell(String content,int align) {
 		Phrase phrase=new Phrase(content,PdfUtil.getTextFont(false));
