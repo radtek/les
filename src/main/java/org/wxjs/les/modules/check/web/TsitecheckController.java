@@ -88,10 +88,9 @@ public class TsitecheckController extends BaseController {
 		}
 		tsitecheckService.saveInfo(tsitecheck);
 		addMessage(redirectAttributes, "保存成功");
-		return "redirect:"+Global.getAdminPath()+"/check/tsitecheck/?repage";
+		return "redirect:"+Global.getAdminPath()+"/check/tsitecheck/form?id="+tsitecheck.getId();
 	}
-	
-	
+										
 	@RequiresPermissions("check:tsitecheck:edit")
 	@RequestMapping(value = "delete")
 	public String delete(Tsitecheck tsitecheck, RedirectAttributes redirectAttributes) {
