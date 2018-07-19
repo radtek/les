@@ -1,10 +1,8 @@
-﻿package org.wxjs.les.modules.check.export;
-
+package org.wxjs.les.modules.check.export;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -24,7 +22,6 @@ import org.wxjs.les.common.utils.PdfUtil;
 import org.wxjs.les.modules.base.utils.PathUtils;
 import org.wxjs.les.modules.check.entity.Tsitecheck;
 
-import com.lowagie.text.BadElementException;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
@@ -32,17 +29,14 @@ import com.lowagie.text.Image;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.AcroFields;
-import com.lowagie.text.pdf.BaseFont;
-import com.lowagie.text.pdf.PdfCell;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
 public class TsitecheckExport {
 	
-	private static Logger log = LoggerFactory.getLogger(TsitecheckExport.class);
+	protected Logger logger = LoggerFactory.getLogger(getClass());
+	
 	private final static int tableWidth = 90;
 	private final static float borderWidth = 0.5f;
 	final static float[] widths = new float[]{0.25f, 0.12f, 0.16f ,0.24f ,0.23f};
@@ -116,11 +110,8 @@ public class TsitecheckExport {
         items=new String[] {"现场踏勘情况",tsitecheck.getSiteCheckResult()};
         table=PdfUtil.generateTableRow(items, PdfUtil.getTextFont(true), new float[] {0.15f,0.85f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);        
         document.add(table);
-        
-        
-        
+
        //签名
-        /**
         
        Image checkerSig=null;
      
@@ -129,9 +120,9 @@ public class TsitecheckExport {
     	   checkerSig=Image.getInstance(filename);
     	   FileUtils.deleteFile(filename);
        } catch (MalformedURLException e) {
-			log.error("checkerSig error",e);
+    	   logger.error("checkerSig error",e);
        } catch (IOException e) {
-			log.error("checkerSig error",e);
+    	   logger.error("checkerSig error",e);
        }
      
        Image partySig=null;
@@ -141,9 +132,9 @@ public class TsitecheckExport {
     	   partySig=Image.getInstance(filename);
     	   FileUtils.deleteFile(filename);
        } catch (MalformedURLException e) {
-			log.error("partySig error",e);
+    	   logger.error("partySig error",e);
        } catch (IOException e) {
-			log.error("partySig error",e);
+    	   logger.error("partySig error",e);
        }
        
        table=new PdfPTable(4);
@@ -166,8 +157,7 @@ public class TsitecheckExport {
        table.addCell(cell);
        table.addCell(partySig);
        document.add(table);
-        * 
-         */
+  
        
        if(document!=null) {
     	   document.close();
