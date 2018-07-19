@@ -205,38 +205,38 @@ public class TsitecheckExport {
 		String[] items=str.substring(1).split("\\|");
    		
 		if(items.length==1){
-			table=new PdfPTable(2);
-			table.setWidthPercentage(tableWidth);
-		    phrase=new Phrase("现场探勘示意图",PdfUtil.getTextFont(true));
-	        cell=new PdfPCell(phrase);
-	        cell.setBorderWidth(borderWidth);
-	        cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-	        table.setWidths(new float[] {0.15f,0.85f});
-	        
-		    String sitePath=str;
-			String imagePath=PathUtils.getRealPath(sitePath);
-			Image image=Image.getInstance(imagePath);
-			style(image);
-			
-	        image.setAlignment(Image.ALIGN_CENTER);
-	        table.addCell(cell);
-	        table.addCell(image);	
-		}else{
-			table=new PdfPTable(3);
-			table.setWidthPercentage(tableWidth);
-			phrase=new Phrase("现场探勘示意图",PdfUtil.getTextFont(true));
-	        cell=new PdfPCell(phrase);
-	        cell.setBorderWidth(borderWidth);
-	        cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-	        table.addCell(cell);
-	        table.setWidths(new float[] {0.14f,0.43f, 0.43f});
-			for(String sitePath : items){
+				table=new PdfPTable(2);
+				table.setWidthPercentage(tableWidth);
+				phrase=new Phrase("现场探勘示意图",PdfUtil.getTextFont(true));
+				cell=new PdfPCell(phrase);
+				cell.setBorderWidth(borderWidth);
+				cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+				table.setWidths(new float[] {0.15f,0.85f});
+				
+				String sitePath=str;
 				String imagePath=PathUtils.getRealPath(sitePath);
 				Image image=Image.getInstance(imagePath);
 				style(image);
-		        image.setAlignment(Image.ALIGN_CENTER);
-		        table.addCell(image);
-			}
+				
+				image.setAlignment(Image.ALIGN_CENTER);
+				table.addCell(cell);
+				table.addCell(image);	
+		}else{
+				table=new PdfPTable(3);
+				table.setWidthPercentage(tableWidth);
+				phrase=new Phrase("现场探勘示意图",PdfUtil.getTextFont(true));
+				cell=new PdfPCell(phrase);
+				cell.setBorderWidth(borderWidth);
+				cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+				table.addCell(cell);
+				table.setWidths(new float[] {0.14f,0.43f, 0.43f});
+				for(String sitePath : items){
+					String imagePath=PathUtils.getRealPath(sitePath);
+					Image image=Image.getInstance(imagePath);
+					style(image);
+					image.setAlignment(Image.ALIGN_CENTER);
+					table.addCell(image);
+				}
 		}
 		return table;
 	}
