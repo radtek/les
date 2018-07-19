@@ -138,6 +138,13 @@
 		WHERE id = #{id}
 	</update>
 	
+	<update id="updateProcInstId">
+		UPDATE tcase_process SET 
+			case_stage_status = '1',
+			proc_inst_id = #{procInstId}
+		WHERE id = #{id}
+	</update>
+		
 	<update id="delete">
 		UPDATE tcase_process SET 
 			del_flag = #{DEL_FLAG_DELETE}

@@ -3,11 +3,16 @@
  */
 package org.wxjs.les.modules.tcase.entity;
 
+import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.collect.Lists;
@@ -23,6 +28,9 @@ import org.wxjs.les.modules.sys.entity.User;
 public class Tcase extends DataEntity<Tcase> {
 	
 	private static final long serialVersionUID = 1L;
+	
+	private static final int FieldShortLen = 12;
+	
 	private String caseSeq;		// 事项编号
 	private String accepter;		// 受理人
 	private Date acceptDate;		// 受理时间
@@ -49,7 +57,18 @@ public class Tcase extends DataEntity<Tcase> {
 	
 	private CaseProcess caseProcess; //
 	
-	private List<CaseProcess> currentCaseProcess = Lists.newArrayList(); //当前process
+	private List<CaseProcess> currentCaseProcesses = Lists.newArrayList(); //当前process
+	
+	//-- 临时属性 --//
+	// 流程任务
+	private Task task;
+	private Map<String, Object> variables;
+	// 运行中的流程实例
+	private ProcessInstance processInstance;
+	// 历史的流程实例
+	private HistoricProcessInstance historicProcessInstance;
+	// 流程定义
+	private ProcessDefinition processDefinition;
 	
 	public Tcase() {
 		super();
@@ -272,14 +291,75 @@ public class Tcase extends DataEntity<Tcase> {
 		this.caseProcess = caseProcess;
 	}
 
-	public List<CaseProcess> getCurrentCaseProcess() {
-		return currentCaseProcess;
+	public List<CaseProcess> getCurrentCaseProcesses() {
+		return currentCaseProcesses;
 	}
 
-	public void setCurrentCaseProcess(List<CaseProcess> currentCaseProcess) {
-		this.currentCaseProcess = currentCaseProcess;
+	public void setCurrentCaseProcesses(List<CaseProcess> currentCaseProcesses) {
+		this.currentCaseProcesses = currentCaseProcesses;
 	}
 
+	public Task getTask() {
+		return task;
+	}
 
+	public void setTask(Task task) {
+		this.task = task;
+	}
+
+	public Map<String, Object> getVariables() {
+		return variables;
+	}
+
+	public void setVariables(Map<String, Object> variables) {
+		this.variables = variables;
+	}
+
+	public ProcessInstance getProcessInstance() {
+		return processInstance;
+	}
+
+	public void setProcessInstance(ProcessInstance processInstance) {
+		this.processInstance = processInstance;
+	}
+
+	public HistoricProcessInstance getHistoricProcessInstance() {
+		return historicProcessInstance;
+	}
+
+	public void setHistoricProcessInstance(
+			HistoricProcessInstance historicProcessInstance) {
+		this.historicProcessInstance = historicProcessInstance;
+	}
+
+	public ProcessDefinition getProcessDefinition() {
+		return processDefinition;
+	}
+
+	public void setProcessDefinition(ProcessDefinition processDefinition) {
+		this.processDefinition = processDefinition;
+	}
+	
+	public String getCaseCauseShort(){
+		return this.getFieldShort(this.caseCause);
+	}
+	
+	public String getProjectNameShort(){
+		return this.getFieldShort(this.projectName);
+	}
+	
+	private String getFieldShort(String field){
+		String rst = "";
+		if(field.length()>FieldShortLen){
+			rst = field.substring(0, 12) + "...";
+		}else{
+			rst = field;
+		}
+		return rst;
+	}
+	
+	public String getParty(){
+		return "单位".equals(this.partyType)? this.orgName:this.psnName;
+	}
 	
 }

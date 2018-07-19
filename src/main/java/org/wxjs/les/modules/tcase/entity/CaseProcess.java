@@ -7,7 +7,10 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
+import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.DataEntity;
+import org.wxjs.les.modules.sys.entity.User;
+import org.wxjs.les.modules.sys.utils.UserUtils;
 
 import com.google.common.collect.Lists;
 
@@ -25,6 +28,9 @@ public class CaseProcess extends DataEntity<CaseProcess> {
 	private String caseStage;		// 事项类型
 	private String caseStageStatus;		// 事项类型状态
 	private String procInstId;		// 受理流程号
+	
+	private List<User> availableHandlers = Lists.newArrayList();
+	private boolean multiple = false;
 	
 	public CaseProcess() {
 		super();
@@ -61,6 +67,24 @@ public class CaseProcess extends DataEntity<CaseProcess> {
 		this.caseHandler = caseHandler;
 	}
 	
+	public String getCaseHandlerName() { 
+		String rst = "";
+		StringBuffer buffer = new StringBuffer();
+		String handler = this.caseHandler;
+		
+		if(handler!=null && handler.length()>0){
+			String[] strs = handler.split(",");
+			for(String str : strs){
+				User user = UserUtils.getByLoginName(str);
+				buffer.append(",").append(user.getName());
+			}
+		}
+		if(buffer.length()>0){
+			rst = buffer.substring(1);
+		}
+		return rst;
+	}
+	
 	public List<String> getCaseHandlerList() {
 		List<String> list = Lists.newArrayList();
 		if(!StringUtils.isEmpty(this.caseHandler)){
@@ -75,8 +99,8 @@ public class CaseProcess extends DataEntity<CaseProcess> {
 
 	public void setCaseHandlerList(List<String> list) {
 		StringBuffer buffer = new StringBuffer();
-		for(String name : list){
-			buffer.append(",").append(name);
+		for(String loginName : list){
+			buffer.append(",").append(loginName);
 		}
 		this.caseHandler = buffer.substring(1);
 	}
@@ -107,5 +131,27 @@ public class CaseProcess extends DataEntity<CaseProcess> {
 	public void setProcInstId(String procInstId) {
 		this.procInstId = procInstId;
 	}
+	
+	public boolean isIndependentFlow(){
+		return (Global.CASE_STAGE_SERIOUS.equals(this.caseStage)
+			 || Global.CASE_STAGE_CANCEL.equals(this.caseStage));
+	}
+
+	public List<User> getAvailableHandlers() {
+		return availableHandlers;
+	}
+
+	public void setAvailableHandlers(List<User> availableHandlers) {
+		this.availableHandlers = availableHandlers;
+	}
+
+	public boolean isMultiple() {
+		return multiple;
+	}
+
+	public void setMultiple(boolean multiple) {
+		this.multiple = multiple;
+	}
+	
 	
 }

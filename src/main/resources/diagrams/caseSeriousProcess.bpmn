@@ -2,7 +2,7 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef">
   <process id="caseSeriousProcess" name="重大行政处罚流程" isExecutable="true">
     <startEvent id="start" name="��ʼ"></startEvent>
-    <userTask id="sid-8A4472D0-CDFC-42C4-808D-76FE57E55826" name="录入会议内容" activiti:candidateGroups="jcbar"></userTask>
+    <userTask id="sid-8A4472D0-CDFC-42C4-808D-76FE57E55826" name="录入会议内容" activiti:assignee="${fgcfzrAssignee}" activiti:candidateGroups="fgcfzr"></userTask>
     <sequenceFlow id="sid-60689434-EF4F-4210-A888-9C047100FA6C" sourceRef="start" targetRef="sid-8A4472D0-CDFC-42C4-808D-76FE57E55826"></sequenceFlow>
     <userTask id="sid-B61C936E-F27C-4023-BCB0-CDD43CF27CFA" name="领导会签 ${loopCounter}" activiti:assignee="${assignee}">
       <multiInstanceLoopCharacteristics isSequential="false" activiti:collection="assigneeList" activiti:elementVariable="assignee"></multiInstanceLoopCharacteristics>

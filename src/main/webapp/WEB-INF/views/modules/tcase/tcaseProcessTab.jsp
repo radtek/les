@@ -17,6 +17,19 @@
     </div>
     <les:caseSummary></les:caseSummary>
     <les:caseTab tab="process" id="${tcase.id}"></les:caseTab>	
+    
+    <h5>&nbsp;流程处理</h5>
+    <c:choose>
+       <c:when test="${tcase.caseProcess.caseStageStatus eq '0'}">
+         <les:processStartTag handleAction="${ctx}/case/tcase/startWorkFlow"></les:processStartTag>
+       </c:when>
+       <c:when test="${tcase.caseProcess.caseStageStatus eq '1' and not empty tcase.task}">
+         <les:processHandleTag handleAction="${ctx}/case/tcase/handletask" taskId="${task.id}" availableHandlers="${tcase.caseProcess.availableHandlers}"></les:processHandleTag>
+       </c:when>       
+       <c:otherwise>
+       </c:otherwise>
+    </c:choose>     
+    
     <h5>&nbsp;处罚流程</h5>
 	<table id="contentTable" class="table table-striped table-bordered table-condensed" style="width:70%">
 		<thead>

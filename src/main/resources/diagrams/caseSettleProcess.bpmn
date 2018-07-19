@@ -2,7 +2,9 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef">
   <process id="caseSettleProcess" name="结案流程" isExecutable="true">
     <startEvent id="start" name="开始"></startEvent>
-    <userTask id="sid-8A4472D0-CDFC-42C4-808D-76FE57E55826" name="办案人意见" activiti:candidateGroups="jcbar"></userTask>
+    <userTask id="sid-8A4472D0-CDFC-42C4-808D-76FE57E55826" name="办案人意见" activiti:assignee="${assignee}" activiti:candidateGroups="jcbar">
+      <multiInstanceLoopCharacteristics isSequential="false" activiti:collection="assigneeList" activiti:elementVariable="assignee"></multiInstanceLoopCharacteristics>
+    </userTask>
     <sequenceFlow id="sid-60689434-EF4F-4210-A888-9C047100FA6C" sourceRef="start" targetRef="sid-8A4472D0-CDFC-42C4-808D-76FE57E55826"></sequenceFlow>
     <exclusiveGateway id="sid-44B65C17-2439-4C5E-B404-8D5C1B3CD22A"></exclusiveGateway>
     <sequenceFlow id="sid-286ED97C-F79E-4B7C-AD6F-E16DE89A069A" sourceRef="sid-8A4472D0-CDFC-42C4-808D-76FE57E55826" targetRef="sid-44B65C17-2439-4C5E-B404-8D5C1B3CD22A"></sequenceFlow>
@@ -19,16 +21,10 @@
     <sequenceFlow id="sid-9F94226C-0770-4E49-A64B-E6DD414CEF17" name="通过" sourceRef="sid-44B65C17-2439-4C5E-B404-8D5C1B3CD22A" targetRef="sid-E2AF9AE3-1D2C-42A8-A85F-9EE0317DB275">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${jcbarOp=='pass'}]]></conditionExpression>
     </sequenceFlow>
-    <endEvent id="cancelendevent1" name="CancelEnd">
-      <cancelEventDefinition></cancelEventDefinition>
-    </endEvent>
-    <sequenceFlow id="flow1" name="取消" sourceRef="sid-44B65C17-2439-4C5E-B404-8D5C1B3CD22A" targetRef="cancelendevent1">
+    <sequenceFlow id="flow1" name="取消" sourceRef="sid-44B65C17-2439-4C5E-B404-8D5C1B3CD22A" targetRef="endevent3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${jcbarOp=='cancel'}]]></conditionExpression>
     </sequenceFlow>
-    <endEvent id="cancelendevent3" name="CancelEnd">
-      <cancelEventDefinition></cancelEventDefinition>
-    </endEvent>
-    <sequenceFlow id="flow3" name="取消" sourceRef="sid-C47DC249-F311-4B69-A5E0-CF054BA1472F" targetRef="cancelendevent3">
+    <sequenceFlow id="flow3" name="取消" sourceRef="sid-C47DC249-F311-4B69-A5E0-CF054BA1472F" targetRef="endevent2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${zdfzrOp=='cancel'}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask1" name="局领导审核" activiti:candidateGroups="jld"></userTask>
@@ -37,15 +33,15 @@
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <endEvent id="cancelendevent4" name="CancelEnd">
-      <cancelEventDefinition></cancelEventDefinition>
-    </endEvent>
-    <sequenceFlow id="flow6" name="取消" sourceRef="exclusivegateway1" targetRef="cancelendevent4">
+    <sequenceFlow id="flow6" name="取消" sourceRef="exclusivegateway1" targetRef="endevent1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${jldOp=='cancel'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow7" name="退回" sourceRef="exclusivegateway1" targetRef="sid-E2AF9AE3-1D2C-42A8-A85F-9EE0317DB275">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${jldOp=='return'}]]></conditionExpression>
     </sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <endEvent id="endevent3" name="End"></endEvent>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_caseSettleProcess">
     <bpmndi:BPMNPlane bpmnElement="caseSettleProcess" id="BPMNPlane_caseSettleProcess">
@@ -67,20 +63,20 @@
       <bpmndi:BPMNShape bpmnElement="sid-619AB5A8-D242-4294-AC3D-8211F3FCA239" id="BPMNShape_sid-619AB5A8-D242-4294-AC3D-8211F3FCA239">
         <omgdc:Bounds height="35.0" width="35.0" x="770.0" y="173.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="cancelendevent1" id="BPMNShape_cancelendevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="256.0" y="79.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="cancelendevent3" id="BPMNShape_cancelendevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="478.0" y="80.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="80.0" width="105.0" x="550.0" y="151.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="690.0" y="171.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="cancelendevent4" id="BPMNShape_cancelendevent4">
-        <omgdc:Bounds height="35.0" width="35.0" x="692.0" y="80.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="693.0" y="80.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="478.0" y="80.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
+        <omgdc:Bounds height="35.0" width="35.0" x="256.0" y="80.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="sid-60689434-EF4F-4210-A888-9C047100FA6C" id="BPMNEdge_sid-60689434-EF4F-4210-A888-9C047100FA6C">
         <omgdi:waypoint x="63.0" y="190.0"></omgdi:waypoint>
@@ -107,7 +103,7 @@
         <omgdi:waypoint x="159.0" y="263.0"></omgdi:waypoint>
         <omgdi:waypoint x="159.0" y="230.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="498.0" y="224.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="24.0" x="498.0" y="224.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sid-9F94226C-0770-4E49-A64B-E6DD414CEF17" id="BPMNEdge_sid-9F94226C-0770-4E49-A64B-E6DD414CEF17">
@@ -119,7 +115,7 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="273.0" y="170.0"></omgdi:waypoint>
-        <omgdi:waypoint x="273.0" y="114.0"></omgdi:waypoint>
+        <omgdi:waypoint x="273.0" y="115.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="14.0" width="24.0" x="278.0" y="145.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
@@ -135,7 +131,7 @@
         <omgdi:waypoint x="515.0" y="191.0"></omgdi:waypoint>
         <omgdi:waypoint x="550.0" y="191.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="514.0" y="198.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="24.0" x="514.0" y="198.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
@@ -144,7 +140,7 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="710.0" y="171.0"></omgdi:waypoint>
-        <omgdi:waypoint x="709.0" y="115.0"></omgdi:waypoint>
+        <omgdi:waypoint x="710.0" y="115.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="14.0" width="24.0" x="721.0" y="159.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>

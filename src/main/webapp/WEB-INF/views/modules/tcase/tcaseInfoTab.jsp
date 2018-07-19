@@ -33,6 +33,11 @@
 		        	$("#info4Individual").show();
 		        }
 		    });	
+		    
+		    $('#btnStart').click(function() {
+				$("#inputForm").attr("action","${ctx}/case/tcase/saveAndStart");
+				$("#inputForm").submit();		    	
+		    });
 		});
 	</script>
 </head>
@@ -44,9 +49,11 @@
     <c:if test="${not empty tcase.id}">
     <les:caseSummary></les:caseSummary>
     </c:if>
+   
     <les:caseTab tab="info" id="${tcase.id}"></les:caseTab>	
 	<form:form id="inputForm" modelAttribute="tcase" action="${ctx}/case/tcase/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
+
 		<sys:message content="${message}"/>	
 		
 		<div class="control-group container-fluid nopadding">
@@ -62,7 +69,7 @@
 				<div class="span6">		
 			<label class="control-label">事项类型：</label>
 			<div class="controls controls-tight">
-				<form:hidden path="caseProcess.caseStage"/>
+				
 				${fns:getDictLabel(tcase.caseProcess.caseStage, 'case_stage', '')}
 			</div>
 		        </div>
@@ -287,30 +294,64 @@
 		        </div>
 		    </div>
 		</div>
+		<c:if test="${not empty tcase.id && not empty tcase.caseProcess.id}">
+
 		<div class="control-group container-fluid nopadding">
 			<div class="row-fluid">
 				<div class="span12">		
 			<label class="control-label">案情摘要：</label>
 			<div class="controls controls-tight">
+			    <form:hidden path="caseProcess.id"/>
+			    <form:hidden path="caseProcess.caseId"/>
+			    <form:hidden path="caseProcess.caseStage"/>
+			    <form:hidden path="caseProcess.caseStageStatus"/>
 				<form:textarea path="caseProcess.caseSummary" htmlEscape="false"  style="width:800px;height:80px;" class="required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		        </div>
 		    </div>
 		</div>
+		
+		<!--  
+		<c:if test="${operateType eq 'start' or operateType eq 'handle' }">
 		<div class="control-group container-fluid nopadding">
 			<div class="row-fluid">
 				<div class="span12">		
 			<label class="control-label">办案人：</label>
 			<div class="controls controls-tight">
-                <form:checkboxes path="caseProcess.caseHandlerList" items="${fns:getUserByOffice('')}" itemLabel="name" itemValue="name" htmlEscape="false" class="required"/>				
-				<span class="help-inline"><font color="red">*</font> </span>
+			    
+		       <form:checkboxes path="caseProcess.caseHandlerList" items="${tcase.caseProcess.availableHandlers}" itemLabel="name" itemValue="loginName" htmlEscape="false" class="required"/>
+		       <span class="help-inline"><font color="red">*</font> </span>			              			
+				
 			</div>
 		        </div>
 		    </div>
 		</div>	
+		
+		</c:if>
+		<c:if test="${operateType ne 'start' and operateType ne 'handle' }">
+		<div class="control-group container-fluid nopadding">
+			<div class="row-fluid">
+				<div class="span12">		
+			<label class="control-label">办案人：</label>
+			<div class="controls controls-tight">
+			   <form:hidden path="caseProcess.caseHandler"/>
+		       ${tcase.caseProcess.caseHandlerName} 		              			
+				
+			</div>
+		        </div>
+		    </div>
+		</div>	
+		
+		</c:if>		
+		
+		-->
+		</c:if>
+		
+		
 		<div class="form-actions">
-			<shiro:hasPermission name="case:tcase:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+			<shiro:hasPermission name="case:tcase:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;
+			</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>

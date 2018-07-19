@@ -34,6 +34,20 @@ VALUES
 ('case_stage_filetype_4', '4', '企业资料', 'case_stage_filetype', 'case_stage_filetype', 40, '0','1',now(),'1',now());
 
 
+delete from sys_dict where id like 'process_type_%';
+INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `parent_id`, `create_by`,`create_date`,`update_by`,`update_date`) 
+VALUES 
+('process_type_1', 'caseAcceptanceProcess', '案件来源及受理', 'process_type', '流程类型', 10, '0','1',now(),'1',now()),
+('process_type_2', 'caseInitialProcess', '立案', 'process_type', '流程类型', 20, '0','1',now(),'1',now()),
+('process_type_3', 'caseHandleProcess', '案件审理', 'process_type', '流程类型', 30, '0','1',now(),'1',now()),
+('process_type_4', 'caseNotifyProcess', '发告知书', 'process_type', '流程类型', 40, '0','1',now(),'1',now()),
+('process_type_5', 'caseDecisionProcess', '发决定书', 'process_type', '流程类型', 50, '0','1',now(),'1',now()),
+('process_type_6', 'caseSettleProcess', '结案书', 'process_type', '流程类型', 60, '0','1',now(),'1',now()),
+('process_type_7', 'caseFinishProcess', '案件结束', 'process_type', '流程类型', 70, '0','1',now(),'1',now()),
+('process_type_11', 'caseSeriousProcess', '重大行政处罚流程', 'process_type', '流程类型', 110, '0','1',now(),'1',now()),
+('process_type_12', 'caseCancelProcess', '撤销流程', 'process_type', '流程类型', 120, '0','1',now(),'1',now());
+
+
 
 
 

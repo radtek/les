@@ -2,9 +2,9 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef">
   <process id="caseFinishProcess" name="案件结束流程" isExecutable="true">
     <startEvent id="start" name="��ʼ"></startEvent>
-    <userTask id="sid-8A4472D0-CDFC-42C4-808D-76FE57E55826" name="办案人启动、填写备考表" activiti:candidateGroups="jcbar"></userTask>
+    <userTask id="sid-8A4472D0-CDFC-42C4-808D-76FE57E55826" name="办案人启动、填写备考表" activiti:assignee="${jcbarAssignee}" activiti:candidateGroups="jcbar"></userTask>
     <sequenceFlow id="sid-60689434-EF4F-4210-A888-9C047100FA6C" sourceRef="start" targetRef="sid-8A4472D0-CDFC-42C4-808D-76FE57E55826"></sequenceFlow>
-    <userTask id="sid-B61C936E-F27C-4023-BCB0-CDD43CF27CFA" name="办公室检查通过" activiti:candidateGroups="bgs"></userTask>
+    <userTask id="sid-B61C936E-F27C-4023-BCB0-CDD43CF27CFA" name="办公室检查通过" activiti:assignee="${bgsAssignee}" activiti:candidateGroups="bgs"></userTask>
     <exclusiveGateway id="sid-60F5DD1C-C7B6-4E45-980F-9B6467D64C46"></exclusiveGateway>
     <sequenceFlow id="sid-AAA97DA6-06B7-4C68-8B17-4B880E7EA82A" sourceRef="sid-B61C936E-F27C-4023-BCB0-CDD43CF27CFA" targetRef="sid-60F5DD1C-C7B6-4E45-980F-9B6467D64C46"></sequenceFlow>
     <endEvent id="sid-619AB5A8-D242-4294-AC3D-8211F3FCA239" name="���"></endEvent>

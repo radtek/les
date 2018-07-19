@@ -127,6 +127,15 @@ public class SystemService extends BaseService implements InitializingBean {
 		return list;
 	}
 	
+	public List<User> findUserByRoleEname(String roleEname) {
+		User user = new User();
+		Role role = new Role();
+		role.setEnname(roleEname);
+		user.setRole(role);
+		List<User> list = userDao.findUserByRoleEnname(user);
+		return list;
+	}
+	
 	@Transactional(readOnly = false)
 	public void saveUser(User user) {
 		if (StringUtils.isBlank(user.getId())){

@@ -218,14 +218,14 @@
 				<div class="span6">		
 			<label class="control-label">被询问人签名：</label>
 			<div class="controls controls-tight">
-				<les:signatureLoader sig="${questionanswer.asig}"></les:signatureLoader>
+				<les:signatureLoader sig="${questionanswer.asig}" path="asig.id"></les:signatureLoader>
 				<les:signatureModal></les:signatureModal>
 			</div>
 		        </div> 
 				<div class="span6">		
 			<label class="control-label">调查询问人签名：</label>
 			<div class="controls controls-tight">
-			    <les:signatureLoader sig="${questionanswer.qsig}"></les:signatureLoader>
+			    <les:signatureLoader sig="${questionanswer.qsig}" path="qsig.id"></les:signatureLoader>
 			</div>
 		        </div>
 		    </div>

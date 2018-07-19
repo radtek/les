@@ -21,4 +21,6 @@ public interface CaseProcessDao extends CrudDao<CaseProcess> {
 	
 	public List<CaseProcess> findCurrentProcesses(CaseProcess caseProcess);
 	
+	public void updateProcInstId(CaseProcess caseProcess);
+	
 }

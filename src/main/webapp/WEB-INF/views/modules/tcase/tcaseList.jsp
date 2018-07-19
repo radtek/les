@@ -41,7 +41,7 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-			    <th>序号</th>
+			    <th>编号</th>
 				<th>当事人</th>
 				<th>项目名称</th>
 				<th>事项名称</th>
@@ -52,7 +52,7 @@
 		<tbody>
 		<c:forEach items="${page.list}" var="tcase" varStatus="status">
 			<tr>
-			    <td>${status.index + 1}</td>
+			    <td>${tcase.caseSeq}</td>
 				<td>${tcase.orgName}</td>
 				<td>
 					${tcase.projectName}
@@ -61,7 +61,7 @@
 					${tcase.caseCause}
 				</td>
 				<td>
-					<c:forEach items="${tcase.currentCaseProcess}" var="process" varStatus="pstatus">
+					<c:forEach items="${tcase.currentCaseProcesses}" var="process" varStatus="pstatus">
 					<c:if test="${pstatus.index gt 0}"><BR></c:if>
 					${fns:getDictLabel(process.caseStage, 'case_stage', '无')},
 					状态：${fns:getDictLabel(process.caseStageStatus, 'case_stage_status', '无')}		

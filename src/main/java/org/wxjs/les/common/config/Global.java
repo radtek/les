@@ -199,6 +199,40 @@ public class Global {
     public static final String CASE_STAGE_SERIOUS = "110";
     public static final String CASE_STAGE_CANCEL = "120";
     
+    public static final String PN_caseTransferProcess = "caseTransferProcess";
+    
+    public static final String PN_caseAcceptanceProcess = "caseAcceptanceProcess";
+    public static final String PN_caseInitialProcess = "caseInitialProcess";
+    public static final String PN_caseHandleProcess = "caseHandleProcess";
+    public static final String PN_caseNotifyProcess = "caseNotifyProcess";
+    public static final String PN_caseDecisionProcess = "caseDecisionProcess";
+    public static final String PN_caseSettleProcess = "caseSettleProcess";
+    public static final String PN_caseFinishProcess = "caseFinishProcess";
+    
+    public static final String PN_caseSeriousProcess = "caseSeriousProcess";
+    
+    public static final String PN_caseCancelProcess1 = "caseCancelProcess1";
+    public static final String PN_caseCancelProcess2 = "caseCancelProcess2";
+    public static final String PN_caseCancelProcess3 = "caseCancelProcess3";
+    public static final String PN_caseCancelProcess4 = "caseCancelProcess4";
+    
+    public static final String GROUP_caseTransferProcess = "csblr";
+    
+    public static final String GROUP_caseAcceptanceProcess = "jcbar";
+    public static final String GROUP_caseInitialProcess = "jcbar";
+    public static final String GROUP_caseHandleProcess = "jcbar";
+    public static final String GROUP_caseNotifyProcess = "jcbar";
+    public static final String GROUP_caseDecisionProcess = "jcbar";
+    public static final String GROUP_caseSettleProcess = "jcbar";
+    public static final String GROUP_caseFinishProcess = "jcbar";
+    
+    public static final String GROUP_caseSeriousProcess = "fgcfzrOp";
+    
+    public static final String GROUP_caseCancelProcess1 = "jcbar";
+    public static final String GROUP_caseCancelProcess2 = "jcksfzr";
+    public static final String GROUP_caseCancelProcess3 = "zdfzr";
+    public static final String GROUP_caseCancelProcess4 = "jld";
+    
     public static final String DecimalFormat = "#.##";
 	
 }
