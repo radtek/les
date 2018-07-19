@@ -17,7 +17,7 @@ public class PathUtils {
 			e1.printStackTrace();
 		}
 		int index = path.indexOf("/les/") + 4;
-		if(index > 4){		
+		if(index > 3){		
 			rst = Global.getUserfilesBaseDir() + path.substring(index);
 		}
 		
