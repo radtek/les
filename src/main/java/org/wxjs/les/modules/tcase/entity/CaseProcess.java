@@ -5,6 +5,7 @@ package org.wxjs.les.modules.tcase.entity;
 
 import java.util.List;
 
+import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
 import org.wxjs.les.common.config.Global;
@@ -31,6 +32,8 @@ public class CaseProcess extends DataEntity<CaseProcess> {
 	
 	private List<User> availableHandlers = Lists.newArrayList();
 	private boolean multiple = false;
+	
+	private String procDefId;		// 流程定义号
 	
 	public CaseProcess() {
 		super();
@@ -152,6 +155,15 @@ public class CaseProcess extends DataEntity<CaseProcess> {
 	public void setMultiple(boolean multiple) {
 		this.multiple = multiple;
 	}
-	
+
+	public String getProcDefId() {
+		return procDefId;
+	}
+
+	public void setProcDefId(String procDefId) {
+		this.procDefId = procDefId;
+	}
+
+
 	
 }

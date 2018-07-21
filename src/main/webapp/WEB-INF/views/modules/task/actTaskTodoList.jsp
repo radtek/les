@@ -47,6 +47,7 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
+				<th>编号</th>
 				<th>当事人</th>
 				<th>项目名称</th>
 				<th>事项名称</th>
@@ -66,6 +67,7 @@
 				<c:set var="procExecUrl" value="${act.procExecUrl}" /> --%>
 				<c:set var="status" value="${act.status}" />
 				<tr>
+				    <td>${tcase.caseSeq}</td>
 				    <td>${tcase.party}</td>
 				    <td>${tcase.projectNameShort}</td>
 				    <td>${tcase.caseCauseShort}</td>
@@ -81,7 +83,7 @@
 						</c:if>
 						<c:if test="${not empty task.assignee}"><%--
 							<a href="${ctx}${procExecUrl}/exec/${task.taskDefinitionKey}?procInsId=${task.processInstanceId}&act.taskId=${task.id}">办理</a> --%>
-							<a href="${ctx}/act/task/form?taskId=${task.id}&taskName=${fns:urlEncode(task.name)}&taskDefKey=${task.taskDefinitionKey}&procInsId=${task.processInstanceId}&procDefId=${task.processDefinitionId}&status=${status}">任务办理</a>
+							<a href="${ctx}/task/form?taskId=${task.id}&taskName=${fns:urlEncode(task.name)}&taskDefKey=${task.taskDefinitionKey}&procInsId=${task.processInstanceId}&procDefId=${task.processDefinitionId}&status=${status}">任务办理</a>
 						</c:if>
 						<shiro:hasPermission name="act:process:edit">
 							<c:if test="${empty task.executionId}">

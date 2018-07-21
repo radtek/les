@@ -15,20 +15,23 @@
     <div style="text-align:right;margin-right:30px;">
         <input class="btn btn-primary" type="button" value="返回 " onclick="window.location.href='${ctx}/case/tcase/'"/>
     </div>
-    <les:caseSummary></les:caseSummary>
-    <les:caseTab tab="process" id="${tcase.id}"></les:caseTab>	
+    <les:caseSummary caseAttr="${caseAct.tcase}"></les:caseSummary>	
     
+    <les:caseTab tab="process" caseActAttr="${caseAct}"></les:caseTab>  
+    
+    <c:if test="${not empty caseAct.task}">
     <h5>&nbsp;流程处理</h5>
     <c:choose>
-       <c:when test="${tcase.caseProcess.caseStageStatus eq '0'}">
+       <c:when test="${caseAct.tcase.caseProcess.caseStageStatus eq '0'}">
          <les:processStartTag handleAction="${ctx}/case/tcase/startWorkFlow"></les:processStartTag>
        </c:when>
-       <c:when test="${tcase.caseProcess.caseStageStatus eq '1' and not empty tcase.task}">
-         <les:processHandleTag handleAction="${ctx}/case/tcase/handletask" taskId="${task.id}" availableHandlers="${tcase.caseProcess.availableHandlers}"></les:processHandleTag>
+       <c:when test="${caseAct.tcase.caseProcess.caseStageStatus eq '1' and not empty caseAct.task}">
+         <les:processHandleTag handleAction="${ctx}/case/tcase/handletask" taskId="${caseAct.task.id}" availableHandlers="${caseAct.tcase.caseProcess.availableHandlers}"></les:processHandleTag>
        </c:when>       
        <c:otherwise>
        </c:otherwise>
-    </c:choose>     
+    </c:choose>    
+    </c:if> 
     
     <h5>&nbsp;处罚流程</h5>
 	<table id="contentTable" class="table table-striped table-bordered table-condensed" style="width:70%">
@@ -50,8 +53,11 @@
 				<c:if test="${process.caseStageStatus eq '0'}">
 				  <a href="">启动</a>
 				</c:if>
-				<c:if test="${process.caseStageStatus ne '0'}">
-				  <a href="">查看</a>&nbsp;<a href="">修改办理时间</a>
+				<c:if test="${not empty process.procInstId}">
+				  <a target="_blank" href="${pageContext.request.contextPath}/act/diagram-viewer?processDefinitionId=${process.procDefId}&processInstanceId=${process.procInstId}">跟踪</a>&nbsp;
+				</c:if>
+				<c:if test="${process.caseStageStatus eq '2'}">
+				  <a href="">修改办理时间</a>
 				</c:if>
 				</td>
 			</tr>
@@ -79,9 +85,12 @@
 				<c:if test="${process.caseStageStatus eq '0'}">
 				  <a href="">启动</a>
 				</c:if>
-				<c:if test="${process.caseStageStatus ne '0'}">
-				  <a href="">查看</a>&nbsp;<a href="">修改办理时间</a>
+				<c:if test="${not empty process.procInstId}">
+				  <a target="_blank" href="${pageContext.request.contextPath}/act/diagram-viewer?processDefinitionId=${process.procDefId}&processInstanceId=${process.procInstId}">跟踪</a>&nbsp;
 				</c:if>
+				<c:if test="${process.caseStageStatus eq '2'}">
+				  <a href="">修改办理时间</a>
+				</c:if>				
 				</td>
 			</tr>
 			</c:forEach>																	

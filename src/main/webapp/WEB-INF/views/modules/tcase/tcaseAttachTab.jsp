@@ -16,14 +16,15 @@
     <div style="text-align:right;margin-right:30px;">
         <input class="btn btn-primary" type="button" value="返回 " onclick="window.location.href='${ctx}/case/tcase/'"/>
     </div>		
-    <les:caseSummary></les:caseSummary>
-    <les:caseTab tab="attach" id="${tcase.id}"></les:caseTab>    
+    <les:caseSummary caseAttr="${caseAct.tcase}"></les:caseSummary>
+
+    <les:caseTab tab="attach" caseActAttr="${caseAct}"></les:caseTab>  
 
 	<sys:message content="${message}"/>
 	
 	<div style="margin:10px 60px 10px 0;text-align:right">
 	    <shiro:hasPermission name="case:tcase:edit">
-	    <input class="btn btn-primary" type="button" value="添加资料" onclick="window.location.href='${ctx}/case/caseAttach/form?caseId=${tcase.id}'"/>
+	    <input class="btn btn-primary" type="button" value="添加资料" onclick="window.location.href='${ctx}/case/caseAttach/form?caseId=${caseAct.tcase.id}'"/>
 	    </shiro:hasPermission>	   
 	</div>	
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">

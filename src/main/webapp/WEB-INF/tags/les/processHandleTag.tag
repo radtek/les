@@ -8,42 +8,62 @@
 <%@ attribute name="multiple" type="java.lang.Boolean" required="false" description="是否会签"%>
 
     <script type="text/javascript">
-	    
-	    function approvePass(){
+    
+    $(document).ready(function() {
+    	$("#btnPass").click(function(){
+    		if(!check()){
+    			return;
+    		}
+    		top.$.jBox.confirm("确认要通过吗？","系统提示",function(v,h,f){
+    			if(v=="ok"){
+    				$("#approve").val("pass");
+    				$("#approveForm").submit();
+    			}
+    		},{buttonsFocus:1});
+    		top.$('.jbox-body .jbox-icon').css('top','55px');
+    	});
+    	
+    	$("#btnReturn").click(function(){
+    		if(!check()){
+    			return;
+    		}
+    		top.$.jBox.confirm("确认要退回吗？","系统提示",function(v,h,f){
+    			if(v=="ok"){
+    				$("#approve").val("return");
+    				$("#approveForm").submit();
+    			}
+    		},{buttonsFocus:1});
+    		top.$('.jbox-body .jbox-icon').css('top','55px');
+    	});
+    	
+    	$("#btnCancel").click(function(){
+    		if(!check()){
+    			return;
+    		}
+    		top.$.jBox.confirm("确认要导出用户数据吗？","系统提示",function(v,h,f){
+    			if(v=="ok"){
+    				$("#approve").val("cancel");
+    				$("#approveForm").submit();
+    			}
+    		},{buttonsFocus:1});
+    		top.$('.jbox-body .jbox-icon').css('top','55px');
+    	});  
+    	
+    	function check(){
+    		var rst = true;
+    		var opinion = $("#approveOpinion").val();
+    		if(opinion == ""){
+    			alert("处理意见不能为空。");
+    			rst = false;
+    		}
+    		return rst;
+    	}
 
-			$("#approve").val("pass");
-			$("#approveForm").submit();
-	    	
-	    }
-	    
-	    function approveReturn(){
-	    	var opinion = $("#approveOpinion").val();
-	    	
-	    	if(opinion==""){
-	    		alert("退回时，处理意见不能为空！");
-	    		return;
-	    	}
-
-			$("#approve").val("return");
-			$("#approveForm").submit();
-	    	
-	    }
-	    
-	    function approveCancel(){
-	    	var opinion = $("#approveOpinion").val();
-	    	
-	    	if(opinion==""){
-	    		alert("不通过时，处理意见不能为空！");
-	    		return;
-	    	}
-
-			$("#approve").val("cancel");
-			$("#approveForm").submit();
-	    	
-	    }	    
+    	
+    });
 
 	</script>
-<div class="borderedBox" style="width:80%; text-align:center; align:center;">
+<div class="borderedBox" style="width:90%; text-align:center; align:center;">
 	<form:form id="approveForm" modelAttribute="actTask" action="${handleAction}" method="post" class="form-horizontal">
 
 	    <input id="taskid" name="taskid" type="hidden" value="${taskId}"/>
@@ -52,11 +72,9 @@
 		<div class="control-group">
 			<label class="control-label">处理意见：</label>
 			<div class="controls">
-				<form:input path="approveOpinion" class="input-xxlarge"/>&nbsp;&nbsp;
-
-				<input id="btnPass" class="btn btn-primary" type="button" value="通 过" onclick="approvePass()"/>&nbsp;&nbsp;
-				<input id="btnReturn" class="btn btn-info" type="button" value="退 回" onclick="approveReturn()"/>&nbsp;&nbsp;	
-				<input id="btnCancel" class="btn btn-danger" type="button" value="不通过" onclick="approveCancel()"/>					
+				
+                <form:textarea path="approveOpinion" htmlEscape="false"  style="width:800px;height:100px;" class="required"/>&nbsp;&nbsp;&nbsp;&nbsp;			
+                					
 			</div>
 		</div>
 		<div class="control-group">
@@ -70,8 +88,14 @@
                      <form:radiobuttons items="${availableHandlers}" path="nextHandlers" itemLabel="name" itemValue="loginName"/>
                    </c:otherwise>
                 </c:choose>
+                <c:if test="${empty availableHandlers}">
+                                                                   无
+                </c:if>
 				
 				&nbsp;&nbsp;
+				<input id="btnPass" class="btn btn-primary" type="button" value="通 过"/>&nbsp;&nbsp;
+				<input id="btnReturn" class="btn btn-info" type="button" value="退 回"/>&nbsp;&nbsp;	
+				<input id="btnCancel" class="btn btn-danger" type="button" value="不通过"/>				
 		
 			</div>
 		</div>		

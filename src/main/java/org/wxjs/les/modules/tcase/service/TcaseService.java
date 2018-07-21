@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.service.CrudService;
+import org.wxjs.les.common.utils.StringUtils;
 import org.wxjs.les.modules.act.utils.ProcessUtils;
 import org.wxjs.les.modules.sys.utils.SequenceUtils;
 import org.wxjs.les.modules.sys.utils.UserUtils;
@@ -67,6 +68,22 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 		
 		
 		return tcase;
+	}
+	
+	public Tcase getCaseAndProcess(String businesskey) {
+		String[] strs = businesskey.split(":");
+		String caseId = strs[0];
+		
+		Tcase entity = super.get(caseId);
+		
+		if(strs.length > 1){
+			String caseProcessId = strs[1];
+			
+			CaseProcess process = caseProcessDao.get(caseProcessId);
+			entity.setCaseProcess(process);			
+		}
+
+		return entity;
 	}
 	
 	/**
@@ -215,10 +232,9 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 		return instance;		
 	}
 	
-	public Tcase getRelateCaseByTask(Task task){
+	public Tcase getRelateCaseByBusinesskey(String businesskey){
 
-		ProcessUtils pu = new ProcessUtils();
-		String businesskey = pu.getBusinesskeyByProcInstId(task.getProcessInstanceId());
+
 		String[] strs = businesskey.split(":");
 		String caseId = strs[0];	
 		

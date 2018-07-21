@@ -63,7 +63,6 @@ import com.google.common.collect.Maps;
 import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.service.BaseService;
 import org.wxjs.les.common.utils.StringUtils;
-
 import org.wxjs.les.modules.act.service.cmd.CreateAndTakeTransitionCmd;
 import org.wxjs.les.modules.act.service.cmd.JumpTaskCmd;
 import org.wxjs.les.modules.act.service.creator.ChainedActivitiesCreator;
@@ -73,6 +72,7 @@ import org.wxjs.les.modules.act.service.creator.SimpleRuntimeActivityDefinitionE
 import org.wxjs.les.modules.act.utils.ActUtils;
 import org.wxjs.les.modules.act.utils.ProcessDefCache;
 import org.wxjs.les.modules.act.utils.ProcessDefUtils;
+import org.wxjs.les.modules.act.utils.ProcessUtils;
 import org.wxjs.les.modules.sys.entity.User;
 import org.wxjs.les.modules.sys.utils.UserUtils;
 import org.wxjs.les.modules.task.dao.CaseActDao;
@@ -145,7 +145,15 @@ public class CaseTaskService extends BaseService {
 			e.setTask(task);
 			e.setVars(task.getProcessVariables());
 			
-			Tcase tcase = tcaseService.getRelateCaseByTask(task);
+			ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult();
+			
+			String businesskey = processInstance.getBusinessKey();
+			
+			e.setBusinessId(businesskey);
+			
+			logger.debug("businesskey:{}", businesskey);
+			
+			Tcase tcase = tcaseService.getRelateCaseByBusinesskey(businesskey);
 			e.setTcase(tcase);
 
 //			e.setTaskVars(task.getTaskLocalVariables());
@@ -225,6 +233,18 @@ public class CaseTaskService extends BaseService {
 			CaseAct e = new CaseAct();
 			e.setHistTask(histTask);
 			e.setVars(histTask.getProcessVariables());
+			
+			HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(histTask.getProcessInstanceId()).singleResult();
+			
+			String businesskey = processInstance.getBusinessKey();
+			
+			e.setBusinessId(businesskey);
+			
+			logger.debug("businesskey:{}", businesskey);
+			
+			Tcase tcase = tcaseService.getRelateCaseByBusinesskey(businesskey);
+			e.setTcase(tcase);
+			
 //			e.setTaskVars(histTask.getTaskLocalVariables());
 //			System.out.println(histTask.getId()+"  =  "+histTask.getProcessVariables() + "  ========== " + histTask.getTaskLocalVariables());
 			e.setProcDef(ProcessDefCache.get(histTask.getProcessDefinitionId()));

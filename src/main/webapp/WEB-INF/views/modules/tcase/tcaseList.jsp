@@ -32,7 +32,7 @@
 				<form:input path="orgName" htmlEscape="false" maxlength="100" class="input-medium"/>
 			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
-			<input class="btn btn-primary" type="button" value="启动新案件 " onclick="window.location.href='${ctx}/case/tcase/infoTab'"/>
+			<input class="btn btn-primary" type="button" value="启动新案件 " onclick="window.location.href='${ctx}/case/tcase/toNew'"/>
 			</li>
 			<li class="clearfix"></li>
 		</ul>
@@ -68,7 +68,7 @@
 					</c:forEach>
 				</td>				
 				<shiro:hasPermission name="case:tcase:edit"><td>
-    				<a href="${ctx}/case/tcase/infoTab?id=${tcase.id}">修改</a>
+    				<a href="${ctx}/case/tcase/infoTab?businesskey=${tcase.id}">修改</a>
 					<a href="${ctx}/case/tcase/delete?id=${tcase.id}" onclick="return confirmx('确认要删除该案件吗？', this.href)">删除</a>
 				</td></shiro:hasPermission>
 			</tr>

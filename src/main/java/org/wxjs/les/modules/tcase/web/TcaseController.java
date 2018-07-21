@@ -19,6 +19,8 @@ import org.activiti.engine.IdentityService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.Expression;
+import org.activiti.engine.impl.task.TaskDefinition;
+import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -115,17 +117,36 @@ public class TcaseController extends BaseController {
 	}
 	
 	@RequiresPermissions("case:tcase:view")
-	@RequestMapping(value = "infoTab")
-	public String infoTab(Tcase tcase, Model model) {
-		if(tcase.getIsNewRecord()){
-			tcase.setPartyType("单位");
-			tcase.setAcceptDate(Calendar.getInstance().getTime());
-			tcase.setPsnSex("男");
-			//tcase.setCaseStage("10");
-			//tcase.setCaseStageStatus("0");
-		}
+	@RequestMapping(value = "toNew")
+	public String toNew(CaseAct caseAct, Model model) {
 		
-		model.addAttribute("tcase", tcase);
+		Tcase tcase = new Tcase();
+		tcase.setIsNewRecord(true);
+		tcase.setPartyType("单位");
+		tcase.setAcceptDate(Calendar.getInstance().getTime());
+		tcase.setPsnSex("男");
+		//tcase.setCaseStage("10");
+		//tcase.setCaseStageStatus("0");
+		
+		caseAct.setTcase(tcase);
+		
+		return "modules/tcase/tcaseInfoTab";
+	}
+	
+	@RequiresPermissions("case:tcase:view")
+	@RequestMapping(value = "infoTab")
+	public String infoTab(CaseAct caseAct, Model model) {
+		
+		String businesskey = caseAct.getBusinesskey();
+		
+		logger.debug("businesskey:{}", businesskey);
+		
+		Tcase tcase = tcaseService.getCaseAndProcess(businesskey);
+		
+		//List<User> availableHandlers = this.getCaseHandler4Handle(caseAct.getTaskId());
+		//tcase.getCaseProcess().setAvailableHandlers(availableHandlers);		
+		
+		caseAct.setTcase(tcase);
 		
 		return "modules/tcase/tcaseInfoTab";
 	}
@@ -145,13 +166,13 @@ public class TcaseController extends BaseController {
 	@RequiresPermissions("case:tcase:view")
 	@RequestMapping(value = "toHandle")
 	public String toHandle(CaseAct caseAct, Model model) {
-		ProcessUtils pu = new ProcessUtils();
-		String businessKey = pu.getBusinesskeyByProcInstId(caseAct.getProcInsId());
-		String caseId = getCaseIdFromBusinessKey(businessKey);
+
+		String businesskey = caseAct.getId();
+		//String caseId = getCaseIdFromBusinessKey(businessKey);
 		
-		Tcase tcase = this.get(caseId);
+		Tcase tcase = tcaseService.getCaseAndProcess(businesskey);
 		
-		List<User> availableHandlers = this.getCaseHandler4Handle(tcase);
+		List<User> availableHandlers = this.getCaseHandler4Handle(caseAct.getTaskId());
 		tcase.getCaseProcess().setAvailableHandlers(availableHandlers);
 
 		model.addAttribute("operateType", "handle");
@@ -169,46 +190,20 @@ public class TcaseController extends BaseController {
 		return this.getCaseHandlerByGroup(group);
 	}
 	
-	private List<User> getCaseHandler4Handle(Tcase tcase){
+	private List<User> getCaseHandler4Handle(String taskId){
 		
 		List<User> list = Lists.newArrayList();
 		
-		if(tcase.getTask()==null){
-			return list;
+		ProcessUtils pu = new ProcessUtils();
+		String group = pu.getNextTaskGroupText(taskId);
+		
+		logger.debug("group:{}", group);
+		
+		if(!StringUtils.isEmpty(group)){
+			list = this.getCaseHandlerByGroup(group);
 		}
 		
-		String group = "";
-
-		try {
-			ProcessUtils pu = new ProcessUtils();
-			Set<Expression> exps = pu.getNextTaskGroup(tcase.getTask().getId());
-			
-			for(Expression exp : exps){
-				group = exp.getExpressionText();
-			}
-		} catch (Exception e) {
-			logger.error("", e);
-		}
-		
-		list = this.getCaseHandlerByGroup(group);
 		return list;
-	}
-	
-	private List<User> getCaseHandler4Current(Tcase tcase){
-		
-		String group = "";
-
-		try {
-			ProcessUtils pu = new ProcessUtils();
-			Set<Expression> exps = pu.getTaskGroup(tcase.getTask().getId());
-			for(Expression exp : exps){
-				group = exp.getExpressionText();
-			}
-		} catch (Exception e) {
-			logger.error("", e);
-		}
-		
-		return this.getCaseHandlerByGroup(group);
 	}
 	
 	private List<User> getCaseHandlerByGroup(String group){
@@ -217,8 +212,16 @@ public class TcaseController extends BaseController {
 	
 	@RequiresPermissions("case:tcase:view")
 	@RequestMapping(value = "attachTab")
-	public String attachTab(Tcase tcase, Model model) {
-		model.addAttribute("tcase", tcase);
+	public String attachTab(CaseAct caseAct, Model model) {
+		
+		String businesskey = caseAct.getBusinesskey();
+		
+		Tcase tcase = tcaseService.getCaseAndProcess(businesskey);
+		
+		//List<User> availableHandlers = this.getCaseHandler4Handle(caseAct.getTaskId());
+		//tcase.getCaseProcess().setAvailableHandlers(availableHandlers);		
+		
+		caseAct.setTcase(tcase);
 		
 		//load attach info
 		CaseAttach caseAttach = new CaseAttach();
@@ -230,8 +233,30 @@ public class TcaseController extends BaseController {
 	
 	@RequiresPermissions("case:tcase:view")
 	@RequestMapping(value = "processTab")
-	public String processTab(Tcase tcase, Model model) {
+	public String processTab(CaseAct caseAct, Model model) {
 		
+		String businesskey = caseAct.getBusinesskey();
+		
+		Tcase tcase = tcaseService.getCaseAndProcess(businesskey);	
+		
+		if(!StringUtils.isEmpty(caseAct.getTaskId())){
+			List<User> availableHandlers = Lists.newArrayList();
+			if("0".equals(tcase.getCaseProcess().getCaseStageStatus())){
+				availableHandlers = this.getCaseHandler4Start(tcase);
+				tcase.getCaseProcess().setMultiple(true);			
+			}else{
+				availableHandlers = this.getCaseHandler4Handle(caseAct.getTaskId());	
+				tcase.getCaseProcess().setMultiple(false);	
+			}
+			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);	
+			
+			Task task = taskService.createTaskQuery().taskId(caseAct.getTaskId()).singleResult();
+			caseAct.setTask(task);			
+		}
+		
+		caseAct.setTcase(tcase);
+	
+		/*
 		User user = UserUtils.getUser();
 		
 		String procInstId = tcase.getCaseProcess().getProcInstId();
@@ -240,27 +265,21 @@ public class TcaseController extends BaseController {
 			Task task = null;
 			if(taskQuery.count()==1){
 				task = taskQuery.singleResult();
+				logger.debug("task.getExecutionId():{}, task.getId():{}", task.getExecutionId(), task.getId());
 			}else{
 				List<Task> tasks = taskQuery.list();
 				for(Task entity: tasks){
 					if(entity.getAssignee().equals(user.getLoginName())){
 						task = entity;
 					}
+					logger.debug("task.getExecutionId():{}, task.getId():{}, entity.getAssignee():{}", task.getExecutionId(), task.getId(), entity.getAssignee());
 				}
 			}
 			
-			tcase.setTask(task);			
+			caseAct.setTask(task);			
 		}
+		*/
 		
-		List<User> availableHandlers = Lists.newArrayList();
-		if("0".equals(tcase.getCaseProcess().getCaseStageStatus())){
-			availableHandlers = this.getCaseHandler4Start(tcase);
-			tcase.getCaseProcess().setMultiple(true);			
-		}else{
-			availableHandlers = this.getCaseHandler4Handle(tcase);	
-			tcase.getCaseProcess().setMultiple(false);	
-		}
-		tcase.getCaseProcess().setAvailableHandlers(availableHandlers);			
 		
 		model.addAttribute("tcase", tcase);
 		
@@ -271,6 +290,17 @@ public class TcaseController extends BaseController {
 		CaseProcess caseProcess = new CaseProcess();
 		caseProcess.setCaseId(tcase.getId());
 		List<CaseProcess> processlist = caseProcessService.findList(caseProcess);
+		
+		//fill task
+		for(CaseProcess process : processlist){
+			if(!StringUtils.isEmpty(process.getProcInstId())){
+				ProcessInstance pi = runtimeService.createProcessInstanceQuery() // 根据流程实例id获取流程实例
+		                .processInstanceId(process.getProcInstId())
+		                .singleResult();
+				
+				process.setProcDefId(pi.getProcessDefinitionId());			
+			}
+		}
 		
 		List<CaseProcess> punishProcesslist = Lists.newArrayList();
 		List<CaseProcess> independentProcesslist = Lists.newArrayList();
@@ -292,24 +322,24 @@ public class TcaseController extends BaseController {
 
 	@RequiresPermissions("case:tcase:edit")
 	@RequestMapping(value = "save")
-	public String save(Tcase tcase, Model model, RedirectAttributes redirectAttributes) {
-		if (!beanValidator(model, tcase)){
-			return form(tcase, model);
+	public String save(CaseAct caseAct, Model model, RedirectAttributes redirectAttributes) {
+		if (!beanValidator(model, caseAct)){
+			return infoTab(caseAct, model);
 		}
-		tcaseService.save(tcase);
+		tcaseService.save(caseAct.getTcase());
 		addMessage(redirectAttributes, "保存案件成功");
-		return "redirect:"+Global.getAdminPath()+"/case/tcase/infoTab?id="+tcase.getId();
+		return "redirect:"+Global.getAdminPath()+"/case/tcase/infoTab?businesskey="+caseAct.getTcase().getId();
 	}
 	
 	@RequiresPermissions("case:tcase:edit")
 	@RequestMapping(value = "saveAndStart")
-	public String saveAndStart(Tcase tcase, Model model, RedirectAttributes redirectAttributes) {
-		if (!beanValidator(model, tcase)){
-			return form(tcase, model);
+	public String saveAndStart(CaseAct caseAct, Model model, RedirectAttributes redirectAttributes) {
+		if (!beanValidator(model, caseAct)){
+			return infoTab(caseAct, model);
 		}
-		tcaseService.saveAndStartFlow(tcase);
+		tcaseService.saveAndStartFlow(caseAct.getTcase());
 		addMessage(redirectAttributes, "保存案件成功");
-		return "redirect:"+Global.getAdminPath()+"/case/tcase/infoTab?id="+tcase.getId();
+		return "redirect:"+Global.getAdminPath()+"/task/todo";
 	}
 	
 	@RequiresPermissions("case:tcase:edit")
@@ -317,28 +347,33 @@ public class TcaseController extends BaseController {
 	public String startWorkFlow(Tcase tcase, Model model, RedirectAttributes redirectAttributes) {
 		tcaseService.startWorkflow(tcase);
 		addMessage(redirectAttributes, "流程启动成功");
-		return "redirect:"+Global.getAdminPath()+"/case/tcase/list";
+		return "redirect:"+Global.getAdminPath()+"/task/todo";
 	}
 	
-	@Transactional(readOnly = false)
-	public String handletask(ActTask actTask) {
+	@RequiresPermissions("case:tcase:edit")
+	@RequestMapping(value = "handletask")	
+	public String handletask(ActTask actTask, Model model) {
+		
 		String userid = UserUtils.getUser().getLoginName();
 		
 		Map<String,Object> variables = actTask.getVariables();
 		
 		//设置处理结果
 		ProcessUtils pu = new ProcessUtils();
-		String group = pu.getTaskGroupText(actTask.getTaskid());
-		variables.put(group+"Op", actTask.getApprove());
+		String variable = pu.getConditionVariable(actTask.getTaskid());
 		
-		logger.debug("actTask.getTaskid():{}", actTask.getTaskid());
+		logger.debug("handletask variable:{}", variable);
+		
+		variables.put(variable, actTask.getApprove());
+		
+		logger.debug("handletask actTask.getTaskid():{}", actTask.getTaskid());
 		
 		//设置下一关
 		String nextHandlersStr = actTask.getNextHandlers();
 		if(!StringUtils.isEmpty(nextHandlersStr)){
 			String[] strs = nextHandlersStr.split(",");
 			if(strs.length==1){
-				group = pu.getNextTaskGroupText(actTask.getTaskid());
+				String group = pu.getNextTaskGroupText(actTask.getTaskid());
 				variables.put(group+"Assignee", strs[0]);				
 			}else if(strs.length>11){
 				List<String> assigneeList = Lists.newArrayList();
@@ -365,7 +400,7 @@ public class TcaseController extends BaseController {
 		taskService.claim(actTask.getTaskid(), userid);
 		taskService.complete(actTask.getTaskid(), variables);
 		
-		return "redirect:"+Global.getAdminPath()+"/case/tcase/list";
+		return "redirect:"+Global.getAdminPath()+"/task/todo";
 	}
 	
 	@RequiresPermissions("case:tcase:edit")

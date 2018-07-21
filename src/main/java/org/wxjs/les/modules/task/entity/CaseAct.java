@@ -16,7 +16,9 @@ import org.activiti.engine.task.Task;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.BaseEntity;
+import org.wxjs.les.common.utils.Encodes;
 import org.wxjs.les.common.utils.StringUtils;
 import org.wxjs.les.common.utils.TimeUtils;
 import org.wxjs.les.modules.act.utils.Variable;
@@ -41,6 +43,8 @@ public class CaseAct extends BaseEntity<CaseAct> {
 
 	private String businessTable;	// 业务绑定Table
 	private String businessId;		// 业务绑定ID
+	
+	private String businesskey;
 	
 	private String title; 		// 任务标题
 
@@ -346,6 +350,14 @@ public class CaseAct extends BaseEntity<CaseAct> {
 		this.procDefKey = procDefKey;
 	}
 	
+	public String getBusinesskey() {
+		return businesskey;
+	}
+
+	public void setBusinesskey(String businesskey) {
+		this.businesskey = businesskey;
+	}
+
 	/**
 	 * 获取过去的任务历时
 	 * @return
@@ -389,6 +401,21 @@ public class CaseAct extends BaseEntity<CaseAct> {
 
 	public void setTcase(Tcase tcase) {
 		this.tcase = tcase;
+	}
+	
+	public String getParamUri(){
+		
+		StringBuilder formUrl = new StringBuilder();
+
+		formUrl.append("taskId=").append(this.getTaskId() != null ? this.getTaskId() : "");
+		formUrl.append("&taskName=").append(this.getTaskName() != null ? Encodes.urlEncode(this.getTaskName()) : "");
+		formUrl.append("&taskDefKey=").append(this.getTaskDefKey() != null ? this.getTaskDefKey() : "");
+		formUrl.append("&procInsId=").append(this.getProcInsId() != null ? this.getProcInsId() : "");
+		formUrl.append("&procDefId=").append(this.getProcDefId() != null ? this.getProcDefId() : "");
+		formUrl.append("&status=").append(this.getStatus() != null ? this.getStatus() : "");
+		formUrl.append("&businesskey=").append(this.getBusinesskey() != null ? this.getBusinesskey() : "");
+		
+		return formUrl.toString();
 	}
 
 }

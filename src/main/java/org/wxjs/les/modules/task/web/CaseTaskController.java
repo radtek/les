@@ -9,12 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.web.BaseController;
-
+import org.wxjs.les.modules.act.entity.Act;
 import org.wxjs.les.modules.sys.utils.UserUtils;
 import org.wxjs.les.modules.task.entity.CaseAct;
 import org.wxjs.les.modules.task.service.CaseTaskService;
+import org.wxjs.les.modules.task.utils.CaseActUtils;
 
 
 /**
@@ -60,6 +62,77 @@ public class CaseTaskController extends BaseController {
 			return renderString(response, page);
 		}
 		return "modules/task/actTaskHistoricList";
+	}
+	
+	/**
+	 * 获取流程表单
+	 * @param taskId	任务ID
+	 * @param taskName	任务名称
+	 * @param taskDefKey 任务环节标识
+	 * @param procInsId 流程实例ID
+	 * @param procDefId 流程定义ID
+	 */
+	@RequestMapping(value = "form")
+	public String form(CaseAct caseAct, HttpServletRequest request, Model model){
+		
+		// 获取流程XML上的表单KEY
+		//String formKey = actTaskService.getFormKey(caseAct.getProcDefId(), caseAct.getTaskDefKey());
+		
+		String formKey = "/case/tcase/infoTab";
+
+		// 获取流程实例对象
+		if (caseAct.getProcInsId() != null){
+			caseAct.setProcIns(actTaskService.getProcIns(caseAct.getProcInsId()));
+		}
+		
+		return "redirect:" + CaseActUtils.getFormUrl(formKey, caseAct);
+		
+//		// 传递参数到视图
+//		model.addAttribute("act", act);
+//		model.addAttribute("formUrl", formUrl);
+//		return "modules/act/actTaskForm";
+	}
+	
+	/**
+	 * 启动流程
+	 * @param procDefKey 流程定义KEY
+	 * @param businessTable 业务表表名
+	 * @param businessId	业务表编号
+	 */
+	@RequestMapping(value = "start")
+	@ResponseBody
+	public String start(Act act, String table, String id, Model model) throws Exception {
+		actTaskService.startProcess(act.getProcDefKey(), act.getBusinessId(), act.getBusinessTable(), act.getTitle());
+		return "true";//adminPath + "/act/task";
+	}
+
+	/**
+	 * 签收任务
+	 * @param taskId 任务ID
+	 */
+	@RequestMapping(value = "claim")
+	@ResponseBody
+	public String claim(Act act) {
+		String userId = UserUtils.getUser().getLoginName();//ObjectUtils.toString(UserUtils.getUser().getId());
+		actTaskService.claim(act.getTaskId(), userId);
+		return "true";//adminPath + "/act/task";
+	}
+	
+	/**
+	 * 完成任务
+	 * @param taskId 任务ID
+	 * @param procInsId 流程实例ID，如果为空，则不保存任务提交意见
+	 * @param comment 任务提交意见的内容
+	 * @param vars 任务流程变量，如下
+	 * 		vars.keys=flag,pass
+	 * 		vars.values=1,true
+	 * 		vars.types=S,B  @see org.wxjs.les.modules.act.utils.PropertyType
+	 */
+	@RequestMapping(value = "complete")
+	@ResponseBody
+	public String complete(Act act) {
+		actTaskService.complete(act.getTaskId(), act.getProcInsId(), act.getComment(), act.getVars().getVariableMap());
+		return "true";//adminPath + "/act/task";
 	}
 	
 
