@@ -29,11 +29,13 @@ public class CaseProcess extends DataEntity<CaseProcess> {
 	private String caseStage;		// 事项类型
 	private String caseStageStatus;		// 事项类型状态
 	private String procInstId;		// 受理流程号
-	
+
 	private List<User> availableHandlers = Lists.newArrayList();
 	private boolean multiple = false;
 	
 	private String procDefId;		// 流程定义号
+	
+	private String executionId;		// 执行号
 	
 	public CaseProcess() {
 		super();
@@ -164,6 +166,12 @@ public class CaseProcess extends DataEntity<CaseProcess> {
 		this.procDefId = procDefId;
 	}
 
+	public String getExecutionId() {
+		return executionId;
+	}
 
+	public void setExecutionId(String executionId) {
+		this.executionId = executionId;
+	}
 	
 }

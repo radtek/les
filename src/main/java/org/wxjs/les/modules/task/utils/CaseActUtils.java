@@ -142,7 +142,8 @@ public class CaseActUtils {
 		formUrl.append("&procDefId=").append(caseAct.getProcDefId() != null ? caseAct.getProcDefId() : "");
 		formUrl.append("&status=").append(caseAct.getStatus() != null ? caseAct.getStatus() : "");
 		formUrl.append("&id=").append(caseAct.getBusinessId() != null ? caseAct.getBusinessId() : "");
-		formUrl.append("&businesskey=").append(caseAct.getProcIns() != null ? caseAct.getProcIns().getBusinessKey() : "");
+		formUrl.append("&businesskey=").append(caseAct.getBusinesskey());
+		formUrl.append("&operateType=").append(caseAct.getOperateType());
 		
 		return formUrl.toString();
 	}

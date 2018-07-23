@@ -59,6 +59,7 @@ CREATE TABLE `tcase_process` (
   `case_stage` varchar(8) NULL COMMENT '事项类型',
   `case_stage_status` varchar(8) NULL COMMENT '事项类型状态',
   `proc_inst_id` varchar(64) NULL COMMENT '受理流程号',
+  `proc_def_id` varchar(64) NULL COMMENT '流程定义号',
   `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
   `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_by` varchar(32) DEFAULT NULL COMMENT '更新者',
@@ -262,3 +263,20 @@ CREATE TABLE `tsignature` (
   `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='签名库';
+
+-- ----------------------------
+-- Table structure for topinion_template
+-- ----------------------------
+DROP TABLE IF EXISTS `topinion_template`;
+CREATE TABLE `topinion_template` (
+  `id` int(11) NOT NULL auto_increment  COMMENT '编号',
+  `opinion` varchar(100) NOT NULL COMMENT '常用批语',
+  `sort` decimal(10,0) DEFAULT NULL COMMENT '排序（升序）',
+  `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_by` varchar(32) DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  `remarks` varchar(64) DEFAULT NULL COMMENT '备注信息',
+  `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='常用批语';

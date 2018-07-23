@@ -12,7 +12,7 @@
 
 	<ul class="nav nav-tabs tabText">
 		<li <c:if test="${empty tab || tab eq 'info'}">class="active"</c:if> ><a href="${ctx}/case/tcase/infoTab?${caseActAttr.paramUri}">基本信息</a></li>
-		<c:if test="${not empty caseActAttr.tcase.id}">
+		<c:if test="${not empty caseActAttr.tcase.id and caseActAttr.operateType ne 'start'}">
 		<li <c:if test="${tab eq 'attach'}">class="active"</c:if>><a href="${ctx}/case/tcase/attachTab?${caseActAttr.paramUri}">资料附件</a></li>
 		<li <c:if test="${tab eq 'process'}">class="active"</c:if>><a href="${ctx}/case/tcase/processTab?${caseActAttr.paramUri}">流程管理</a></li>		
 		</c:if>

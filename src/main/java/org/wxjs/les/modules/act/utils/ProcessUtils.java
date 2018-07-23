@@ -238,6 +238,46 @@ public class ProcessUtils {
 
 	}
 	
+	private String nextConditionTexts(ActivityImpl activityImpl,
+			String activityId, String processInstanceId) {
+		
+		String rst = "";
+		
+		StringBuffer buffer = new StringBuffer();
+
+		PvmActivity ac = null;
+
+		Object s = null;
+
+		// 获取节点所有流向线路信息
+		List<PvmTransition> outTransitions = activityImpl
+				.getOutgoingTransitions();
+		List<PvmTransition> outTransitionsTemp = null;
+		for (PvmTransition tr : outTransitions) {
+			ac = tr.getDestination(); // 获取线路的终点节点
+			
+			logger.debug("type:{}", ac.getProperty("type"));
+			
+			// 如果流向线路为排他网关
+			if ("exclusiveGateway".equals(ac.getProperty("type"))) {
+				outTransitionsTemp = ac.getOutgoingTransitions();
+
+				// 如果排他网关只有一条线路信息
+				for (PvmTransition tr1 : outTransitionsTemp) {
+					s = tr1.getProperty("conditionText"); // 获取排他网关线路判断条件信息
+					
+					buffer.append(s.toString()).append(",");
+				}
+				rst = buffer.toString();
+			} else {
+				rst = "";
+			}
+		}
+		
+		return rst;
+
+	}
+	
 	public String getConditionVariable(String taskId){
 
 		ProcessDefinitionEntity processDefinitionEntity = null;
@@ -287,6 +327,57 @@ public class ProcessUtils {
 		}
 
 		return variable;
+	}
+	
+	public String getConditionTexts(String taskId){
+
+		ProcessDefinitionEntity processDefinitionEntity = null;
+
+		String id = null;
+
+		String conditionTexts = "";
+
+		// 获取流程实例Id信息
+		
+		logger.debug("current taskId:{}", taskId);
+		
+		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+
+		processDefinitionEntity = (ProcessDefinitionEntity) ((RepositoryServiceImpl) repositoryService)
+				.getDeployedProcessDefinition(task.getProcessDefinitionId());
+
+		String excId = task.getExecutionId();
+
+		logger.debug("excId:{}", excId);
+
+		ExecutionEntity execution = (ExecutionEntity) runtimeService
+				.createExecutionQuery().executionId(excId).singleResult();
+
+		String activitiId = execution.getActivityId();
+
+		logger.debug("activitiId:{}", activitiId);
+
+		// 获取流程所有节点信息
+		List<ActivityImpl> activitiList = processDefinitionEntity
+				.getActivities();
+
+		// 遍历所有节点信息
+		for (ActivityImpl activityImpl : activitiList) {
+			id = activityImpl.getId();
+
+			// 找到当前节点信息
+			if (activitiId.equals(id)) {
+
+				// 获取下一个节点信息
+				conditionTexts = nextConditionTexts(activityImpl, activityImpl.getId(), task.getProcessInstanceId());
+				
+				logger.debug("variable:{}", conditionTexts);
+
+				break;
+			}
+		}
+
+		return conditionTexts;
 	}
 
 	/**
@@ -339,7 +430,7 @@ public class ProcessUtils {
 				// 获取下一个节点信息
 				taskDef = nextTaskDefinition(activityImpl, activityImpl.getId(), task.getProcessInstanceId());
 				
-				logger.debug("taskDef.getKey():{}", taskDef.getKey());
+				logger.debug("taskDef.getKey():{}", taskDef!=null?taskDef.getKey():"");
 
 				break;
 			}

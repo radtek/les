@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.activiti.engine.history.HistoricActivityInstance;
+import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -72,6 +73,8 @@ public class CaseAct extends BaseEntity<CaseAct> {
 	private List<CaseAct> list; // 任务列表
 	
 	private Tcase tcase;
+	
+	private String operateType;
 
 	public CaseAct() {
 		super();
@@ -403,6 +406,14 @@ public class CaseAct extends BaseEntity<CaseAct> {
 		this.tcase = tcase;
 	}
 	
+	public String getOperateType() {
+		return operateType;
+	}
+
+	public void setOperateType(String operateType) {
+		this.operateType = operateType;
+	}
+
 	public String getParamUri(){
 		
 		StringBuilder formUrl = new StringBuilder();
@@ -414,7 +425,7 @@ public class CaseAct extends BaseEntity<CaseAct> {
 		formUrl.append("&procDefId=").append(this.getProcDefId() != null ? this.getProcDefId() : "");
 		formUrl.append("&status=").append(this.getStatus() != null ? this.getStatus() : "");
 		formUrl.append("&businesskey=").append(this.getBusinesskey() != null ? this.getBusinesskey() : "");
-		
+		formUrl.append("&operateType=").append(this.getOperateType());
 		return formUrl.toString();
 	}
 

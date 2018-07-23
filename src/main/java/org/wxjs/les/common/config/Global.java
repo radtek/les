@@ -233,6 +233,12 @@ public class Global {
     public static final String GROUP_caseCancelProcess3 = "zdfzr";
     public static final String GROUP_caseCancelProcess4 = "jld";
     
+    public static final String OperateType_Handle = "handle";
+    public static final String OperateType_View = "view";
+    public static final String OperateType_Start = "start";
+    
+    public static final String SignatureTag = "#SiG#";
+    
     public static final String DecimalFormat = "#.##";
 	
 }

@@ -32,7 +32,7 @@
 				<form:input path="orgName" htmlEscape="false" maxlength="100" class="input-medium"/>
 			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
-			<input class="btn btn-primary" type="button" value="启动新案件 " onclick="window.location.href='${ctx}/case/tcase/toNew'"/>
+			<input class="btn btn-primary" type="button" value="启动新案件 " onclick="window.location.href='${ctx}/case/tcase/toStartAcceptance'"/>
 			</li>
 			<li class="clearfix"></li>
 		</ul>

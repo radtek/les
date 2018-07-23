@@ -174,9 +174,13 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 		
 		//init process
 		if(isNew){
-			CaseProcess caseProcess = new CaseProcess();
-			caseProcess.setCaseId(tcase.getId());
-			caseProcessDao.initProcess(caseProcess);
+			tcase.getCaseProcess().setCaseId(tcase.getId());
+			
+			//save case process
+			caseProcessDao.insert(tcase.getCaseProcess());
+			
+			//初始化
+			caseProcessDao.initProcessExcludeAcceptance(tcase.getCaseProcess());
 			
 
 			/*
@@ -226,8 +230,10 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 		
 		//set process instance id
 		String procInstId = instance.getId();
+		String procDefId = instance.getProcessDefinitionId();
 		tcase.getCaseProcess().setProcInstId(procInstId);
-		caseProcessDao.updateProcInstId(tcase.getCaseProcess());
+		tcase.getCaseProcess().setProcDefId(procDefId);
+		caseProcessDao.updateProcInfo(tcase.getCaseProcess());
 		
 		return instance;		
 	}

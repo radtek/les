@@ -83,7 +83,7 @@
 						</c:if>
 						<c:if test="${not empty task.assignee}"><%--
 							<a href="${ctx}${procExecUrl}/exec/${task.taskDefinitionKey}?procInsId=${task.processInstanceId}&act.taskId=${task.id}">办理</a> --%>
-							<a href="${ctx}/task/form?taskId=${task.id}&taskName=${fns:urlEncode(task.name)}&taskDefKey=${task.taskDefinitionKey}&procInsId=${task.processInstanceId}&procDefId=${task.processDefinitionId}&status=${status}">任务办理</a>
+							<a href="${ctx}/task/form?taskId=${task.id}&taskName=${fns:urlEncode(task.name)}&taskDefKey=${task.taskDefinitionKey}&procInsId=${task.processInstanceId}&procDefId=${task.processDefinitionId}&status=${status}&operateType=handle&businesskey=${act.businesskey}">任务办理</a>
 						</c:if>
 						<shiro:hasPermission name="act:process:edit">
 							<c:if test="${empty task.executionId}">

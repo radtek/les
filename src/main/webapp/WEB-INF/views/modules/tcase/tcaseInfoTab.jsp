@@ -54,6 +54,8 @@
     	
 	<form:form id="inputForm" modelAttribute="caseAct" action="${ctx}/case/tcase/save" method="post" class="form-horizontal">
 		<form:hidden path="tcase.id"/>
+		
+		<form:hidden path="operateType"/>
 
 		<sys:message content="${message}"/>	
 		
@@ -295,35 +297,35 @@
 		        </div>
 		    </div>
 		</div>
-		
-		<!--  
-		<c:if test="${not empty tcase.id && not empty tcase.caseProcess.id}">
+		 
+		<c:if test="${caseAct.operateType eq 'start' }">
 
 		<div class="control-group container-fluid nopadding">
 			<div class="row-fluid">
 				<div class="span12">		
 			<label class="control-label">案情摘要：</label>
 			<div class="controls controls-tight">
-			    <form:hidden path="caseProcess.id"/>
-			    <form:hidden path="caseProcess.caseId"/>
-			    <form:hidden path="caseProcess.caseStage"/>
-			    <form:hidden path="caseProcess.caseStageStatus"/>
-				<form:textarea path="caseProcess.caseSummary" htmlEscape="false"  style="width:800px;height:80px;" class="required"/>
+			    <form:hidden path="tcase.caseProcess.id"/>
+			    <form:hidden path="tcase.caseProcess.caseId"/>
+			    <form:hidden path="tcase.caseProcess.caseStage"/>
+			    <form:hidden path="tcase.caseProcess.caseStageStatus"/>
+				<form:textarea path="tcase.caseProcess.caseSummary" htmlEscape="false"  style="width:800px;height:80px;" class="required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		        </div>
 		    </div>
 		</div>
+		</c:if>
 		
 		
-		<c:if test="${operateType eq 'start' or operateType eq 'handle' }">
+		<c:if test="${caseAct.operateType eq 'start' }">
 		<div class="control-group container-fluid nopadding">
 			<div class="row-fluid">
 				<div class="span12">		
 			<label class="control-label">办案人：</label>
 			<div class="controls controls-tight">
 			    
-		       <form:checkboxes path="caseProcess.caseHandlerList" items="${tcase.caseProcess.availableHandlers}" itemLabel="name" itemValue="loginName" htmlEscape="false" class="required"/>
+		       <form:checkboxes path="tcase.caseProcess.caseHandlerList" items="${caseAct.tcase.caseProcess.availableHandlers}" itemLabel="name" itemValue="loginName" htmlEscape="false" class="required"/>
 		       <span class="help-inline"><font color="red">*</font> </span>			              			
 				
 			</div>
@@ -331,31 +333,13 @@
 		    </div>
 		</div>	
 		
-		</c:if>
-		<c:if test="${operateType ne 'start' and operateType ne 'handle' }">
-		<div class="control-group container-fluid nopadding">
-			<div class="row-fluid">
-				<div class="span12">		
-			<label class="control-label">办案人：</label>
-			<div class="controls controls-tight">
-			   <form:hidden path="caseProcess.caseHandler"/>
-		       ${tcase.caseProcess.caseHandlerName} 		              			
-				
-			</div>
-		        </div>
-		    </div>
-		</div>	
-		
-		</c:if>		
-		
-		
-		</c:if>
-		
-		-->
-		
+		</c:if>	
 		
 		<div class="form-actions">
 			<shiro:hasPermission name="case:tcase:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;
+			<c:if test="${caseAct.operateType eq 'start'}">
+			   <input id="btnStart" class="btn btn-primary" type="button" value="启动事件"/>&nbsp;
+			</c:if>
 			</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>

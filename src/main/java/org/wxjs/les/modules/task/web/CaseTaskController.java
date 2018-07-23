@@ -5,11 +5,14 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.web.BaseController;
 import org.wxjs.les.modules.act.entity.Act;
@@ -81,11 +84,26 @@ public class CaseTaskController extends BaseController {
 		String formKey = "/case/tcase/infoTab";
 
 		// 获取流程实例对象
+		/*
 		if (caseAct.getProcInsId() != null){
-			caseAct.setProcIns(actTaskService.getProcIns(caseAct.getProcInsId()));
+
+			String stageStatus = caseAct.getTcase().getCaseProcess().getCaseStageStatus();
+			if(Global.CASE_STAGE_STATUS_STARTED.equals(stageStatus)){
+				ProcessInstance pi = actTaskService.getProcIns(caseAct.getProcInsId());
+				caseAct.setBusinesskey(pi.getBusinessKey());
+			}else if(Global.CASE_STAGE_STATUS_FINISHED.equals(stageStatus)
+				  || Global.CASE_STAGE_STATUS_CANCELED.equals(stageStatus)){
+				HistoricProcessInstance hpi = actTaskService.getHisProcIns(caseAct.getProcInsId());
+				caseAct.setBusinesskey(hpi.getBusinessKey());
+			}
 		}
+		*/
 		
-		return "redirect:" + CaseActUtils.getFormUrl(formKey, caseAct);
+		String formUrl = CaseActUtils.getFormUrl(formKey, caseAct);
+		
+		logger.debug("formUrl:{}", formUrl);
+		
+		return "redirect:" + formUrl;
 		
 //		// 传递参数到视图
 //		model.addAttribute("act", act);

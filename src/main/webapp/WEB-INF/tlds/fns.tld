@@ -246,10 +246,10 @@
   
   <function>
     <description>获取抵扣项列表</description>
-    <name>getDeductionItems</name>
+    <name>getOpinionTemplates</name>
     <function-class>org.wxjs.les.modules.base.utils.BaseUtils</function-class>
-    <function-signature>java.lang.List getDeductionItems()</function-signature>
-    <example>${fns:getDeductionItems()}</example>  
+    <function-signature>java.lang.List getOpinionTemplates()</function-signature>
+    <example>${fns:getOpinionTemplates()}</example>  
   </function>  
   
   <function>

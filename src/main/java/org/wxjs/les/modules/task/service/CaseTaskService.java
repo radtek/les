@@ -149,7 +149,7 @@ public class CaseTaskService extends BaseService {
 			
 			String businesskey = processInstance.getBusinessKey();
 			
-			e.setBusinessId(businesskey);
+			e.setBusinesskey(businesskey);
 			
 			logger.debug("businesskey:{}", businesskey);
 			
@@ -238,7 +238,7 @@ public class CaseTaskService extends BaseService {
 			
 			String businesskey = processInstance.getBusinessKey();
 			
-			e.setBusinessId(businesskey);
+			e.setBusinesskey(businesskey);
 			
 			logger.debug("businesskey:{}", businesskey);
 			
@@ -408,6 +408,16 @@ public class CaseTaskService extends BaseService {
 	@Transactional(readOnly = false)
 	public ProcessInstance getProcIns(String procInsId) {
 		return runtimeService.createProcessInstanceQuery().processInstanceId(procInsId).singleResult();
+	}
+	
+	/**
+	 * 获取流程实例对象
+	 * @param procInsId
+	 * @return
+	 */
+	@Transactional(readOnly = false)
+	public HistoricProcessInstance getHisProcIns(String procInsId) {
+		return this.historyService.createHistoricProcessInstanceQuery().processInstanceId(procInsId).singleResult();
 	}
 
 	/**

@@ -19,13 +19,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
+import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.web.BaseController;
 import org.wxjs.les.modules.act.entity.Act;
 import org.wxjs.les.modules.act.service.ActTaskService;
 import org.wxjs.les.modules.act.utils.ActUtils;
 import org.wxjs.les.modules.sys.utils.UserUtils;
+
+import com.google.common.collect.Lists;
 
 /**
  * 流程个人任务相关Controller
@@ -79,8 +81,22 @@ public class ActTaskController extends BaseController {
 	 */
 	@RequestMapping(value = "histoicFlow")
 	public String histoicFlow(Act act, String startAct, String endAct, Model model){
+		
+		logger.debug("act.getProcInsId():{}", act.getProcInsId());
+		
 		if (StringUtils.isNotBlank(act.getProcInsId())){
 			List<Act> histoicFlowList = actTaskService.histoicFlowList(act.getProcInsId(), startAct, endAct);
+			for(Act entity : histoicFlowList){
+				String comment = entity.getComment();
+				if(comment==null){
+					continue;
+				}
+				int sigTagIndex = comment.indexOf(Global.SignatureTag);
+				if(sigTagIndex>-1){
+					comment = comment.substring(0, sigTagIndex);
+					entity.setComment(comment);
+				}
+			}
 			model.addAttribute("histoicFlowList", histoicFlowList);
 		}
 		return "modules/act/actTaskHistoricFlow";

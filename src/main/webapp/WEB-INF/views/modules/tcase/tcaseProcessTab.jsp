@@ -18,27 +18,26 @@
     <les:caseSummary caseAttr="${caseAct.tcase}"></les:caseSummary>	
     
     <les:caseTab tab="process" caseActAttr="${caseAct}"></les:caseTab>  
-    
-    <c:if test="${not empty caseAct.task}">
-    <h5>&nbsp;流程处理</h5>
+
     <c:choose>
-       <c:when test="${caseAct.tcase.caseProcess.caseStageStatus eq '0'}">
-         <les:processStartTag handleAction="${ctx}/case/tcase/startWorkFlow"></les:processStartTag>
-       </c:when>
+    
        <c:when test="${caseAct.tcase.caseProcess.caseStageStatus eq '1' and not empty caseAct.task}">
-         <les:processHandleTag handleAction="${ctx}/case/tcase/handletask" taskId="${caseAct.task.id}" availableHandlers="${caseAct.tcase.caseProcess.availableHandlers}"></les:processHandleTag>
+         <h5>&nbsp;流程处理</h5>
+         <les:processHandleTag handleAction="${ctx}/case/tcase/handletask" taskId="${caseAct.task.id}" procInsId="${caseAct.procInsId}"
+         availableHandlers="${caseAct.tcase.caseProcess.availableHandlers}" 
+         actTaskAttr="${actTask}" >
+         </les:processHandleTag>
        </c:when>       
        <c:otherwise>
        </c:otherwise>
     </c:choose>    
-    </c:if> 
     
     <h5>&nbsp;处罚流程</h5>
 	<table id="contentTable" class="table table-striped table-bordered table-condensed" style="width:70%">
 		<thead>
 			<tr>
 			    <th width="5%">序号</th>
-			    <th width="55%">流程阶段</th>
+			    <th width="55%">事件名称</th>
 				<th width="20%">状态</th>
 				<th width="20%">操作</th>
 			</tr>
@@ -51,10 +50,14 @@
 				<td>${fns:getDictLabel(process.caseStageStatus, 'case_stage_status', '')}</td>	
 				<td>
 				<c:if test="${process.caseStageStatus eq '0'}">
-				  <a href="">启动</a>
+				  <a href="${ctx}/case/tcase/toStart?businesskey=${caseAct.tcase.id}:${process.id}">启动</a>
 				</c:if>
 				<c:if test="${not empty process.procInstId}">
+				  <!-- 		 
 				  <a target="_blank" href="${pageContext.request.contextPath}/act/diagram-viewer?processDefinitionId=${process.procDefId}&processInstanceId=${process.procInstId}">跟踪</a>&nbsp;
+				  -->
+				  <a target="_blank" href="${ctx}/common/activiti/toProcTrack?procDefId=${process.procDefId}&procInsId=${process.procInstId}&executionId=">跟踪</a>&nbsp;
+
 				</c:if>
 				<c:if test="${process.caseStageStatus eq '2'}">
 				  <a href="">修改办理时间</a>
@@ -70,7 +73,7 @@
 		<thead>
 			<tr>
 			    <th width="5%">序号</th>
-			    <th width="55%">流程阶段</th>
+			    <th width="55%">事件名称</th>
 				<th width="20%">状态</th>
 				<th width="20%">操作</th>
 			</tr>
@@ -83,10 +86,14 @@
 				<td>${fns:getDictLabel(process.caseStageStatus, 'case_stage_status', '')}</td>	
 				<td>
 				<c:if test="${process.caseStageStatus eq '0'}">
-				  <a href="">启动</a>
+				  <a href="${ctx}/case/tcase/toStart?businesskey=${caseAct.tcase.id}:${process.id}">启动</a>
 				</c:if>
 				<c:if test="${not empty process.procInstId}">
+ <!--
 				  <a target="_blank" href="${pageContext.request.contextPath}/act/diagram-viewer?processDefinitionId=${process.procDefId}&processInstanceId=${process.procInstId}">跟踪</a>&nbsp;
+	  -->			  
+				  <a target="_blank" href="${ctx}/common/activiti/toProcTrack?procDefId=${process.procDefId}&procInsId=${process.procInstId}&executionId=">跟踪</a>&nbsp;
+				
 				</c:if>
 				<c:if test="${process.caseStageStatus eq '2'}">
 				  <a href="">修改办理时间</a>

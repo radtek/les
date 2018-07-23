@@ -59,7 +59,7 @@
 				<c:set var="status" value="${act.status}" />
 				<tr>
 				    <td>
-                        <a href="${ctx}/task/form?taskId=${task.id}&taskName=${fns:urlEncode(task.name)}&taskDefKey=${task.taskDefinitionKey}&procInsId=${task.processInstanceId}&procDefId=${task.processDefinitionId}&status=${status}">${tcase.caseSeq}</a>				    
+                        ${tcase.caseSeq}				    
 				    </td>
 				    <td>${tcase.party}</td>
 				    <td>${tcase.projectNameShort}</td>
@@ -73,7 +73,7 @@
 					<td>${procDef.name}</td>
 					<td><fmt:formatDate value="${task.endTime}" type="both"/></td>
 					<td>
-						<a href="${ctx}/task/form?taskId=${task.id}&taskName=${fns:urlEncode(task.name)}&taskDefKey=${task.taskDefinitionKey}&procInsId=${task.processInstanceId}&procDefId=${task.processDefinitionId}&status=${status}">详情</a>
+						<a href="${ctx}/task/form?taskId=${task.id}&taskName=${fns:urlEncode(task.name)}&taskDefKey=${task.taskDefinitionKey}&procInsId=${task.processInstanceId}&procDefId=${task.processDefinitionId}&status=${status}&businesskey=${act.businesskey}">详情</a>
 					</td>
 				</tr>
 			</c:forEach>
