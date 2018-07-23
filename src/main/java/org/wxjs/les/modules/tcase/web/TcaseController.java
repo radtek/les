@@ -178,6 +178,13 @@ public class TcaseController extends BaseController {
 	}
 	
 	@RequiresPermissions("case:tcase:view")
+	@RequestMapping(value = "toView")
+	public String toView(CaseAct caseAct, Model model) {
+		caseAct.setOperateType("view");
+		return "redirect:"+Global.getAdminPath()+"/case/tcase/infoTab?"+caseAct.getParamUri();
+	}
+	
+	@RequiresPermissions("case:tcase:view")
 	@RequestMapping(value = "toHandle")
 	public String toHandle(CaseAct caseAct, Model model) {
 
@@ -286,6 +293,10 @@ public class TcaseController extends BaseController {
 			actTask.initialSignature();
 			
 			actTask.setTaskId(caseAct.getTaskId());
+			if(caseAct.getTask()!=null){
+				actTask.setTaskName(caseAct.getTask().getName());
+			}
+			
 			actTask.setProcInsId(caseAct.getTcase().getCaseProcess().getProcInstId());
 			
 			actTask.setNextHandlers(tcase.getCaseProcess().getCaseHandler());

@@ -2,8 +2,6 @@
 
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>	
 
-<%@ attribute name="taskId" type="java.lang.String" required="true" description="任务Id"%>
-<%@ attribute name="procInsId" type="java.lang.String" required="true" description="任务Id"%>
 <%@ attribute name="handleAction" type="java.lang.String" required="true" description="controller"%>
 <%@ attribute name="availableHandlers" type="java.util.List" required="true" description="下一环节处理人"%>
 <%@ attribute name="multiple" type="java.lang.Boolean" required="false" description="是否会签"%>
@@ -89,13 +87,14 @@
 	}
 
 	</script>
-<div class="borderedBox" style="width:90%; text-align:center; align:center;">
+<div class="borderedBox" style="width:90%; text-align:left; align:left;">
+    <h5>任务名称：${actTaskAttr.taskName}</h5>
 	<form:form id="approveForm" modelAttribute="actTask" action="${handleAction}" method="post" class="form-horizontal">
 
-	    <input id="taskId" name="taskId" type="hidden" value="${taskId}"/>
-	    <input id="procInsId" name="procInsId" type="hidden" value="${procInsId}"/>
+	    <input id="taskId" name="taskId" type="hidden" value="${actTaskAttr.taskId}"/>
+	    <input id="procInsId" name="procInsId" type="hidden" value="${actTaskAttr.procInsId}"/>
 	    <input id="approve" name="approve" type="hidden" value=""/>
-	    
+	              
 		<div class="control-group container-fluid nopadding">
 			<div class="row-fluid">
 				<div class="span6">		

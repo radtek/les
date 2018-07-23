@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef">
   <process id="caseCancelProcess4" name="撤销流程-局领导发起" isExecutable="true">
-    <endEvent id="sid-619AB5A8-D242-4294-AC3D-8211F3FCA239" name="���"></endEvent>
+    <endEvent id="sid-619AB5A8-D242-4294-AC3D-8211F3FCA239" name="End"></endEvent>
     <sequenceFlow id="sid-7C0ACA4E-17A1-4D47-9CE0-74C10096919C" name="通过" sourceRef="exclusivegateway1" targetRef="sid-619AB5A8-D242-4294-AC3D-8211F3FCA239">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${jldOp=='pass'}]]></conditionExpression>
     </sequenceFlow>
@@ -11,7 +11,7 @@
     <sequenceFlow id="flow6" name="取消" sourceRef="exclusivegateway1" targetRef="sid-619AB5A8-D242-4294-AC3D-8211F3FCA239">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${jldOp=='cancel'}]]></conditionExpression>
     </sequenceFlow>
-    <startEvent id="startevent3" name="��ʼ"></startEvent>
+    <startEvent id="startevent3" name="Start"></startEvent>
     <sequenceFlow id="flow9" sourceRef="startevent3" targetRef="usertask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_caseCancelProcess4">

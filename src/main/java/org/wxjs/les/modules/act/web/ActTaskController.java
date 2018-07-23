@@ -86,6 +86,8 @@ public class ActTaskController extends BaseController {
 		
 		if (StringUtils.isNotBlank(act.getProcInsId())){
 			List<Act> histoicFlowList = actTaskService.histoicFlowList(act.getProcInsId(), startAct, endAct);
+			
+			//filter signature info
 			for(Act entity : histoicFlowList){
 				String comment = entity.getComment();
 				if(comment==null){

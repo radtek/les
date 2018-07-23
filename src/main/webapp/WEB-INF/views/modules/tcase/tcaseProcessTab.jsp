@@ -23,7 +23,7 @@
     
        <c:when test="${caseAct.tcase.caseProcess.caseStageStatus eq '1' and not empty caseAct.task}">
          <h5>&nbsp;流程处理</h5>
-         <les:processHandleTag handleAction="${ctx}/case/tcase/handletask" taskId="${caseAct.task.id}" procInsId="${caseAct.procInsId}"
+         <les:processHandleTag handleAction="${ctx}/case/tcase/handletask"
          availableHandlers="${caseAct.tcase.caseProcess.availableHandlers}" 
          actTaskAttr="${actTask}" >
          </les:processHandleTag>
@@ -45,13 +45,19 @@
 		<tbody>
             <c:forEach items="${processlist}" var="process" varStatus="status">		
 			<tr>
+			
 			    <td>${status.index + 1}</td>
 				<td>${fns:getDictLabel(process.caseStage, 'case_stage', '')}</td>			
 				<td>${fns:getDictLabel(process.caseStageStatus, 'case_stage_status', '')}</td>	
 				<td>
 				<c:if test="${process.caseStageStatus eq '0'}">
+				  <c:if test="${allowStart eq true or process.caseStage eq '10'}">
 				  <a href="${ctx}/case/tcase/toStart?businesskey=${caseAct.tcase.id}:${process.id}">启动</a>
+				  </c:if>
 				</c:if>
+				<c:if test="${process.caseStageStatus eq '2' or process.caseStageStatus eq '9'}">
+				  <a href="${ctx}/case/tcase/toView?businesskey=${caseAct.tcase.id}:${process.id}">查看</a>
+				</c:if>				
 				<c:if test="${not empty process.procInstId}">
 				  <!-- 		 
 				  <a target="_blank" href="${pageContext.request.contextPath}/act/diagram-viewer?processDefinitionId=${process.procDefId}&processInstanceId=${process.procInstId}">跟踪</a>&nbsp;
@@ -64,6 +70,9 @@
 				</c:if>
 				</td>
 			</tr>
+
+			    <c:set var="allowStart" value="${process.caseStageStatus eq '2'}" />
+
 			</c:forEach>																	
 		</tbody>
 	</table>

@@ -12,7 +12,7 @@
 				<td class="tit" width="20%">事项类型：</td><td width="30%">${fns:getDictLabel(caseAttr.caseProcess.caseStage, 'case_stage', '')}</td>
 			</tr>	
 			<tr>
-				<td class="tit">当事人类型：</td><td>${fns:getDictLabel(caseAttr.caseProcess.caseStage, 'case_stage', '')}</td>
+				<td class="tit">当事人类型：</td><td>${fns:getDictLabel(caseAttr.partyType, 'party_type', '')}</td>
 				<td class="tit">名称：</td><td>${caseAttr.party}</td>
 			</tr>
 			<tr>

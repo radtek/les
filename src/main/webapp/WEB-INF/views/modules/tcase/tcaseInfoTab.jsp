@@ -72,7 +72,6 @@
 				<div class="span6">		
 			<label class="control-label">事项类型：</label>
 			<div class="controls controls-tight">
-				
 				${fns:getDictLabel(caseAct.tcase.caseProcess.caseStage, 'case_stage', '')}
 			</div>
 		        </div>

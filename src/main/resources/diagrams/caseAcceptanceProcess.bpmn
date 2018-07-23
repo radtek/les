@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef">
   <process id="caseAcceptanceProcess" name="案件受理流程" isExecutable="true">
-    <startEvent id="start" name="开始"></startEvent>
+    <startEvent id="start" name="Start"></startEvent>
     <userTask id="sid-8A4472D0-CDFC-42C4-808D-76FE57E55826" name="办案人意见" activiti:assignee="${assignee}" activiti:candidateGroups="jcbar">
       <multiInstanceLoopCharacteristics isSequential="false" activiti:collection="assigneeList" activiti:elementVariable="assignee"></multiInstanceLoopCharacteristics>
     </userTask>
@@ -14,7 +14,7 @@
     <userTask id="sid-E2AF9AE3-1D2C-42A8-A85F-9EE0317DB275" name="支队负责人审核" activiti:assignee="${zdfzrAssignee}" activiti:candidateGroups="zdfzr"></userTask>
     <exclusiveGateway id="sid-C47DC249-F311-4B69-A5E0-CF054BA1472F"></exclusiveGateway>
     <sequenceFlow id="sid-E0252BE5-CF9B-4E86-9A96-8346C9B9BAD7" sourceRef="sid-E2AF9AE3-1D2C-42A8-A85F-9EE0317DB275" targetRef="sid-C47DC249-F311-4B69-A5E0-CF054BA1472F"></sequenceFlow>
-    <endEvent id="sid-619AB5A8-D242-4294-AC3D-8211F3FCA239" name="结束"></endEvent>
+    <endEvent id="sid-619AB5A8-D242-4294-AC3D-8211F3FCA239" name="End"></endEvent>
     <sequenceFlow id="sid-7C0ACA4E-17A1-4D47-9CE0-74C10096919C" name="通过" sourceRef="sid-C47DC249-F311-4B69-A5E0-CF054BA1472F" targetRef="sid-619AB5A8-D242-4294-AC3D-8211F3FCA239">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${zdfzrOp=='pass'}]]></conditionExpression>
     </sequenceFlow>

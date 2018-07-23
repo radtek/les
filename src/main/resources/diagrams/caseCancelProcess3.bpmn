@@ -4,7 +4,7 @@
     <userTask id="sid-E2AF9AE3-1D2C-42A8-A85F-9EE0317DB275" name="支队负责人意见" activiti:assignee="${zdfzrAssignee}" activiti:candidateGroups="zdfzr"></userTask>
     <exclusiveGateway id="sid-C47DC249-F311-4B69-A5E0-CF054BA1472F"></exclusiveGateway>
     <sequenceFlow id="sid-E0252BE5-CF9B-4E86-9A96-8346C9B9BAD7" sourceRef="sid-E2AF9AE3-1D2C-42A8-A85F-9EE0317DB275" targetRef="sid-C47DC249-F311-4B69-A5E0-CF054BA1472F"></sequenceFlow>
-    <endEvent id="sid-619AB5A8-D242-4294-AC3D-8211F3FCA239" name="���"></endEvent>
+    <endEvent id="sid-619AB5A8-D242-4294-AC3D-8211F3FCA239" name="End"></endEvent>
     <sequenceFlow id="sid-7C0ACA4E-17A1-4D47-9CE0-74C10096919C" name="通过" sourceRef="exclusivegateway1" targetRef="sid-619AB5A8-D242-4294-AC3D-8211F3FCA239">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${jldOp=='pass'}]]></conditionExpression>
     </sequenceFlow>
@@ -23,7 +23,7 @@
     <sequenceFlow id="flow7" name="退回" sourceRef="exclusivegateway1" targetRef="sid-E2AF9AE3-1D2C-42A8-A85F-9EE0317DB275">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${jldOp=='return'}]]></conditionExpression>
     </sequenceFlow>
-    <startEvent id="startevent2" name="��ʼ"></startEvent>
+    <startEvent id="startevent2" name="Start"></startEvent>
     <sequenceFlow id="flow10" sourceRef="startevent2" targetRef="sid-E2AF9AE3-1D2C-42A8-A85F-9EE0317DB275"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_caseCancelProcess3">
