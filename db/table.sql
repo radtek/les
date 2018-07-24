@@ -119,9 +119,13 @@ DROP TABLE IF EXISTS `tcase_decision`;
 CREATE TABLE `tcase_decision` (
   `id` int(11) NOT NULL auto_increment  COMMENT '编号',
   `case_id` varchar(32) NOT NULL COMMENT '案件编号',
-  `notify_type` varchar(8) NOT NULL COMMENT '告知书类型',
+  `decision_type` varchar(8) NOT NULL COMMENT '决定书类型',
   `year` varchar(8) NOT NULL COMMENT '年份',
   `seq` varchar(8) NOT NULL COMMENT '流水号',
+  `record_org` varchar(64) NOT NULL COMMENT '备案单位',
+  `compile_date` varchar(64) NOT NULL COMMENT '拟稿日期',
+  `print_count` varchar(64) NOT NULL COMMENT '印数',
+  `destination_address` varchar(100) NULL COMMENT '送达地点',
   `party_name` varchar(100) NOT NULL COMMENT '名称',
   `content` text NOT NULL COMMENT '正文',
   `launch_dept` varchar(100) NOT NULL COMMENT '发证部门',
@@ -134,6 +138,72 @@ CREATE TABLE `tcase_decision` (
   `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='案件决定书';
+
+-- ----------------------------
+-- Table structure for tcase_handle
+-- ----------------------------
+DROP TABLE IF EXISTS `tcase_handle`;
+CREATE TABLE `tcase_handle` (
+  `id` int(11) NOT NULL auto_increment  COMMENT '编号',
+  `case_id` varchar(32) NOT NULL COMMENT '案件编号',
+  `punish_code` varchar(200) NULL COMMENT '行政处罚编码',
+  `legal_basis` varchar(200) NULL COMMENT '法律依据',
+  `legal_basis_content` varchar(200) NULL COMMENT '依据内容',
+  `discretion` varchar(200) NULL COMMENT '自由裁量权',
+  `punish_money` decimal(15,2) NULL COMMENT '实际罚款金额（元）',
+  `invest_report` text NULL COMMENT '案件调查报告内容',
+  `fact` text NULL COMMENT '案件事实经过及证据',
+  `investigator` varchar(64) DEFAULT NULL COMMENT '调查人',
+  `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_by` varchar(32) DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  `remarks` varchar(64) DEFAULT NULL COMMENT '备注信息',
+  `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='案件审理';
+
+-- ----------------------------
+-- Table structure for tcase_settle
+-- ----------------------------
+DROP TABLE IF EXISTS `tcase_settle`;
+CREATE TABLE `tcase_settle` (
+  `id` int(11) NOT NULL auto_increment  COMMENT '编号',
+  `case_id` varchar(32) NOT NULL COMMENT '案件编号',
+  `handle_summary` text NULL COMMENT '案件处理情况',
+  `execute_summary` text NULL COMMENT '案件执行情况',
+  `review_summary` text NULL COMMENT '案件复议情况',
+  `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_by` varchar(32) DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  `remarks` varchar(64) DEFAULT NULL COMMENT '备注信息',
+  `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='案件结案';
+
+-- ----------------------------
+-- Table structure for tcase_finish
+-- ----------------------------
+DROP TABLE IF EXISTS `tcase_finish`;
+CREATE TABLE `tcase_finish` (
+  `id` int(11) NOT NULL auto_increment  COMMENT '编号',
+  `total_page` int DEFAULT 0 COMMENT '合计页数',
+  `word_page` int DEFAULT 0 COMMENT '文字页数',
+  `diagram_page` int DEFAULT 0 COMMENT '图样页数',
+  `photo_page` int DEFAULT 0 COMMENT '照片页数',
+  `other_page` int DEFAULT 0 COMMENT '其他页数',
+  `case_id` varchar(32) NOT NULL COMMENT '案件编号',
+  `handle_summary` text NULL COMMENT '说明',
+  `finish_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '备考表时间',
+  `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_by` varchar(32) DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  `remarks` varchar(64) DEFAULT NULL COMMENT '备注信息',
+  `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='案件结束';
 
 -- ----------------------------
 -- Table structure for tsitecheck

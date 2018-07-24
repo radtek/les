@@ -47,6 +47,18 @@ VALUES
 ('process_type_11', 'caseSeriousProcess', '重大行政处罚流程', 'process_type', '流程类型', 110, '0','1',now(),'1',now()),
 ('process_type_12', 'caseCancelProcess', '撤销流程', 'process_type', '流程类型', 120, '0','1',now(),'1',now());
 
+delete from sys_dict where id like 'case_decision_type_%';
+INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `parent_id`, `create_by`,`create_date`,`update_by`,`update_date`) 
+VALUES 
+('case_decision_type_1', '1', '锡建监罚字', 'case_decision_type', 'case_decision_type', 10, '0','1',now(),'1',now()),
+('case_decision_type_2', '2', '锡建监不罚字', 'case_decision_type', 'case_decision_type', 20, '0','1',now(),'1',now());
+
+delete from sys_dict where id like 'case_notify_type_%';
+INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `parent_id`, `create_by`,`create_date`,`update_by`,`update_date`) 
+VALUES 
+('case_notify_type_1', '1', '锡建监权告字', 'case_notify_type', 'case_notify_type', 10, '0','1',now(),'1',now()),
+('case_notify_type_2', '2', '锡建监听告字', 'case_notify_type', 'case_notify_type', 20, '0','1',now(),'1',now());
+
 
 
 
