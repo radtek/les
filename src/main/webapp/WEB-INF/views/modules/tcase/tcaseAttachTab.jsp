@@ -13,9 +13,7 @@
 </head>
 <body>
 	<h3>案件管理</h3>
-    <div style="text-align:right;margin-right:30px;">
-        <input class="btn btn-primary" type="button" value="返回 " onclick="window.location.href='${ctx}/case/tcase/'"/>
-    </div>		
+	
     <les:caseSummary caseAttr="${caseAct.tcase}"></les:caseSummary>
 
     <les:caseTab tab="attach" caseActAttr="${caseAct}"></les:caseTab>  

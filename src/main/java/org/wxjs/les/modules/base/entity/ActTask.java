@@ -3,6 +3,7 @@ package org.wxjs.les.modules.base.entity;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.wxjs.les.common.utils.IdGen;
 
 public class ActTask {
@@ -124,7 +125,7 @@ public class ActTask {
 	}
 	
 	public boolean getNeedPassButton(){
-		return this.nextConditionTexts.contains("'pass'");
+		return StringUtils.isEmpty(this.nextConditionTexts) || this.nextConditionTexts.contains("'pass'");
 	}
 	
 	public boolean getNeedCancelButton(){

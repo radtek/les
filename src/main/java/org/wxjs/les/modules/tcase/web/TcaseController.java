@@ -42,10 +42,20 @@ import org.wxjs.les.modules.sys.service.SystemService;
 import org.wxjs.les.modules.task.entity.CaseAct;
 import org.wxjs.les.modules.task.service.CaseTaskService;
 import org.wxjs.les.modules.tcase.entity.CaseAttach;
+import org.wxjs.les.modules.tcase.entity.CaseDecision;
+import org.wxjs.les.modules.tcase.entity.CaseFinish;
+import org.wxjs.les.modules.tcase.entity.CaseHandle;
+import org.wxjs.les.modules.tcase.entity.CaseNotify;
 import org.wxjs.les.modules.tcase.entity.CaseProcess;
+import org.wxjs.les.modules.tcase.entity.CaseSettle;
 import org.wxjs.les.modules.tcase.entity.Tcase;
 import org.wxjs.les.modules.tcase.service.CaseAttachService;
+import org.wxjs.les.modules.tcase.service.CaseDecisionService;
+import org.wxjs.les.modules.tcase.service.CaseFinishService;
+import org.wxjs.les.modules.tcase.service.CaseHandleService;
+import org.wxjs.les.modules.tcase.service.CaseNotifyService;
 import org.wxjs.les.modules.tcase.service.CaseProcessService;
+import org.wxjs.les.modules.tcase.service.CaseSettleService;
 import org.wxjs.les.modules.tcase.service.TcaseService;
 import org.wxjs.les.modules.tcase.utils.ProcessCommonUtils;
 
@@ -67,10 +77,25 @@ public class TcaseController extends BaseController {
 	private TcaseService tcaseService;
 	
 	@Autowired
-	private CaseAttachService caseAttachService;
+	private CaseDecisionService caseDecisionService;
+	
+	@Autowired
+	private CaseNotifyService caseNotifyService;
+	
+	@Autowired
+	private CaseSettleService caseSettleService;
+	
+	@Autowired
+	private CaseFinishService caseFinishService;
+	
+	@Autowired
+	private CaseHandleService caseHandleService;
 	
 	@Autowired
 	private CaseProcessService caseProcessService;
+	
+	@Autowired
+	private CaseAttachService caseAttachService;
 	
 	@Autowired
 	IdentityService identityService;
@@ -141,6 +166,121 @@ public class TcaseController extends BaseController {
 		caseAct.setTcase(tcase);
 		
 		return "modules/tcase/tcaseInfoTab";
+	}
+	
+	@RequiresPermissions("case:tcase:view")
+	@RequestMapping(value = "handleTab")
+	public String handleTab(CaseAct caseAct, Model model) {
+		
+		String businesskey = caseAct.getBusinesskey();
+		
+		Tcase tcase = tcaseService.getCaseAndProcess(businesskey);
+		
+		logger.debug("businesskey:{}", businesskey);
+		
+		caseAct.setTcase(tcase);
+		
+		CaseHandle caseHandle = this.caseHandleService.get(tcase.getId());
+		
+		if(caseHandle==null){
+			caseHandle = CaseHandle.getInstance(tcase);
+		}
+		
+		model.addAttribute("caseHandle", caseHandle);
+		
+		return "modules/tcase/tcaseHandleTab";
+	}
+	
+	@RequiresPermissions("case:tcase:view")
+	@RequestMapping(value = "notifyTab")
+	public String notifyTab(CaseAct caseAct, Model model) {
+		
+		String businesskey = caseAct.getBusinesskey();
+		
+		Tcase tcase = tcaseService.getCaseAndProcess(businesskey);
+		
+		logger.debug("businesskey:{}", businesskey);
+		
+		caseAct.setTcase(tcase);
+		
+		CaseNotify caseNotify = this.caseNotifyService.get(tcase.getId());
+		
+		if(caseNotify==null){
+			caseNotify = CaseNotify.getInstance(tcase);
+		}
+		
+		model.addAttribute("caseNotify ", caseNotify );
+		
+		return "modules/tcase/tcaseDecisionTab";
+	}
+	
+	@RequiresPermissions("case:tcase:view")
+	@RequestMapping(value = "decisionTab")
+	public String decisionTab(CaseAct caseAct, Model model) {
+		
+		String businesskey = caseAct.getBusinesskey();
+		
+		Tcase tcase = tcaseService.getCaseAndProcess(businesskey);
+		
+		logger.debug("businesskey:{}", businesskey);
+		
+		caseAct.setTcase(tcase);
+		
+		CaseDecision caseDecision = this.caseDecisionService.get(tcase.getId());
+		
+		if(caseDecision==null){
+			caseDecision = CaseDecision.getInstance(tcase);
+		}
+		
+		model.addAttribute("caseDecision", caseDecision);
+		
+		return "modules/tcase/tcaseDecisionTab";
+	}
+	
+	@RequiresPermissions("case:tcase:view")
+	@RequestMapping(value = "settleTab")
+	public String settleTab(CaseAct caseAct, Model model) {
+		
+		String businesskey = caseAct.getBusinesskey();
+		
+		Tcase tcase = tcaseService.getCaseAndProcess(businesskey);
+		
+		logger.debug("businesskey:{}", businesskey);
+		
+		caseAct.setTcase(tcase);
+		
+		CaseSettle caseSettle = this.caseSettleService.get(tcase.getId());
+		
+		if(caseSettle==null){
+			caseSettle = CaseSettle.getInstance(tcase);
+		}
+		
+		model.addAttribute("caseSettle", caseSettle);
+		
+		return "modules/tcase/tcaseSettleTab";
+	}
+	
+	@RequiresPermissions("case:tcase:view")
+	@RequestMapping(value = "finishTab")
+	public String finishTab(CaseAct caseAct, Model model) {
+		
+		String businesskey = caseAct.getBusinesskey();
+		
+		Tcase tcase = tcaseService.getCaseAndProcess(businesskey);
+		
+		logger.debug("businesskey:{}", businesskey);
+		
+		caseAct.setTcase(tcase);
+		
+		CaseFinish caseFinish = this.caseFinishService.get(tcase.getId());
+		
+		if(caseFinish==null){
+			caseFinish = CaseFinish.getInstance(tcase);
+		}
+		
+		model.addAttribute("caseFinish", caseFinish);
+		
+		return "modules/tcase/tcaseFinishTab";
 	}
 	
 	@RequiresPermissions("case:tcase:view")

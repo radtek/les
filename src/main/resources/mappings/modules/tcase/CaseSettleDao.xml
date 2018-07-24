@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.wxjs.les.modules.tcase.dao.CaseNotifyDao">
+<mapper namespace="org.wxjs.les.modules.tcase.dao.CaseSettleDao">
     
-	<sql id="caseNotifyColumns">
+	<sql id="caseSettleColumns">
 		a.id AS "id",
 		a.case_id AS "caseId",
-		a.notify_type AS "notifyType",
-		a.year AS "year",
-		a.seq AS "seq",
-		a.party_name AS "partyName",
-		a.content AS "content",
-		a.launch_dept AS "launchDept",
-		a.launch_date AS "launchDate",
+		a.handle_summary AS "handleSummary",
+		a.execute_summary AS "executeSummary",
+		a.review_summary AS "reviewSummary",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -20,22 +16,22 @@
 		a.del_flag AS "delFlag"
 	</sql>
 	
-	<sql id="caseNotifyJoins">
+	<sql id="caseSettleJoins">
 	</sql>
     
-	<select id="get" resultType="CaseNotify">
+	<select id="get" resultType="CaseSettle">
 		SELECT 
-			<include refid="caseNotifyColumns"/>
-		FROM tcase_notify a
-		<include refid="caseNotifyJoins"/>
+			<include refid="caseSettleColumns"/>
+		FROM tcase_settle a
+		<include refid="caseSettleJoins"/>
 		WHERE case_id = #{caseId}
 	</select>
 	
-	<select id="findList" resultType="CaseNotify">
+	<select id="findList" resultType="CaseSettle">
 		SELECT 
-			<include refid="caseNotifyColumns"/>
-		FROM tcase_notify a
-		<include refid="caseNotifyJoins"/>
+			<include refid="caseSettleColumns"/>
+		FROM tcase_settle a
+		<include refid="caseSettleJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			<if test="caseId != null and caseId != ''">
@@ -52,11 +48,11 @@
 		</choose>
 	</select>
 	
-	<select id="findAllList" resultType="CaseNotify">
+	<select id="findAllList" resultType="CaseSettle">
 		SELECT 
-			<include refid="caseNotifyColumns"/>
-		FROM tcase_notify a
-		<include refid="caseNotifyJoins"/>
+			<include refid="caseSettleColumns"/>
+		FROM tcase_settle a
+		<include refid="caseSettleJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 		</where>		
@@ -71,15 +67,11 @@
 	</select>
 	
 	<insert id="insert">
-		INSERT INTO tcase_notify(
+		INSERT INTO tcase_settle(
 			case_id,
-			notify_type,
-			year,
-			seq,
-			party_name,
-			content,
-			launch_dept,
-			launch_date,
+			handle_summary,
+			execute_summary,
+			review_summary,
 			create_by,
 			create_date,
 			update_by,
@@ -88,13 +80,9 @@
 			del_flag
 		) VALUES (
 			#{caseId},
-			#{notifyType},
-			#{year},
-			#{seq},
-			#{partyName},
-			#{content},
-			#{launchDept},
-			#{launchDate},
+			#{handleSummary},
+			#{executeSummary},
+			#{reviewSummary},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -105,14 +93,10 @@
 	</insert>
 	
 	<update id="update">
-		UPDATE tcase_notify SET
-		    notify_type = #{notifyType},
-			year = #{year},
-			seq = #{seq},
-			party_name = #{partyName},
-			content = #{content},
-			launch_dept = #{launchDept},
-			launch_date = #{launchDate},
+		UPDATE tcase_settle SET
+			handle_summary = #{handleSummary},
+			execute_summary = #{executeSummary},
+			review_summary = #{reviewSummary},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks}
@@ -120,9 +104,9 @@
 	</update>
 	
 	<update id="delete">
-		UPDATE tcase_notify SET 
+		UPDATE tcase_settle SET 
 			del_flag = #{DEL_FLAG_DELETE}
-		WHERE id = #{caseId}
+		WHERE id = #{id}
 	</update>
 	
 </mapper>

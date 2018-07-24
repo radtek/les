@@ -5,14 +5,14 @@ package org.wxjs.les.modules.tcase.dao;
 
 import org.wxjs.les.common.persistence.CrudDao;
 import org.wxjs.les.common.persistence.annotation.MyBatisDao;
-import org.wxjs.les.modules.tcase.entity.CaseDecision;
+import org.wxjs.les.modules.tcase.entity.CaseFinish;
 
 /**
- * 案件决定书DAO接口
+ * 案件结束DAO接口
  * @author GLQ
  * @version 2018-07-24
  */
 @MyBatisDao
-public interface CaseDecisionDao extends CrudDao<CaseDecision> {
+public interface CaseFinishDao extends CrudDao<CaseFinish> {
 	
 }

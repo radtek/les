@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.wxjs.les.modules.tcase.dao.CaseNotifyDao">
+<mapper namespace="org.wxjs.les.modules.tcase.dao.CaseFinishDao">
     
-	<sql id="caseNotifyColumns">
+	<sql id="caseFinishColumns">
 		a.id AS "id",
+		a.total_page AS "totalPage",
+		a.word_page AS "wordPage",
+		a.diagram_page AS "diagramPage",
+		a.photo_page AS "photoPage",
+		a.other_page AS "otherPage",
 		a.case_id AS "caseId",
-		a.notify_type AS "notifyType",
-		a.year AS "year",
-		a.seq AS "seq",
-		a.party_name AS "partyName",
-		a.content AS "content",
-		a.launch_dept AS "launchDept",
-		a.launch_date AS "launchDate",
+		a.handle_summary AS "handleSummary",
+		a.finish_date AS "finishDate",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -20,26 +20,26 @@
 		a.del_flag AS "delFlag"
 	</sql>
 	
-	<sql id="caseNotifyJoins">
+	<sql id="caseFinishJoins">
 	</sql>
     
-	<select id="get" resultType="CaseNotify">
+	<select id="get" resultType="CaseFinish">
 		SELECT 
-			<include refid="caseNotifyColumns"/>
-		FROM tcase_notify a
-		<include refid="caseNotifyJoins"/>
+			<include refid="caseFinishColumns"/>
+		FROM tcase_finish a
+		<include refid="caseFinishJoins"/>
 		WHERE case_id = #{caseId}
 	</select>
 	
-	<select id="findList" resultType="CaseNotify">
+	<select id="findList" resultType="CaseFinish">
 		SELECT 
-			<include refid="caseNotifyColumns"/>
-		FROM tcase_notify a
-		<include refid="caseNotifyJoins"/>
+			<include refid="caseFinishColumns"/>
+		FROM tcase_finish a
+		<include refid="caseFinishJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
-			<if test="caseId != null and caseId != ''">
-				AND a.case_id = #{caseId}
+			<if test="totalPage != null and totalPage != ''">
+				AND a.total_page = #{totalPage}
 			</if>
 		</where>
 		<choose>
@@ -52,11 +52,11 @@
 		</choose>
 	</select>
 	
-	<select id="findAllList" resultType="CaseNotify">
+	<select id="findAllList" resultType="CaseFinish">
 		SELECT 
-			<include refid="caseNotifyColumns"/>
-		FROM tcase_notify a
-		<include refid="caseNotifyJoins"/>
+			<include refid="caseFinishColumns"/>
+		FROM tcase_finish a
+		<include refid="caseFinishJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 		</where>		
@@ -71,15 +71,15 @@
 	</select>
 	
 	<insert id="insert">
-		INSERT INTO tcase_notify(
+		INSERT INTO tcase_finish(
+			total_page,
+			word_page,
+			diagram_page,
+			photo_page,
+			other_page,
 			case_id,
-			notify_type,
-			year,
-			seq,
-			party_name,
-			content,
-			launch_dept,
-			launch_date,
+			handle_summary,
+			finish_date,
 			create_by,
 			create_date,
 			update_by,
@@ -87,14 +87,14 @@
 			remarks,
 			del_flag
 		) VALUES (
+			#{totalPage},
+			#{wordPage},
+			#{diagramPage},
+			#{photoPage},
+			#{otherPage},
 			#{caseId},
-			#{notifyType},
-			#{year},
-			#{seq},
-			#{partyName},
-			#{content},
-			#{launchDept},
-			#{launchDate},
+			#{handleSummary},
+			#{finishDate},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -105,14 +105,15 @@
 	</insert>
 	
 	<update id="update">
-		UPDATE tcase_notify SET
-		    notify_type = #{notifyType},
-			year = #{year},
-			seq = #{seq},
-			party_name = #{partyName},
-			content = #{content},
-			launch_dept = #{launchDept},
-			launch_date = #{launchDate},
+		UPDATE tcase_finish SET 	
+			total_page = #{totalPage},
+			word_page = #{wordPage},
+			diagram_page = #{diagramPage},
+			photo_page = #{photoPage},
+			other_page = #{otherPage},
+			case_id = #{caseId},
+			handle_summary = #{handleSummary},
+			finish_date = #{finishDate},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks}
@@ -120,9 +121,9 @@
 	</update>
 	
 	<update id="delete">
-		UPDATE tcase_notify SET 
+		UPDATE tcase_finish SET 
 			del_flag = #{DEL_FLAG_DELETE}
-		WHERE id = #{caseId}
+		WHERE id = #{id}
 	</update>
 	
 </mapper>

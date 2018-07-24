@@ -12,6 +12,13 @@
 
 	<ul class="nav nav-tabs tabText">
 		<li <c:if test="${empty tab || tab eq 'info'}">class="active"</c:if> ><a href="${ctx}/case/tcase/infoTab?${caseActAttr.paramUri}">基本信息</a></li>
+		
+		<li <c:if test="${tab eq 'handle'}">class="active"</c:if>><a href="${ctx}/case/tcase/handleTab?${caseActAttr.paramUri}">案件审理</a></li>
+		<li <c:if test="${tab eq 'notify'}">class="active"</c:if>><a href="${ctx}/case/tcase/notifyTab?${caseActAttr.paramUri}">告知书</a></li>
+		<li <c:if test="${tab eq 'decision'}">class="active"</c:if>><a href="${ctx}/case/tcase/decisionTab?${caseActAttr.paramUri}">决定书</a></li>
+		<li <c:if test="${tab eq 'settle'}">class="active"</c:if>><a href="${ctx}/case/tcase/settleTab?${caseActAttr.paramUri}">结案书</a></li>
+		<li <c:if test="${tab eq 'finish'}">class="active"</c:if>><a href="${ctx}/case/tcase/finishTab?${caseActAttr.paramUri}">案件结束</a></li>
+		
 		<c:if test="${not empty caseActAttr.tcase.id and caseActAttr.operateType ne 'start'}">
 		<li <c:if test="${tab eq 'attach'}">class="active"</c:if>><a href="${ctx}/case/tcase/attachTab?${caseActAttr.paramUri}">资料附件</a></li>
 		<li <c:if test="${tab eq 'process'}">class="active"</c:if>><a href="${ctx}/case/tcase/processTab?${caseActAttr.paramUri}">流程管理</a></li>		

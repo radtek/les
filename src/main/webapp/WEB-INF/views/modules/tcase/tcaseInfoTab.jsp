@@ -43,9 +43,7 @@
 </head>
 <body>
 	<h3>案件管理</h3>
-    <div style="text-align:right;margin-right:30px;">
-        <input class="btn btn-primary" type="button" value="返回 " onclick="window.location.href='${ctx}/case/tcase/'"/>
-    </div>	
+	
     <c:if test="${not empty caseAct.tcase.id}">
     <les:caseSummary caseAttr="${caseAct.tcase}"></les:caseSummary>
     </c:if>

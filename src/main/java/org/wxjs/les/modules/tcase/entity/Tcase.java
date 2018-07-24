@@ -59,6 +59,12 @@ public class Tcase extends DataEntity<Tcase> {
 	
 	private List<CaseProcess> currentCaseProcesses = Lists.newArrayList(); //当前process
 	
+	private CaseHandle caseHandle;
+	private CaseNotify caseNotify;
+	private CaseDecision caseDecision;
+	private CaseSettle caseSettle;
+	private CaseFinish caseFinish;
+	
 	//-- 临时属性 --//
 	// 流程任务
 	private Task task;
@@ -281,6 +287,46 @@ public class Tcase extends DataEntity<Tcase> {
 
 	public void setCaseCause(String caseCause) {
 		this.caseCause = caseCause;
+	}
+
+	public CaseHandle getCaseHandle() {
+		return caseHandle;
+	}
+
+	public void setCaseHandle(CaseHandle caseHandle) {
+		this.caseHandle = caseHandle;
+	}
+
+	public CaseNotify getCaseNotify() {
+		return caseNotify;
+	}
+
+	public void setCaseNotify(CaseNotify caseNotify) {
+		this.caseNotify = caseNotify;
+	}
+
+	public CaseDecision getCaseDecision() {
+		return caseDecision;
+	}
+
+	public void setCaseDecision(CaseDecision caseDecision) {
+		this.caseDecision = caseDecision;
+	}
+
+	public CaseSettle getCaseSettle() {
+		return caseSettle;
+	}
+
+	public void setCaseSettle(CaseSettle caseSettle) {
+		this.caseSettle = caseSettle;
+	}
+
+	public CaseFinish getCaseFinish() {
+		return caseFinish;
+	}
+
+	public void setCaseFinish(CaseFinish caseFinish) {
+		this.caseFinish = caseFinish;
 	}
 
 	public CaseProcess getCaseProcess() {

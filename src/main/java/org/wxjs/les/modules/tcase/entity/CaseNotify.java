@@ -4,9 +4,13 @@
 package org.wxjs.les.modules.tcase.entity;
 
 import org.hibernate.validator.constraints.Length;
+
+import java.util.Calendar;
 import java.util.Date;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.DataEntity;
 
 /**
@@ -18,7 +22,7 @@ public class CaseNotify extends DataEntity<CaseNotify> {
 	
 	private static final long serialVersionUID = 1L;
 	private String caseId;		// 案件编号
-	private String notifyType;		// 告知书类型
+	private String notifyType; 
 	private String year;		// 年份
 	private String seq;		// 流水号
 	private String partyName;		// 名称
@@ -28,6 +32,19 @@ public class CaseNotify extends DataEntity<CaseNotify> {
 	
 	public CaseNotify() {
 		super();
+	}
+	
+	public static CaseNotify getInstance(Tcase tcase){
+		CaseNotify entity = new CaseNotify();
+		
+		if(tcase!=null){
+			entity.setCaseId(tcase.getId());
+			entity.setPartyName(tcase.getParty());
+			entity.setLaunchDept(Global.getConfig("defaultLaunchDept"));
+			entity.setLaunchDate(Calendar.getInstance().getTime());
+		}
+		
+		return entity;
 	}
 
 	public CaseNotify(String id){
@@ -43,7 +60,6 @@ public class CaseNotify extends DataEntity<CaseNotify> {
 		this.caseId = caseId;
 	}
 	
-	@Length(min=1, max=8, message="告知书类型长度必须介于 1 和 8 之间")
 	public String getNotifyType() {
 		return notifyType;
 	}
@@ -51,7 +67,7 @@ public class CaseNotify extends DataEntity<CaseNotify> {
 	public void setNotifyType(String notifyType) {
 		this.notifyType = notifyType;
 	}
-	
+
 	@Length(min=1, max=8, message="年份长度必须介于 1 和 8 之间")
 	public String getYear() {
 		return year;

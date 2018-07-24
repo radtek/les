@@ -22,8 +22,8 @@ import org.wxjs.les.modules.tcase.dao.CaseNotifyDao;
 @Transactional(readOnly = true)
 public class CaseNotifyService extends CrudService<CaseNotifyDao, CaseNotify> {
 
-	public CaseNotify get(String id) {
-		return super.get(id);
+	public CaseNotify get(String caseId) {
+		return super.get(caseId);
 	}
 	
 	public List<CaseNotify> findList(CaseNotify caseNotify) {

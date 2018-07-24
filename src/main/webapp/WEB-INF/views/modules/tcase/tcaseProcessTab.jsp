@@ -12,9 +12,7 @@
 </head>
 <body>
 	<h3>案件管理</h3>
-    <div style="text-align:right;margin-right:30px;">
-        <input class="btn btn-primary" type="button" value="返回 " onclick="window.location.href='${ctx}/case/tcase/'"/>
-    </div>
+
     <les:caseSummary caseAttr="${caseAct.tcase}"></les:caseSummary>	
     
     <les:caseTab tab="process" caseActAttr="${caseAct}"></les:caseTab>  
@@ -51,6 +49,9 @@
 				<td>${fns:getDictLabel(process.caseStageStatus, 'case_stage_status', '')}</td>	
 				<td>
 				<c:if test="${process.caseStageStatus eq '0'}">
+				<!-- test, delete later -->
+				<a href="${ctx}/case/tcase/toStart?businesskey=${caseAct.tcase.id}:${process.id}">启动</a>
+				
 				  <c:if test="${allowStart eq true or process.caseStage eq '10'}">
 				  <a href="${ctx}/case/tcase/toStart?businesskey=${caseAct.tcase.id}:${process.id}">启动</a>
 				  </c:if>

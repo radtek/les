@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>案件决定书管理</title>
+	<title>案件决定书</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -26,52 +26,56 @@
 	</script>
 </head>
 <body>
-	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/tcase/caseDecision/">案件决定书列表</a></li>
-		<li class="active"><a href="${ctx}/tcase/caseDecision/form?id=${caseDecision.id}">案件决定书<shiro:hasPermission name="tcase:caseDecision:edit">${not empty caseDecision.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="tcase:caseDecision:edit">查看</shiro:lacksPermission></a></li>
-	</ul><br/>
+	<h3>案件决定书</h3>
+
+    <les:caseSummary caseAttr="${caseAct.tcase}"></les:caseSummary>	
+    
+    <les:caseTab tab="decision" caseActAttr="${caseAct}"></les:caseTab>  
+    
 	<form:form id="inputForm" modelAttribute="caseDecision" action="${ctx}/tcase/caseDecision/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
+		<form:hidden path="caseId" value="${caseAct.tcase.id}"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">
-			<label class="control-label">案件编号：</label>
+			<label class="control-label">主送：</label>
 			<div class="controls">
-				<form:input path="caseId" htmlEscape="false" maxlength="32" class="input-xlarge required"/>
+				<form:input path="partyName" htmlEscape="false" maxlength="100" class="input-xlarge required" readonly="readonly"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">年份：</label>
-			<div class="controls">
-				<form:input path="year" htmlEscape="false" maxlength="8" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">流水号：</label>
-			<div class="controls">
-				<form:input path="seq" htmlEscape="false" maxlength="8" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
+		</div>		
 		<div class="control-group">
 			<label class="control-label">备案单位：</label>
 			<div class="controls">
 				<form:input path="recordOrg" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
+		</div>		
+		<div class="control-group">
+			<label class="control-label">决定书编号：</label>
+			<div class="controls">
+			    <form:select path="decisionType">
+			       <form:options items="${fns:getDictList('case_decision_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+			    </form:select>
+				[<form:input path="year" htmlEscape="false" maxlength="8" class="input-xlarge required"/>
+				<span class="help-inline"><font color="red">*</font> </span>]年第(
+			    <form:hidden path="seq"/>
+			    <c:if test="${empty caseDecision.seq}">自动生成</c:if>
+			    <c:if test="${not empty caseDecision.seq}">${caseDecision.seq}</c:if>)号
+			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">拟稿日期：</label>
 			<div class="controls">
-				<form:input path="compileDate" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
+				<input name="compileDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate required"
+					value="<fmt:formatDate value="${caseAct.tcase.acceptDate}" pattern="yyyy-MM-dd"/>"
+					onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>					
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">印数：</label>
 			<div class="controls">
-				<form:input path="printCount" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
+				<form:input path="printCount" htmlEscape="false" maxlength="64" class="input-xlarge required" />
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
@@ -82,14 +86,7 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">名称：</label>
-			<div class="controls">
-				<form:input path="partyName" htmlEscape="false" maxlength="100" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">正文：</label>
+			<label class="control-label">无锡市建设局行政处罚决定书内容：</label>
 			<div class="controls">
 				<form:textarea path="content" htmlEscape="false" rows="4" class="input-xxlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
@@ -106,14 +103,8 @@
 			<label class="control-label">发证时间：</label>
 			<div class="controls">
 				<input name="launchDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate "
-					value="<fmt:formatDate value="${caseDecision.launchDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
-					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">备注信息：</label>
-			<div class="controls">
-				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="64" class="input-xxlarge "/>
+					value="<fmt:formatDate value="${caseDecision.launchDate}" pattern="yyyy-MM-dd"/>"
+					onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
 			</div>
 		</div>
 		<div class="form-actions">

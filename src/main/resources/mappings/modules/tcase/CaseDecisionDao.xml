@@ -5,9 +5,13 @@
 	<sql id="caseDecisionColumns">
 		a.id AS "id",
 		a.case_id AS "caseId",
-		a.notify_type AS "notifyType",
+		a.decision_type AS "decisionType",
 		a.year AS "year",
 		a.seq AS "seq",
+		a.record_org AS "recordOrg",
+		a.compile_date AS "compileDate",
+		a.print_count AS "printCount",
+		a.destination_address AS "destinationAddress",
 		a.party_name AS "partyName",
 		a.content AS "content",
 		a.launch_dept AS "launchDept",
@@ -28,7 +32,7 @@
 			<include refid="caseDecisionColumns"/>
 		FROM tcase_decision a
 		<include refid="caseDecisionJoins"/>
-		WHERE a.id = #{id}
+		WHERE case_id = #{caseId}
 	</select>
 	
 	<select id="findList" resultType="CaseDecision">
@@ -73,9 +77,13 @@
 	<insert id="insert">
 		INSERT INTO tcase_decision(
 			case_id,
-			notify_type,
+			decision_type,
 			year,
 			seq,
+			record_org,
+			compile_date,
+			print_count,
+			destination_address,
 			party_name,
 			content,
 			launch_dept,
@@ -88,9 +96,13 @@
 			del_flag
 		) VALUES (
 			#{caseId},
-			#{notifyType},
+			#{decisionType},
 			#{year},
 			#{seq},
+			#{recordOrg},
+			#{compileDate},
+			#{printCount},
+			#{destinationAddress},
 			#{partyName},
 			#{content},
 			#{launchDept},
@@ -105,11 +117,14 @@
 	</insert>
 	
 	<update id="update">
-		UPDATE tcase_decision SET 	
-			case_id = #{caseId},
-			notify_type = #{notifyType},
+		UPDATE tcase_decision SET
+		    decision_type = #{decisionType},
 			year = #{year},
 			seq = #{seq},
+			record_org = #{recordOrg},
+			compile_date = #{compileDate},
+			print_count = #{printCount},
+			destination_address = #{destinationAddress},
 			party_name = #{partyName},
 			content = #{content},
 			launch_dept = #{launchDept},
@@ -117,7 +132,7 @@
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks}
-		WHERE id = #{id}
+		WHERE case_id = #{caseId}
 	</update>
 	
 	<update id="delete">

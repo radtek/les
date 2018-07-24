@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef">
-  <process id="caseDecisionProcess" name="案件处理流程" isExecutable="true">
+  <process id="caseDecisionProcess" name="发决定书流程" isExecutable="true">
     <startEvent id="start" name="Start"></startEvent>
     <userTask id="sid-8A4472D0-CDFC-42C4-808D-76FE57E55826" name="办案人意见" activiti:assignee="${assignee}" activiti:candidateGroups="jcbar">
       <multiInstanceLoopCharacteristics isSequential="false" activiti:collection="assigneeList" activiti:elementVariable="assignee"></multiInstanceLoopCharacteristics>

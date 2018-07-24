@@ -16,14 +16,14 @@ import org.wxjs.les.modules.tcase.dao.CaseDecisionDao;
 /**
  * 案件决定书Service
  * @author GLQ
- * @version 2018-07-09
+ * @version 2018-07-24
  */
 @Service
 @Transactional(readOnly = true)
 public class CaseDecisionService extends CrudService<CaseDecisionDao, CaseDecision> {
 
-	public CaseDecision get(String id) {
-		return super.get(id);
+	public CaseDecision get(String caseId) {
+		return super.get(caseId);
 	}
 	
 	public List<CaseDecision> findList(CaseDecision caseDecision) {

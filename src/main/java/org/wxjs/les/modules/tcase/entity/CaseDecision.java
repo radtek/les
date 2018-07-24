@@ -4,23 +4,31 @@
 package org.wxjs.les.modules.tcase.entity;
 
 import org.hibernate.validator.constraints.Length;
+
+import java.util.Calendar;
 import java.util.Date;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.DataEntity;
 
 /**
  * 案件决定书Entity
  * @author GLQ
- * @version 2018-07-09
+ * @version 2018-07-24
  */
 public class CaseDecision extends DataEntity<CaseDecision> {
 	
 	private static final long serialVersionUID = 1L;
 	private String caseId;		// 案件编号
-	private String notifyType;		// 告知书类型
+	private String decisionType;		// 处罚书类型
 	private String year;		// 年份
 	private String seq;		// 流水号
+	private String recordOrg;		// 备案单位
+	private String compileDate;		// 拟稿日期
+	private String printCount;		// 印数
+	private String destinationAddress;		// 送达地点
 	private String partyName;		// 名称
 	private String content;		// 正文
 	private String launchDept;		// 发证部门
@@ -33,6 +41,19 @@ public class CaseDecision extends DataEntity<CaseDecision> {
 	public CaseDecision(String id){
 		super(id);
 	}
+	
+	public static CaseDecision getInstance(Tcase tcase){
+		CaseDecision entity = new CaseDecision();
+		
+		if(tcase!=null){
+			entity.setCaseId(tcase.getId());
+			entity.setPartyName(tcase.getParty());
+			entity.setLaunchDept(Global.getConfig("defaultLaunchDept"));
+			entity.setLaunchDate(Calendar.getInstance().getTime());
+		}
+		
+		return entity;
+	}
 
 	@Length(min=1, max=32, message="案件编号长度必须介于 1 和 32 之间")
 	public String getCaseId() {
@@ -43,15 +64,14 @@ public class CaseDecision extends DataEntity<CaseDecision> {
 		this.caseId = caseId;
 	}
 	
-	@Length(min=1, max=8, message="告知书类型长度必须介于 1 和 8 之间")
-	public String getNotifyType() {
-		return notifyType;
+	public String getDecisionType() {
+		return decisionType;
 	}
 
-	public void setNotifyType(String notifyType) {
-		this.notifyType = notifyType;
+	public void setDecisionType(String decisionType) {
+		this.decisionType = decisionType;
 	}
-	
+
 	@Length(min=1, max=8, message="年份长度必须介于 1 和 8 之间")
 	public String getYear() {
 		return year;
@@ -68,6 +88,42 @@ public class CaseDecision extends DataEntity<CaseDecision> {
 
 	public void setSeq(String seq) {
 		this.seq = seq;
+	}
+	
+	@Length(min=1, max=64, message="备案单位长度必须介于 1 和 64 之间")
+	public String getRecordOrg() {
+		return recordOrg;
+	}
+
+	public void setRecordOrg(String recordOrg) {
+		this.recordOrg = recordOrg;
+	}
+	
+	@Length(min=1, max=64, message="拟稿日期长度必须介于 1 和 64 之间")
+	public String getCompileDate() {
+		return compileDate;
+	}
+
+	public void setCompileDate(String compileDate) {
+		this.compileDate = compileDate;
+	}
+	
+	@Length(min=1, max=64, message="印数长度必须介于 1 和 64 之间")
+	public String getPrintCount() {
+		return printCount;
+	}
+
+	public void setPrintCount(String printCount) {
+		this.printCount = printCount;
+	}
+	
+	@Length(min=0, max=100, message="送达地点长度必须介于 0 和 100 之间")
+	public String getDestinationAddress() {
+		return destinationAddress;
+	}
+
+	public void setDestinationAddress(String destinationAddress) {
+		this.destinationAddress = destinationAddress;
 	}
 	
 	@Length(min=1, max=100, message="名称长度必须介于 1 和 100 之间")
