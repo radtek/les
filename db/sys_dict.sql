@@ -15,7 +15,8 @@ VALUES
 ('case_stage_6', '60', '结案书', 'case_stage', 'case_stage', 60, '0','1',now(),'1',now()),
 ('case_stage_7', '70', '案件结束', 'case_stage', 'case_stage', 70, '0','1',now(),'1',now()),
 ('case_stage_11', '110', '重大行政处罚流程', 'case_stage', 'case_stage', 110, '0','1',now(),'1',now()),
-('case_stage_12', '120', '撤销流程', 'case_stage', 'case_stage', 120, '0','1',now(),'1',now());
+('case_stage_12', '120', '撤销流程', 'case_stage', 'case_stage', 120, '0','1',now(),'1',now()),
+('case_stage_21', '210', '案源移交流程', 'case_stage', 'case_stage', 210, '0','1',now(),'1',now());
 
 delete from sys_dict where id like 'case_stage_status_%';
 INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `parent_id`, `create_by`,`create_date`,`update_by`,`update_date`) 
