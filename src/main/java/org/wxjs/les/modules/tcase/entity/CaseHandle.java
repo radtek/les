@@ -3,10 +3,8 @@
  */
 package org.wxjs.les.modules.tcase.entity;
 
-import java.util.Calendar;
-
 import org.hibernate.validator.constraints.Length;
-import org.wxjs.les.common.config.Global;
+
 import org.wxjs.les.common.persistence.DataEntity;
 
 /**
@@ -26,6 +24,9 @@ public class CaseHandle extends DataEntity<CaseHandle> {
 	private String investReport;		// 案件调查报告内容
 	private String fact;		// 案件事实经过及证据
 	private String investigator;		// 调查人
+	
+	//临时属性
+	private String paramUri;		// uri
 	
 	public CaseHandle() {
 		super();
@@ -122,5 +123,15 @@ public class CaseHandle extends DataEntity<CaseHandle> {
 	public void setInvestigator(String investigator) {
 		this.investigator = investigator;
 	}
+
+	public String getParamUri() {
+		return this.paramUri==null?"":this.paramUri.replaceAll("&amp;", "&");
+	}
+
+	public void setParamUri(String paramUri) {
+		this.paramUri = paramUri;
+	}
+	
+	
 	
 }

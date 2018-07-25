@@ -7,9 +7,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.service.CrudService;
+import org.wxjs.les.modules.sys.utils.SequenceUtils;
 import org.wxjs.les.modules.tcase.entity.CaseNotify;
 import org.wxjs.les.modules.tcase.dao.CaseNotifyDao;
 
@@ -36,6 +36,12 @@ public class CaseNotifyService extends CrudService<CaseNotifyDao, CaseNotify> {
 	
 	@Transactional(readOnly = false)
 	public void save(CaseNotify caseNotify) {
+		
+		boolean isNew = caseNotify.getIsNewRecord();
+		if(isNew){
+			caseNotify.setSeq(SequenceUtils.fetchSeq("NotifySeq_"+caseNotify.getNotifyType())+"");
+		}
+		
 		super.save(caseNotify);
 	}
 	

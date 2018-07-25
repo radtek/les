@@ -27,6 +27,8 @@
 		a.project_code AS "projectCode",
 		a.project_name AS "projectName",
 		a.case_cause AS "caseCause",
+		a.case_transfer AS "caseTransfer",
+		a.transfer_case_id AS "transferCaseId",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -54,12 +56,35 @@
 		<include refid="tcaseJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
-			<if test="acceptDate != null and acceptDate != ''">
-				AND a.accept_date = #{acceptDate}
+			<if test="acceptDateFrom != null and acceptDateFrom != ''">
+				AND DATE_FORMAT(a.accept_date,'%Y-%m-%d') &gt;= DATE_FORMAT(#{acceptDateFrom},'%Y-%m-%d')
 			</if>
+			<if test="acceptDateTo != null and acceptDateTo != ''">
+			    AND DATE_FORMAT(a.accept_date,'%Y-%m-%d') &lt;= DATE_FORMAT(#{acceptDateTo},'%Y-%m-%d')
+			</if>		
+			<if test="createDateFrom != null and createDateFrom != ''">
+				AND DATE_FORMAT(a.create_date,'%Y-%m-%d') &gt;= DATE_FORMAT(#{createDateFrom},'%Y-%m-%d')
+			</if>
+			<if test="createDateTo != null and createDateTo != ''">
+			    AND DATE_FORMAT(a.create_date,'%Y-%m-%d') &lt;= DATE_FORMAT(#{createDateTo},'%Y-%m-%d')
+			</if>				
 			<if test="orgName != null and orgName != ''">
-				AND a.org_name = #{orgName}
+				AND a.org_name like concat('%',#{orgName},'%') 
 			</if>
+			<if test="psnName != null and psnName != ''">
+				AND a.psn_name like concat('%',#{psnName},'%')
+			</if>	
+			<if test="caseCause != null and caseCause != ''">
+				AND a.case_cause like concat('%',#{caseCause},'%') 
+			</if>
+			<choose>
+				<when test="caseTransfer != null and caseTransfer != ''">
+					AND a.case_transfer=#{caseTransfer}
+				</when>
+				<otherwise>
+					AND (a.case_transfer='0' OR a.case_transfer is NULL )
+				</otherwise>
+			</choose>										
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -87,7 +112,7 @@
 				ORDER BY a.update_date DESC
 			</otherwise>
 		</choose>
-	</select>
+	</select>	
 	
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="org.wxjs.les.modules.tcase.entity.Tcase">
 		INSERT INTO tcase(
@@ -114,6 +139,7 @@
 			project_code,
 			project_name,
 			case_cause,
+			case_transfer,
 			create_by,
 			create_date,
 			update_by,
@@ -144,6 +170,7 @@
 			#{projectCode},
 			#{projectName},
 			#{caseCause},
+			#{caseTransfer},		
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -183,6 +210,18 @@
 			remarks = #{remarks}
 		WHERE id = #{id}
 	</update>	
+	
+	<update id="tagCaseTransfer">
+		UPDATE tcase SET 	
+			case_transfer = '1'
+		WHERE id = #{id}
+	</update>
+	
+	<update id="updateTransferCaseId">
+		UPDATE tcase SET 	
+			transfer_case_id = #{transferCaseId}
+		WHERE id = #{id}
+	</update>		
 	
 	<update id="delete">
 		UPDATE tcase SET 

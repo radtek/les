@@ -21,6 +21,8 @@ public interface CaseProcessDao extends CrudDao<CaseProcess> {
 	
 	public void initProcessExcludeAcceptance(CaseProcess caseProcess);
 	
+	public void initProcessCaseTransfer(CaseProcess caseProcess);
+	
 	public List<CaseProcess> findCurrentProcesses(CaseProcess caseProcess);
 	
 	public void updateProcInfo(CaseProcess caseProcess);

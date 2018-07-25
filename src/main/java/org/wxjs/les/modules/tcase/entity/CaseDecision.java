@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.DataEntity;
+import org.wxjs.les.common.utils.DateUtils;
 
 /**
  * 案件决定书Entity
@@ -34,6 +35,9 @@ public class CaseDecision extends DataEntity<CaseDecision> {
 	private String launchDept;		// 发证部门
 	private Date launchDate;		// 发证时间
 	
+	//临时属性
+	private String paramUri;		// uri
+	
 	public CaseDecision() {
 		super();
 	}
@@ -49,7 +53,9 @@ public class CaseDecision extends DataEntity<CaseDecision> {
 			entity.setCaseId(tcase.getId());
 			entity.setPartyName(tcase.getParty());
 			entity.setLaunchDept(Global.getConfig("defaultLaunchDept"));
+			entity.setRecordOrg(Global.getConfig("defaultRecordOrg"));
 			entity.setLaunchDate(Calendar.getInstance().getTime());
+			entity.setYear(DateUtils.getYear());
 		}
 		
 		return entity;
@@ -81,7 +87,7 @@ public class CaseDecision extends DataEntity<CaseDecision> {
 		this.year = year;
 	}
 	
-	@Length(min=1, max=8, message="流水号长度必须介于 1 和 8 之间")
+	@Length(min=0, max=8, message="流水号长度必须介于 0 和 8 之间")
 	public String getSeq() {
 		return seq;
 	}
@@ -159,6 +165,14 @@ public class CaseDecision extends DataEntity<CaseDecision> {
 
 	public void setLaunchDate(Date launchDate) {
 		this.launchDate = launchDate;
+	}
+
+	public String getParamUri() {
+		return this.paramUri==null?"":this.paramUri.replaceAll("&amp;", "&");
+	}
+
+	public void setParamUri(String paramUri) {
+		this.paramUri = paramUri;
 	}
 	
 }

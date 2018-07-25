@@ -26,54 +26,31 @@
 	</script>
 </head>
 <body>
-	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/tcase/caseFinish/">案件结束列表</a></li>
-		<li class="active"><a href="${ctx}/tcase/caseFinish/form?id=${caseFinish.id}">案件结束<shiro:hasPermission name="tcase:caseFinish:edit">${not empty caseFinish.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="tcase:caseFinish:edit">查看</shiro:lacksPermission></a></li>
-	</ul><br/>
+	<h3>案件结束</h3>
+
+    <les:caseSummary caseAttr="${caseAct.tcase}"></les:caseSummary>	
+    
+    <les:caseTab tab="finish" caseActAttr="${caseAct}"></les:caseTab> 
+    
 	<form:form id="inputForm" modelAttribute="caseFinish" action="${ctx}/tcase/caseFinish/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
+		<form:hidden path="caseId"/>
+		<form:hidden path="paramUri" value="${caseAct.paramUri}"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">
-			<label class="control-label">合计页数：</label>
+			<label class="control-label">页数信息：</label>
 			<div class="controls">
-				<form:input path="totalPage" htmlEscape="false" maxlength="11" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">文字页数：</label>
-			<div class="controls">
-				<form:input path="wordPage" htmlEscape="false" maxlength="11" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">图样页数：</label>
-			<div class="controls">
-				<form:input path="diagramPage" htmlEscape="false" maxlength="11" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">照片页数：</label>
-			<div class="controls">
-				<form:input path="photoPage" htmlEscape="false" maxlength="11" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">其他页数：</label>
-			<div class="controls">
-				<form:input path="otherPage" htmlEscape="false" maxlength="11" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">案件编号：</label>
-			<div class="controls">
-				<form:input path="caseId" htmlEscape="false" maxlength="32" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				本保管单位内共<form:input path="totalPage" htmlEscape="false" maxlength="6" class="input-mini required"/>页,
+				其中:文字材料<form:input path="wordPage" htmlEscape="false" maxlength="6" class="input-mini " onkeyup="value=value.replace(/[^1234567890-]+/g,'')"/>页,
+				图样(图)<form:input path="diagramPage" htmlEscape="false" maxlength="6" class="input-mini " onkeyup="value=value.replace(/[^1234567890-]+/g,'')"/>页,
+				照片<form:input path="photoPage" htmlEscape="false" maxlength="6" class="input-mini " onkeyup="value=value.replace(/[^1234567890-]+/g,'')"/>页,
+				其他 <form:input path="otherPage" htmlEscape="false" maxlength="6" class="input-mini " onkeyup="value=value.replace(/[^1234567890-]+/g,'')"/>页。
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">说明：</label>
 			<div class="controls">
-				<form:input path="handleSummary" htmlEscape="false" class="input-xlarge "/>
+				<form:textarea path="handleSummary" htmlEscape="false"  style="width:800px;height:300px;" class="required"/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -84,15 +61,10 @@
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">备注信息：</label>
-			<div class="controls">
-				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="64" class="input-xxlarge "/>
-			</div>
-		</div>
 		<div class="form-actions">
-			<shiro:hasPermission name="tcase:caseFinish:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
-			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
+			<shiro:hasPermission name="case:tcase:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;
+			<input id="btnFinish" class="btn btn-primary" type="button" value="备考表"/>
+			</shiro:hasPermission>
 		</div>
 	</form:form>
 </body>

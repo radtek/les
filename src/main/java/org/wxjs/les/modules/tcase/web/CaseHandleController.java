@@ -3,6 +3,9 @@
  */
 package org.wxjs.les.modules.tcase.web;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -14,7 +17,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.web.BaseController;
@@ -46,7 +48,7 @@ public class CaseHandleController extends BaseController {
 		return entity;
 	}
 	
-	@RequiresPermissions("tcase:caseHandle:view")
+	@RequiresPermissions("case:tcase:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(CaseHandle caseHandle, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<CaseHandle> page = caseHandleService.findPage(new Page<CaseHandle>(request, response), caseHandle); 
@@ -54,14 +56,14 @@ public class CaseHandleController extends BaseController {
 		return "modules/tcase/caseHandleList";
 	}
 
-	@RequiresPermissions("tcase:caseHandle:view")
+	@RequiresPermissions("case:tcase:view")
 	@RequestMapping(value = "form")
 	public String form(CaseHandle caseHandle, Model model) {
 		model.addAttribute("caseHandle", caseHandle);
-		return "modules/tcase/caseHandleForm";
+		return "modules/tcase/caseHandleTab";
 	}
 
-	@RequiresPermissions("tcase:caseHandle:edit")
+	@RequiresPermissions("case:tcase:edit")
 	@RequestMapping(value = "save")
 	public String save(CaseHandle caseHandle, Model model, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, caseHandle)){
@@ -69,10 +71,34 @@ public class CaseHandleController extends BaseController {
 		}
 		caseHandleService.save(caseHandle);
 		addMessage(redirectAttributes, "保存案件审理成功");
-		return "redirect:"+Global.getAdminPath()+"/tcase/caseHandle/?repage";
+		return "redirect:"+Global.getAdminPath()+"/case/tcase/handleTab?"+caseHandle.getParamUri();
 	}
 	
-	@RequiresPermissions("tcase:caseHandle:edit")
+	@RequiresPermissions("case:tcase:edit")
+	@RequestMapping(value = "saveUploadInfo")
+	public String saveUploadInfo(CaseHandle caseHandle, Model model, RedirectAttributes redirectAttributes) {
+		if (!beanValidator(model, caseHandle)){
+			return form(caseHandle, model);
+		}
+		caseHandleService.saveUploadInfo(caseHandle);
+		
+		addMessage(redirectAttributes, "保存案件审理成功");
+		return "redirect:"+Global.getAdminPath()+"/case/tcase/handleTab?"+caseHandle.getParamUri();
+	}
+	
+	@RequiresPermissions("case:tcase:edit")
+	@RequestMapping(value = "saveReport")
+	public String saveReport(CaseHandle caseHandle, Model model, RedirectAttributes redirectAttributes) {
+		if (!beanValidator(model, caseHandle)){
+			return form(caseHandle, model);
+		}
+		caseHandleService.saveReport(caseHandle);
+		
+		addMessage(redirectAttributes, "保存案件审理成功");
+		return "redirect:"+Global.getAdminPath()+"/case/tcase/handleTab?"+caseHandle.getParamUri();
+	}
+	
+	@RequiresPermissions("case:tcase:edit")
 	@RequestMapping(value = "delete")
 	public String delete(CaseHandle caseHandle, RedirectAttributes redirectAttributes) {
 		caseHandleService.delete(caseHandle);

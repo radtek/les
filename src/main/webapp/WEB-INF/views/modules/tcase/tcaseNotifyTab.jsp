@@ -26,45 +26,44 @@
 	</script>
 </head>
 <body>
-	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/case/caseNotify/">案件告知书列表</a></li>
-		<li class="active"><a href="${ctx}/case/caseNotify/form?id=${caseNotify.id}">案件告知书<shiro:hasPermission name="case:caseNotify:edit">${not empty caseNotify.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="case:caseNotify:edit">查看</shiro:lacksPermission></a></li>
-	</ul><br/>
+	<h3>案件告知书</h3>
+
+    <les:caseSummary caseAttr="${caseAct.tcase}"></les:caseSummary>	
+    
+    <les:caseTab tab="notify" caseActAttr="${caseAct}"></les:caseTab> 
+    
 	<form:form id="inputForm" modelAttribute="caseNotify" action="${ctx}/case/caseNotify/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
+		<form:hidden path="caseId"/>
+		<form:hidden path="paramUri" value="${caseAct.paramUri}"/>
 		<sys:message content="${message}"/>		
+		
 		<div class="control-group">
-			<label class="control-label">案件编号：</label>
+			<label class="control-label">告知书编号：</label>
 			<div class="controls">
-				<form:input path="caseId" htmlEscape="false" maxlength="32" class="input-xlarge required"/>
+			    <form:select path="notifyType">
+			       <form:options items="${fns:getDictList('case_notify_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+			    </form:select>
+				[<form:input path="year" htmlEscape="false" maxlength="8" class="input-mini required"/>
+				<span class="help-inline"><font color="red">*</font> </span>]年第(
+			    <form:hidden path="seq"/>
+			    <c:if test="${empty caseNotify.seq}">
+			    <input value="自动生成" readonly="readonly" class="input-mini">
+			    </c:if>
+			    <c:if test="${not empty caseNotify.seq}">${caseNotify.seq}</c:if>)号
+			</div>
+		</div>		
+		<div class="control-group">
+			<label class="control-label">责任人／单位：</label>
+			<div class="controls">
+				<form:input path="partyName" htmlEscape="false" maxlength="100" class="input-xlarge required" readonly="readonly"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">年份：</label>
+			<label class="control-label">告知书内容：</label>
 			<div class="controls">
-				<form:input path="year" htmlEscape="false" maxlength="8" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">流水号：</label>
-			<div class="controls">
-				<form:input path="seq" htmlEscape="false" maxlength="8" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">名称：</label>
-			<div class="controls">
-				<form:input path="partyName" htmlEscape="false" maxlength="100" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">正文：</label>
-			<div class="controls">
-				<form:textarea path="content" htmlEscape="false" rows="4" maxlength="1000" class="input-xxlarge required"/>
+				<form:textarea path="content" htmlEscape="false"  style="width:800px;height:600px;" class="required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
@@ -79,19 +78,15 @@
 			<label class="control-label">发证时间：</label>
 			<div class="controls">
 				<input name="launchDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate "
-					value="<fmt:formatDate value="${caseNotify.launchDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
-					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">备注信息：</label>
-			<div class="controls">
-				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="64" class="input-xxlarge "/>
+					value="<fmt:formatDate value="${caseNotify.launchDate}" pattern="yyyy-MM-dd"/>"
+					onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
 			</div>
 		</div>
 		<div class="form-actions">
-			<shiro:hasPermission name="case:caseNotify:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
-			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
+			<shiro:hasPermission name="case:tcase:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;
+			<input id="btnNotify" class="btn btn-primary" type="button" value="行政处罚事先告知书"/>&nbsp;
+			<input id="btnNotifyStub" class="btn btn-primary" type="button" value="行政处罚事先告知书（存根）"/>&nbsp;
+			</shiro:hasPermission>
 		</div>
 	</form:form>
 </body>

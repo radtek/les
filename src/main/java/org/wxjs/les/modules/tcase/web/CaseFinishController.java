@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.web.BaseController;
 import org.wxjs.les.common.utils.StringUtils;
+import org.wxjs.les.common.utils.Util;
 import org.wxjs.les.modules.tcase.entity.CaseFinish;
 import org.wxjs.les.modules.tcase.service.CaseFinishService;
 
@@ -46,7 +46,7 @@ public class CaseFinishController extends BaseController {
 		return entity;
 	}
 	
-	@RequiresPermissions("tcase:caseFinish:view")
+	@RequiresPermissions("case:tcase:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(CaseFinish caseFinish, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<CaseFinish> page = caseFinishService.findPage(new Page<CaseFinish>(request, response), caseFinish); 
@@ -54,25 +54,32 @@ public class CaseFinishController extends BaseController {
 		return "modules/tcase/caseFinishList";
 	}
 
-	@RequiresPermissions("tcase:caseFinish:view")
+	@RequiresPermissions("case:tcase:view")
 	@RequestMapping(value = "form")
 	public String form(CaseFinish caseFinish, Model model) {
 		model.addAttribute("caseFinish", caseFinish);
-		return "modules/tcase/caseFinishForm";
+		return "modules/tcase/caseFinishTab";
 	}
 
-	@RequiresPermissions("tcase:caseFinish:edit")
+	@RequiresPermissions("case:tcase:edit")
 	@RequestMapping(value = "save")
 	public String save(CaseFinish caseFinish, Model model, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, caseFinish)){
 			return form(caseFinish, model);
 		}
-		caseFinishService.save(caseFinish);
-		addMessage(redirectAttributes, "保存案件结束成功");
-		return "redirect:"+Global.getAdminPath()+"/tcase/caseFinish/?repage";
+		
+		if(Util.getInteger(caseFinish.getTotalPage(),0) != caseFinish.getPageSum()){
+			addMessage(redirectAttributes, "保存案件结束失败！页数合计与总数不一致。");
+		}else{
+			caseFinishService.save(caseFinish);
+			addMessage(redirectAttributes, "保存案件结束成功");
+			
+		}
+
+		return "redirect:"+Global.getAdminPath()+"/case/tcase/finishTab?"+caseFinish.getParamUri();
 	}
 	
-	@RequiresPermissions("tcase:caseFinish:edit")
+	@RequiresPermissions("case:tcase:edit")
 	@RequestMapping(value = "delete")
 	public String delete(CaseFinish caseFinish, RedirectAttributes redirectAttributes) {
 		caseFinishService.delete(caseFinish);

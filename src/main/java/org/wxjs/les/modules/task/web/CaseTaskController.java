@@ -82,6 +82,10 @@ public class CaseTaskController extends BaseController {
 		//String formKey = actTaskService.getFormKey(caseAct.getProcDefId(), caseAct.getTaskDefKey());
 		
 		String formKey = "/case/tcase/infoTab";
+		
+		if("1".equals(caseAct.getCaseTransfer())){
+			formKey = "/case/tcase/infoTabTransfer";
+		}
 
 		// 获取流程实例对象
 		/*

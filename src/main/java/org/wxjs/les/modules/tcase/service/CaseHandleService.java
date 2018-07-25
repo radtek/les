@@ -40,6 +40,28 @@ public class CaseHandleService extends CrudService<CaseHandleDao, CaseHandle> {
 	}
 	
 	@Transactional(readOnly = false)
+	public void saveUploadInfo(CaseHandle entity) {
+		if (entity.getIsNewRecord()){
+			entity.preInsert();
+			dao.insert(entity);
+		}else{
+			entity.preUpdate();
+			dao.updateUploadInfo(entity);
+		}
+	}
+	
+	@Transactional(readOnly = false)
+	public void saveReport(CaseHandle entity) {
+		if (entity.getIsNewRecord()){
+			entity.preInsert();
+			dao.insert(entity);
+		}else{
+			entity.preUpdate();
+			dao.updateReport(entity);
+		}
+	}
+	
+	@Transactional(readOnly = false)
 	public void delete(CaseHandle caseHandle) {
 		super.delete(caseHandle);
 	}

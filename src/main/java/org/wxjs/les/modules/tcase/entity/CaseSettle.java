@@ -22,6 +22,9 @@ public class CaseSettle extends DataEntity<CaseSettle> {
 	private String executeSummary;		// 案件执行情况
 	private String reviewSummary;		// 案件复议情况
 	
+	//临时属性
+	private String paramUri;		// uri
+	
 	public CaseSettle() {
 		super();
 	}
@@ -71,6 +74,14 @@ public class CaseSettle extends DataEntity<CaseSettle> {
 
 	public void setReviewSummary(String reviewSummary) {
 		this.reviewSummary = reviewSummary;
+	}
+
+	public String getParamUri() {
+		return this.paramUri==null?"":this.paramUri.replaceAll("&amp;", "&");
+	}
+
+	public void setParamUri(String paramUri) {
+		this.paramUri = paramUri;
 	}
 	
 }

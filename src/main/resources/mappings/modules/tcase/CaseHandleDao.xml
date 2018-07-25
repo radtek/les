@@ -123,6 +123,30 @@
 		WHERE case_id = #{caseId}
 	</update>
 	
+	<update id="updateUploadInfo">
+		UPDATE tcase_handle SET 	
+			punish_code = #{punishCode},
+			legal_basis = #{legalBasis},
+			legal_basis_content = #{legalBasisContent},
+			discretion = #{discretion},
+			punish_money = #{punishMoney},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE case_id = #{caseId}
+	</update>
+	
+	<update id="updateReport">
+		UPDATE tcase_handle SET
+			invest_report = #{investReport},
+			fact = #{fact},
+			investigator = #{investigator},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE case_id = #{caseId}
+	</update>		
+	
 	<update id="delete">
 		UPDATE tcase_handle SET 
 			del_flag = #{DEL_FLAG_DELETE}

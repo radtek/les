@@ -73,7 +73,7 @@
 					<td>${procDef.name}</td>
 					<td><fmt:formatDate value="${task.endTime}" type="both"/></td>
 					<td>
-						<a href="${ctx}/task/form?taskId=${task.id}&taskName=${fns:urlEncode(task.name)}&taskDefKey=${task.taskDefinitionKey}&procInsId=${task.processInstanceId}&procDefId=${task.processDefinitionId}&status=${status}&businesskey=${act.businesskey}">详情</a>
+						<a href="${ctx}/task/form?taskId=${task.id}&taskName=${fns:urlEncode(task.name)}&taskDefKey=${task.taskDefinitionKey}&procInsId=${task.processInstanceId}&procDefId=${task.processDefinitionId}&status=${status}&businesskey=${act.businesskey}&caseTransfer=${tcase.caseTransfer}">详情</a>
 					</td>
 				</tr>
 			</c:forEach>

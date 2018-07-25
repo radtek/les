@@ -71,6 +71,13 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 	}
 	
 	public Tcase getCaseAndProcess(String businesskey) {
+		
+		if(businesskey.endsWith(":")){
+			businesskey = businesskey.substring(0, businesskey.indexOf(":"));
+		}
+		
+		logger.debug("businesskey:{}", businesskey);
+		
 		String[] strs = businesskey.split(":");
 		String caseId = strs[0];
 		
@@ -81,10 +88,24 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 			
 			CaseProcess process = caseProcessDao.get(caseProcessId);
 			entity.setCaseProcess(process);			
+			
+			logger.debug("caseProcessId:{}", caseProcessId);
+		}else if(strs.length == 1){
+			logger.debug("entity.getCaseTransfer():{}", entity.getCaseTransfer());
+			//for case transfer
+			if("1".equals(entity.getCaseTransfer())){
+				CaseProcess process = new CaseProcess();
+				process.setCaseId(caseId);
+				List<CaseProcess> list = caseProcessDao.findList(process);
+				if(list!=null && list.size()>0){
+					entity.setCaseProcess(list.get(0));	
+				}
+			}
 		}
-
+		
 		return entity;
 	}
+
 	
 	/**
 	 * 获取当前的非独立流程
@@ -168,6 +189,8 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 		boolean isNew = tcase.getIsNewRecord();
 		if(isNew){
 			tcase.setCaseSeq(SequenceUtils.fetchCaseSeqStr());
+			tcase.setCaseTransfer("0");
+			
 			logger.debug("tcase.getCaseSeq():{}",tcase.getCaseSeq());
 		}
 		super.save(tcase);
@@ -203,6 +226,39 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 	@Transactional(readOnly = false)
 	public void saveAndStartFlow(Tcase tcase) {
 		this.save(tcase);
+		
+		//start flow
+		this.startWorkflow(tcase);
+		
+	}
+	
+	@Transactional(readOnly = false)
+	public void saveTransfer(Tcase tcase) {
+		boolean isNew = tcase.getIsNewRecord();
+		if(isNew){
+			tcase.setCaseSeq(SequenceUtils.fetchCaseTransferSeqStr());
+			tcase.setCaseTransfer("1");
+			
+			logger.debug("tcase.getCaseSeq():{}",tcase.getCaseSeq());
+		}
+		super.save(tcase);
+		
+		//init process
+		if(isNew){
+			tcase.getCaseProcess().setCaseId(tcase.getId());
+			
+			//初始化
+			caseProcessDao.initProcessCaseTransfer(tcase.getCaseProcess());
+
+		}else{
+			caseProcessDao.update(tcase.getCaseProcess());
+		}
+		
+	}
+	
+	@Transactional(readOnly = false)
+	public void saveAndStartFlowTransfer(Tcase tcase) {
+		this.saveTransfer(tcase);
 		
 		//start flow
 		this.startWorkflow(tcase);

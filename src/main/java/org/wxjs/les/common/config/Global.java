@@ -199,6 +199,8 @@ public class Global {
     public static final String CASE_STAGE_SERIOUS = "110";
     public static final String CASE_STAGE_CANCEL = "120";
     
+    public static final String CASE_STAGE_TRANSFER = "210";
+    
     public static final String PN_caseTransferProcess = "caseTransferProcess";
     
     public static final String PN_caseAcceptanceProcess = "caseAcceptanceProcess";
@@ -215,6 +217,7 @@ public class Global {
     public static final String PN_caseCancelProcess2 = "caseCancelProcess2";
     public static final String PN_caseCancelProcess3 = "caseCancelProcess3";
     public static final String PN_caseCancelProcess4 = "caseCancelProcess4";
+    
     
     public static final String GROUP_caseTransferProcess = "csblr";
     

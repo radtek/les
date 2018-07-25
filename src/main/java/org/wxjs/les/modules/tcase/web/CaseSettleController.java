@@ -46,7 +46,7 @@ public class CaseSettleController extends BaseController {
 		return entity;
 	}
 	
-	@RequiresPermissions("tcase:caseSettle:view")
+	@RequiresPermissions("case:tcase:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(CaseSettle caseSettle, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<CaseSettle> page = caseSettleService.findPage(new Page<CaseSettle>(request, response), caseSettle); 
@@ -54,14 +54,14 @@ public class CaseSettleController extends BaseController {
 		return "modules/tcase/caseSettleList";
 	}
 
-	@RequiresPermissions("tcase:caseSettle:view")
+	@RequiresPermissions("case:tcase:view")
 	@RequestMapping(value = "form")
 	public String form(CaseSettle caseSettle, Model model) {
 		model.addAttribute("caseSettle", caseSettle);
-		return "modules/tcase/caseSettleForm";
+		return "modules/tcase/caseSettleTab";
 	}
 
-	@RequiresPermissions("tcase:caseSettle:edit")
+	@RequiresPermissions("case:tcase:edit")
 	@RequestMapping(value = "save")
 	public String save(CaseSettle caseSettle, Model model, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, caseSettle)){
@@ -69,10 +69,10 @@ public class CaseSettleController extends BaseController {
 		}
 		caseSettleService.save(caseSettle);
 		addMessage(redirectAttributes, "保存案件结案成功");
-		return "redirect:"+Global.getAdminPath()+"/tcase/caseSettle/?repage";
+		return "redirect:"+Global.getAdminPath()+"/case/tcase/settleTab?"+caseSettle.getParamUri();
 	}
 	
-	@RequiresPermissions("tcase:caseSettle:edit")
+	@RequiresPermissions("case:tcase:edit")
 	@RequestMapping(value = "delete")
 	public String delete(CaseSettle caseSettle, RedirectAttributes redirectAttributes) {
 		caseSettleService.delete(caseSettle);

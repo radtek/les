@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.DataEntity;
+import org.wxjs.les.common.utils.Util;
 
 /**
  * 案件结束Entity
@@ -29,6 +30,9 @@ public class CaseFinish extends DataEntity<CaseFinish> {
 	private String caseId;		// 案件编号
 	private String handleSummary;		// 说明
 	private Date finishDate;		// 备考表时间
+	
+	//临时属性
+	private String paramUri;		// uri
 	
 	public CaseFinish() {
 		super();
@@ -118,6 +122,25 @@ public class CaseFinish extends DataEntity<CaseFinish> {
 
 	public void setFinishDate(Date finishDate) {
 		this.finishDate = finishDate;
+	}
+	
+	public int getPageSum(){
+		int rst = 0;
+		
+		rst += Util.getInteger(this.wordPage, 0);
+		rst += Util.getInteger(this.diagramPage, 0);
+		rst += Util.getInteger(this.photoPage, 0);
+		rst += Util.getInteger(this.otherPage, 0);
+		
+		return rst;
+	}
+
+	public String getParamUri() {
+		return this.paramUri==null?"":this.paramUri.replaceAll("&amp;", "&");
+	}
+
+	public void setParamUri(String paramUri) {
+		this.paramUri = paramUri;
 	}
 	
 }

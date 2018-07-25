@@ -134,9 +134,21 @@
 		) SELECT #{caseId},value,'0','0'
 			FROM sys_dict a
 			WHERE a.type='case_stage'
-			AND a.value!='10'
+			AND a.value in ('20','30','40','50','60','70','110','120')
 			ORDER BY a.sort
 	</insert>
+	
+	<insert id="initProcessCaseTransfer">
+		INSERT INTO tcase_process(
+			case_id,
+			case_stage,
+			case_stage_status,
+			del_flag
+		) SELECT #{caseId},value,'0','0'
+			FROM sys_dict a
+			WHERE a.type='case_stage'
+			AND a.value = '210'
+	</insert>	
 	
 	<update id="update">
 		UPDATE tcase_process SET 	

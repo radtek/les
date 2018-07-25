@@ -46,7 +46,7 @@ public class CaseDecisionController extends BaseController {
 		return entity;
 	}
 	
-	@RequiresPermissions("tcase:caseDecision:view")
+	@RequiresPermissions("case:tcase:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(CaseDecision caseDecision, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<CaseDecision> page = caseDecisionService.findPage(new Page<CaseDecision>(request, response), caseDecision); 
@@ -54,14 +54,14 @@ public class CaseDecisionController extends BaseController {
 		return "modules/tcase/caseDecisionList";
 	}
 
-	@RequiresPermissions("tcase:caseDecision:view")
+	@RequiresPermissions("case:tcase:view")
 	@RequestMapping(value = "form")
 	public String form(CaseDecision caseDecision, Model model) {
 		model.addAttribute("caseDecision", caseDecision);
-		return "modules/tcase/caseDecisionForm";
+		return "modules/tcase/tcaseDecisionTab";
 	}
 
-	@RequiresPermissions("tcase:caseDecision:edit")
+	@RequiresPermissions("case:tcase:edit")
 	@RequestMapping(value = "save")
 	public String save(CaseDecision caseDecision, Model model, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, caseDecision)){
@@ -69,10 +69,10 @@ public class CaseDecisionController extends BaseController {
 		}
 		caseDecisionService.save(caseDecision);
 		addMessage(redirectAttributes, "保存案件决定书成功");
-		return "redirect:"+Global.getAdminPath()+"/tcase/caseDecision/?repage";
+		return "redirect:"+Global.getAdminPath()+"/case/tcase/decisionTab?"+caseDecision.getParamUri();
 	}
 	
-	@RequiresPermissions("tcase:caseDecision:edit")
+	@RequiresPermissions("case:tcase:edit")
 	@RequestMapping(value = "delete")
 	public String delete(CaseDecision caseDecision, RedirectAttributes redirectAttributes) {
 		caseDecisionService.delete(caseDecision);

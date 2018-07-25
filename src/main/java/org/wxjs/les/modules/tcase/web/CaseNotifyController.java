@@ -46,7 +46,7 @@ public class CaseNotifyController extends BaseController {
 		return entity;
 	}
 	
-	@RequiresPermissions("case:caseNotify:view")
+	@RequiresPermissions("case:tcase:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(CaseNotify caseNotify, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<CaseNotify> page = caseNotifyService.findPage(new Page<CaseNotify>(request, response), caseNotify); 
@@ -54,14 +54,14 @@ public class CaseNotifyController extends BaseController {
 		return "modules/tcase/caseNotifyList";
 	}
 
-	@RequiresPermissions("case:caseNotify:view")
+	@RequiresPermissions("case:tcase:view")
 	@RequestMapping(value = "form")
 	public String form(CaseNotify caseNotify, Model model) {
 		model.addAttribute("caseNotify", caseNotify);
-		return "modules/tcase/caseNotifyForm";
+		return "modules/tcase/caseNotifyTab";
 	}
 
-	@RequiresPermissions("case:caseNotify:edit")
+	@RequiresPermissions("case:tcase:edit")
 	@RequestMapping(value = "save")
 	public String save(CaseNotify caseNotify, Model model, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, caseNotify)){
@@ -69,10 +69,10 @@ public class CaseNotifyController extends BaseController {
 		}
 		caseNotifyService.save(caseNotify);
 		addMessage(redirectAttributes, "保存案件告知书成功");
-		return "redirect:"+Global.getAdminPath()+"/case/caseNotify/?repage";
+		return "redirect:"+Global.getAdminPath()+"/case/tcase/notifyTab?"+caseNotify.getParamUri();
 	}
 	
-	@RequiresPermissions("case:caseNotify:edit")
+	@RequiresPermissions("case:tcase:edit")
 	@RequestMapping(value = "delete")
 	public String delete(CaseNotify caseNotify, RedirectAttributes redirectAttributes) {
 		caseNotifyService.delete(caseNotify);

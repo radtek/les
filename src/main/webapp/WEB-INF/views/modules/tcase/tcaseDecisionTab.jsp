@@ -34,7 +34,8 @@
     
 	<form:form id="inputForm" modelAttribute="caseDecision" action="${ctx}/tcase/caseDecision/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
-		<form:hidden path="caseId" value="${caseAct.tcase.id}"/>
+		<form:hidden path="caseId"/>
+		<form:hidden path="paramUri" value="${caseAct.paramUri}"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">
 			<label class="control-label">主送：</label>
@@ -56,10 +57,12 @@
 			    <form:select path="decisionType">
 			       <form:options items="${fns:getDictList('case_decision_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 			    </form:select>
-				[<form:input path="year" htmlEscape="false" maxlength="8" class="input-xlarge required"/>
+				[<form:input path="year" htmlEscape="false" maxlength="8" class="input-mini required"/>
 				<span class="help-inline"><font color="red">*</font> </span>]年第(
 			    <form:hidden path="seq"/>
-			    <c:if test="${empty caseDecision.seq}">自动生成</c:if>
+			    <c:if test="${empty caseDecision.seq}">
+			    <input value="自动生成" readonly="readonly" class="input-mini">
+			    </c:if>
 			    <c:if test="${not empty caseDecision.seq}">${caseDecision.seq}</c:if>)号
 			</div>
 		</div>
@@ -88,7 +91,7 @@
 		<div class="control-group">
 			<label class="control-label">无锡市建设局行政处罚决定书内容：</label>
 			<div class="controls">
-				<form:textarea path="content" htmlEscape="false" rows="4" class="input-xxlarge required"/>
+				<form:textarea path="content" htmlEscape="false"  style="width:800px;height:600px;" class="required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
@@ -108,8 +111,11 @@
 			</div>
 		</div>
 		<div class="form-actions">
-			<shiro:hasPermission name="tcase:caseDecision:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
-			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
+			<shiro:hasPermission name="case:tcase:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;
+			<input id="btnLaunch" class="btn btn-primary" type="button" value="发文稿"/>&nbsp;
+			<input id="btnDecision" class="btn btn-primary" type="button" value="处罚决定书"/>&nbsp;
+			<input id="btnReach" class="btn btn-primary" type="button" value="送达回证"/>&nbsp;
+			</shiro:hasPermission>
 		</div>
 	</form:form>
 </body>

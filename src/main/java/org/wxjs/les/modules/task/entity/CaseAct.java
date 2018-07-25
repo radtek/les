@@ -75,6 +75,8 @@ public class CaseAct extends BaseEntity<CaseAct> {
 	private Tcase tcase;
 	
 	private String operateType;
+	
+	private String caseTransfer;
 
 	public CaseAct() {
 		super();
@@ -414,6 +416,14 @@ public class CaseAct extends BaseEntity<CaseAct> {
 		this.operateType = operateType;
 	}
 
+	public String getCaseTransfer() {
+		return caseTransfer;
+	}
+
+	public void setCaseTransfer(String caseTransfer) {
+		this.caseTransfer = caseTransfer;
+	}
+
 	public String getParamUri(){
 		
 		StringBuilder formUrl = new StringBuilder();
@@ -426,6 +436,7 @@ public class CaseAct extends BaseEntity<CaseAct> {
 		formUrl.append("&status=").append(this.getStatus() != null ? this.getStatus() : "");
 		formUrl.append("&businesskey=").append(this.getBusinesskey() != null ? this.getBusinesskey() : "");
 		formUrl.append("&operateType=").append(this.getOperateType());
+		formUrl.append("&caseTransfer=").append(this.getCaseTransfer());
 		return formUrl.toString();
 	}
 

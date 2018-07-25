@@ -15,4 +15,8 @@ import org.wxjs.les.modules.tcase.entity.CaseHandle;
 @MyBatisDao
 public interface CaseHandleDao extends CrudDao<CaseHandle> {
 	
+	public void updateUploadInfo(CaseHandle entity);
+	
+	public void updateReport(CaseHandle entity);
+	
 }

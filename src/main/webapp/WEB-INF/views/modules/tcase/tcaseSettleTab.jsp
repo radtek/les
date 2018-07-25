@@ -26,47 +26,39 @@
 	</script>
 </head>
 <body>
-	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/tcase/caseSettle/">案件结案列表</a></li>
-		<li class="active"><a href="${ctx}/tcase/caseSettle/form?id=${caseSettle.id}">案件结案<shiro:hasPermission name="tcase:caseSettle:edit">${not empty caseSettle.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="tcase:caseSettle:edit">查看</shiro:lacksPermission></a></li>
-	</ul><br/>
+	<h3>结案书</h3>
+
+    <les:caseSummary caseAttr="${caseAct.tcase}"></les:caseSummary>	
+    
+    <les:caseTab tab="settle" caseActAttr="${caseAct}"></les:caseTab> 
+    
 	<form:form id="inputForm" modelAttribute="caseSettle" action="${ctx}/tcase/caseSettle/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
-		<sys:message content="${message}"/>		
-		<div class="control-group">
-			<label class="control-label">案件编号：</label>
-			<div class="controls">
-				<form:input path="caseId" htmlEscape="false" maxlength="32" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
+		<form:hidden path="caseId"/>
+		<form:hidden path="paramUri" value="${caseAct.paramUri}"/>
+		<sys:message content="${message}"/>
 		<div class="control-group">
 			<label class="control-label">案件处理情况：</label>
 			<div class="controls">
-				<form:input path="handleSummary" htmlEscape="false" class="input-xlarge "/>
+				<form:textarea path="handleSummary" htmlEscape="false"  style="width:800px;height:600px;" class="required"/>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">案件执行情况：</label>
 			<div class="controls">
-				<form:input path="executeSummary" htmlEscape="false" class="input-xlarge "/>
+				<form:textarea path="executeSummary" htmlEscape="false"  style="width:800px;height:600px;" class="required"/>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">案件复议情况：</label>
 			<div class="controls">
-				<form:input path="reviewSummary" htmlEscape="false" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">备注信息：</label>
-			<div class="controls">
-				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="64" class="input-xxlarge "/>
+				<form:textarea path="reviewSummary" htmlEscape="false"  style="width:800px;height:600px;" class="required"/>
 			</div>
 		</div>
 		<div class="form-actions">
-			<shiro:hasPermission name="tcase:caseSettle:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
-			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
+			<shiro:hasPermission name="case:tcase:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;
+			<input id="btnSettle" class="btn btn-primary" type="button" value="案件结案审批表"/>
+			</shiro:hasPermission>
 		</div>
 	</form:form>
 </body>

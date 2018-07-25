@@ -55,15 +55,13 @@ public class Tcase extends DataEntity<Tcase> {
 	private String projectName;		// 案件所涉项目名称
 	private String caseCause;		// 案由
 	
+	private String caseTransfer;    //是否案源移交， 1：是案源移交
+	private String transferCaseId;  //移交后的case id
+	
 	private CaseProcess caseProcess; //
 	
 	private List<CaseProcess> currentCaseProcesses = Lists.newArrayList(); //当前process
 	
-	private CaseHandle caseHandle;
-	private CaseNotify caseNotify;
-	private CaseDecision caseDecision;
-	private CaseSettle caseSettle;
-	private CaseFinish caseFinish;
 	
 	//-- 临时属性 --//
 	// 流程任务
@@ -75,6 +73,12 @@ public class Tcase extends DataEntity<Tcase> {
 	private HistoricProcessInstance historicProcessInstance;
 	// 流程定义
 	private ProcessDefinition processDefinition;
+	
+	private Date acceptDateFrom;		// 受理时间起始
+	private Date acceptDateTo;		// 受理时间截止
+	
+	private Date createDateFrom;		// 创建时间起始
+	private Date createDateTo;		// 创建时间截止
 	
 	public Tcase() {
 		super();
@@ -289,44 +293,20 @@ public class Tcase extends DataEntity<Tcase> {
 		this.caseCause = caseCause;
 	}
 
-	public CaseHandle getCaseHandle() {
-		return caseHandle;
+	public String getCaseTransfer() {
+		return caseTransfer;
 	}
 
-	public void setCaseHandle(CaseHandle caseHandle) {
-		this.caseHandle = caseHandle;
+	public void setCaseTransfer(String caseTransfer) {
+		this.caseTransfer = caseTransfer;
 	}
 
-	public CaseNotify getCaseNotify() {
-		return caseNotify;
+	public String getTransferCaseId() {
+		return transferCaseId;
 	}
 
-	public void setCaseNotify(CaseNotify caseNotify) {
-		this.caseNotify = caseNotify;
-	}
-
-	public CaseDecision getCaseDecision() {
-		return caseDecision;
-	}
-
-	public void setCaseDecision(CaseDecision caseDecision) {
-		this.caseDecision = caseDecision;
-	}
-
-	public CaseSettle getCaseSettle() {
-		return caseSettle;
-	}
-
-	public void setCaseSettle(CaseSettle caseSettle) {
-		this.caseSettle = caseSettle;
-	}
-
-	public CaseFinish getCaseFinish() {
-		return caseFinish;
-	}
-
-	public void setCaseFinish(CaseFinish caseFinish) {
-		this.caseFinish = caseFinish;
+	public void setTransferCaseId(String transferCaseId) {
+		this.transferCaseId = transferCaseId;
 	}
 
 	public CaseProcess getCaseProcess() {
@@ -394,6 +374,38 @@ public class Tcase extends DataEntity<Tcase> {
 		return this.getFieldShort(this.projectName);
 	}
 	
+	public Date getAcceptDateFrom() {
+		return acceptDateFrom;
+	}
+
+	public void setAcceptDateFrom(Date acceptDateFrom) {
+		this.acceptDateFrom = acceptDateFrom;
+	}
+
+	public Date getAcceptDateTo() {
+		return acceptDateTo;
+	}
+
+	public void setAcceptDateTo(Date acceptDateTo) {
+		this.acceptDateTo = acceptDateTo;
+	}
+
+	public Date getCreateDateFrom() {
+		return createDateFrom;
+	}
+
+	public void setCreateDateFrom(Date createDateFrom) {
+		this.createDateFrom = createDateFrom;
+	}
+
+	public Date getCreateDateTo() {
+		return createDateTo;
+	}
+
+	public void setCreateDateTo(Date createDateTo) {
+		this.createDateTo = createDateTo;
+	}
+
 	private String getFieldShort(String field){
 		String rst = "";
 		if(field.length()>FieldShortLen){

@@ -7,9 +7,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.service.CrudService;
+import org.wxjs.les.modules.sys.utils.SequenceUtils;
 import org.wxjs.les.modules.tcase.entity.CaseDecision;
 import org.wxjs.les.modules.tcase.dao.CaseDecisionDao;
 
@@ -36,6 +36,10 @@ public class CaseDecisionService extends CrudService<CaseDecisionDao, CaseDecisi
 	
 	@Transactional(readOnly = false)
 	public void save(CaseDecision caseDecision) {
+		boolean isNew = caseDecision.getIsNewRecord();
+		if(isNew){
+			caseDecision.setSeq(SequenceUtils.fetchSeq("DecisionSeq_"+caseDecision.getDecisionType())+"");
+		}
 		super.save(caseDecision);
 	}
 	

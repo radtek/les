@@ -35,22 +35,22 @@
 		    });	
 		    
 		    $('#btnStart').click(function() {
-				$("#inputForm").attr("action","${ctx}/case/tcase/saveAndStart");
+				$("#inputForm").attr("action","${ctx}/case/tcase/saveAndStartTransfer");
 				$("#inputForm").submit();		    	
 		    });
 		});
 	</script>
 </head>
 <body>
-	<h3>案件管理</h3>
+	<h3>案件移交</h3>
 	
     <c:if test="${not empty caseAct.tcase.id}">
     <les:caseSummary caseAttr="${caseAct.tcase}"></les:caseSummary>
     </c:if>
     
-    <les:caseTab tab="info" caseActAttr="${caseAct}"></les:caseTab>
+    <les:caseTab tab="infoTransfer" caseActAttr="${caseAct}"></les:caseTab>
     	
-	<form:form id="inputForm" modelAttribute="caseAct" action="${ctx}/case/tcase/save" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="caseAct" action="${ctx}/case/tcase/saveTransfer" method="post" class="form-horizontal">
 		<form:hidden path="tcase.id"/>
 		
 		<form:hidden path="operateType"/>
@@ -70,38 +70,7 @@
 				<div class="span6">		
 			<label class="control-label">事项类型：</label>
 			<div class="controls controls-tight">
-				${fns:getDictLabel(caseAct.tcase.caseProcess.caseStage, 'case_stage', '')}
-			</div>
-		        </div>
-		    </div>
-		</div>	
-		<div class="control-group container-fluid nopadding">
-			<div class="row-fluid">
-				<div class="span6">		
-			<label class="control-label">受理人：</label>
-			<div class="controls controls-tight">
-				<form:input path="tcase.accepter" htmlEscape="false" maxlength="32" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		        </div>
-				<div class="span6">		
-			<label class="control-label">受理时间：</label>
-			<div class="controls controls-tight">
-				<input name="tcase.acceptDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate "
-					value="<fmt:formatDate value="${caseAct.tcase.acceptDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
-					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>				
-			</div>
-		        </div>
-		    </div>
-		</div>				
-
-		<div class="control-group container-fluid nopadding">
-			<div class="row-fluid">
-				<div class="span12">		
-			<label class="control-label">案件来源：</label>
-			<div class="controls controls-tight">
-				<form:input path="tcase.caseSource" htmlEscape="false" maxlength="100" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				案源移交
 			</div>
 		        </div>
 		    </div>
@@ -327,11 +296,8 @@
 		
 		<div class="form-actions">
 			<shiro:hasPermission name="case:tcase:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;
-			<c:if test="${caseAct.operateType eq 'start'}">
+			<c:if test="${caseAct.operateType eq 'start' || caseAct.tcase.caseProcess.caseStageStatus eq '0'}">
 			   <input id="btnStart" class="btn btn-primary" type="button" value="启动事件"/>&nbsp;
-			</c:if>
-			<c:if test="${caseAct.operateType eq 'handle' and caseAct.tcase.caseProcess.caseStage eq '20'}">
-			   <input id="btnApproveTable" class="btn btn-primary" type="button" value="案件立案审批表"/>&nbsp;
 			</c:if>
 			</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>

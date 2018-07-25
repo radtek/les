@@ -20,6 +20,12 @@ public class ProcessCommonUtils {
 			group = Global.GROUP_caseSettleProcess; 
 		}else if("70".equals(caseStage)){
 			group = Global.GROUP_caseFinishProcess;
+		}else if("110".equals(caseStage)){
+			group = Global.GROUP_caseCancelProcess1;
+		}else if("120".equals(caseStage)){
+			group = Global.GROUP_caseSeriousProcess;
+		}else if("210".equals(caseStage)){
+			group = Global.GROUP_caseTransferProcess;
 		}
 		return group;
 	}
@@ -40,6 +46,12 @@ public class ProcessCommonUtils {
 			processDefKey = Global.PN_caseSettleProcess; 
 		}else if("70".equals(caseStage)){
 			processDefKey = Global.PN_caseFinishProcess;
+		}else if("110".equals(caseStage)){
+			processDefKey = Global.PN_caseSeriousProcess;
+		}else if("120".equals(caseStage)){
+			processDefKey = Global.PN_caseCancelProcess1;
+		}else if("210".equals(caseStage)){
+			processDefKey = Global.PN_caseTransferProcess;
 		}
 		return processDefKey;
 	}

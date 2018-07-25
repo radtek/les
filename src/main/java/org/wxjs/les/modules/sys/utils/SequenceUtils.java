@@ -45,8 +45,14 @@ public class SequenceUtils {
 	public static String fetchCaseSeqStr(){
 		String year = Calendar.getInstance().get(Calendar.YEAR) + "";
 		String seq = fetchYearSeq("case_seq") +"";
-		
 		return "T-"+year+extendStr(seq, 5);
+	}
+	
+	public static String fetchCaseTransferSeqStr(){
+		String year = Calendar.getInstance().get(Calendar.YEAR) + "";
+		String seq = fetchYearSeq("case_transfer_seq") +"";
+		
+		return "TR-"+year+extendStr(seq, 5);
 	}
 	
 	public static String extendStr(String str, int length){
