@@ -1,10 +1,10 @@
-delete from sys_dict where id like 'party_type_%';
+delete from sys_dict where `type`= 'party_type';
 INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `parent_id`, `create_by`,`create_date`,`update_by`,`update_date`) 
 VALUES 
 ('party_type_1', '单位', '单位', 'party_type', 'party_type', 10, '0','1',now(),'1',now()),
 ('party_type_2', '个人', '个人', 'party_type', 'party_type', 20, '0','1',now(),'1',now());
 
-delete from sys_dict where id like 'case_stage_%';
+delete from sys_dict where `type`= 'case_stage';
 INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `parent_id`, `create_by`,`create_date`,`update_by`,`update_date`) 
 VALUES 
 ('case_stage_1', '10', '案件来源及受理', 'case_stage', 'case_stage', 10, '0','1',now(),'1',now()),
@@ -18,7 +18,7 @@ VALUES
 ('case_stage_12', '120', '撤销流程', 'case_stage', 'case_stage', 120, '0','1',now(),'1',now()),
 ('case_stage_21', '210', '案源移交流程', 'case_stage', 'case_stage', 210, '0','1',now(),'1',now());
 
-delete from sys_dict where id like 'case_stage_status_%';
+delete from sys_dict where `type`= 'case_stage_status';
 INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `parent_id`, `create_by`,`create_date`,`update_by`,`update_date`) 
 VALUES 
 ('case_stage_status_1', '0', '未启动', 'case_stage_status', 'case_stage_status', 10, '0','1',now(),'1',now()),
@@ -35,7 +35,7 @@ VALUES
 ('case_stage_filetype_4', '4', '企业资料', 'case_stage_filetype', 'case_stage_filetype', 40, '0','1',now(),'1',now());
 
 
-delete from sys_dict where id like 'process_type_%';
+delete from sys_dict where `type`= 'process_type';
 INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `parent_id`, `create_by`,`create_date`,`update_by`,`update_date`) 
 VALUES 
 ('process_type_1', 'caseAcceptanceProcess', '案件来源及受理', 'process_type', '流程类型', 10, '0','1',now(),'1',now()),
@@ -48,13 +48,13 @@ VALUES
 ('process_type_11', 'caseSeriousProcess', '重大行政处罚流程', 'process_type', '流程类型', 110, '0','1',now(),'1',now()),
 ('process_type_12', 'caseCancelProcess', '撤销流程', 'process_type', '流程类型', 120, '0','1',now(),'1',now());
 
-delete from sys_dict where id like 'case_decision_type_%';
+delete from sys_dict where `type`= 'case_decision_type';
 INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `parent_id`, `create_by`,`create_date`,`update_by`,`update_date`) 
 VALUES 
 ('case_decision_type_1', '1', '锡建监罚字', 'case_decision_type', 'case_decision_type', 10, '0','1',now(),'1',now()),
 ('case_decision_type_2', '2', '锡建监不罚字', 'case_decision_type', 'case_decision_type', 20, '0','1',now(),'1',now());
 
-delete from sys_dict where id like 'case_notify_type_%';
+delete from sys_dict where `type`= 'case_notify_type';
 INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `parent_id`, `create_by`,`create_date`,`update_by`,`update_date`) 
 VALUES 
 ('case_notify_type_1', '1', '锡建监权告字', 'case_notify_type', 'case_notify_type', 10, '0','1',now(),'1',now()),

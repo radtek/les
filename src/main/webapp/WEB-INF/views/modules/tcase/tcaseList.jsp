@@ -54,6 +54,7 @@
 				<th>当事人</th>
 				<th>项目名称</th>
 				<th>事项名称</th>
+				<th>案件来源</th>
 				<th>当前阶段</th>
 				<shiro:hasPermission name="case:tcase:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
@@ -69,6 +70,9 @@
 				<td>
 					${tcase.caseCause}
 				</td>
+				<td>
+					${tcase.caseSource}
+				</td>				
 				<td>
 					<c:forEach items="${tcase.currentCaseProcesses}" var="process" varStatus="pstatus">
 					<c:if test="${pstatus.index gt 0}"><BR></c:if>

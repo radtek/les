@@ -11,7 +11,12 @@
 	</script>
 </head>
 <body>
-	<h3>案件管理</h3>
+    <c:if test="${caseAct.caseTransfer eq '1'}">
+    <h3>案源移交</h3>
+    </c:if>
+    <c:if test="${empty caseAct.caseTransfer or caseAct.caseTransfer eq '0'}">
+    <h3>案件审理</h3>
+    </c:if>
 
     <les:caseSummary caseAttr="${caseAct.tcase}"></les:caseSummary>	
     
@@ -134,7 +139,7 @@
 			<tr>
 			    <td>${status.index + 1}</td>
 				<td>${fns:getDictLabel(process.caseStage, 'case_stage', '')}</td>
-				<td>${fns:getDictLabel(process.caseStageStatus, 'case_stage_status', '')}</td>	${process.caseStageStatus}
+				<td>${fns:getDictLabel(process.caseStageStatus, 'case_stage_status', '')}</td>
 				<td>
 				<c:if test="${process.caseStageStatus eq '0'}">
 				  <a href="${ctx}/case/tcase/toStartTransfer?businesskey=${caseAct.tcase.id}:${process.id}">启动</a>

@@ -4,6 +4,7 @@
 package org.wxjs.les.modules.tcase.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,12 +22,14 @@ import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.service.CrudService;
 import org.wxjs.les.common.utils.StringUtils;
 import org.wxjs.les.modules.act.utils.ProcessUtils;
+import org.wxjs.les.modules.sys.entity.User;
 import org.wxjs.les.modules.sys.utils.SequenceUtils;
 import org.wxjs.les.modules.sys.utils.UserUtils;
 import org.wxjs.les.modules.task.service.CaseTaskService;
 import org.wxjs.les.modules.tcase.entity.CaseProcess;
 import org.wxjs.les.modules.tcase.entity.Tcase;
 import org.wxjs.les.modules.tcase.utils.ProcessCommonUtils;
+import org.wxjs.les.modules.tcase.dao.CaseAttachDao;
 import org.wxjs.les.modules.tcase.dao.CaseProcessDao;
 import org.wxjs.les.modules.tcase.dao.TcaseDao;
 
@@ -42,6 +45,9 @@ import com.google.common.collect.Lists;
 public class TcaseService extends CrudService<TcaseDao, Tcase> {
 	@Autowired
 	private	CaseProcessDao caseProcessDao;
+	
+	@Autowired
+	private	CaseAttachDao caseAttachDao;	
 	
 	@Autowired
 	IdentityService identityService;
@@ -262,6 +268,11 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 		tcase.setIsNewRecord(true);
 		tcase.setCaseSource("移交");
 		
+		User user = UserUtils.getUser();
+		tcase.setAccepter(user.getName());
+		
+		tcase.setAcceptDate(Calendar.getInstance().getTime());
+		
 		tcase.getCaseProcess().setId("");
 		tcase.getCaseProcess().setCaseHandler("");
 		tcase.getCaseProcess().setCaseStage(Global.CASE_STAGE_ACCEPTANCE);
@@ -276,6 +287,10 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 		case0.setId(caseId);
 		case0.setTransferCaseId(tcase.getId());
 		dao.updateTransferCaseId(case0);
+		
+		//transfer attach
+		tcase.setOldCaseId(caseId);
+		caseAttachDao.attachTransfer(tcase);
 		
 	}
 	

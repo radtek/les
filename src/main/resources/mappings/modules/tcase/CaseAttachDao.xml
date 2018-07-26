@@ -97,6 +97,13 @@
 		)
 	</insert>
 	
+	<insert id="attachTransfer">
+		INSERT INTO tcase_attach(case_id,attach_type,filename,filepath,flow_node)
+		SELECT #{id} case_id, attach_type,filename,filepath,flow_node
+		FROM tcase_attach a
+		WHERE a.case_id=#{oldCaseId}
+	</insert>	
+	
 	<update id="update">
 		UPDATE tcase_attach SET 	
 			case_id = #{caseId},

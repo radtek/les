@@ -18,6 +18,7 @@ import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.web.BaseController;
 import org.wxjs.les.common.utils.StringUtils;
+import org.wxjs.les.modules.task.entity.CaseAct;
 import org.wxjs.les.modules.tcase.entity.CaseAttach;
 import org.wxjs.les.modules.tcase.entity.Tcase;
 import org.wxjs.les.modules.tcase.service.CaseAttachService;
@@ -60,16 +61,17 @@ public class CaseAttachController extends BaseController {
 
 	@RequiresPermissions("case:tcase:view")
 	@RequestMapping(value = "form")
-	public String form(CaseAttach caseAttach, Model model) {
+	public String form(CaseAct caseAct, Model model) {
 		
-		String caseId = caseAttach.getCaseId();
-		logger.debug("caseAttach.getCaseId():{}", caseAttach.getCaseId());
+		String businesskey = caseAct.getBusinesskey();
 		
-		Tcase tcase = caseService.get(caseId);
+		Tcase tcase = caseService.getCaseAndProcess(businesskey);
 		
+		caseAct.setTcase(tcase);
+		
+		CaseAttach caseAttach = new CaseAttach();
+		caseAttach.setCaseId(tcase.getId());
 		model.addAttribute("caseAttach", caseAttach);
-		
-		model.addAttribute("tcase", tcase);
 		
 		return "modules/tcase/caseAttachForm";
 	}
@@ -77,9 +79,7 @@ public class CaseAttachController extends BaseController {
 	@RequiresPermissions("case:tcase:edit")
 	@RequestMapping(value = "save")
 	public String save(CaseAttach caseAttach, Model model, RedirectAttributes redirectAttributes) {
-		if (!beanValidator(model, caseAttach)){
-			return form(caseAttach, model);
-		}
+
 		String filename = "";
 		String filepath = caseAttach.getFilepath();
 		if(!StringUtils.isEmpty(filepath)){
@@ -89,7 +89,7 @@ public class CaseAttachController extends BaseController {
 		
 		caseAttachService.save(caseAttach);
 		addMessage(redirectAttributes, "保存案件资料成功");
-		return "redirect:"+Global.getAdminPath()+"/case/tcase/attachTab?id="+caseAttach.getCaseId();
+		return "redirect:"+Global.getAdminPath()+"/case/tcase/attachTab?"+caseAttach.getParamUri();
 	}
 	
 	@RequiresPermissions("case:tcase:edit")

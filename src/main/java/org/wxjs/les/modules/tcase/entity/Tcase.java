@@ -60,6 +60,8 @@ public class Tcase extends DataEntity<Tcase> {
 	
 	private CaseProcess caseProcess; //
 	
+	private CaseAttach caseAttach; //
+	
 	private List<CaseProcess> currentCaseProcesses = Lists.newArrayList(); //当前process
 	
 	
@@ -79,6 +81,8 @@ public class Tcase extends DataEntity<Tcase> {
 	
 	private Date createDateFrom;		// 创建时间起始
 	private Date createDateTo;		// 创建时间截止
+	
+	private String oldCaseId;
 	
 	public Tcase() {
 		super();
@@ -325,6 +329,14 @@ public class Tcase extends DataEntity<Tcase> {
 		this.currentCaseProcesses = currentCaseProcesses;
 	}
 
+	public CaseAttach getCaseAttach() {
+		return caseAttach;
+	}
+
+	public void setCaseAttach(CaseAttach caseAttach) {
+		this.caseAttach = caseAttach;
+	}
+
 	public Task getTask() {
 		return task;
 	}
@@ -418,6 +430,14 @@ public class Tcase extends DataEntity<Tcase> {
 	
 	public String getParty(){
 		return "单位".equals(this.partyType)? this.orgName:this.psnName;
+	}
+
+	public String getOldCaseId() {
+		return oldCaseId;
+	}
+
+	public void setOldCaseId(String oldCaseId) {
+		this.oldCaseId = oldCaseId;
 	}
 	
 }

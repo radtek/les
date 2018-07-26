@@ -7,10 +7,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.service.CrudService;
 import org.wxjs.les.modules.tcase.entity.CaseAttach;
+import org.wxjs.les.modules.tcase.entity.Tcase;
 import org.wxjs.les.modules.tcase.dao.CaseAttachDao;
 
 /**
@@ -37,6 +37,14 @@ public class CaseAttachService extends CrudService<CaseAttachDao, CaseAttach> {
 	@Transactional(readOnly = false)
 	public void save(CaseAttach caseAttach) {
 		super.save(caseAttach);
+	}
+	
+	@Transactional(readOnly = false)
+	public void attachTransfer(String oldCaseId, String newCaseId){
+		Tcase tcase = new Tcase();
+		tcase.setId(newCaseId);
+		tcase.setOldCaseId(oldCaseId);
+		dao.attachTransfer(tcase);
 	}
 	
 	@Transactional(readOnly = false)

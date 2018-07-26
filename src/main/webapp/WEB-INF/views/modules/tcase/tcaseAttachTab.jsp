@@ -12,7 +12,12 @@
 	</script>
 </head>
 <body>
-	<h3>案件管理</h3>
+    <c:if test="${caseAct.caseTransfer eq '1'}">
+    <h3>案源移交</h3>
+    </c:if>
+    <c:if test="${empty caseAct.caseTransfer or caseAct.caseTransfer eq '0'}">
+    <h3>案件审理</h3>
+    </c:if>
 	
     <les:caseSummary caseAttr="${caseAct.tcase}"></les:caseSummary>
 
@@ -22,7 +27,7 @@
 	
 	<div style="margin:10px 60px 10px 0;text-align:right">
 	    <shiro:hasPermission name="case:tcase:edit">
-	    <input class="btn btn-primary" type="button" value="添加资料" onclick="window.location.href='${ctx}/case/caseAttach/form?caseId=${caseAct.tcase.id}'"/>
+	    <input class="btn btn-primary" type="button" value="添加资料" onclick="window.location.href='${ctx}/case/caseAttach/form?${caseAct.paramUri}'"/>
 	    </shiro:hasPermission>	   
 	</div>	
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">

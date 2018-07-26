@@ -27,10 +27,12 @@
 </head>
 <body>
 	<h3>资料附件</h3>
-	<les:caseSummary></les:caseSummary>
+	<les:caseSummary caseAttr="${caseAct.tcase}"></les:caseSummary>
+	
 	<form:form id="inputForm" modelAttribute="caseAttach" action="${ctx}/case/caseAttach/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<form:hidden path="caseId"/>
+		<form:hidden path="paramUri" value="${caseAct.paramUri}"/>
 		<sys:message content="${message}"/>
 		<div class="control-group">
 			<label class="control-label">资料类型：</label>

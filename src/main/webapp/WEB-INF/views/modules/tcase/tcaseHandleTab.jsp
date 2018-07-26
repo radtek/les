@@ -26,7 +26,7 @@
 	</script>
 </head>
 <body>
-	<h3>案件审理</h3>
+    <h3>案件审理</h3>
 
     <les:caseSummary caseAttr="${caseAct.tcase}"></les:caseSummary>	
     

@@ -194,9 +194,11 @@ public class TcaseController extends BaseController {
 		
 		logger.debug("businesskey:{}", businesskey);
 		
-		List<User> availableHandlers = this.getCaseHandler4Start(tcase);
-		tcase.getCaseProcess().setAvailableHandlers(availableHandlers);	
-		
+		if(tcase.getCaseProcess() != null){
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase);
+			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);			
+		}
+	
 		caseAct.setTcase(tcase);
 		
 		return "modules/tcase/tcaseInfoTabTransfer";
@@ -214,8 +216,10 @@ public class TcaseController extends BaseController {
 		
 		logger.debug("businesskey:{}", businesskey);
 		
-		List<User> availableHandlers = this.getCaseHandler4Start(tcase);
-		tcase.getCaseProcess().setAvailableHandlers(availableHandlers);	
+		if(tcase.getCaseProcess() != null){
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase);
+			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
+		}
 		
 		caseAct.setTcase(tcase);
 		
@@ -707,7 +711,9 @@ public class TcaseController extends BaseController {
 				
 				//handle case transfer
 				Tcase tcase = tcaseService.getCaseAndProcess(actTask.getBusinesskey());
-				if(Global.CASE_STAGE_TRANSFER.equals(caseProcess.getCaseStage())){
+				logger.debug("actTask.getBusinesskey():{}",(actTask.getBusinesskey()));
+				if(Global.CASE_STAGE_TRANSFER.equals(tcase.getCaseProcess().getCaseStage())){
+					logger.debug("tcase.getCaseProcess().getCaseStage():{}",(tcase.getCaseProcess().getCaseStage()));
 					tcaseService.doTransfer(tcase);
 				}
 			}
