@@ -83,7 +83,7 @@
 		ORDER BY a.case_id, a.id
 	</select>	
 	
-	<insert id="insert"  useGeneratedKeys="true" keyProperty="id" parameterType="org.wxjs.les.modules.tcase.entity.CaseProcess">
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="org.wxjs.les.modules.tcase.entity.CaseProcess">
 		INSERT INTO tcase_process(
 			case_id,
 			case_summary,
@@ -138,13 +138,15 @@
 			ORDER BY a.sort
 	</insert>
 	
-	<insert id="initProcessCaseTransfer">
+	<insert id="initProcessCaseTransfer" useGeneratedKeys="true" keyProperty="id" parameterType="org.wxjs.les.modules.tcase.entity.CaseProcess">
 		INSERT INTO tcase_process(
 			case_id,
+			case_summary,
+			case_handler,
 			case_stage,
 			case_stage_status,
 			del_flag
-		) SELECT #{caseId},value,'0','0'
+		) SELECT #{caseId},#{caseSummary},#{caseHandler},value,'0','0'
 			FROM sys_dict a
 			WHERE a.type='case_stage'
 			AND a.value = '210'

@@ -133,8 +133,8 @@
             <c:forEach items="${transferProcesslist}" var="process" varStatus="status">		
 			<tr>
 			    <td>${status.index + 1}</td>
-				<td>${fns:getDictLabel(process.caseStage, 'case_stage', '')}</td>			
-				<td>${fns:getDictLabel(process.caseStageStatus, 'case_stage_status', '')}</td>	
+				<td>${fns:getDictLabel(process.caseStage, 'case_stage', '')}</td>
+				<td>${fns:getDictLabel(process.caseStageStatus, 'case_stage_status', '')}</td>	${process.caseStageStatus}
 				<td>
 				<c:if test="${process.caseStageStatus eq '0'}">
 				  <a href="${ctx}/case/tcase/toStartTransfer?businesskey=${caseAct.tcase.id}:${process.id}">启动</a>

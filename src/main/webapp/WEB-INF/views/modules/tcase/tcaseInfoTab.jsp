@@ -261,6 +261,7 @@
 			<label class="control-label">案发时间：</label>
 			<div class="controls controls-tight">
 				<form:input path="tcase.caseHappenDate" htmlEscape="false" maxlength="20" class="input-large required"/>
+				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		        </div>
 				<div class="span6">		

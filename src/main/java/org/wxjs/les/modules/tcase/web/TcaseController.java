@@ -517,6 +517,8 @@ public class TcaseController extends BaseController {
 		if(Global.OperateType_Handle.equals(caseAct.getOperateType())){
 			ActTask actTask = new ActTask();
 			
+			actTask.setBusinesskey(businesskey);
+			
 			actTask.initialSignature();
 			
 			actTask.setTaskId(caseAct.getTaskId());
@@ -702,6 +704,12 @@ public class TcaseController extends BaseController {
 			if(nextTaskDef == null){ //if nextTaskDef is null, it is the last userTask 
 				caseProcess.setCaseStageStatus(Global.CASE_STAGE_STATUS_FINISHED);
 				this.caseProcessService.updateStageStatus(caseProcess);
+				
+				//handle case transfer
+				Tcase tcase = tcaseService.getCaseAndProcess(actTask.getBusinesskey());
+				if(Global.CASE_STAGE_TRANSFER.equals(caseProcess.getCaseStage())){
+					tcaseService.doTransfer(tcase);
+				}
 			}
 		}else if("cancel".equals(actTask.getApprove())){
 			caseProcess.setCaseStageStatus(Global.CASE_STAGE_STATUS_CANCELED);

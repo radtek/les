@@ -15,4 +15,4 @@ UNION
 SELECT c.*
 FROM tcase_process c
 WHERE c.case_stage_status>'0'
-AND c.case_stage in ('110','120');
+AND c.case_stage in ('110','120','210');

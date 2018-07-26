@@ -22,7 +22,7 @@
     <sequenceFlow id="flow3" name="取消" sourceRef="sid-C47DC249-F311-4B69-A5E0-CF054BA1472F" targetRef="endevent1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${zdfzrOp=='cancel'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow4" name="通过" sourceRef="sid-C47DC249-F311-4B69-A5E0-CF054BA1472F" targetRef="sid-619AB5A8-D242-4294-AC3D-8211F3FCA239">
+    <sequenceFlow id="flow4" name="通过" sourceRef="sid-C47DC249-F311-4B69-A5E0-CF054BA1472F" targetRef="usertask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${zdfzrOp=='pass'}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask3" name="处室负责人意见" activiti:assignee="${csfzrAssignee}" activiti:candidateGroups="csfzr"></userTask>
@@ -55,6 +55,8 @@
     <endEvent id="endevent2" name="End"></endEvent>
     <endEvent id="endevent3" name="End"></endEvent>
     <endEvent id="endevent4" name="End"></endEvent>
+    <userTask id="usertask5" name="办案人受理" activiti:assignee="${jcbarAssignee}" activiti:candidateGroups="jcbar"></userTask>
+    <sequenceFlow id="flow15" sourceRef="usertask5" targetRef="sid-619AB5A8-D242-4294-AC3D-8211F3FCA239"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_caseTransferProcess">
     <bpmndi:BPMNPlane bpmnElement="caseTransferProcess" id="BPMNPlane_caseTransferProcess">
@@ -74,7 +76,7 @@
         <omgdc:Bounds height="40.0" width="40.0" x="900.0" y="172.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="sid-619AB5A8-D242-4294-AC3D-8211F3FCA239" id="BPMNShape_sid-619AB5A8-D242-4294-AC3D-8211F3FCA239">
-        <omgdc:Bounds height="35.0" width="35.0" x="975.0" y="175.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="1130.0" y="173.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
         <omgdc:Bounds height="80.0" width="100.0" x="320.0" y="153.0"></omgdc:Bounds>
@@ -99,6 +101,9 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
         <omgdc:Bounds height="35.0" width="35.0" x="247.0" y="80.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
+        <omgdc:Bounds height="80.0" width="100.0" x="980.0" y="151.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="sid-60689434-EF4F-4210-A888-9C047100FA6C" id="BPMNEdge_sid-60689434-EF4F-4210-A888-9C047100FA6C">
         <omgdi:waypoint x="55.0" y="193.0"></omgdi:waypoint>
@@ -144,7 +149,7 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="940.0" y="192.0"></omgdi:waypoint>
-        <omgdi:waypoint x="975.0" y="192.0"></omgdi:waypoint>
+        <omgdi:waypoint x="980.0" y="191.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="14.0" width="24.0" x="939.0" y="199.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
@@ -202,6 +207,10 @@
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="14.0" width="24.0" x="270.0" y="153.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
+        <omgdi:waypoint x="1080.0" y="191.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1130.0" y="190.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

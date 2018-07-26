@@ -204,18 +204,6 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 			
 			//初始化
 			caseProcessDao.initProcessExcludeAcceptance(tcase.getCaseProcess());
-			
-
-			/*
-			//load tcase again for Case
-			Tcase tcaseNew = this.get(tcase.getId());
-			if(tcaseNew != null && tcaseNew.getCaseProcess() != null){
-				tcase.getCaseProcess().setId(tcaseNew.getCaseProcess().getId());
-				tcase.getCaseProcess().setCaseId(tcaseNew.getCaseProcess().getCaseId());
-				tcase.getCaseProcess().setCaseStage(tcaseNew.getCaseProcess().getCaseStage());	
-				tcase.getCaseProcess().setCaseStageStatus(tcaseNew.getCaseProcess().getCaseStageStatus());
-			}
-			*/
 
 		}else{
 			caseProcessDao.update(tcase.getCaseProcess());
@@ -251,7 +239,7 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 			caseProcessDao.initProcessCaseTransfer(tcase.getCaseProcess());
 
 		}else{
-			caseProcessDao.update(tcase.getCaseProcess());
+			caseProcessDao.update(tcase.getCaseProcess());			
 		}
 		
 	}
@@ -262,6 +250,32 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 		
 		//start flow
 		this.startWorkflow(tcase);
+		
+	}
+	
+	@Transactional(readOnly = false)
+	public void doTransfer(Tcase tcase) {
+		
+		//save case
+		String caseId = tcase.getId();
+		tcase.setId("");
+		tcase.setIsNewRecord(true);
+		tcase.setCaseSource("移交");
+		
+		tcase.getCaseProcess().setId("");
+		tcase.getCaseProcess().setCaseHandler("");
+		tcase.getCaseProcess().setCaseStage(Global.CASE_STAGE_ACCEPTANCE);
+		tcase.getCaseProcess().setCaseStageStatus("0");
+		tcase.getCaseProcess().setProcDefId("");
+		tcase.getCaseProcess().setProcInstId("");
+		
+		this.save(tcase);
+		
+		//update new case id for original transfer
+		Tcase case0 = new Tcase();
+		case0.setId(caseId);
+		case0.setTransferCaseId(tcase.getId());
+		dao.updateTransferCaseId(case0);
 		
 	}
 	
