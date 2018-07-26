@@ -40,11 +40,13 @@ public class Tcase extends DataEntity<Tcase> {
 	private String orgAgent;		// 法定代表人
 	private String orgCode;		// 统一社会信用代码
 	private String orgResponsiblePerson;		// 负责人
+	private String orgResponsiblePersonPost;    // 负责人职务
 	private String orgAddress;		// 住址
 	private String orgPhone;		// 联系电话
 	private String psnName;		// 姓名
 	private String psnOrganization;		// 工作单位
 	private String psnCode;		// 身份证
+	private String psnBirthday;		// 出生年月
 	private String psnPost;		// 职务
 	private String psnAddress;		// 住址
 	private String psnPhone;		// 联系电话
@@ -172,6 +174,14 @@ public class Tcase extends DataEntity<Tcase> {
 		this.orgResponsiblePerson = orgResponsiblePerson;
 	}
 	
+	public String getOrgResponsiblePersonPost() {
+		return orgResponsiblePersonPost;
+	}
+
+	public void setOrgResponsiblePersonPost(String orgResponsiblePersonPost) {
+		this.orgResponsiblePersonPost = orgResponsiblePersonPost;
+	}
+
 	@Length(min=0, max=100, message="住址长度必须介于 1 和 100 之间")
 	public String getOrgAddress() {
 		return orgAddress;
@@ -217,6 +227,14 @@ public class Tcase extends DataEntity<Tcase> {
 		this.psnCode = psnCode;
 	}
 	
+	public String getPsnBirthday() {
+		return psnBirthday;
+	}
+
+	public void setPsnBirthday(String psnBirthday) {
+		this.psnBirthday = psnBirthday;
+	}
+
 	@Length(min=0, max=100, message="职务长度必须介于 1 和 100 之间")
 	public String getPsnPost() {
 		return psnPost;

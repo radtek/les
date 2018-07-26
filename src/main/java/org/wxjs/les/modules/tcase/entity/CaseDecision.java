@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.DataEntity;
 import org.wxjs.les.common.utils.DateUtils;
+import org.wxjs.les.common.utils.Util;
 
 /**
  * 案件决定书Entity
@@ -89,7 +90,7 @@ public class CaseDecision extends DataEntity<CaseDecision> {
 	
 	@Length(min=0, max=8, message="流水号长度必须介于 0 和 8 之间")
 	public String getSeq() {
-		return seq;
+		return Util.fillZeroPre(seq, 3);
 	}
 
 	public void setSeq(String seq) {

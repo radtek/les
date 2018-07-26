@@ -144,20 +144,27 @@
 		</div>	
 		<div class="control-group container-fluid nopadding">
 			<div class="row-fluid">
-				<div class="span7">		
+				<div class="span4">		
 			<label class="control-label">法定代表人：</label>
 			<div class="controls controls-tight">
-				<form:input path="tcase.orgAgent" htmlEscape="false" maxlength="32" class="input-xlarge required"/>
+				<form:input path="tcase.orgAgent" htmlEscape="false" maxlength="32" class="input-large required"/>
 				<span class="help-inline"><font color="red">*</font> </span>			
 			</div>
 		        </div>
-				<div class="span5">		
+				<div class="span4">		
 			<label class="control-label">负责人：</label>
 			<div class="controls controls-tight">
-				<form:input path="tcase.orgResponsiblePerson" htmlEscape="false" maxlength="100" class="input-xlarge required"/>
+				<form:input path="tcase.orgResponsiblePerson" htmlEscape="false" maxlength="100" class="input-large required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		        </div>
+				<div class="span4">		
+			<label class="control-label">负责人职务：</label>
+			<div class="controls controls-tight">
+				<form:input path="tcase.orgResponsiblePersonPost" htmlEscape="false" maxlength="32" class="input-large required"/>
+				<span class="help-inline"><font color="red">*</font> </span>			
+			</div>
+		        </div>		        
 		    </div>
 		</div>			
 		<div class="control-group container-fluid nopadding">
@@ -186,19 +193,19 @@
 		
 		<div class="control-group container-fluid nopadding">
 			<div class="row-fluid">
-				<div class="span6">		
+				<div class="span5">		
 			<label class="control-label">姓名：</label>
 			<div class="controls controls-tight">
 				<form:input path="tcase.psnName" htmlEscape="false" maxlength="32" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		        </div>			
-				<div class="span6">		
-			<label class="control-label">身份证：</label>
+				<div class="span7">			
+			<label class="control-label">性别：</label>
 			<div class="controls controls-tight">
-				<form:input path="tcase.psnCode" htmlEscape="false" maxlength="32" class="input-xlarge required"/>
+				<form:radiobuttons path="tcase.psnSex" items="${fns:getDictList('sex')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
+			</div>			
 		        </div>
 
 		    </div>
@@ -206,17 +213,19 @@
 		
 		<div class="control-group container-fluid nopadding">
 			<div class="row-fluid">
-				<div class="span6">		
-			<label class="control-label">性别：</label>
+				<div class="span5">		
+			<label class="control-label">身份证：</label>
 			<div class="controls controls-tight">
-				<form:radiobuttons path="tcase.psnSex" items="${fns:getDictList('sex')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required"/>
+				<form:input path="tcase.psnCode" htmlEscape="false" maxlength="32" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		        </div>
-				<div class="span6">		
-			<label class="control-label">联系电话：</label>
+				<div class="span7">		
+			<label class="control-label">出生年月：</label>
 			<div class="controls controls-tight">
-				<form:input path="tcase.psnPhone" htmlEscape="false" maxlength="32" class="input-xlarge required"/>
+				<input name="tcase.psnBirthday" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate required"
+					value="<fmt:formatDate value="${tcase.psnBirthday}" pattern="yyyy-MM"/>"
+					onclick="WdatePicker({dateFmt:'yyyy-MM',isShowClear:false});"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		        </div>
@@ -225,14 +234,14 @@
 		
 		<div class="control-group container-fluid nopadding">
 			<div class="row-fluid">
-				<div class="span6">		
+				<div class="span5">		
 			<label class="control-label">工作单位：</label>
 			<div class="controls controls-tight">
 				<form:input path="tcase.psnOrganization" htmlEscape="false" maxlength="100" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		        </div>
-				<div class="span6">		
+				<div class="span7">		
 			<label class="control-label">职务：</label>
 			<div class="controls controls-tight">
 				<form:input path="tcase.psnPost" htmlEscape="false" maxlength="100" class="input-xlarge required"/>
@@ -244,7 +253,14 @@
 							
 		<div class="control-group container-fluid nopadding">
 			<div class="row-fluid">
-				<div class="span12">		
+			    <div class="span5">
+			<label class="control-label">联系电话：</label>
+			<div class="controls controls-tight">
+				<form:input path="tcase.psnPhone" htmlEscape="false" maxlength="32" class="input-xlarge required"/>
+				<span class="help-inline"><font color="red">*</font> </span>
+			</div>			    
+			    </div>
+				<div class="span7">		
 			<label class="control-label">住址：</label>
 			<div class="controls controls-tight">
 				<form:input path="tcase.psnAddress" htmlEscape="false" maxlength="100" class="input-xxlarge required"/>

@@ -26,14 +26,20 @@ import org.wxjs.les.common.utils.IdGen;
 import org.wxjs.les.common.utils.PdfUtil;
 import org.wxjs.les.modules.qa.entity.Questionanswer;
 
+import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
+import com.lowagie.text.ExceptionConverter;
+import com.lowagie.text.Font;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
+import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfPageEventHelper;
+import com.lowagie.text.pdf.PdfTemplate;
 import com.lowagie.text.pdf.PdfWriter;
 import com.lowagie.text.Image;
 
@@ -41,9 +47,9 @@ public class QuestionanswerExport {
 	
 	private static Logger log = LoggerFactory.getLogger(QuestionanswerExport.class);
 	
-	private final static int tableWidth = 90;
+	private final static int tableWidth = 100;
 	
-	private final static float borderWidth = 0.5f;
+	private final static float borderWidth = 0f;
 	
 	final static float[] widths = new float[]{0.25f, 0.12f, 0.16f ,0.24f ,0.23f};
 	
@@ -55,7 +61,7 @@ public class QuestionanswerExport {
 		this.qa = qa;
 	}
 	
-	private void generate(OutputStream os) throws DocumentException{
+	private void generate(OutputStream os) throws DocumentException, MalformedURLException, IOException{
 		
 		Document document = null;
 		PdfWriter writer = null;
@@ -70,69 +76,13 @@ public class QuestionanswerExport {
         cell_pending.setBorderWidth(0);
         
 		try{
-			document = new Document(PageSize.A4);
+			document = new Document(PageSize.A4, 50, 50, 50, 50);
 			
 			writer = PdfWriter.getInstance(document, os);
 			
             document.open();
             
-            //add title
-            
-            pragraph = new Paragraph("询问笔录", PdfUtil.getTitle1Font(true));
-            pragraph.setAlignment(Paragraph.ALIGN_CENTER);
-            document.add(pragraph);
-            
-            document.add(PdfUtil.generateTable4Padding());
-            
-            String[] items;
-            
-            //案由
-            items = new String[]{"案由：", this.qa.getCaseCause()};
-            table = PdfUtil.generateTableRow(items, PdfUtil.getTextFont(true), new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);
-            document.add(table);
-            
-            //时间
-            String fromDate = "";
-            if(this.qa.getFromDate()!=null){
-            	fromDate = DateUtils.formatDate(this.qa.getFromDate(),"yyyy-MM-dd HH:mm:ss");
-            }
-            String toDate = "";
-            if(this.qa.getToDate()!=null){
-            	toDate = DateUtils.formatDate(this.qa.getToDate(),"yyyy-MM-dd HH:mm:ss");
-            }
-            items = new String[]{"时间：", fromDate+"至"+toDate};
-            table = PdfUtil.generateTableRow(items, PdfUtil.getTextFont(true), new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);           
-            document.add(table);
-	        
-            //地点
-            items = new String[]{"地点：", this.qa.getLocation()};
-            table = PdfUtil.generateTableRow(items, PdfUtil.getTextFont(true), new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);           
-            document.add(table);	
-            
-            //调查询问人等
-            items = new String[]{"调查询问人：", this.qa.getQuizzer(), "记录人：", this.qa.getRecorder()};
-            table = PdfUtil.generateTableRow(items, PdfUtil.getTextFont(true), new float[]{0.25f, 0.35f, 0.2f, 0.2f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);           
-            document.add(table);
-            
-            //被询问人等
-            items = new String[]{"被调查询问人：", this.qa.getAnswerer(), "性别：", this.qa.getAnswererSex(), "身份证号码：", this.qa.getAnswererCode()};
-            table = PdfUtil.generateTableRow(items, PdfUtil.getTextFont(true), new float[]{0.2f, 0.2f, 0.1f, 0.1f, 0.2f, 0.2f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);           
-            document.add(table);
-            
-            //工作单位等
-            items = new String[]{"工作单位：", this.qa.getAnswererOrganization(), "职务：", this.qa.getAnswererPost(), "出生年月：", DateUtils.formatDate(this.qa.getAnswererBirthday(), "yyyy-MM")};
-            table = PdfUtil.generateTableRow(items, PdfUtil.getTextFont(true), new float[]{0.15f, 0.3f, 0.1f, 0.15f, 0.15f, 0.15f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);           
-            document.add(table);
-            
-            //地址等
-            items = new String[]{"地址：", this.qa.getAnswererAddress(), "邮政编码：", this.qa.getZipCode(), "电话：", this.qa.getAnswererPhone()};
-            table = PdfUtil.generateTableRow(items, PdfUtil.getTextFont(true), new float[]{0.15f, 0.3f, 0.1f, 0.15f, 0.15f, 0.15f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);           
-            document.add(table);
-            
-            //问答
-            items = new String[]{this.qa.getQaContent()};
-            table = PdfUtil.generateTableRow(items, PdfUtil.getTextFont(true), new float[]{1.0f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);           
-            document.add(table);
+            //footer
             
             //签名
             
@@ -159,9 +109,9 @@ public class QuestionanswerExport {
 				log.error("asig error", e);
 			}
             
-            table = new PdfPTable(4);
-            table.setWidths(new float[]{0.2f, 0.3f, 0.2f, 0.3f});
-            table.setWidthPercentage(tableWidth);
+            PdfPTable footerTable = new PdfPTable(4);
+            footerTable.setWidths(new float[]{0.2f, 0.3f, 0.2f, 0.3f});
+            footerTable.setWidthPercentage(tableWidth);
             
             PdfPCell cell;
     	
@@ -170,21 +120,99 @@ public class QuestionanswerExport {
             cell.setBorderWidth(borderWidth);
             cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-            table.addCell(cell);
+            footerTable.addCell(cell);
             
-            table.addCell(qsig);
+            footerTable.addCell(qsig);
             
             phrase = new Phrase("调查询问人（签名）", PdfUtil.getTextFont(true));
             cell = new PdfPCell(phrase);
             cell.setBorderWidth(borderWidth);
             cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-            table.addCell(cell);      
+            footerTable.addCell(cell);      
             
-            table.addCell(asig);
+            footerTable.addCell(asig);
+
+            // add footer
+            Footer footer = new Footer(footerTable);
+            footer.setTableFooter(writer);
+            document.add(footerTable);
             
-			document.add(table);
-			
+            //add title
+            
+            pragraph = new Paragraph("询  问  笔  录", PdfUtil.getTitle22Font(true));
+            pragraph.setAlignment(Paragraph.ALIGN_CENTER);
+            document.add(pragraph);
+            
+            document.add(PdfUtil.generateTable4Padding());
+            
+            String[] items;
+            
+            //案由
+            items = new String[]{"案由：", this.qa.getCaseCause()};
+            table = PdfUtil.generateTableRow(items, new Font[]{PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE)}, 
+            		new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 40f);
+            document.add(table);
+            
+            //时间
+            String fromDate = "";
+            if(this.qa.getFromDate()!=null){
+            	fromDate = DateUtils.formatDate(this.qa.getFromDate(),"yyyy-MM-dd HH:mm:ss");
+            }
+            String toDate = "";
+            if(this.qa.getToDate()!=null){
+            	toDate = DateUtils.formatDate(this.qa.getToDate(),"yyyy-MM-dd HH:mm:ss");
+            }
+            items = new String[]{"时间：", fromDate+"至"+toDate};
+            table = PdfUtil.generateTableRow(items, new Font[]{PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE)},
+            		new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);           
+            document.add(table);
+	        
+            //地点
+            items = new String[]{"地点：", this.qa.getLocation()};
+            table = PdfUtil.generateTableRow(items, new Font[]{PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE)},
+            		new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);           
+            document.add(table);	
+            
+            //调查询问人等
+            items = new String[]{"调查询问人：", this.qa.getQuizzer(), "记录人：", this.qa.getRecorder()};
+            table = PdfUtil.generateTableRow(items, new Font[]{PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE), PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE)}, 
+            		new float[]{0.25f, 0.35f, 0.2f, 0.2f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);           
+            document.add(table);
+            
+            //被询问人等
+            items = new String[]{"被调查询问人：", this.qa.getAnswerer(), "性别：", this.qa.getAnswererSex(), "身份证号码：", this.qa.getAnswererCode()};
+            table = PdfUtil.generateTableRow(items, new Font[]{PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE), PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE), PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE)},
+            		new float[]{0.2f, 0.2f, 0.1f, 0.1f, 0.2f, 0.2f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);           
+            document.add(table);
+            
+            //工作单位等
+            items = new String[]{"工作单位：", this.qa.getAnswererOrganization(), "职务：", this.qa.getAnswererPost(), "出生年月：", DateUtils.formatDate(this.qa.getAnswererBirthday(), "yyyy-MM")};
+            table = PdfUtil.generateTableRow(items, new Font[]{PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE), PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE), PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE)},
+            		new float[]{0.15f, 0.3f, 0.1f, 0.15f, 0.15f, 0.15f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);           
+            document.add(table);
+            
+            //地址等
+            items = new String[]{"地址：", this.qa.getAnswererAddress(), "邮政编码：", this.qa.getZipCode(), "电话：", this.qa.getAnswererPhone()};
+            table = PdfUtil.generateTableRow(items, new Font[]{PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE), PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE), PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE)},
+            		new float[]{0.15f, 0.3f, 0.13f, 0.15f, 0.12f, 0.15f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);           
+            document.add(table);
+            
+            //问答
+            items = new String[]{this.qa.getQaContent()};
+            table = PdfUtil.generateTableRow(items, PdfUtil.getTitle12Font(Font.UNDERLINE), new float[]{1.0f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);     
+            
+            document.add(table);
+            
+            Paragraph paragraph = new Paragraph();
+            paragraph.setFont(PdfUtil.getTitle12Font(Font.UNDERLINE));
+            
+            Chunk chunk = new Chunk(this.qa.getQaContent()); 
+            
+            paragraph.add(chunk);
+            
+            document.add(paragraph);
+
 		}finally{
 			if(document!=null){
 				try{
@@ -241,6 +269,36 @@ public class QuestionanswerExport {
             e.printStackTrace();
         }
         return filename;
+    }
+
+
+    //页脚事件
+    private static class Footer extends PdfPageEventHelper {
+        public static PdfPTable footer;
+
+        @SuppressWarnings("static-access")
+        public Footer(PdfPTable footer) {
+            this.footer = footer;
+        }
+
+        @Override
+        public void onEndPage(PdfWriter writer, Document document) {
+            //把页脚表格定位
+            footer.writeSelectedRows(0, -1, 38, 50, writer.getDirectContent());
+        }
+
+        /**
+         * 页脚是图片
+         * @param writer
+         * @throws MalformedURLException
+         * @throws IOException
+         * @throws DocumentException
+         */
+        public void setTableFooter(PdfWriter writer) throws MalformedURLException, IOException, DocumentException {
+            Footer event = new Footer(footer);
+            writer.setPageEvent(event);
+        }
+
     }
 
 

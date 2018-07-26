@@ -24,11 +24,13 @@ CREATE TABLE `tcase` (
   `org_agent` varchar(32) NULL COMMENT '法定代表人',
   `org_code` varchar(32) NULL COMMENT '统一社会信用代码',
   `org_responsible_person` varchar(100) NULL COMMENT '负责人',
+  `org_responsible_person_post` varchar(100) NULL COMMENT '职务',
   `org_address` varchar(100) NULL COMMENT '住址',
   `org_phone` varchar(32) NULL COMMENT '联系电话', 
   `psn_name` varchar(32) NULL COMMENT '姓名',
   `psn_organization` varchar(100) NULL COMMENT '工作单位',
   `psn_code` varchar(32) NULL COMMENT '身份证',
+  `psn_birthday` datetime NULL COMMENT '出生年月',
   `psn_post` varchar(100) NULL COMMENT '职务',
   `psn_address` varchar(100) NULL COMMENT '住址',
   `psn_phone` varchar(32) NULL COMMENT '联系电话', 
@@ -190,12 +192,12 @@ CREATE TABLE `tcase_settle` (
 DROP TABLE IF EXISTS `tcase_finish`;
 CREATE TABLE `tcase_finish` (
   `id` int(11) NOT NULL auto_increment  COMMENT '编号',
+  `case_id` varchar(32) NOT NULL COMMENT '案件编号',
   `total_page` int DEFAULT 0 COMMENT '合计页数',
   `word_page` int DEFAULT 0 COMMENT '文字页数',
   `diagram_page` int DEFAULT 0 COMMENT '图样页数',
   `photo_page` int DEFAULT 0 COMMENT '照片页数',
   `other_page` int DEFAULT 0 COMMENT '其他页数',
-  `case_id` varchar(32) NOT NULL COMMENT '案件编号',
   `handle_summary` text NULL COMMENT '说明',
   `finish_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '备考表时间',
   `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
@@ -206,6 +208,33 @@ CREATE TABLE `tcase_finish` (
   `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='案件结束';
+
+-- ----------------------------
+-- Table structure for tcase_serious
+-- ----------------------------
+DROP TABLE IF EXISTS `tcase_serious`;
+CREATE TABLE `tcase_serious` (
+  `id` int(11) NOT NULL auto_increment  COMMENT '编号',
+  `case_id` varchar(32) NOT NULL COMMENT '案件编号',
+  `meeting_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '时间',
+  `meeting_address` varchar(64) DEFAULT NULL COMMENT '地点',
+  `master` varchar(64) DEFAULT NULL COMMENT '主持人',
+  `voter` varchar(128) DEFAULT NULL COMMENT '参会人员',
+  `voter_add` varchar(128) DEFAULT NULL COMMENT '参会人员补充',
+  `attendee` varchar(128) DEFAULT NULL COMMENT '列席人员',
+  `attendee_add` varchar(128) DEFAULT NULL COMMENT '列席人员补充',
+  `recorder` varchar(64) DEFAULT NULL COMMENT '记录人员',
+  `case_summary` text NULL COMMENT '执法机构汇报案情',
+  `punish_proposal` text NULL COMMENT '执法机构处罚建议',
+  `check_opinion` text NULL COMMENT '审查小组审查意见',
+  `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_by` varchar(32) DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  `remarks` varchar(64) DEFAULT NULL COMMENT '备注信息',
+  `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='重大行政处罚';
 
 -- ----------------------------
 -- Table structure for tsitecheck
@@ -256,6 +285,44 @@ CREATE TABLE `tsiterecord` (
   `site_check_result` varchar(500) NOT NULL COMMENT '现场踏勘情况',
   `checker` varchar(32) NOT NULL COMMENT '勘查人',
   `check_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '勘查时间',
+  `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_by` varchar(32) DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  `remarks` varchar(64) DEFAULT NULL COMMENT '备注信息',
+  `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='现场巡查笔录';
+
+-- ----------------------------
+-- Table structure for tsite_check_record
+-- ----------------------------
+DROP TABLE IF EXISTS `tsite_check_record`;
+CREATE TABLE `tsite_check_record` (
+  `id` int(11) NOT NULL auto_increment  COMMENT '编号',
+  `party_type` varchar(32) NOT NULL COMMENT '当事人类型',
+  `org_name` varchar(100) NULL COMMENT '名称',
+  `org_agent` varchar(32) NULL COMMENT '法定代表人',
+  `org_code` varchar(32) NULL COMMENT '统一社会信用代码',
+  `org_responsible_person` varchar(100) NULL COMMENT '负责人',
+  `org_responsible_person_post` varchar(100) NULL COMMENT '职务',
+  `org_address` varchar(100) NULL COMMENT '住址',
+  `org_phone` varchar(32) NULL COMMENT '联系电话', 
+  `psn_name` varchar(32) NULL COMMENT '姓名',
+  `psn_organization` varchar(100) NULL COMMENT '工作单位',
+  `psn_code` varchar(32) NULL COMMENT '身份证',
+  `psn_birthday` datetime NULL COMMENT '出生年月',
+  `psn_post` varchar(100) NULL COMMENT '职务',
+  `psn_address` varchar(100) NULL COMMENT '住址',
+  `psn_phone` varchar(32) NULL COMMENT '联系电话', 
+  `psn_sex` varchar(8) NULL COMMENT '性别', 
+  `site_situation` text NOT NULL COMMENT '现场检查记录情况',
+  `site_picture` varchar(500) NOT NULL COMMENT '现场勘察示意图',
+  `site_picture_memo` varchar(500) NOT NULL COMMENT '示意图说明',
+  `party_sig` varchar(64) NULL COMMENT '当事人签名',
+  `witness_sig` varchar(64) NULL COMMENT '见证人签名',  
+  `checker_sig` varchar(64) NULL COMMENT '勘查人签名',
+  `party_sig` varchar(64) NULL COMMENT '记录人签名', 
   `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
   `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_by` varchar(32) DEFAULT NULL COMMENT '更新者',

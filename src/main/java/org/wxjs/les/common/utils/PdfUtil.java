@@ -30,6 +30,18 @@ public class PdfUtil {
 			e.printStackTrace();
 		}
     }
+    /**
+     * 二号
+     * @param bold
+     * @return
+     */
+    public static Font getTitle22Font(boolean bold){
+    	int fontType = Font.NORMAL;
+    	if(bold){
+    		fontType = Font.BOLD;
+    	}
+    	return new Font(bfChinese, 22, fontType);
+    }    
     
     public static Font getTitle1Font(boolean bold){
     	int fontType = Font.NORMAL;
@@ -45,6 +57,15 @@ public class PdfUtil {
     		fontType = Font.BOLD;
     	}
     	return new Font(bfChinese, 16, fontType);
+    }
+    
+    /**
+     * 小四
+     * @param bold
+     * @return
+     */
+    public static Font getTitle12Font(int fontType){
+    	return new Font(bfChinese, 12, fontType);
     }
     
     public static Font getTitle3Font(boolean bold){
@@ -140,6 +161,40 @@ public class PdfUtil {
             	}
 
             	table.addCell(cell);
+    		}
+       	
+        }
+    	
+    	return table;
+    } 
+    
+    public static PdfPTable generateTableRow(String[] strs, Font[] rowFonts, float[] widths, int tableWidth, int textAlign, float bordWidth, float minimumHeight) throws DocumentException{
+    	int columns = widths.length;
+    	//int rows = items.size()+1;
+    	
+        PdfPTable table = new PdfPTable(columns);
+        table.setWidths(widths);
+        table.setWidthPercentage(tableWidth);
+        
+        Phrase phrase;
+        PdfPCell cell;
+	
+        if(strs!=null){
+        	//write items
+
+        	int index = 0;
+    		for(String str:strs){
+            	phrase = new Phrase(str, rowFonts[index]);
+            	cell = new PdfPCell(phrase);
+            	cell.setBorderWidth(bordWidth);
+            	cell.setHorizontalAlignment(textAlign);
+            	
+            	if(minimumHeight>0){
+            		cell.setMinimumHeight(minimumHeight);
+            	}
+
+            	table.addCell(cell);
+            	index ++;
     		}
        	
         }

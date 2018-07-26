@@ -346,5 +346,14 @@ public class Util {
 		return rst;
 		
 	}
+	
+	public static String fillZeroPre(String str, int len){
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(str);
+		while(buffer.length() < len){
+			buffer.insert(0, "0");
+		}
+		return buffer.toString();
+	}
 }
 
