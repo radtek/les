@@ -3,6 +3,7 @@
  */
 package org.wxjs.les.modules.qa.export;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -32,9 +33,11 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
 import com.lowagie.text.ExceptionConverter;
 import com.lowagie.text.Font;
+import com.lowagie.text.HeaderFooter;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
+import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
@@ -76,13 +79,11 @@ public class QuestionanswerExport {
         cell_pending.setBorderWidth(0);
         
 		try{
-			document = new Document(PageSize.A4, 50, 50, 50, 50);
+			document = new Document(PageSize.A4, 50, 50, 50, 180);
 			
 			writer = PdfWriter.getInstance(document, os);
-			
-            document.open();
-            
-            //footer
+
+            //页脚设置开始，放在document.open()之前
             
             //签名
             
@@ -132,11 +133,12 @@ public class QuestionanswerExport {
             footerTable.addCell(cell);      
             
             footerTable.addCell(asig);
-
-            // add footer
-            Footer footer = new Footer(footerTable);
-            footer.setTableFooter(writer);
-            document.add(footerTable);
+            
+            writer.setPageEvent(new QuestionanswerExportPageEvent(footerTable));
+            
+            //页脚设置结束
+			
+			document.open();
             
             //add title
             
@@ -151,7 +153,7 @@ public class QuestionanswerExport {
             //案由
             items = new String[]{"案由：", this.qa.getCaseCause()};
             table = PdfUtil.generateTableRow(items, new Font[]{PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE)}, 
-            		new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 40f);
+            		new float[]{0.2f, 0.8f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 40f);
             document.add(table);
             
             //时间
@@ -165,44 +167,50 @@ public class QuestionanswerExport {
             }
             items = new String[]{"时间：", fromDate+"至"+toDate};
             table = PdfUtil.generateTableRow(items, new Font[]{PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE)},
-            		new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);           
+            		new float[]{0.2f, 0.8f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);           
             document.add(table);
 	        
             //地点
             items = new String[]{"地点：", this.qa.getLocation()};
             table = PdfUtil.generateTableRow(items, new Font[]{PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE)},
-            		new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);           
+            		new float[]{0.2f, 0.8f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);           
             document.add(table);	
             
             //调查询问人等
             items = new String[]{"调查询问人：", this.qa.getQuizzer(), "记录人：", this.qa.getRecorder()};
             table = PdfUtil.generateTableRow(items, new Font[]{PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE), PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE)}, 
-            		new float[]{0.25f, 0.35f, 0.2f, 0.2f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);           
+            		new float[]{0.2f, 0.3f, 0.2f, 0.3f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);           
             document.add(table);
             
             //被询问人等
-            items = new String[]{"被调查询问人：", this.qa.getAnswerer(), "性别：", this.qa.getAnswererSex(), "身份证号码：", this.qa.getAnswererCode()};
-            table = PdfUtil.generateTableRow(items, new Font[]{PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE), PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE), PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE)},
-            		new float[]{0.2f, 0.2f, 0.1f, 0.1f, 0.2f, 0.2f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);           
+            items = new String[]{"被调查询问人：", this.qa.getAnswerer(), "身份证号码：", this.qa.getAnswererCode()};
+            table = PdfUtil.generateTableRow(items, new Font[]{PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE), PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE)},
+            		new float[]{0.2f, 0.3f, 0.2f, 0.3f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);           
             document.add(table);
             
+            items = new String[]{"性别：", this.qa.getAnswererSex(), "出生年月：", DateUtils.formatDate(this.qa.getAnswererBirthday(), "yyyy-MM")};
+            table = PdfUtil.generateTableRow(items, new Font[]{ PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE), PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE)},
+            		new float[]{0.2f, 0.3f, 0.2f, 0.3f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);           
+            document.add(table);            
+            
             //工作单位等
-            items = new String[]{"工作单位：", this.qa.getAnswererOrganization(), "职务：", this.qa.getAnswererPost(), "出生年月：", DateUtils.formatDate(this.qa.getAnswererBirthday(), "yyyy-MM")};
-            table = PdfUtil.generateTableRow(items, new Font[]{PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE), PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE), PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE)},
-            		new float[]{0.15f, 0.3f, 0.1f, 0.15f, 0.15f, 0.15f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);           
+            items = new String[]{"工作单位：", this.qa.getAnswererOrganization(), "职务：", this.qa.getAnswererPost(), };
+            table = PdfUtil.generateTableRow(items, new Font[]{PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE), PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE)},
+            		new float[]{0.2f, 0.3f, 0.2f, 0.3f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);           
+            document.add(table);
+            
+            items = new String[]{"邮政编码：", this.qa.getZipCode(), "电话：", this.qa.getAnswererPhone()};
+            table = PdfUtil.generateTableRow(items, new Font[]{PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE), PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE)},
+            		new float[]{0.2f, 0.3f, 0.2f, 0.3f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);           
             document.add(table);
             
             //地址等
-            items = new String[]{"地址：", this.qa.getAnswererAddress(), "邮政编码：", this.qa.getZipCode(), "电话：", this.qa.getAnswererPhone()};
-            table = PdfUtil.generateTableRow(items, new Font[]{PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE), PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE), PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE)},
-            		new float[]{0.15f, 0.3f, 0.13f, 0.15f, 0.12f, 0.15f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);           
+            items = new String[]{"地址：", this.qa.getAnswererAddress()};
+            table = PdfUtil.generateTableRow(items, new Font[]{PdfUtil.getTitle12Font(Font.BOLD), PdfUtil.getTitle12Font(Font.UNDERLINE)},
+            		new float[]{0.2f, 0.8f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);           
             document.add(table);
             
             //问答
-            items = new String[]{this.qa.getQaContent()};
-            table = PdfUtil.generateTableRow(items, PdfUtil.getTitle12Font(Font.UNDERLINE), new float[]{1.0f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);     
-            
-            document.add(table);
             
             Paragraph paragraph = new Paragraph();
             paragraph.setFont(PdfUtil.getTitle12Font(Font.UNDERLINE));
@@ -269,36 +277,6 @@ public class QuestionanswerExport {
             e.printStackTrace();
         }
         return filename;
-    }
-
-
-    //页脚事件
-    private static class Footer extends PdfPageEventHelper {
-        public static PdfPTable footer;
-
-        @SuppressWarnings("static-access")
-        public Footer(PdfPTable footer) {
-            this.footer = footer;
-        }
-
-        @Override
-        public void onEndPage(PdfWriter writer, Document document) {
-            //把页脚表格定位
-            footer.writeSelectedRows(0, -1, 38, 50, writer.getDirectContent());
-        }
-
-        /**
-         * 页脚是图片
-         * @param writer
-         * @throws MalformedURLException
-         * @throws IOException
-         * @throws DocumentException
-         */
-        public void setTableFooter(PdfWriter writer) throws MalformedURLException, IOException, DocumentException {
-            Footer event = new Footer(footer);
-            writer.setPageEvent(event);
-        }
-
     }
 
 
