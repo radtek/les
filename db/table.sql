@@ -322,7 +322,7 @@ CREATE TABLE `tsite_check_record` (
   `party_sig` varchar(64) NULL COMMENT '当事人签名',
   `witness_sig` varchar(64) NULL COMMENT '见证人签名',  
   `checker_sig` varchar(64) NULL COMMENT '勘查人签名',
-  `party_sig` varchar(64) NULL COMMENT '记录人签名', 
+  `recorder_sig` varchar(64) NULL COMMENT '记录人签名', 
   `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
   `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_by` varchar(32) DEFAULT NULL COMMENT '更新者',
