@@ -38,6 +38,12 @@
 		<form:hidden path="paramUri" value="${caseAct.paramUri}"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">
+			<label class="control-label">案件事实经过及证据：</label>
+			<div class="controls">
+			${caseHandle.fact}
+			</div>
+		</div>		
+		<div class="control-group">
 			<label class="control-label">主送：</label>
 			<div class="controls">
 				<form:input path="partyName" htmlEscape="false" maxlength="100" class="input-xlarge required" readonly="readonly"/>

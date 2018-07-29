@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wxjs.les.modules.tcase.dao.CaseSeriousDao">
+    
+	<sql id="caseSeriousColumns">
+		a.id AS "id",
+		a.case_id AS "caseId",
+		a.meeting_date AS "meetingDate",
+		a.meeting_address AS "meetingAddress",
+		a.master AS "master.loginName",
+		a.voter AS "voter.loginName",
+		a.voter_add AS "voterAdd",
+		a.attendee AS "attendee.loginName",
+		a.attendee_add AS "attendeeAdd",
+		a.recorder AS "recorder.loginName",
+		a.case_summary AS "caseSummary",
+		a.punish_proposal AS "punishProposal",
+		a.check_opinion AS "checkOpinion",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="caseSeriousJoins">
+	
+	</sql>
+    
+	<select id="get" resultType="CaseSerious">
+		SELECT 
+			<include refid="caseSeriousColumns"/>
+		FROM tcase_serious a
+		<include refid="caseSeriousJoins"/>
+		WHERE case_id = #{caseId}
+	</select>
+	
+	<select id="findList" resultType="CaseSerious">
+		SELECT 
+			<include refid="caseSeriousColumns"/>
+		FROM tcase_serious a
+		<include refid="caseSeriousJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="caseId != null and caseId != ''">
+				AND a.case_id = #{caseId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="CaseSerious">
+		SELECT 
+			<include refid="caseSeriousColumns"/>
+		FROM tcase_serious a
+		<include refid="caseSeriousJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO tcase_serious(
+			case_id,
+			meeting_date,
+			meeting_address,
+			master.loginName,
+			voter.loginName,
+			voter_add,
+			attendee.loginName,
+			attendee_add,
+			recorder,
+			case_summary,
+			punish_proposal,
+			check_opinion,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{caseId},
+			#{meetingDate},
+			#{meetingAddress},
+			#{master},
+			#{voter},
+			#{voterAdd},
+			#{attendee},
+			#{attendeeAdd},
+			#{recorder.loginName},
+			#{caseSummary},
+			#{punishProposal},
+			#{checkOpinion},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE tcase_serious SET 	
+			meeting_date = #{meetingDate},
+			meeting_address = #{meetingAddress},
+			master = #{master.loginName},
+			voter = #{voter.loginName},
+			voter_add = #{voterAdd},
+			attendee = #{attendee.loginName},
+			attendee_add = #{attendeeAdd},
+			recorder = #{recorder.loginName},
+			case_summary = #{caseSummary},
+			punish_proposal = #{punishProposal},
+			check_opinion = #{checkOpinion},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE case_id = #{caseId}
+	</update>
+	
+	<update id="delete">
+		UPDATE tcase_serious SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE case_id = #{caseId}
+	</update>
+	
+</mapper>

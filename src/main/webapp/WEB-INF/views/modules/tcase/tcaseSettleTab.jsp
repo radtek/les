@@ -38,6 +38,12 @@
 		<form:hidden path="paramUri" value="${caseAct.paramUri}"/>
 		<sys:message content="${message}"/>
 		<div class="control-group">
+			<label class="control-label">案件事实经过及证据：</label>
+			<div class="controls">
+			${caseHandle.fact}
+			</div>
+		</div>		
+		<div class="control-group">
 			<label class="control-label">案件处理情况：</label>
 			<div class="controls">
 				<form:textarea path="handleSummary" htmlEscape="false"  style="width:800px;height:600px;" class="required"/>

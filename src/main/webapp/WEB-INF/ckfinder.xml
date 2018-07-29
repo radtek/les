@@ -31,6 +31,13 @@
 			<allowedExtensions>jpeg,jpg,pdf</allowedExtensions>
 			<deniedExtensions></deniedExtensions>
 		</type>
+		<type name="words">
+			<url>%BASE_URL%files/</url>
+			<directory>%BASE_DIR%files</directory>
+			<maxSize>20M</maxSize>
+			<allowedExtensions>doc,docx</allowedExtensions>
+			<deniedExtensions></deniedExtensions>
+		</type>		
 		<type name="images">
 			<url>%BASE_URL%images/</url>
 			<directory>%BASE_DIR%images</directory>

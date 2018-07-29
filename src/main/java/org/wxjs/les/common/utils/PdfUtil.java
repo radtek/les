@@ -64,7 +64,7 @@ public class PdfUtil {
      * @param bold
      * @return
      */
-    public static Font getTitle12Font(int fontType){
+    public static Font getFont12(int fontType){
     	return new Font(bfChinese, 12, fontType);
     }
     
@@ -201,6 +201,24 @@ public class PdfUtil {
     	
     	return table;
     } 
+    
+	public static PdfPCell getContentCell(String content, int align, float borderWidth, Font font){
+		return getContentCell(content, align, borderWidth, font, 1, 1);
+	}
+	
+	public static PdfPCell getContentCell(String content, int align, float borderWidth, Font font, int rowSpan, int colSpan){
+		Phrase phrase = new Phrase(content, font);
+		PdfPCell cell = new PdfPCell(phrase);
+    	cell.setBorderWidth(borderWidth);
+    	cell.setHorizontalAlignment(align);
+    	if(rowSpan>1){
+    		cell.setRowspan(rowSpan);
+    	}
+    	if(colSpan>1){
+    		cell.setColspan(colSpan);
+    	}
+    	return cell;
+	}
     
     private static boolean isMoneyArea(String str){
     	boolean flag = false;

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wxjs.les.modules.base.dao.PunishLibRangeDao">
+    
+	<sql id="punishLibRangeColumns">
+		a.id AS "id",
+		a.lib_id AS "lib.id",
+		a.situation AS "situation",
+		a.punish_range AS "punishRange",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="punishLibRangeJoins">
+		LEFT JOIN tpunish_lib b ON b.id = a.lib_id
+	</sql>
+    
+	<select id="get" resultType="PunishLibRange">
+		SELECT 
+			<include refid="punishLibRangeColumns"/>
+		FROM tpunish_lib_range a
+		<include refid="punishLibRangeJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="PunishLibRange">
+		SELECT 
+			<include refid="punishLibRangeColumns"/>
+		FROM tpunish_lib_range a
+		<include refid="punishLibRangeJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="lib != null and lib.id != null and lib.id != ''">
+				AND a.lib_id = #{lib.id}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="PunishLibRange">
+		SELECT 
+			<include refid="punishLibRangeColumns"/>
+		FROM tpunish_lib_range a
+		<include refid="punishLibRangeJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO tpunish_lib_range(
+			lib_id,
+			situation,
+			punish_range,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{lib.id},
+			#{situation},
+			#{punishRange},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE tpunish_lib_range SET 	
+			lib_id = #{lib.id},
+			situation = #{situation},
+			punish_range = #{punishRange},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE tpunish_lib_range SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		<choose>
+			<when test="id !=null and id != ''">
+				WHERE id = #{id}
+			</when>
+			<otherwise>
+				WHERE lib_id = #{lib.id}
+			</otherwise>
+		</choose>
+	</update>
+	
+	<update id="deleteAll">
+		UPDATE tpunish_lib_range SET 
+			del_flag = #{DEL_FLAG_DELETE}
+	</update>	
+	
+</mapper>

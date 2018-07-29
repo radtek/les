@@ -48,6 +48,7 @@ import org.wxjs.les.modules.tcase.entity.CaseFinish;
 import org.wxjs.les.modules.tcase.entity.CaseHandle;
 import org.wxjs.les.modules.tcase.entity.CaseNotify;
 import org.wxjs.les.modules.tcase.entity.CaseProcess;
+import org.wxjs.les.modules.tcase.entity.CaseSerious;
 import org.wxjs.les.modules.tcase.entity.CaseSettle;
 import org.wxjs.les.modules.tcase.entity.Tcase;
 import org.wxjs.les.modules.tcase.service.CaseAttachService;
@@ -56,6 +57,7 @@ import org.wxjs.les.modules.tcase.service.CaseFinishService;
 import org.wxjs.les.modules.tcase.service.CaseHandleService;
 import org.wxjs.les.modules.tcase.service.CaseNotifyService;
 import org.wxjs.les.modules.tcase.service.CaseProcessService;
+import org.wxjs.les.modules.tcase.service.CaseSeriousService;
 import org.wxjs.les.modules.tcase.service.CaseSettleService;
 import org.wxjs.les.modules.tcase.service.TcaseService;
 import org.wxjs.les.modules.tcase.utils.ProcessCommonUtils;
@@ -88,6 +90,9 @@ public class TcaseController extends BaseController {
 	
 	@Autowired
 	private CaseFinishService caseFinishService;
+	
+	@Autowired
+	private CaseSeriousService caseSeriousService;
 	
 	@Autowired
 	private CaseHandleService caseHandleService;
@@ -261,6 +266,9 @@ public class TcaseController extends BaseController {
 		
 		caseAct.setTcase(tcase);
 		
+		//add caseHandle for reference
+		model.addAttribute("caseHandle", this.caseHandleService.get(tcase.getId()));
+		
 		CaseNotify caseNotify = this.caseNotifyService.get(tcase.getId());
 		
 		if(caseNotify==null){
@@ -283,6 +291,9 @@ public class TcaseController extends BaseController {
 		logger.debug("businesskey:{}", businesskey);
 		
 		caseAct.setTcase(tcase);
+		
+		//add caseHandle for reference
+		model.addAttribute("caseHandle", this.caseHandleService.get(tcase.getId()));
 		
 		CaseDecision caseDecision = this.caseDecisionService.get(tcase.getId());
 		
@@ -307,6 +318,9 @@ public class TcaseController extends BaseController {
 		logger.debug("businesskey:{}", businesskey);
 		
 		caseAct.setTcase(tcase);
+		
+		//add caseHandle for reference
+		model.addAttribute("caseHandle", this.caseHandleService.get(tcase.getId()));
 		
 		CaseSettle caseSettle = this.caseSettleService.get(tcase.getId());
 		
@@ -340,6 +354,32 @@ public class TcaseController extends BaseController {
 		model.addAttribute("caseFinish", caseFinish);
 		
 		return "modules/tcase/tcaseFinishTab";
+	}
+	
+	@RequiresPermissions("case:tcase:view")
+	@RequestMapping(value = "seriousTab")
+	public String seriousTab(CaseAct caseAct, Model model) {
+		
+		String businesskey = caseAct.getBusinesskey();
+		
+		Tcase tcase = tcaseService.getCaseAndProcess(businesskey);
+		
+		logger.debug("businesskey:{}", businesskey);
+		
+		caseAct.setTcase(tcase);
+		
+		//add caseHandle for reference
+		//model.addAttribute("caseHandle", this.caseHandleService.get(tcase.getId()));
+		
+		CaseSerious caseSerious = this.caseSeriousService.get(tcase.getId());
+		
+		if(caseSerious==null){
+			caseSerious = CaseSerious.getInstance(tcase);
+		}
+		
+		model.addAttribute("caseSerious", caseSerious);
+		
+		return "modules/tcase/tcaseSeriousTab";
 	}
 	
 	@RequiresPermissions("case:tcase:view")

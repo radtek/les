@@ -113,7 +113,8 @@ CREATE TABLE `tcase_notify` (
   `update_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   `remarks` varchar(64) DEFAULT NULL COMMENT '备注信息',
   `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  unique(case_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='案件告知书';
 
 -- ----------------------------
@@ -140,7 +141,8 @@ CREATE TABLE `tcase_decision` (
   `update_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   `remarks` varchar(64) DEFAULT NULL COMMENT '备注信息',
   `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  unique(case_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='案件决定书';
 
 -- ----------------------------
@@ -164,7 +166,8 @@ CREATE TABLE `tcase_handle` (
   `update_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   `remarks` varchar(64) DEFAULT NULL COMMENT '备注信息',
   `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  unique(case_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='案件审理';
 
 -- ----------------------------
@@ -183,7 +186,8 @@ CREATE TABLE `tcase_settle` (
   `update_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   `remarks` varchar(64) DEFAULT NULL COMMENT '备注信息',
   `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  unique(case_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='案件结案';
 
 -- ----------------------------
@@ -206,7 +210,8 @@ CREATE TABLE `tcase_finish` (
   `update_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   `remarks` varchar(64) DEFAULT NULL COMMENT '备注信息',
   `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  unique(case_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='案件结束';
 
 -- ----------------------------
@@ -233,7 +238,8 @@ CREATE TABLE `tcase_serious` (
   `update_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   `remarks` varchar(64) DEFAULT NULL COMMENT '备注信息',
   `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  unique(case_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='重大行政处罚';
 
 -- ----------------------------
@@ -420,3 +426,40 @@ CREATE TABLE `topinion_template` (
   `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='常用批语';
+
+-- ----------------------------
+-- Table structure for tpunish_lib
+-- ----------------------------
+DROP TABLE IF EXISTS `tpunish_lib`;
+CREATE TABLE `tpunish_lib` (
+  `id` int(11) NOT NULL auto_increment  COMMENT '流水号',
+  `seq` varchar(32) DEFAULT NULL COMMENT '编号',
+  `behavior` varchar(200) NULL COMMENT '行为名称',
+  `law_basis` text NULL COMMENT '法律依据',
+  `punish_type` varchar(200) NULL COMMENT '处罚种类',
+  `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_by` varchar(32) DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  `remarks` varchar(64) DEFAULT NULL COMMENT '备注信息',
+  `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='处罚基准库';
+
+-- ----------------------------
+-- Table structure for tpunish_lib_range
+-- ----------------------------
+DROP TABLE IF EXISTS `tpunish_lib_range`;
+CREATE TABLE `tpunish_lib_range` (
+  `id` int(11) NOT NULL auto_increment  COMMENT '编号',
+  `lib_id` varchar(64) NOT NULL COMMENT '处罚编号',
+  `situation` varchar(200) NOT NULL COMMENT '情形描述',
+  `punish_range` varchar(200) NOT NULL COMMENT '裁量幅度',
+  `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_by` varchar(32) DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  `remarks` varchar(64) DEFAULT NULL COMMENT '备注信息',
+  `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='自由裁量权';

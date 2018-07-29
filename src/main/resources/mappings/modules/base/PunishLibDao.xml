@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wxjs.les.modules.base.dao.PunishLibDao">
+    
+	<sql id="punishLibColumns">
+		a.id AS "id",
+		a.seq AS "seq",
+		a.behavior AS "behavior",
+		a.law_basis AS "lawBasis",
+		a.punish_type AS "punishType",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="punishLibJoins">
+	</sql>
+    
+	<select id="get" resultType="PunishLib">
+		SELECT 
+			<include refid="punishLibColumns"/>
+		FROM tpunish_lib a
+		<include refid="punishLibJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="PunishLib">
+		SELECT 
+			<include refid="punishLibColumns"/>
+		FROM tpunish_lib a
+		<include refid="punishLibJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="seq != null and seq != ''">
+				AND a.seq = #{seq}
+			</if>
+			<if test="behavior != null and behavior != ''">
+				AND a.behavior = #{behavior}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="PunishLib">
+		SELECT 
+			<include refid="punishLibColumns"/>
+		FROM tpunish_lib a
+		<include refid="punishLibJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="org.wxjs.les.modules.base.entity.PunishLib">
+		INSERT INTO tpunish_lib(
+			seq,
+			behavior,
+			law_basis,
+			punish_type,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{seq},
+			#{behavior},
+			#{lawBasis},
+			#{punishType},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE tpunish_lib SET 	
+			seq = #{seq},
+			behavior = #{behavior},
+			law_basis = #{lawBasis},
+			punish_type = #{punishType},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE tpunish_lib SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+    <update id="deleteAll">
+		UPDATE tpunish_lib SET 
+			del_flag = #{DEL_FLAG_DELETE}
+	</update>
+	
+</mapper>

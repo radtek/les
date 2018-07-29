@@ -25,6 +25,7 @@
 		<li <c:if test="${tab eq 'decision'}">class="active"</c:if>><a href="${ctx}/case/tcase/decisionTab?${caseActAttr.paramUri}">决定书</a></li>
 		<li <c:if test="${tab eq 'settle'}">class="active"</c:if>><a href="${ctx}/case/tcase/settleTab?${caseActAttr.paramUri}">结案书</a></li>
 		<li <c:if test="${tab eq 'finish'}">class="active"</c:if>><a href="${ctx}/case/tcase/finishTab?${caseActAttr.paramUri}">案件结束</a></li>		
+		<li <c:if test="${tab eq 'serious'}">class="active"</c:if>><a href="${ctx}/case/tcase/seriousTab?${caseActAttr.paramUri}">重大行政处罚</a></li>	
 		</c:if>
 		
 		<c:if test="${not empty caseActAttr.tcase.id and caseActAttr.operateType ne 'start'}">
