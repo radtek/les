@@ -4,8 +4,8 @@
 package org.wxjs.les.modules.tcase.entity;
 
 import org.hibernate.validator.constraints.Length;
-
 import org.wxjs.les.common.persistence.DataEntity;
+import org.wxjs.les.modules.sys.entity.User;
 
 /**
  * 案件审理Entity
@@ -19,7 +19,7 @@ public class CaseHandle extends DataEntity<CaseHandle> {
 	private String punishMoney;		// 实际罚款金额（元）
 	private String investReport;		// 案件调查报告内容
 	private String fact;		// 案件事实经过及证据
-	private String investigator;		// 调查人
+	private User investigator;		// 调查人
 	
 	//临时属性
 	private String paramUri;		// uri
@@ -74,13 +74,12 @@ public class CaseHandle extends DataEntity<CaseHandle> {
 	public void setFact(String fact) {
 		this.fact = fact;
 	}
-	
-	@Length(min=0, max=64, message="调查人长度必须介于 0 和 64 之间")
-	public String getInvestigator() {
+
+	public User getInvestigator() {
 		return investigator;
 	}
 
-	public void setInvestigator(String investigator) {
+	public void setInvestigator(User investigator) {
 		this.investigator = investigator;
 	}
 

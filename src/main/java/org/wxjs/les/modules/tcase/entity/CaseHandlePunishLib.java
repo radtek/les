@@ -6,6 +6,7 @@ package org.wxjs.les.modules.tcase.entity;
 import org.hibernate.validator.constraints.Length;
 import org.wxjs.les.common.persistence.DataEntity;
 import org.wxjs.les.modules.base.entity.PunishLib;
+import org.wxjs.les.modules.base.entity.PunishLibRange;
 
 /**
  * 案件裁量权Entity
@@ -17,6 +18,8 @@ public class CaseHandlePunishLib extends DataEntity<CaseHandlePunishLib> {
 	private static final long serialVersionUID = 1L;
 	private String caseId;		// 案件编号
 	private PunishLib punishLib;		// 裁量权编号
+	
+	private PunishLibRange punishLibRange;
 	
 	//临时属性
 	private String paramUri;		// uri
@@ -46,6 +49,14 @@ public class CaseHandlePunishLib extends DataEntity<CaseHandlePunishLib> {
 		this.punishLib = punishLib;
 	}
 	
+	public PunishLibRange getPunishLibRange() {
+		return punishLibRange;
+	}
+
+	public void setPunishLibRange(PunishLibRange punishLibRange) {
+		this.punishLibRange = punishLibRange;
+	}
+
 	public String getParamUri() {
 		return this.paramUri==null?"":this.paramUri.replaceAll("&amp;", "&");
 	}

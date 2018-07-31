@@ -15,4 +15,6 @@ import org.wxjs.les.modules.tcase.entity.CaseHandlePunishLib;
 @MyBatisDao
 public interface CaseHandlePunishLibDao extends CrudDao<CaseHandlePunishLib> {
 	
+	public void updateRange(CaseHandlePunishLib entity);
+	
 }

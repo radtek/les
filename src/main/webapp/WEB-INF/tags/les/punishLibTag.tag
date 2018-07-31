@@ -10,22 +10,28 @@
     
     $(document).ready(function() {
     	
-    	$("#btnReturn").click(function(){
-    		if(!check()){
-    			return;
-    		}
-    		top.$.jBox.confirm("确认要退回吗？","系统提示",function(v,h,f){
-    			if(v=="ok"){
-    				$("#approve").val("return");
-    				$("#approveForm").submit();
-    			}
-    		},{buttonsFocus:1});
-    		top.$('.jbox-body .jbox-icon').css('top','55px');
-    	});
-    	
+	    $("input[type=radio][name='punishLib${punishLibAttr.punishLib.id}']").click(function() {
+	    	saveRange("${punishLibAttr.id}", this.value)
+	    	
+	    });
+	    
+	    function saveRange(itemId, rangeId){
+	    	
+	    	var json = {};
+	    	json["id"] = itemId;
+	    	json["punishLibRange.id"] = rangeId;
+	    	
+	    	$.post("${ctx}/tcase/caseHandlePunishLib/updateRange",
+	    		json,
+	    		function(a){
 
+	    	}); 	    	
+	    }
+	    
+    
+    });	    	
 
-	</script>
+	</script> 
 
 <form:form class="form-horizontal">
 	<fieldset>
@@ -47,13 +53,15 @@
 			<c:forEach items="${punishLibAttr.punishLib.punishLibRangeList}" var="entity" varStatus="status">
 			<tr>
 			   <c:if test="${status.index eq 0}">
-			    <td class="tit" width="20%" rowspan="${listSize}">情形描述</td><td width="30%">${entity.situation}</td>
-			    <td class="tit" width="20%" rowspan="${listSize}">裁量幅度</td><td width="30%">${entity.punishRange}</td>
+			    <td class="tit" width="20%" rowspan="${listSize}">情形描述</td>
 			   </c:if>
-			   <c:if test="${status.index gt 0}">
-			    <td>${entity.situation}</td>
-			    <td>${entity.punishRange}</td>
-			   </c:if>	
+			    <td width="30%">
+			    <input type="radio" id="range${entity.id}" name="punishLib${punishLibAttr.punishLib.id}" value="${entity.id}" <c:if test="${entity.id eq punishLibAttr.punishLibRange.id}">checked</c:if> style="width:20px; height:20px;"/>${entity.situation}
+			    </td>
+			    <c:if test="${status.index eq 0}">
+			    <td class="tit" width="20%" rowspan="${listSize}">裁量幅度</td>
+			    </c:if>
+			    <td width="30%">${entity.punishRange}</td>	
 			</tr>		
 			</c:forEach>											
 		</table>

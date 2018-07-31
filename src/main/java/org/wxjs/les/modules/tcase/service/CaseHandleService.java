@@ -5,11 +5,13 @@ package org.wxjs.les.modules.tcase.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.service.CrudService;
+import org.wxjs.les.modules.sys.dao.UserDao;
+import org.wxjs.les.modules.sys.entity.User;
 import org.wxjs.les.modules.tcase.entity.CaseHandle;
 import org.wxjs.les.modules.tcase.dao.CaseHandleDao;
 
@@ -21,9 +23,33 @@ import org.wxjs.les.modules.tcase.dao.CaseHandleDao;
 @Service
 @Transactional(readOnly = true)
 public class CaseHandleService extends CrudService<CaseHandleDao, CaseHandle> {
+	
+	@Autowired
+	private	UserDao userDao;
 
 	public CaseHandle get(String caseId) {
-		return super.get(caseId);
+		CaseHandle entity = super.get(caseId);
+		
+		//fill name
+		if(entity!=null){
+			User param = new User();
+			param.setLoginName(entity.getInvestigator().getLoginName());
+			List<User> list = userDao.findList(param);
+			
+			StringBuffer buffer = new StringBuffer();
+			
+			for(User user: list){
+
+				buffer.append(",").append(user.getName());
+			}
+			
+			if(buffer.length()>0){
+				entity.getInvestigator().setName(buffer.substring(1));
+			}
+
+		}
+		
+		return entity;
 	}
 	
 	public List<CaseHandle> findList(CaseHandle caseHandle) {

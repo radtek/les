@@ -171,18 +171,27 @@
 		<if test="!currentUser.admin">
 			AND a.id != '1'
 		</if>
-		<if test="loginName != null and loginName != ''">
-			AND a.login_name like 
-					<if test="dbName == 'oracle'">'%'||#{loginName}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{loginName}+'%'</if>
-					<if test="dbName == 'mysql'">CONCAT('%', #{loginName}, '%')</if>
-		</if>
 		<if test="name != null and name != ''">
 			AND a.name like 
 					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
 					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
 					<if test="dbName == 'mysql'">CONCAT('%', #{name}, '%')</if>
 		</if>
+		<if test="loginName != null and loginName != ''">
+			<choose>
+				<when test='isMultipleLoginName == "0"'>
+				    AND a.login_name = #{loginName}  
+				</when>
+				<otherwise>
+				    AND a.login_name in (
+				    <foreach collection="loginNames" item="tempStr" separator=",">
+		               '${tempStr}'
+		            </foreach>
+		            )						
+				</otherwise>
+			</choose>            
+           
+		</if>		
 		<!-- 数据范围过滤 -->
 		${sqlMap.dsf}
 		<choose>

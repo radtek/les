@@ -5,14 +5,10 @@
 	<sql id="caseHandleColumns">
 		a.id AS "id",
 		a.case_id AS "caseId",
-		a.punish_code AS "punishCode",
-		a.legal_basis AS "legalBasis",
-		a.legal_basis_content AS "legalBasisContent",
-		a.discretion AS "discretion",
 		a.punish_money AS "punishMoney",
 		a.invest_report AS "investReport",
 		a.fact AS "fact",
-		a.investigator AS "investigator",
+		a.investigator AS "investigator.loginName",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -89,7 +85,7 @@
 			#{punishMoney},
 			#{investReport},
 			#{fact},
-			#{investigator},
+			#{investigator.loginName},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -104,7 +100,7 @@
 			punish_money = #{punishMoney},
 			invest_report = #{investReport},
 			fact = #{fact},
-			investigator = #{investigator},
+			investigator = #{investigator.loginName},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks}
@@ -124,7 +120,7 @@
 		UPDATE tcase_handle SET
 			invest_report = #{investReport},
 			fact = #{fact},
-			investigator = #{investigator},
+			investigator = #{investigator.loginName},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks}

@@ -174,6 +174,7 @@ CREATE TABLE `tcase_handle_punish_lib` (
   `id` int(11) NOT NULL auto_increment  COMMENT '编号',
   `case_id` varchar(32) NOT NULL COMMENT '案件编号',
   `punish_lib_id` varchar(32) NOT NULL COMMENT '裁量权编号',
+  `punish_lib_range_id` varchar(32) NULL COMMENT '裁量基准号',
   `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
   `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_by` varchar(32) DEFAULT NULL COMMENT '更新者',

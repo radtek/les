@@ -36,10 +36,10 @@ public class CaseSeriousService extends CrudService<CaseSeriousDao, CaseSerious>
 		//fill name
 		if(entity!=null){
 			List<User> list = userDao.findAllList(new User());
-			String masters = entity.getMaster().getLoginName()+",";
-			String voters = entity.getVoter().getLoginName()+",";
-			String recorders = entity.getRecorder().getLoginName()+",";
-			String attendees = entity.getAttendee().getLoginName()+",";
+			String masters = "," + entity.getMaster().getLoginName()+",";
+			String voters = "," + entity.getVoter().getLoginName()+",";
+			String recorders = "," + entity.getRecorder().getLoginName()+",";
+			String attendees = "," + entity.getAttendee().getLoginName()+",";
 			
 			StringBuffer masterBuffer = new StringBuffer();
 			StringBuffer voterBuffer = new StringBuffer();
@@ -48,16 +48,16 @@ public class CaseSeriousService extends CrudService<CaseSeriousDao, CaseSerious>
 			
 			for(User user: list){
 
-				if(masters.contains(user.getLoginName()+",")){
+				if(masters.contains("," + user.getLoginName()+",")){
 					masterBuffer.append(",").append(user.getName());
 				}
-				if(voters.contains(user.getLoginName()+",")){
+				if(voters.contains("," + user.getLoginName()+",")){
 					voterBuffer.append(",").append(user.getName());
 				}
-				if(recorders.contains(user.getLoginName()+",")){
+				if(recorders.contains("," + user.getLoginName()+",")){
 					recorderBuffer.append(",").append(user.getName());
 				}
-				if(attendees.contains(user.getLoginName()+",")){
+				if(attendees.contains("," + user.getLoginName()+",")){
 					attendeeBuffer.append(",").append(user.getName());
 				}
 

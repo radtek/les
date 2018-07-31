@@ -13,11 +13,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.web.BaseController;
 import org.wxjs.les.common.utils.StringUtils;
+import org.wxjs.les.common.utils.Util;
+import org.wxjs.les.modules.base.entity.MSG;
 import org.wxjs.les.modules.task.entity.CaseAct;
 import org.wxjs.les.modules.tcase.entity.CaseHandlePunishLib;
 import org.wxjs.les.modules.tcase.service.CaseHandlePunishLibService;
@@ -85,6 +88,13 @@ public class CaseHandlePunishLibController extends BaseController {
 		caseHandlePunishLibService.delete(caseHandlePunishLib);
 		addMessage(redirectAttributes, "删除案件裁量权成功");
 		return "redirect:"+Global.getAdminPath()+"/case/tcase/handleTab?"+caseAct.getParamUri();
+	}
+	
+	@RequestMapping(value = "updateRange")
+	@ResponseBody
+	public MSG updateRange(CaseHandlePunishLib caseHandlePunishLib, HttpServletRequest req) {
+		caseHandlePunishLibService.updateRange(caseHandlePunishLib);
+		return new MSG("ok");  
 	}
 
 }

@@ -322,5 +322,22 @@ public class User extends DataEntity<User> {
 		return id;
 	}
 	
+	public String getIsMultipleLoginName(){
+		String rst = "0";
+		if (this.loginName!=null && this.loginName.indexOf(",")>0){
+			rst = "1";
+		}
+		return rst;
+	}
+	
+	public List<String> getLoginNames(){
+		List<String> list = Lists.newArrayList();
+		String[] strs = this.loginName.split(",");
+		for(String str: strs){
+			list.add(str);
+		}
+		return list;
+	}
+	
 	
 }

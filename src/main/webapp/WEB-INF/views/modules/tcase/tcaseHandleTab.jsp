@@ -82,7 +82,8 @@
 		<div class="control-group">
 			<label class="control-label">调查人：</label>
 			<div class="controls">
-				<form:input path="investigator" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+			    <sys:treeselect id="investigator" name="investigator.loginName" value="${caseHandle.investigator.loginName}" labelName="investigator.name" labelValue="${caseHandle.investigator.name}" 
+				title="记录人员" url="/sys/user/treeDataWithLoginName?officeId=" checked="true" cssClass="input-xxlarge" allowClear="true" notAllowSelectParent="true"/>				
 			</div>
 		</div>
 		<div class="form-actions">

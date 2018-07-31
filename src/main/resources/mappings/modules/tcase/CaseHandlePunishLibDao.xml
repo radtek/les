@@ -6,6 +6,7 @@
 		a.id AS "id",
 		a.case_id AS "caseId",
 		a.punish_lib_id AS "punishLib.id",
+		a.punish_lib_range_id AS "punishLibRange.id",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -87,10 +88,9 @@
 		)
 	</insert>
 	
-	<update id="update">
-		UPDATE tcase_handle_punish_lib SET 	
-			case_id = #{caseId},
-			punish_lib_id = #{punishLib.id},
+	<update id="updateRange">
+		UPDATE tcase_handle_punish_lib SET
+			punish_lib_range_id = #{punishLibRange.id},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks}
@@ -98,8 +98,7 @@
 	</update>
 	
 	<update id="delete">
-		UPDATE tcase_handle_punish_lib SET 
-			del_flag = #{DEL_FLAG_DELETE}
+		DELTE FROM tcase_handle_punish_lib
 		WHERE id = #{id}
 	</update>
 	

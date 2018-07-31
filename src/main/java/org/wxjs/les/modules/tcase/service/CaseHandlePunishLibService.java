@@ -55,4 +55,11 @@ public class CaseHandlePunishLibService extends CrudService<CaseHandlePunishLibD
 		super.delete(caseHandlePunishLib);
 	}
 	
+	@Transactional(readOnly = false)
+	public void updateRange(CaseHandlePunishLib caseHandlePunishLib) {
+		dao.updateRange(caseHandlePunishLib);
+	}
+	
+	
+	
 }
