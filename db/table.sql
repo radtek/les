@@ -152,10 +152,6 @@ DROP TABLE IF EXISTS `tcase_handle`;
 CREATE TABLE `tcase_handle` (
   `id` int(11) NOT NULL auto_increment  COMMENT '编号',
   `case_id` varchar(32) NOT NULL COMMENT '案件编号',
-  `punish_code` varchar(200) NULL COMMENT '行政处罚编码',
-  `legal_basis` varchar(200) NULL COMMENT '法律依据',
-  `legal_basis_content` varchar(200) NULL COMMENT '依据内容',
-  `discretion` varchar(200) NULL COMMENT '自由裁量权',
   `punish_money` decimal(15,2) NULL COMMENT '实际罚款金额（元）',
   `invest_report` text NULL COMMENT '案件调查报告内容',
   `fact` text NULL COMMENT '案件事实经过及证据',
@@ -169,6 +165,23 @@ CREATE TABLE `tcase_handle` (
   PRIMARY KEY (`id`),
   unique(case_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='案件审理';
+
+-- ----------------------------
+-- Table structure for tcase_handle_punish_lib
+-- ----------------------------
+DROP TABLE IF EXISTS `tcase_handle_punish_lib`;
+CREATE TABLE `tcase_handle_punish_lib` (
+  `id` int(11) NOT NULL auto_increment  COMMENT '编号',
+  `case_id` varchar(32) NOT NULL COMMENT '案件编号',
+  `punish_lib_id` varchar(32) NOT NULL COMMENT '裁量权编号',
+  `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_by` varchar(32) DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  `remarks` varchar(64) DEFAULT NULL COMMENT '备注信息',
+  `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='案件裁量权';
 
 -- ----------------------------
 -- Table structure for tcase_settle
