@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wxjs.les.modules.cr.dao.SiteCheckRecordDao">
+    
+	<sql id="siteCheckRecordColumns">
+		a.id AS "id",
+		a.party_type AS "partyType",
+		a.org_name AS "orgName",
+		a.org_agent AS "orgAgent",
+		a.org_code AS "orgCode",
+		a.org_responsible_person AS "orgResponsiblePerson",
+		a.org_responsible_person_post AS "orgResponsiblePersonPost",
+		a.org_address AS "orgAddress",
+		a.org_phone AS "orgPhone",
+		a.psn_name AS "psnName",
+		a.psn_organization AS "psnOrganization",
+		a.psn_code AS "psnCode",
+		a.psn_birthday AS "psnBirthday",
+		a.psn_post AS "psnPost",
+		a.psn_address AS "psnAddress",
+		a.psn_phone AS "psnPhone",
+		a.psn_sex AS "psnSex",
+		a.site_situation AS "siteSituation",
+		a.site_picture AS "sitePicture",
+		a.site_picture_memo AS "sitePictureMemo",
+		
+		a.party_sig AS "partySig.id",
+	    s1.title AS "partySig.title",
+		s1.signature AS "partySig.signature",
+		
+		a.witness_sig AS "witnessSig.id",
+		s2.title AS "witnessSig.title",
+		s2.signature AS "witnessSig.signature",
+		
+		a.checker_sig AS "checkerSig.id",
+		ts1.title AS "checkerSig.title",
+		ts1.signature AS "checkerSig.signature",
+		
+		a.recorder_sig AS "recorderSig.id",
+	    s2.title AS "recorderSig.title",
+		s2.signature AS "recorderSig.signature",
+		
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="siteCheckRecordJoins">
+		LEFT JOIN tsignature s1 on s1.id=a.party_sig
+	    LEFT JOIN tsignature s2 on s2.id=a.witness_sig
+	    LEFT JOIN tsignature ts1 on ts1.id=a.checker_sig
+	    LEFT JOIN tsignature ts2 on ts2.id=a.recorder_sig
+	</sql>
+    
+	<select id="get" resultType="siteCheckRecord">
+		SELECT 
+			<include refid="siteCheckRecordColumns"/>
+		FROM tsite_check_record a
+		<include refid="siteCheckRecordJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="SiteCheckRecord">
+		SELECT 
+			<include refid="siteCheckRecordColumns"/>
+		FROM tsite_check_record a
+		<include refid="siteCheckRecordJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<if test="partyType != null and partyType != ''">
+			AND a.party_Type like 
+					<if test="dbName == 'oracle'">'%'||#{partyType}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{partyType}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{partyType}, '%')</if>
+		</if>
+		<if test="orgName != null and orgName != ''">
+			AND a.org_name like 
+					<if test="dbName == 'oracle'">'%'||#{orgName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{orgName}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{orgName}, '%')</if>
+		</if>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="SiteCheckRecord">
+		SELECT 
+			<include refid="siteCheckRecordColumns"/>
+		FROM tsite_check_record a
+		<include refid="siteCheckRecordJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO tsite_check_record(
+			party_type,
+			org_name,
+			org_agent,
+			org_code,
+			org_responsible_person,
+			org_responsible_person_post,
+			org_address,
+			org_phone,
+			psn_name,
+			psn_organization,
+			psn_code,
+			psn_birthday,
+			psn_post,
+			psn_address,
+			psn_phone,
+			psn_sex,
+			site_situation,
+			site_picture,
+			site_picture_memo,
+			party_sig,
+			witness_sig,
+			checker_sig,
+			recorder_sig,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{partyType},
+			#{orgName},
+			#{orgAgent},
+			#{orgCode},
+			#{orgResponsiblePerson},
+			#{orgResponsiblePersonPost},
+			#{orgAddress},
+			#{orgPhone},
+			#{psnName},
+			#{psnOrganization},
+			#{psnCode},
+			#{psnBirthday},
+			#{psnPost},
+			#{psnAddress},
+			#{psnPhone},
+			#{psnSex},
+			#{siteSituation},
+			#{sitePicture},
+			#{sitePictureMemo},
+			#{partySig.id},
+			#{witnessSig.id},
+			#{checkerSig.id},
+			#{recorderSig.id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE tsite_check_record SET 	
+			party_type = #{partyType},
+			org_name = #{orgName},
+			org_agent = #{orgAgent},
+			org_code = #{orgCode},
+			org_responsible_person = #{orgResponsiblePerson},
+			org_responsible_person_post = #{orgResponsiblePersonPost},
+			org_address = #{orgAddress},
+			org_phone = #{orgPhone},
+			psn_name = #{psnName},
+			psn_organization = #{psnOrganization},
+			psn_code = #{psnCode},
+			psn_birthday = #{psnBirthday},
+			psn_post = #{psnPost},
+			psn_address = #{psnAddress},
+			psn_phone = #{psnPhone},
+			psn_sex = #{psnSex},
+			site_situation = #{siteSituation},
+			site_picture = #{sitePicture},
+			site_picture_memo = #{sitePictureMemo},
+			<!--  
+			party_sig = #{partySig},
+			witness_sig = #{witnessSig},
+			checker_sig = #{checkerSig},
+			recorder_sig = #{recorderSig},
+			-->
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE tsite_check_record SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
