@@ -5,9 +5,7 @@ package org.wxjs.les.modules.check.web;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,8 +21,6 @@ import org.wxjs.les.common.web.BaseController;
 import org.wxjs.les.modules.check.entity.Tsitecheck;
 import org.wxjs.les.modules.check.export.TsitecheckExport;
 import org.wxjs.les.modules.check.service.TsitecheckService;
-
-
 /**
  * 现场踏勘Controller
  * @author 千里目
@@ -78,11 +74,12 @@ public class TsitecheckController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/check/tsitecheck/?repage";
 	}
 	
+	
 	@RequiresPermissions("check:tsitecheck:edit")
 	@RequestMapping(value = "saveInfo")
 	public String saveInfo(Tsitecheck tsitecheck, Model model, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, tsitecheck)){
-			return form(tsitecheck, model);
+		return form(tsitecheck, model);
 		}
 		tsitecheckService.saveInfo(tsitecheck);
 		addMessage(redirectAttributes, "保存成功");
