@@ -7,21 +7,15 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			//$("#name").focus();
-			$("#inputForm").validate({
-				submitHandler: function(form){
-					loading('正在提交，请稍等...');
-					form.submit();
-				},
-				errorContainer: "#messageBox",
-				errorPlacement: function(error, element) {
-					$("#messageBox").text("输入有误，请先更正。");
-					if (element.is(":checkbox")||element.is(":radio")||element.parent().is(".input-append")){
-						error.appendTo(element.parent().parent());
-					} else {
-						error.insertAfter(element);
-					}
-				}
-			});
+	    	$("#btnSavePublishLib").click(function(){
+	    		var libId = $("#punishLibId").val();
+	    		if(libId == ""){
+	    			alert("请先指定项目！");
+	    		}else{
+	    			$("#punishLibForm").submit();
+	    		}
+				
+	    	});
 		});
 	</script>
 </head>
@@ -33,36 +27,29 @@
     <les:caseTab tab="handle" caseActAttr="${caseAct}"></les:caseTab> 
     
     <sys:message content="${message}"/>	
-	<form:form id="inputUploadInfoForm" modelAttribute="caseHandle" action="${ctx}/tcase/caseHandle/saveUploadInfo" method="post" class="form-horizontal">
+	<form:form id="punishLibForm" modelAttribute="caseHandlePunishLib" action="${ctx}/tcase/caseHandlePunishLib/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<form:hidden path="caseId"/>
 		<form:hidden path="paramUri" value="${caseAct.paramUri}"/>
 		
 		<h5>案件上报资料编辑 </h5>	
-		<div class="control-group">
-			<label class="control-label">行政处罚编码：</label>
-			<div class="controls">
-				<form:textarea path="punishCode" htmlEscape="false"  style="width:800px;height:100px;" class="required"/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">法律依据：</label>
-			<div class="controls">
-				<form:textarea path="legalBasis" htmlEscape="false"  style="width:800px;height:100px;" class="required"/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">依据内容：</label>
-			<div class="controls">
-				<form:textarea path="legalBasisContent" htmlEscape="false"  style="width:800px;height:100px;" class="required"/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">自由裁量权：</label>
-			<div class="controls">
-				<form:textarea path="discretion" htmlEscape="false"  style="width:800px;height:100px;" class="required"/>
-			</div>
-		</div>
+		
+			自由裁量权：<sys:treeselect id="punishLib" name="punishLib.id" value="" labelName="punishLib.behavior" labelValue="" 
+				title="自由裁量权" url="/base/punishLib/treeData" cssClass="input-xxlarge" allowClear="true" notAllowSelectParent="true"/>
+			<shiro:hasPermission name="case:tcase:edit"><input id="btnSavePublishLib" class="btn btn-primary" type="button" value="添 加"/>&nbsp;
+			</shiro:hasPermission>
+		<BR>
+		<c:forEach items="${libList}" var="libEntity" varStatus="status">
+		   
+		   <les:punishLibTag punishLibAttr="${libEntity}" paramUri="${caseAct.paramUri}"></les:punishLibTag>
+		
+		</c:forEach>	
+	</form:form>
+	<BR>
+	<form:form id="inputUploadInfoForm" modelAttribute="caseHandle" action="${ctx}/tcase/caseHandle/saveUploadInfo" method="post" class="form-horizontal">
+		<form:hidden path="id"/>
+		<form:hidden path="caseId"/>
+		<form:hidden path="paramUri" value="${caseAct.paramUri}"/>
 		<div class="control-group">
 			<label class="control-label">实际罚款金额（元）：</label>
 			<div class="controls">
@@ -73,7 +60,7 @@
 			<shiro:hasPermission name="case:tcase:edit"><input id="btnSaveUploadInfo" class="btn btn-primary" type="submit" value="保 存上报资料"/>&nbsp;
 			</shiro:hasPermission>
 		</div>		
-	</form:form>
+	</form:form>	
 	
 	<form:form id="inputReportForm" modelAttribute="caseHandle" action="${ctx}/tcase/caseHandle/saveReport" method="post" class="form-horizontal">
 		<form:hidden path="id"/>

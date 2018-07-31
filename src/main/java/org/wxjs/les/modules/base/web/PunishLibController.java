@@ -3,6 +3,10 @@
  */
 package org.wxjs.les.modules.base.web;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -13,14 +17,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.web.BaseController;
 import org.wxjs.les.common.utils.StringUtils;
 import org.wxjs.les.modules.base.entity.PunishLib;
 import org.wxjs.les.modules.base.service.PunishLibService;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 /**
  * 处罚基准库Controller
@@ -96,6 +103,30 @@ public class PunishLibController extends BaseController {
 		punishLibService.delete(punishLib);
 		addMessage(redirectAttributes, "删除处罚基准库成功");
 		return "redirect:"+Global.getAdminPath()+"/base/punishLib/?repage";
+	}
+	
+	@RequiresPermissions("user")
+	@ResponseBody
+	@RequestMapping(value = "treeData")
+	public List<Map<String, Object>> treeData(
+			HttpServletResponse response) {
+
+		List<PunishLib> list = punishLibService.findList(new PunishLib());
+		
+		List<Map<String, Object>> mapList = Lists.newArrayList();
+		
+		for(PunishLib e : list){
+		
+			//driver
+			Map<String, Object> map = Maps.newHashMap();
+			map.put("id", e.getId());
+			map.put("pId", "");
+			map.put("name", e.getBehavior());
+			mapList.add(map);
+
+		}		
+
+		return mapList;
 	}
 
 }

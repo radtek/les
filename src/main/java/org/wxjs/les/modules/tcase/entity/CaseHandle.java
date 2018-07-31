@@ -16,10 +16,6 @@ public class CaseHandle extends DataEntity<CaseHandle> {
 	
 	private static final long serialVersionUID = 1L;
 	private String caseId;		// 案件编号
-	private String punishCode;		// 行政处罚编码
-	private String legalBasis;		// 法律依据
-	private String legalBasisContent;		// 依据内容
-	private String discretion;		// 自由裁量权
 	private String punishMoney;		// 实际罚款金额（元）
 	private String investReport;		// 案件调查报告内容
 	private String fact;		// 案件事实经过及证据
@@ -53,42 +49,6 @@ public class CaseHandle extends DataEntity<CaseHandle> {
 
 	public void setCaseId(String caseId) {
 		this.caseId = caseId;
-	}
-	
-	@Length(min=0, max=200, message="行政处罚编码长度必须介于 0 和 200 之间")
-	public String getPunishCode() {
-		return punishCode;
-	}
-
-	public void setPunishCode(String punishCode) {
-		this.punishCode = punishCode;
-	}
-	
-	@Length(min=0, max=200, message="法律依据长度必须介于 0 和 200 之间")
-	public String getLegalBasis() {
-		return legalBasis;
-	}
-
-	public void setLegalBasis(String legalBasis) {
-		this.legalBasis = legalBasis;
-	}
-	
-	@Length(min=0, max=200, message="依据内容长度必须介于 0 和 200 之间")
-	public String getLegalBasisContent() {
-		return legalBasisContent;
-	}
-
-	public void setLegalBasisContent(String legalBasisContent) {
-		this.legalBasisContent = legalBasisContent;
-	}
-	
-	@Length(min=0, max=200, message="自由裁量权长度必须介于 0 和 200 之间")
-	public String getDiscretion() {
-		return discretion;
-	}
-
-	public void setDiscretion(String discretion) {
-		this.discretion = discretion;
 	}
 	
 	public String getPunishMoney() {

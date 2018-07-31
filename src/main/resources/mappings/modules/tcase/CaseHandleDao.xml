@@ -74,10 +74,6 @@
 	<insert id="insert">
 		INSERT INTO tcase_handle(
 			case_id,
-			punish_code,
-			legal_basis,
-			legal_basis_content,
-			discretion,
 			punish_money,
 			invest_report,
 			fact,
@@ -90,10 +86,6 @@
 			del_flag
 		) VALUES (
 			#{caseId},
-			#{punishCode},
-			#{legalBasis},
-			#{legalBasisContent},
-			#{discretion},
 			#{punishMoney},
 			#{investReport},
 			#{fact},
@@ -108,11 +100,7 @@
 	</insert>
 	
 	<update id="update">
-		UPDATE tcase_handle SET 	
-			punish_code = #{punishCode},
-			legal_basis = #{legalBasis},
-			legal_basis_content = #{legalBasisContent},
-			discretion = #{discretion},
+		UPDATE tcase_handle SET
 			punish_money = #{punishMoney},
 			invest_report = #{investReport},
 			fact = #{fact},
@@ -124,12 +112,8 @@
 	</update>
 	
 	<update id="updateUploadInfo">
-		UPDATE tcase_handle SET 	
-			punish_code = #{punishCode},
-			legal_basis = #{legalBasis},
-			legal_basis_content = #{legalBasisContent},
-			discretion = #{discretion},
-			punish_money = #{punishMoney},
+		UPDATE tcase_handle SET
+            punish_money = #{punishMoney},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks}

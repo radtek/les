@@ -46,6 +46,7 @@ import org.wxjs.les.modules.tcase.entity.CaseAttach;
 import org.wxjs.les.modules.tcase.entity.CaseDecision;
 import org.wxjs.les.modules.tcase.entity.CaseFinish;
 import org.wxjs.les.modules.tcase.entity.CaseHandle;
+import org.wxjs.les.modules.tcase.entity.CaseHandlePunishLib;
 import org.wxjs.les.modules.tcase.entity.CaseNotify;
 import org.wxjs.les.modules.tcase.entity.CaseProcess;
 import org.wxjs.les.modules.tcase.entity.CaseSerious;
@@ -54,6 +55,7 @@ import org.wxjs.les.modules.tcase.entity.Tcase;
 import org.wxjs.les.modules.tcase.service.CaseAttachService;
 import org.wxjs.les.modules.tcase.service.CaseDecisionService;
 import org.wxjs.les.modules.tcase.service.CaseFinishService;
+import org.wxjs.les.modules.tcase.service.CaseHandlePunishLibService;
 import org.wxjs.les.modules.tcase.service.CaseHandleService;
 import org.wxjs.les.modules.tcase.service.CaseNotifyService;
 import org.wxjs.les.modules.tcase.service.CaseProcessService;
@@ -96,6 +98,9 @@ public class TcaseController extends BaseController {
 	
 	@Autowired
 	private CaseHandleService caseHandleService;
+	
+	@Autowired
+	private CaseHandlePunishLibService caseHandlePunishLibService;
 	
 	@Autowired
 	private CaseProcessService caseProcessService;
@@ -250,6 +255,14 @@ public class TcaseController extends BaseController {
 		}
 		
 		model.addAttribute("caseHandle", caseHandle);
+		
+		CaseHandlePunishLib caseHandlePunishLib = new CaseHandlePunishLib();
+		caseHandlePunishLib.setCaseId(tcase.getId());
+		
+		List<CaseHandlePunishLib> libList = this.caseHandlePunishLibService.findList(caseHandlePunishLib);
+		
+		model.addAttribute("caseHandlePunishLib", caseHandlePunishLib);
+		model.addAttribute("libList", libList);
 		
 		return "modules/tcase/tcaseHandleTab";
 	}

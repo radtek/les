@@ -46,10 +46,10 @@ public class CaseHandleService extends CrudService<CaseHandleDao, CaseHandle> {
 			dao.insert(entity);
 		}else{
 			entity.preUpdate();
-			dao.updateUploadInfo(entity);
+			dao.updateUploadInfo(entity); 
 		}
 	}
-	
+
 	@Transactional(readOnly = false)
 	public void saveReport(CaseHandle entity) {
 		if (entity.getIsNewRecord()){
