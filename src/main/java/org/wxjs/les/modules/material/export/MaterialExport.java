@@ -1,4 +1,4 @@
-package org.wxjs.les.modules.check.export;
+package org.wxjs.les.modules.material.export;
 
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.BaseFont;
@@ -14,7 +14,7 @@ import org.wxjs.les.common.utils.FileUtils;
 import org.wxjs.les.common.utils.IdGen;
 import org.wxjs.les.common.utils.PdfUtil;
 import org.wxjs.les.modules.base.utils.PathUtils;
-import org.wxjs.les.modules.check.entity.Tsitecheck;
+import org.wxjs.les.modules.material.entity.Material;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
@@ -28,10 +28,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TsitecheckExport {
+public class MaterialExport {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
     // 表格宽、高
@@ -39,7 +40,7 @@ public class TsitecheckExport {
     private final static float borderWidth = 0.5f;
 
     // 默认实体类对象
-    private Tsitecheck tsitecheck;
+    private Material material;
     private static BaseFont bfChinese = null;
     private static Map<String, Font> fontMap = new HashMap<String, Font>();
 
@@ -110,7 +111,6 @@ public class TsitecheckExport {
         return cell;
     }
 
-    
     /**
      * 根据字符串解析图片
      * @param images 图片字符串(多张)
@@ -156,8 +156,8 @@ public class TsitecheckExport {
         return null;
     }
 
-    public TsitecheckExport(Tsitecheck tsitecheck) {
-        this.tsitecheck = tsitecheck;
+    public MaterialExport(Material material) {
+        this.material = material;
     }
 
     /**
@@ -169,81 +169,69 @@ public class TsitecheckExport {
         // 正常的表格内容高度(非PDF高度)
         final int normalBorderHeight = 32;
         // 表格内内容的高度(表中的大表格，非PDF高度)
-        final int contentTableHeight = 80;
+        final int contentTableHeight = 50;
+        
+        //签名的高度
+        final int SigBorderHeight = 32;
+        //用于视听资料说明的内容的高度
+        final int contentEvidenceHeight=80;
+        
         // 超大号表内内容的高度
         final int contentBigTableHeight = 130;
         // 缺省的图片裁剪高宽
-        final int defaultImageWidth = 150;
+        final int defaultImageWidth = 400;
         final int defaultImageHeight = 400;
 
         // 生成上下文对象
         Document document = new Document(PageSize.A4);
         try {
-            PdfWriter writer = PdfWriter.getInstance(document, os);
+        	 PdfWriter writer = PdfWriter.getInstance(document, os);
             document.open();
-            // 创建table对象(五列)
-            float[] widths = new float[]{8, 12, 43, 12, 25};
+            // 创建table对象(四列)
+            float[] widths = new float[]{12,33,12,33};
             PdfPTable table = new PdfPTable(widths.length);
             table.setWidths(widths);
             table.setWidthPercentage(tableWidth);
          
-
             // 添加标题
-            Paragraph paragraph = new Paragraph("现场踏勘情况", fontMap.get("subjectFont"));
+            Paragraph paragraph = new Paragraph("视听资料证据", fontMap.get("subjectFont"));
             paragraph.setAlignment(Paragraph.ALIGN_CENTER);
             document.add(paragraph);
             document.add(PdfUtil.generateTable4Padding());
-
+            
             /* ============ 表格中的第一部分数据 ============ */
-            table.addCell(createPDFCellToTitle("当事人情况", fontMap.get("textFont"), 4, 0, borderWidth, normalBorderHeight));
+           
 
-            table.addCell(createPDFCellToTitle("建设单位", fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
-            table.addCell(createPDFCellToContent(tsitecheck.getDevelopOrg(), fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
-
-            table.addCell(createPDFCellToTitle("联系人姓名、电话", fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
-            table.addCell(createPDFCellToContent(tsitecheck.getDevelopContact() + "  " + tsitecheck.getDevelopPhone(), fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
-
-			table.addCell(createPDFCellToTitle("施工单位", fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
-            table.addCell(createPDFCellToContent(tsitecheck.getConstructionOrg(), fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
-
-			table.addCell(createPDFCellToTitle("联系人姓名、电话", fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
-			table.addCell(createPDFCellToContent(tsitecheck.getConstructionContact() + "  " + tsitecheck.getConstructionPhone(), fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
-
-			table.addCell(createPDFCellToTitle("工程名称", fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
-			table.addCell(createPDFCellToContent(tsitecheck.getProjectName(), fontMap.get("textFont"), 0, 3, borderWidth, normalBorderHeight));
-
-			table.addCell(createPDFCellToTitle("工程地址", fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
-			table.addCell(createPDFCellToContent(tsitecheck.getProjectAddress(), fontMap.get("textFont"), 0, 3, borderWidth, normalBorderHeight));
+            table.addCell(createPDFCellToTitle("收集时间", fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
+            Date date=material.getGetDate();
+            SimpleDateFormat sdf = new SimpleDateFormat( " yyyy年MM月dd日 " );
+            String str = sdf.format(date);
+            table.addCell(createPDFCellToContent(str, fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
+            
+            table.addCell(createPDFCellToTitle("收集方式", fontMap.get("textFont"), 0,0, borderWidth, normalBorderHeight));
+            table.addCell(createPDFCellToContent(material.getMaterialType(), fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
+            
 
             /* ============ 表格中的第二部分数据 ============ */
-            table.addCell(createPDFCellToTitle("现场工程检查情况", fontMap.get("textFont"), 0, 0, borderWidth, contentTableHeight));
-            table.addCell(createPDFCellToContent(tsitecheck.getSiteSituation(), fontMap.get("textFont"), 0, 4, borderWidth, contentTableHeight));
-
-            /* ============ 表格中的第三部分数据 ============ */
-            table.addCell(createPDFCellToTitle("现场踏勘示意图", fontMap.get("textFont"), 0, 0, borderWidth, contentBigTableHeight));
-            table.addCell(createPDFCellToImage(tsitecheck.getSitePicture().split("\\|"), defaultImageWidth, defaultImageHeight, 0, 4, borderWidth, contentBigTableHeight));
-
-            /* ============ 表格中的第四部分数据 ============ */
-            table.addCell(createPDFCellToTitle("现场踏勘情况", fontMap.get("textFont"), 0, 0, borderWidth, contentTableHeight));
-            table.addCell(createPDFCellToContent(tsitecheck.getSiteCheckResult(), fontMap.get("textFont"), 0, 4, borderWidth, contentTableHeight));
+            table.addCell(createPDFCellToTitle("收集地点", fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
+            table.addCell(createPDFCellToContent(material.getGetLocation(), fontMap.get("textFont"), 0, 3, borderWidth, normalBorderHeight));
             document.add(table);
 
-            /* ============ 表格中的第五部分数据 ============ */
-            Image checkerSig=null;
+            /* ============ 表格中的第三部分数据 ============ */
+            Image getterSig=null;
             try {
-         	   String filename=this.base64StringToImage(this.tsitecheck.getCheckerSig().getSignature());
-         	   checkerSig=Image.getInstance(filename);
+         	   String filename=this.base64StringToImage(this.material.getGetterSig().getSignature());
+         	  getterSig=Image.getInstance(filename);
          	   FileUtils.deleteFile(filename);
             } catch (MalformedURLException e) {
-        	   logger.error("checkerSig error",e);
+        	   logger.error("getterSig error",e);
            } catch (IOException e) {
-         	   logger.error("checkerSig error",e);
+         	   logger.error("getterSig error",e);
            }
          
            Image partySig=null;
-            
 	           try {
-	     	   String filename=this.base64StringToImage(this.tsitecheck.getPartySig().getSignature());
+	     	   String filename=this.base64StringToImage(this.material.getPartySig().getSignature());
 	         	   partySig=Image.getInstance(filename);
 	         	   FileUtils.deleteFile(filename);
 	            } catch (MalformedURLException e) {
@@ -251,31 +239,36 @@ public class TsitecheckExport {
 	            } catch (IOException e) {
 	         	   logger.error("partySig error",e);
 	            }
-	           widths = new float[]{8, 42,8,42};
+	           widths = new float[]{12,33,12,33};
 	           table = new PdfPTable(widths.length);
 	           table.setWidths(widths);
 	           table.setWidthPercentage(tableWidth);
 	           
-	         
-	          Phrase  phrase=new Phrase("勘查人(签名)",fontMap.get("textFont"));
+//	          SimpleDateFormat sdf=new SimpleDateFormat("yyyy年MM月dd日");
+//		      String str=sdf.format(tsitecheck.getCheckDate());
+	          Phrase  phrase=new Phrase("当事人(签名)",fontMap.get("textFont"));
 	          PdfPCell  cell=new PdfPCell(phrase);
-	          
 	            cell.setBorderWidth(borderWidth);
 	            cell.setHorizontalAlignment(Element.ALIGN_CENTER);   // 设置水平样式
 	            cell.setVerticalAlignment(Element.ALIGN_MIDDLE); 
 	            table.addCell(cell);
-	            table.addCell(checkerSig);
-	           
+	            table.addCell(partySig);  
 	        
-	            phrase=new Phrase("当事人(签名)",fontMap.get("textFont"));
+	            phrase=new Phrase("巡查人(签名)",fontMap.get("textFont"));
 	            cell=new PdfPCell(phrase);
 	            cell.setBorderWidth(borderWidth);
 	            cell.setHorizontalAlignment(Element.ALIGN_CENTER);   // 设置水平样式
 	            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 	            table.addCell(cell);
-	            table.addCell(partySig);
+	            table.addCell(getterSig);
 	            
-	            document.add(table);
+            /* ============ 表格中的第四部分数据 ============ */
+            table.addCell(createPDFCellToImage(material.getMaterialPath().split("\\|"), defaultImageWidth, defaultImageHeight, 0, 4, borderWidth, contentBigTableHeight));
+            /* ============ 表格中的第五部分数据 ============ */
+            table.addCell(createPDFCellToContent(material.getMaterialComment(), fontMap.get("textFont"), 0, 4, borderWidth, contentEvidenceHeight));
+            document.add(table);
+
+        
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("生成PDF数据异常{}", e.getMessage());
@@ -292,7 +285,7 @@ public class TsitecheckExport {
      * @throws DocumentException
      * @throws IOException
      */
-    public TsitecheckExport writeFile(String name) throws DocumentException, IOException {
+    public MaterialExport writeFile(String name) throws DocumentException, IOException {
         FileOutputStream os = new FileOutputStream(name);
         this.generate(os);
         return this;
@@ -306,7 +299,7 @@ public class TsitecheckExport {
      * @throws IOException
      * @throws DocumentException
      */
-    public TsitecheckExport write(HttpServletResponse response, String fileName) throws DocumentException, IOException {
+    public MaterialExport write(HttpServletResponse response, String fileName) throws DocumentException, IOException {
         response.reset();
         response.setContentType("application/octet-stream;charset=utf-8");
         response.setHeader("Content-Disposition", "attachment;filename=" + Encodes.urlEncode(fileName));

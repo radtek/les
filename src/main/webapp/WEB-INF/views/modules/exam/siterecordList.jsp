@@ -1,9 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
-<%@ include file="/WEB-INF/views/include/head.jsp"%>
 <html>
 <head>
-	<title>现场踏勘信息管理</title>
+	<title>现场检查笔录管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -12,38 +11,17 @@
 		function page(n,s){
 			$("#pageNo").val(n);
 			$("#pageSize").val(s);
-			$("#searchForm").attr("action","${ctx}/check/Tsitecheck/list");
 			$("#searchForm").submit();
         	return false;
         }
-		<!--
-		$('#beginDate').datepicker({
-		    format: "yyyy-mm-dd",
-		    autoclose: true//选中之后自动隐藏日期选择框
-		}).on('changeDate',function(){
-		    $("#beginTime-error").hide();
-		    var beginDate= $("#beginDate").val();
-		    $("#endDate").datepicker('setStartDate',beginDate);
-		    $("#beginDate").datepicker('hide');
-		});
-
-		$('#endDate').datepicker({
-		    format: "yyyy-mm-dd",
-		    autoclose: true//选中之后自动隐藏日期选择框
-		}).on('changeDate',function(){
-		    var beginDate = $("beginDate").val();
-		    var endDate = $("endDate").val();
-		    $("#beginDate").datepicker('setEndDate',endDate);
-		    $("#endDate").datepicker('hide');
-		    -->
 	</script>
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/check/tsitecheck/list">现场踏勘信息列表</a></li>
-	<shiro:hasPermission name="check:tsitecheck:edit"><li><a href="${ctx}/check/tsitecheck/form">现场踏勘信息添加</a></li></shiro:hasPermission>
+		<li class="active"><a href="${ctx}/exam/siterecord/">现场检查笔录列表</a></li>
+		<shiro:hasPermission name="exam:siterecord:edit"><li><a href="${ctx}/exam/siterecord/form">现场检查笔录添加</a></li></shiro:hasPermission>
 	</ul>
-	<form:form id="searchForm" modelAttribute="tsitecheck" action="${ctx}/check/tsitecheck" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="siterecord" action="${ctx}/exam/siterecord/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<sys:tableSort id="orderBy" name="orderBy" value="${page.orderBy}" callback="page();"/>
@@ -70,11 +48,11 @@
 				<form:input path="projectAddress" htmlEscape="false" maxlength="200" class="input-medium"/>
 			</li>
 			
-			<li><label>勘查人：</label>
+			<li><label>巡查人：</label>
 				<form:input path="checker" htmlEscape="false" maxlength="200" class="input-medium"/>
 			</li>
 			<li>
-			<label>踏勘时间：</label>&nbsp;<input id="beginDate" name="beginDate" type="text" readonly="readonly" maxlength="20" class="input-small Wdate"
+			<label>巡查时间：</label>&nbsp;<input id="beginDate" name="beginDate" type="text" readonly="readonly" maxlength="20" class="input-small Wdate"
 				value="${paramMap.beginDate}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
 			至
 			<input id="endDate" name="endDate" type="text" readonly="readonly" maxlength="20" class="input-small Wdate"
@@ -96,43 +74,43 @@
 				<th>施工单位</th>
 				<th>施工单位负责人及电话</th>
 				<th>工程地址</th>
-				<th>勘查人</th>
-				<th>踏勘时间</th>
+				<th>巡查人</th>
+				<th>巡查时间</th>
 				<th>操作</th>
 			</tr>
 		</thead>
 		<tbody>
-		<c:forEach items="${page.list}" var="tsitecheck">
+		<c:forEach items="${page.list}" var="siterecord">
 			<tr>
 				<td>
-					${tsitecheck.projectName}
+					${siterecord.projectName}
 				</td>
 				<td>
-					${tsitecheck.developOrg}
+					${siterecord.developOrg}
 				</td>
 				<td>
-					${tsitecheck.developContact}&nbsp; &nbsp; 
-					${tsitecheck.developPhone}
+					${siterecord.developContact}&nbsp; &nbsp; 
+					${siterecord.developPhone}
 				</td>
 				<td>
-					${tsitecheck.constructionOrg}
+					${siterecord.constructionOrg}
 				</td>
 				<td>
-					${tsitecheck.constructionContact}&nbsp; &nbsp; 
-					${tsitecheck.constructionPhone}
+					${siterecord.constructionContact}&nbsp; &nbsp; 
+					${siterecord.constructionPhone}
 				</td>
 				<td>
-					${tsitecheck.projectAddress}
+					${siterecord.projectAddress}
 				</td>
 				<td>
-					${tsitecheck.checker}
+					${siterecord.checker}
 				</td>
 				<td>
-					<fmt:formatDate value="${tsitecheck.checkDate}" pattern="yyyy-MM-dd "/>
+					<fmt:formatDate value="${siterecord.checkDate}" pattern="yyyy-MM-dd "/>
 				</td>
-				<shiro:hasPermission name="check:tsitecheck:edit"><td>
-    				<a href="${ctx}/check/tsitecheck/form?id=${tsitecheck.id}">修改</a>
-					<a href="${ctx}/check/tsitecheck/delete?id=${tsitecheck.id}" onclick="return confirmx('确认要删除该现场踏勘信息吗？', this.href)">删除</a>
+				<shiro:hasPermission name="exam:siterecord:edit"><td>
+    				<a href="${ctx}/exam/siterecord/form?id=${siterecord.id}">修改</a>
+					<a href="${ctx}/exam/siterecord/delete?id=${siterecord.id}" onclick="return confirmx('确认要删除该现场检查笔录吗？', this.href)">删除</a>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>

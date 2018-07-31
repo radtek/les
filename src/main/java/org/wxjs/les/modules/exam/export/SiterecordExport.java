@@ -1,4 +1,4 @@
-package org.wxjs.les.modules.check.export;
+package org.wxjs.les.modules.exam.export;
 
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.BaseFont;
@@ -15,6 +15,7 @@ import org.wxjs.les.common.utils.IdGen;
 import org.wxjs.les.common.utils.PdfUtil;
 import org.wxjs.les.modules.base.utils.PathUtils;
 import org.wxjs.les.modules.check.entity.Tsitecheck;
+import org.wxjs.les.modules.exam.entity.Siterecord;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
@@ -28,10 +29,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TsitecheckExport {
+public class SiterecordExport {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
     // 表格宽、高
@@ -39,7 +41,7 @@ public class TsitecheckExport {
     private final static float borderWidth = 0.5f;
 
     // 默认实体类对象
-    private Tsitecheck tsitecheck;
+    private Siterecord siterecord;
     private static BaseFont bfChinese = null;
     private static Map<String, Font> fontMap = new HashMap<String, Font>();
 
@@ -110,7 +112,6 @@ public class TsitecheckExport {
         return cell;
     }
 
-    
     /**
      * 根据字符串解析图片
      * @param images 图片字符串(多张)
@@ -156,8 +157,8 @@ public class TsitecheckExport {
         return null;
     }
 
-    public TsitecheckExport(Tsitecheck tsitecheck) {
-        this.tsitecheck = tsitecheck;
+    public SiterecordExport(Siterecord siterecord) {
+        this.siterecord = siterecord;
     }
 
     /**
@@ -179,7 +180,7 @@ public class TsitecheckExport {
         // 生成上下文对象
         Document document = new Document(PageSize.A4);
         try {
-            PdfWriter writer = PdfWriter.getInstance(document, os);
+        	 PdfWriter writer = PdfWriter.getInstance(document, os);
             document.open();
             // 创建table对象(五列)
             float[] widths = new float[]{8, 12, 43, 12, 25};
@@ -187,95 +188,59 @@ public class TsitecheckExport {
             table.setWidths(widths);
             table.setWidthPercentage(tableWidth);
          
-
             // 添加标题
-            Paragraph paragraph = new Paragraph("现场踏勘情况", fontMap.get("subjectFont"));
+            Paragraph paragraph = new Paragraph("现场巡查情况", fontMap.get("subjectFont"));
             paragraph.setAlignment(Paragraph.ALIGN_CENTER);
             document.add(paragraph);
             document.add(PdfUtil.generateTable4Padding());
-
+            
             /* ============ 表格中的第一部分数据 ============ */
+            table.addCell(createPDFCellToTitle("巡查人", fontMap.get("textFont"), 0,2, borderWidth, normalBorderHeight));
+            table.addCell(createPDFCellToContent(siterecord.getChecker(), fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
+
+            table.addCell(createPDFCellToTitle("巡查时间", fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
+            Date date=siterecord.getCheckDate();
+            SimpleDateFormat sdf = new SimpleDateFormat( " yyyy年MM月dd日 " );
+            String str = sdf.format(date);
+            table.addCell(createPDFCellToContent(str, fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
+            
+            /* ============ 表格中的第二部分数据 ============ */
             table.addCell(createPDFCellToTitle("当事人情况", fontMap.get("textFont"), 4, 0, borderWidth, normalBorderHeight));
 
             table.addCell(createPDFCellToTitle("建设单位", fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
-            table.addCell(createPDFCellToContent(tsitecheck.getDevelopOrg(), fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
+            table.addCell(createPDFCellToContent(siterecord.getDevelopOrg(), fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
 
             table.addCell(createPDFCellToTitle("联系人姓名、电话", fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
-            table.addCell(createPDFCellToContent(tsitecheck.getDevelopContact() + "  " + tsitecheck.getDevelopPhone(), fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
+            table.addCell(createPDFCellToContent(siterecord.getDevelopContact() + "  " + siterecord.getDevelopPhone(), fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
 
 			table.addCell(createPDFCellToTitle("施工单位", fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
-            table.addCell(createPDFCellToContent(tsitecheck.getConstructionOrg(), fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
+            table.addCell(createPDFCellToContent(siterecord.getConstructionOrg(), fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
 
 			table.addCell(createPDFCellToTitle("联系人姓名、电话", fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
-			table.addCell(createPDFCellToContent(tsitecheck.getConstructionContact() + "  " + tsitecheck.getConstructionPhone(), fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
+			table.addCell(createPDFCellToContent(siterecord.getConstructionContact() + "  " + siterecord.getConstructionPhone(), fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
 
 			table.addCell(createPDFCellToTitle("工程名称", fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
-			table.addCell(createPDFCellToContent(tsitecheck.getProjectName(), fontMap.get("textFont"), 0, 3, borderWidth, normalBorderHeight));
+			table.addCell(createPDFCellToContent(siterecord.getProjectName(), fontMap.get("textFont"), 0, 3, borderWidth, normalBorderHeight));
 
 			table.addCell(createPDFCellToTitle("工程地址", fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
-			table.addCell(createPDFCellToContent(tsitecheck.getProjectAddress(), fontMap.get("textFont"), 0, 3, borderWidth, normalBorderHeight));
+			table.addCell(createPDFCellToContent(siterecord.getProjectAddress(), fontMap.get("textFont"), 0, 3, borderWidth, normalBorderHeight));
 
             /* ============ 表格中的第二部分数据 ============ */
             table.addCell(createPDFCellToTitle("现场工程检查情况", fontMap.get("textFont"), 0, 0, borderWidth, contentTableHeight));
-            table.addCell(createPDFCellToContent(tsitecheck.getSiteSituation(), fontMap.get("textFont"), 0, 4, borderWidth, contentTableHeight));
+            table.addCell(createPDFCellToContent(siterecord.getSiteSituation(), fontMap.get("textFont"), 0, 4, borderWidth, contentTableHeight));
 
-            /* ============ 表格中的第三部分数据 ============ */
-            table.addCell(createPDFCellToTitle("现场踏勘示意图", fontMap.get("textFont"), 0, 0, borderWidth, contentBigTableHeight));
-            table.addCell(createPDFCellToImage(tsitecheck.getSitePicture().split("\\|"), defaultImageWidth, defaultImageHeight, 0, 4, borderWidth, contentBigTableHeight));
 
             /* ============ 表格中的第四部分数据 ============ */
             table.addCell(createPDFCellToTitle("现场踏勘情况", fontMap.get("textFont"), 0, 0, borderWidth, contentTableHeight));
-            table.addCell(createPDFCellToContent(tsitecheck.getSiteCheckResult(), fontMap.get("textFont"), 0, 4, borderWidth, contentTableHeight));
+            table.addCell(createPDFCellToContent(siterecord.getSiteCheckResult(), fontMap.get("textFont"), 0, 4, borderWidth, contentTableHeight));
+         
+            /* ============ 表格中的第五部分数据 ============ */
+            table.addCell(createPDFCellToTitle("现场踏勘示意图", fontMap.get("textFont"), 0, 0, borderWidth, contentBigTableHeight));
+            table.addCell(createPDFCellToImage(siterecord.getSitePicture().split("\\|"), defaultImageWidth, defaultImageHeight, 0, 4, borderWidth, contentBigTableHeight));
+            
             document.add(table);
 
-            /* ============ 表格中的第五部分数据 ============ */
-            Image checkerSig=null;
-            try {
-         	   String filename=this.base64StringToImage(this.tsitecheck.getCheckerSig().getSignature());
-         	   checkerSig=Image.getInstance(filename);
-         	   FileUtils.deleteFile(filename);
-            } catch (MalformedURLException e) {
-        	   logger.error("checkerSig error",e);
-           } catch (IOException e) {
-         	   logger.error("checkerSig error",e);
-           }
-         
-           Image partySig=null;
-            
-	           try {
-	     	   String filename=this.base64StringToImage(this.tsitecheck.getPartySig().getSignature());
-	         	   partySig=Image.getInstance(filename);
-	         	   FileUtils.deleteFile(filename);
-	            } catch (MalformedURLException e) {
-	         	   logger.error("partySig error",e);
-	            } catch (IOException e) {
-	         	   logger.error("partySig error",e);
-	            }
-	           widths = new float[]{8, 42,8,42};
-	           table = new PdfPTable(widths.length);
-	           table.setWidths(widths);
-	           table.setWidthPercentage(tableWidth);
-	           
-	         
-	          Phrase  phrase=new Phrase("勘查人(签名)",fontMap.get("textFont"));
-	          PdfPCell  cell=new PdfPCell(phrase);
-	          
-	            cell.setBorderWidth(borderWidth);
-	            cell.setHorizontalAlignment(Element.ALIGN_CENTER);   // 设置水平样式
-	            cell.setVerticalAlignment(Element.ALIGN_MIDDLE); 
-	            table.addCell(cell);
-	            table.addCell(checkerSig);
-	           
-	        
-	            phrase=new Phrase("当事人(签名)",fontMap.get("textFont"));
-	            cell=new PdfPCell(phrase);
-	            cell.setBorderWidth(borderWidth);
-	            cell.setHorizontalAlignment(Element.ALIGN_CENTER);   // 设置水平样式
-	            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-	            table.addCell(cell);
-	            table.addCell(partySig);
-	            
-	            document.add(table);
+        
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("生成PDF数据异常{}", e.getMessage());
@@ -292,7 +257,7 @@ public class TsitecheckExport {
      * @throws DocumentException
      * @throws IOException
      */
-    public TsitecheckExport writeFile(String name) throws DocumentException, IOException {
+    public SiterecordExport writeFile(String name) throws DocumentException, IOException {
         FileOutputStream os = new FileOutputStream(name);
         this.generate(os);
         return this;
@@ -306,7 +271,7 @@ public class TsitecheckExport {
      * @throws IOException
      * @throws DocumentException
      */
-    public TsitecheckExport write(HttpServletResponse response, String fileName) throws DocumentException, IOException {
+    public SiterecordExport write(HttpServletResponse response, String fileName) throws DocumentException, IOException {
         response.reset();
         response.setContentType("application/octet-stream;charset=utf-8");
         response.setHeader("Content-Disposition", "attachment;filename=" + Encodes.urlEncode(fileName));
