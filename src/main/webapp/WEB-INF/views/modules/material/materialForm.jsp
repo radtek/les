@@ -7,7 +7,6 @@
 	
 	<script type="text/javascript">
 		$(document).ready(function() {
-			//$("#name").focus();
 			$("#inputForm").validate({
 				submitHandler: function(form){
 					loading('正在提交，请稍等...');
@@ -23,18 +22,22 @@
 					}
 				}
 			});
+			 $('#btnSubmit').click(function() {
+				$("#inputForm").attr("action","${ctx}/material/material/save");
+				$("#inputForm").submit();		    	
+		    });			
+			 $('#btnExportPdf').click(function() {
+				 alert("aaa");
+					$("#inputForm").attr("action","${ctx}/material/material/exportPDF");
+					$("#inputForm").submit();		    	
+			 });
 		});
-		function exportPdf(){
-			$("#inputForm").attr("action","${ctx}/material/material/exportPDF");
-			$("#inputForm").submit();
-	    }
 	</script>
-	
 </head>
 <body>
 	<h3>视听资料证据</h3>
     <div style="text-align:right" >
-    <input id="btnExportPdf" class="btn btn-primary" type="button" value="导出PDF " onclick="exportPdf()"/>
+    <input id="btnExportPdf" class="btn btn-primary" type="button" value="导出PDF " />
     </div>
 	
 	<h4>基本信息</h4>
@@ -79,7 +82,7 @@
 				<label class="control-label control-tight">资料路径：</label>&nbsp;&nbsp;&nbsp;
 				<div class="controls controls-tight">
 					<form:hidden id="nameImage" path="materialPath" htmlEscape="false" maxlength="255" class="input-xxlarge required"/>
-					<sys:ckfinder input="nameImage" type="images" uploadPath="/test/test" selectMultiple="true"/>
+					<sys:ckfinder input="nameImage" type="all" uploadPath="/material" selectMultiple="true"/>
 					<span class="help-inline"><font color="red">*</font> </span>
 				</div>
 			</div>
@@ -96,7 +99,7 @@
 		</div>
 		
 		<div class="form-actions">
-			<shiro:hasPermission name="material:material:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+			<shiro:hasPermission name="material:material:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保 存"/></shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 		
