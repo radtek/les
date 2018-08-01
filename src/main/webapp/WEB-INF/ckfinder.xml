@@ -58,7 +58,14 @@
 			<maxSize>100M</maxSize>
 			<allowedExtensions>jpeg,jpg,pdf,doc,docx,txt,bmp,gif,jpeg,jpg,png,swf,flv,avi,dat,mkv,vob,rm,rmvb,mpg,mpeg,mpe,wmv,mp4,zip,war</allowedExtensions>
 			<deniedExtensions></deniedExtensions>
-		</type>		
+		</type>	
+		<type name="pic_video">
+			<url>%BASE_URL%all/</url>
+			<directory>%BASE_DIR%all</directory>
+			<maxSize>100M</maxSize>
+			<allowedExtensions>jpeg,jpg,bmp,gif,jpeg,jpg,png,swf,flv,avi,dat,mkv,vob,rm,rmvb,mpg,mpeg,mpe,wmv,mp4</allowedExtensions>
+			<deniedExtensions></deniedExtensions>
+		</type>			
 	</types>
 	<accessControls>
 		<accessControl>

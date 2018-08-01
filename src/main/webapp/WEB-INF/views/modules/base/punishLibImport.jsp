@@ -38,7 +38,7 @@
 		<div class="control-group">
 			<label class="control-label">行政处罚自由裁量基准文件：</label>
 			<div class="controls">
-				<form:hidden id="filepath" path="filepath" htmlEscape="false" maxlength="256" class="input-xlarge"/>
+				<form:hidden id="filepath" path="filepath" htmlEscape="false" maxlength="256" class="input-xlarge required"/>
 				<sys:ckfinder input="filepath" type="words" uploadPath="/punishLib" selectMultiple="false"/>				
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>

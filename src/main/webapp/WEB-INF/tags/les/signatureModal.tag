@@ -6,11 +6,6 @@
 <!-- 本标签和signatureLoader同时使用，本标签在一个页面上只要放一个。 -->
 
 <script type="text/javascript">
-
-	$(function(){
-		
-		//initial();
-	})
 	
 	function initial(){
 		

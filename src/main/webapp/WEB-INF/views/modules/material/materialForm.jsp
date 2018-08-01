@@ -6,7 +6,8 @@
 	<meta name="decorator" content="default"/>
 	
 	<script type="text/javascript">
-		$(document).ready(function() {
+		$(document).ready(function() {	
+			
 			$("#inputForm").validate({
 				submitHandler: function(form){
 					loading('正在提交，请稍等...');
@@ -21,24 +22,22 @@
 						error.insertAfter(element);
 					}
 				}
-			});
+			});			
+			
 			 $('#btnSubmit').click(function() {
 				$("#inputForm").attr("action","${ctx}/material/material/save");
 				$("#inputForm").submit();		    	
-		    });			
+		    });	
+			 
 			 $('#btnExportPdf').click(function() {
-				 alert("aaa");
-					$("#inputForm").attr("action","${ctx}/material/material/exportPDF");
-					$("#inputForm").submit();		    	
+				$("#inputForm").attr("action","${ctx}/material/material/exportPDF");
+				$("#inputForm").submit();		    	
 			 });
 		});
 	</script>
 </head>
 <body>
 	<h3>视听资料证据</h3>
-    <div style="text-align:right" >
-    <input id="btnExportPdf" class="btn btn-primary" type="button" value="导出PDF " />
-    </div>
 	
 	<h4>基本信息</h4>
 	<sys:message content="${message}"/>
@@ -49,24 +48,28 @@
 		
 		 <div class="control-group container-fluid nopadding"> 
 			<div class="row-fluid">
-				<div class="span3">		
+				<div class="span6">		
 					<label class="control-label control-tight">收集时间：</label>
 				<div class="controls controls-tight">
 					<input name="getDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate required"
 					value="<fmt:formatDate value="${material.getDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
+					<span class="help-inline"><font color="red">*</font> </span>
 				</div>
 			     </div>
 			       
-				<div class="span3">		
+				<div class="span6">		
 					<label class="control-label control-tight">收集方式：</label>
 				<div class="controls controls-tight">
 					<form:input path="materialType" htmlEscape="false" maxlength="32" class="input-medium required"/>
 					<span class="help-inline"><font color="red">*</font> </span>
 				</div>
 			    </div>
-				
-				<div class="span6">		
+			</div>
+		</div>
+		 <div class="control-group container-fluid nopadding"> 
+			<div class="row-fluid">
+				<div class="span12">		
 					<label class="control-label control-tight">收集地点：</label>
 				<div class="controls controls-tight">
 					<form:input path="getLocation" htmlEscape="false" maxlength="100" class="input-xxlarge required"/>
@@ -74,15 +77,14 @@
 				</div>
 			    </div>
 			</div>
-		</div>
-		
+		</div>		
 		
 		 <div class="control-group container-fluid nopadding"> 
 			<div class="control-group">
 				<label class="control-label control-tight">资料路径：</label>&nbsp;&nbsp;&nbsp;
 				<div class="controls controls-tight">
 					<form:hidden id="nameImage" path="materialPath" htmlEscape="false" maxlength="255" class="input-xxlarge required"/>
-					<sys:ckfinder input="nameImage" type="all" uploadPath="/material" selectMultiple="true"/>
+					<sys:ckfinder input="nameImage" type="pic_video" uploadPath="/material" selectMultiple="true"/>
 					<span class="help-inline"><font color="red">*</font> </span>
 				</div>
 			</div>
@@ -100,6 +102,9 @@
 		
 		<div class="form-actions">
 			<shiro:hasPermission name="material:material:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保 存"/></shiro:hasPermission>
+			
+			<input id="btnExportPdf" class="btn btn-primary" type="button" value="导出PDF " />
+			
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 		
@@ -122,7 +127,8 @@
 		        </div> 
 		        
 		    </div>
-		</div>		
+		</div>	
+
 	</form:form>
 </body>
 </html>

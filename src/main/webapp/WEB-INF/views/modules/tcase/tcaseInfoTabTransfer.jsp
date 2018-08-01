@@ -34,6 +34,11 @@
 		        }
 		    });	
 		    
+		    $('#btnSubmit').click(function() {
+				$("#inputForm").attr("action","${ctx}/case/tcase/saveTransfer");
+				$("#inputForm").submit();		    	
+		    });
+		    
 		    $('#btnStart').click(function() {
 				$("#inputForm").attr("action","${ctx}/case/tcase/saveAndStartTransfer");
 				$("#inputForm").submit();		    	
@@ -296,7 +301,7 @@
 		</div>
 		
 		<div class="form-actions">
-			<shiro:hasPermission name="case:tcase:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;
+			<shiro:hasPermission name="case:tcase:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保 存"/>&nbsp;
 			<c:if test="${caseAct.operateType eq 'start' || caseAct.tcase.caseProcess.caseStageStatus eq '0'}">
 			   <input id="btnStart" class="btn btn-primary" type="button" value="启动事件"/>&nbsp;
 			</c:if>
