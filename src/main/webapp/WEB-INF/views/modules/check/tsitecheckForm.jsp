@@ -11,6 +11,7 @@
 				submitHandler: function(form){
 					loading('正在提交，请稍等...');
 					form.submit();
+					closeLoading();
 				},
 				errorContainer: "#messageBox",
 				errorPlacement: function(error, element) {
@@ -22,22 +23,24 @@
 					}
 				}
 			});
+			$('#btnSubmit').click(function() {
+				$("#inputForm").attr("action","${ctx}/check/tsitecheck/save");
+				$("#inputForm").submit();		    	
+		    });	
+			 
+			 $('#btnExportPdf').click(function() {
+				$("#inputForm").attr("action","${ctx}/check/tsitecheck/exportPDF");
+				$("#inputForm").submit();		    	
+			 });
 		});
 		
-		 function exportPdf(){
-				$("#inputForm").attr("action","${ctx}/check/tsitecheck/exportPDF");
-				$("#inputForm").submit();
-		    }
+		
 		 
 	</script>
 </head>
 <body>
 	<h3>现场踏勘情况</h3>
-    <div style="text-align:right" >
-    <input id="btnExportPdf" class="btn btn-primary" type="button" value="导出PDF " onclick="exportPdf()"/>
-    </div>
 	
-	<h4>基本信息</h4>
 	<sys:message content="${message}"/>
 	
 	<form:form id="inputForm" modelAttribute="tsitecheck" action="${ctx}/check/tsitecheck/save" method="post" class="form-horizontal">
@@ -171,7 +174,10 @@
 		</div>
 		
 		<div class="form-actions">
-			<shiro:hasPermission name="check:tsitecheck:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+			<shiro:hasPermission name="check:tsitecheck:edit">
+				<input id="btnSubmit" class="btn btn-primary" type="button" value="保 存"/>&nbsp;
+				<input id="btnExportPdf" class="btn btn-primary" type="button" value="导出PDF " />
+			</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 		
