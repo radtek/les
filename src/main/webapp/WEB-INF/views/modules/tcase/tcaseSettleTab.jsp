@@ -22,6 +22,16 @@
 					}
 				}
 			});
+			
+		    $('#btnSubmit').click(function() {
+				$("#inputForm").attr("action","${ctx}/tcase/caseSettle/save");
+				$("#inputForm").submit();		    	
+		    });			
+			
+		    $('#btnSettle').click(function() {
+				$("#inputForm").attr("action","${ctx}/tcase/caseSettle/exportPDF");
+				$("#inputForm").submit();		    	
+		    });			
 		});
 	</script>
 </head>
@@ -62,7 +72,7 @@
 			</div>
 		</div>
 		<div class="form-actions">
-			<shiro:hasPermission name="case:tcase:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;
+			<shiro:hasPermission name="case:tcase:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保 存"/>&nbsp;
 			<input id="btnSettle" class="btn btn-primary" type="button" value="案件结案审批表"/>
 			</shiro:hasPermission>
 		</div>

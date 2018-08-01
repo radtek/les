@@ -22,6 +22,16 @@
 					}
 				}
 			});
+			
+		    $('#btnSubmit').click(function() {
+				$("#inputForm").attr("action","${ctx}/tcase/caseFinish/save");
+				$("#inputForm").submit();		    	
+		    });			
+			
+		    $('#btnFinish').click(function() {
+				$("#inputForm").attr("action","${ctx}/tcase/caseFinish/exportPDF");
+				$("#inputForm").submit();		    	
+		    });			
 		});
 	</script>
 </head>
@@ -62,7 +72,7 @@
 			</div>
 		</div>
 		<div class="form-actions">
-			<shiro:hasPermission name="case:tcase:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;
+			<shiro:hasPermission name="case:tcase:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保 存"/>&nbsp;
 			<input id="btnFinish" class="btn btn-primary" type="button" value="备考表"/>
 			</shiro:hasPermission>
 		</div>

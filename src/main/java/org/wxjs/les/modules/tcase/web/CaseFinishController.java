@@ -17,10 +17,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.web.BaseController;
+import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.StringUtils;
 import org.wxjs.les.common.utils.Util;
+
 import org.wxjs.les.modules.tcase.entity.CaseFinish;
+import org.wxjs.les.modules.tcase.entity.Tcase;
+
+import org.wxjs.les.modules.tcase.export.CaseFinishExport;
 import org.wxjs.les.modules.tcase.service.CaseFinishService;
+import org.wxjs.les.modules.tcase.service.TcaseService;
 
 /**
  * 案件结束Controller
@@ -30,6 +36,9 @@ import org.wxjs.les.modules.tcase.service.CaseFinishService;
 @Controller
 @RequestMapping(value = "${adminPath}/tcase/caseFinish")
 public class CaseFinishController extends BaseController {
+	
+	@Autowired
+	private TcaseService tcaseService;
 
 	@Autowired
 	private CaseFinishService caseFinishService;
@@ -85,6 +94,26 @@ public class CaseFinishController extends BaseController {
 		caseFinishService.delete(caseFinish);
 		addMessage(redirectAttributes, "删除案件结束成功");
 		return "redirect:"+Global.getAdminPath()+"/tcase/caseFinish/?repage";
+	}
+	
+	@RequestMapping(value = "exportPDF")
+	public String exportPDF(CaseFinish entity, HttpServletResponse response,  Model model, RedirectAttributes redirectAttributes) {
+		
+		CaseFinish caseFinish = caseFinishService.get(entity.getCaseId());
+		
+		Tcase tcase = tcaseService.get(entity.getCaseId());
+		
+		try {
+            String fileName = "备考表"+DateUtils.getDate("yyyyMMddHHmmss")+".pdf";
+            CaseFinishExport export = new CaseFinishExport(tcase, caseFinish);
+            export.write(response, fileName);
+    		return null;
+		} catch (Exception e) {
+			logger.error("导出失败", e);
+			addMessage(redirectAttributes, "导出失败！失败信息："+e.getMessage());
+		}		
+
+		return "redirect:"+Global.getAdminPath()+"/case/tcase/finishTab?"+entity.getParamUri();
 	}
 
 }

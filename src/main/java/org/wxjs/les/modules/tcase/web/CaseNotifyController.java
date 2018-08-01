@@ -14,13 +14,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.web.BaseController;
+import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.StringUtils;
 import org.wxjs.les.modules.tcase.entity.CaseNotify;
+import org.wxjs.les.modules.tcase.entity.Tcase;
+import org.wxjs.les.modules.tcase.export.CaseHandleApproveExport;
+import org.wxjs.les.modules.tcase.export.CaseNotifyExport;
 import org.wxjs.les.modules.tcase.service.CaseNotifyService;
+import org.wxjs.les.modules.tcase.service.TcaseService;
 
 /**
  * 案件告知书Controller
@@ -30,6 +34,9 @@ import org.wxjs.les.modules.tcase.service.CaseNotifyService;
 @Controller
 @RequestMapping(value = "${adminPath}/case/caseNotify")
 public class CaseNotifyController extends BaseController {
+	
+	@Autowired
+	private TcaseService tcaseService;
 
 	@Autowired
 	private CaseNotifyService caseNotifyService;
@@ -78,6 +85,46 @@ public class CaseNotifyController extends BaseController {
 		caseNotifyService.delete(caseNotify);
 		addMessage(redirectAttributes, "删除案件告知书成功");
 		return "redirect:"+Global.getAdminPath()+"/case/caseNotify/?repage";
+	}
+	
+	@RequestMapping(value = "exportPDF")
+	public String exportPDF(CaseNotify entity, HttpServletResponse response,  Model model, RedirectAttributes redirectAttributes) {
+		
+		CaseNotify caseNotify = caseNotifyService.get(entity.getCaseId());
+		
+		Tcase tcase = tcaseService.get(entity.getCaseId());
+		
+		try {
+            String fileName = "告知书"+DateUtils.getDate("yyyyMMddHHmmss")+".pdf";
+            CaseNotifyExport export = new CaseNotifyExport(tcase, caseNotify, false);
+            export.write(response, fileName);
+    		return null;
+		} catch (Exception e) {
+			logger.error("导出失败", e);
+			addMessage(redirectAttributes, "导出失败！失败信息："+e.getMessage());
+		}		
+
+		return "redirect:"+Global.getAdminPath()+"/case/tcase/notifyTab?"+entity.getParamUri();
+	}
+	
+	@RequestMapping(value = "exportCopyPDF")
+	public String exportCopyPDF(CaseNotify entity, HttpServletResponse response,  Model model, RedirectAttributes redirectAttributes) {
+		
+		CaseNotify caseNotify = caseNotifyService.get(entity.getCaseId());
+		
+		Tcase tcase = tcaseService.get(entity.getCaseId());
+		
+		try {
+            String fileName = "告知书(存根)"+DateUtils.getDate("yyyyMMddHHmmss")+".pdf";
+            CaseNotifyExport export = new CaseNotifyExport(tcase, caseNotify, true);
+            export.write(response, fileName);
+    		return null;
+		} catch (Exception e) {
+			logger.error("导出失败", e);
+			addMessage(redirectAttributes, "导出失败！失败信息："+e.getMessage());
+		}		
+
+		return "redirect:"+Global.getAdminPath()+"/case/tcase/notifyTab?"+entity.getParamUri();
 	}
 
 }

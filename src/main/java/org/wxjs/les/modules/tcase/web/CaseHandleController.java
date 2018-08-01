@@ -20,9 +20,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.web.BaseController;
+import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.StringUtils;
 import org.wxjs.les.modules.tcase.entity.CaseHandle;
+import org.wxjs.les.modules.tcase.entity.Tcase;
+import org.wxjs.les.modules.tcase.export.CaseHandleApproveExport;
+import org.wxjs.les.modules.tcase.export.CaseHandleReportExport;
 import org.wxjs.les.modules.tcase.service.CaseHandleService;
+import org.wxjs.les.modules.tcase.service.TcaseService;
 
 /**
  * 案件审理Controller
@@ -32,6 +37,9 @@ import org.wxjs.les.modules.tcase.service.CaseHandleService;
 @Controller
 @RequestMapping(value = "${adminPath}/tcase/caseHandle")
 public class CaseHandleController extends BaseController {
+	
+	@Autowired
+	private TcaseService tcaseService;
 
 	@Autowired
 	private CaseHandleService caseHandleService;
@@ -104,6 +112,46 @@ public class CaseHandleController extends BaseController {
 		caseHandleService.delete(caseHandle);
 		addMessage(redirectAttributes, "删除案件审理成功");
 		return "redirect:"+Global.getAdminPath()+"/tcase/caseHandle/?repage";
+	}
+	
+	@RequestMapping(value = "exportReportPDF")
+	public String exportReportPDF(CaseHandle entity, HttpServletResponse response,  Model model, RedirectAttributes redirectAttributes) {
+		
+		CaseHandle caseHandle = caseHandleService.get(entity.getCaseId());
+		
+		Tcase tcase = tcaseService.get(entity.getCaseId());
+		
+		try {
+            String fileName = "案件调查报告"+DateUtils.getDate("yyyyMMddHHmmss")+".pdf";
+            CaseHandleReportExport export = new CaseHandleReportExport(tcase, caseHandle);
+            export.write(response, fileName);
+    		return null;
+		} catch (Exception e) {
+			logger.error("导出失败", e);
+			addMessage(redirectAttributes, "导出失败！失败信息："+e.getMessage());
+		}		
+
+		return "redirect:"+Global.getAdminPath()+"/case/tcase/handleTab?"+entity.getParamUri();
+	}
+	
+	@RequestMapping(value = "exportApprovePDF")
+	public String exportApprovePDF(CaseHandle entity, HttpServletResponse response,  Model model, RedirectAttributes redirectAttributes) {
+		
+		CaseHandle caseHandle = caseHandleService.get(entity.getCaseId());
+		
+		Tcase tcase = tcaseService.get(entity.getCaseId());
+		
+		try {
+            String fileName = "案件处理审批表"+DateUtils.getDate("yyyyMMddHHmmss")+".pdf";
+            CaseHandleApproveExport export = new CaseHandleApproveExport(tcase, caseHandle);
+            export.write(response, fileName);
+    		return null;
+		} catch (Exception e) {
+			logger.error("导出失败", e);
+			addMessage(redirectAttributes, "导出失败！失败信息："+e.getMessage());
+		}		
+
+		return "redirect:"+Global.getAdminPath()+"/case/tcase/handleTab?"+entity.getParamUri();
 	}
 
 }

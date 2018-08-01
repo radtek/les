@@ -14,13 +14,20 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.web.BaseController;
+import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.StringUtils;
 import org.wxjs.les.modules.tcase.entity.CaseDecision;
+import org.wxjs.les.modules.tcase.entity.CaseSerious;
+import org.wxjs.les.modules.tcase.entity.Tcase;
+import org.wxjs.les.modules.tcase.export.CaseDecisionExport;
+import org.wxjs.les.modules.tcase.export.CaseDecisionLaunchExport;
+import org.wxjs.les.modules.tcase.export.CaseDecisionReachExport;
+import org.wxjs.les.modules.tcase.export.CaseSeriousExport;
 import org.wxjs.les.modules.tcase.service.CaseDecisionService;
+import org.wxjs.les.modules.tcase.service.TcaseService;
 
 /**
  * 案件决定书Controller
@@ -30,6 +37,9 @@ import org.wxjs.les.modules.tcase.service.CaseDecisionService;
 @Controller
 @RequestMapping(value = "${adminPath}/tcase/caseDecision")
 public class CaseDecisionController extends BaseController {
+	
+	@Autowired
+	private TcaseService tcaseService;
 
 	@Autowired
 	private CaseDecisionService caseDecisionService;
@@ -78,6 +88,66 @@ public class CaseDecisionController extends BaseController {
 		caseDecisionService.delete(caseDecision);
 		addMessage(redirectAttributes, "删除案件决定书成功");
 		return "redirect:"+Global.getAdminPath()+"/tcase/caseDecision/?repage";
+	}
+	
+	@RequestMapping(value = "exportDecisionPDF")
+	public String exportDecisionPDF(CaseDecision entity, HttpServletResponse response,  Model model, RedirectAttributes redirectAttributes) {
+		
+		CaseDecision caseDecision = caseDecisionService.get(entity.getCaseId());
+		
+		Tcase tcase = tcaseService.get(entity.getCaseId());
+		
+		try {
+            String fileName = "处罚决定书"+DateUtils.getDate("yyyyMMddHHmmss")+".pdf";
+            CaseDecisionExport export = new CaseDecisionExport(tcase, caseDecision);
+            export.write(response, fileName);
+    		return null;
+		} catch (Exception e) {
+			logger.error("导出失败", e);
+			addMessage(redirectAttributes, "导出失败！失败信息："+e.getMessage());
+		}		
+
+		return "redirect:"+Global.getAdminPath()+"/case/tcase/decisionTab?"+entity.getParamUri();
+	}
+	
+	@RequestMapping(value = "exportDecisionLaunchPDF")
+	public String exportDecisionLaunchPDF(CaseDecision entity, HttpServletResponse response,  Model model, RedirectAttributes redirectAttributes) {
+		
+		CaseDecision caseDecision = caseDecisionService.get(entity.getCaseId());
+		
+		Tcase tcase = tcaseService.get(entity.getCaseId());
+		
+		try {
+            String fileName = "处罚决定书发文稿"+DateUtils.getDate("yyyyMMddHHmmss")+".pdf";
+            CaseDecisionLaunchExport export = new CaseDecisionLaunchExport(tcase, caseDecision);
+            export.write(response, fileName);
+    		return null;
+		} catch (Exception e) {
+			logger.error("导出失败", e);
+			addMessage(redirectAttributes, "导出失败！失败信息："+e.getMessage());
+		}		
+
+		return "redirect:"+Global.getAdminPath()+"/case/tcase/decisionTab?"+entity.getParamUri();
+	}
+	
+	@RequestMapping(value = "exportReachPDF")
+	public String exportReachPDF(CaseDecision entity, HttpServletResponse response,  Model model, RedirectAttributes redirectAttributes) {
+		
+		CaseDecision caseDecision = caseDecisionService.get(entity.getCaseId());
+		
+		Tcase tcase = tcaseService.get(entity.getCaseId());
+		
+		try {
+            String fileName = "处罚决定书送达回证"+DateUtils.getDate("yyyyMMddHHmmss")+".pdf";
+            CaseDecisionReachExport export = new CaseDecisionReachExport(tcase, caseDecision);
+            export.write(response, fileName);
+    		return null;
+		} catch (Exception e) {
+			logger.error("导出失败", e);
+			addMessage(redirectAttributes, "导出失败！失败信息："+e.getMessage());
+		}		
+
+		return "redirect:"+Global.getAdminPath()+"/case/tcase/decisionTab?"+entity.getParamUri();
 	}
 
 }

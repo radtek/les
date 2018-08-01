@@ -22,6 +22,21 @@
 					}
 				}
 			});
+			
+		    $('#btnSubmit').click(function() {
+				$("#inputForm").attr("action","${ctx}/tcase/caseNotify/save");
+				$("#inputForm").submit();		    	
+		    });			
+			
+		    $('#btnNotify').click(function() {
+				$("#inputForm").attr("action","${ctx}/tcase/caseNotify/exportPDF");
+				$("#inputForm").submit();		    	
+		    });	
+		    
+		    $('#btnNotifyStub').click(function() {
+				$("#inputForm").attr("action","${ctx}/tcase/caseNotify/exportCopyPDF");
+				$("#inputForm").submit();		    	
+		    });	
 		});
 	</script>
 </head>
@@ -88,7 +103,7 @@
 			</div>
 		</div>
 		<div class="form-actions">
-			<shiro:hasPermission name="case:tcase:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;
+			<shiro:hasPermission name="case:tcase:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保 存"/>&nbsp;
 			<input id="btnNotify" class="btn btn-primary" type="button" value="行政处罚事先告知书"/>&nbsp;
 			<input id="btnNotifyStub" class="btn btn-primary" type="button" value="行政处罚事先告知书（存根）"/>&nbsp;
 			</shiro:hasPermission>

@@ -16,6 +16,21 @@
 	    		}
 				
 	    	});
+	    	
+		    $('#btnSaveReport').click(function() {
+				$("#inputReportForm").attr("action","${ctx}/tcase/caseHandle/saveReport");
+				$("#inputReportForm").submit();		    	
+		    });			
+			
+		    $('#btnReport').click(function() {
+				$("#inputReportForm").attr("action","${ctx}/tcase/caseHandle/exportReportPDF");
+				$("#inputReportForm").submit();		    	
+		    });	
+		    
+		    $('#btnApprove').click(function() {
+				$("#inputReportForm").attr("action","${ctx}/tcase/caseHandle/exportApprovePDF");
+				$("#inputReportForm").submit();		    	
+		    });		    	
 		});
 	</script>
 </head>
@@ -87,9 +102,9 @@
 			</div>
 		</div>
 		<div class="form-actions">
-			<shiro:hasPermission name="case:tcase:edit"><input id="btnSaveReport" class="btn btn-primary" type="submit" value="保存调查报告"/>&nbsp;
-			<input id="btnInvestReport" class="btn btn-primary" type="button" value="案件调查报告"/>&nbsp;
-			<input id="btnApproveTable" class="btn btn-primary" type="button" value="案件处理审批表"/>&nbsp;
+			<shiro:hasPermission name="case:tcase:edit"><input id="btnSaveReport" class="btn btn-primary" type="button" value="保存调查报告"/>&nbsp;
+			<input id="btnReport" class="btn btn-primary" type="button" value="案件调查报告"/>&nbsp;
+			<input id="btnApprove" class="btn btn-primary" type="button" value="案件处理审批表"/>&nbsp;
 			</shiro:hasPermission>
 		</div>
 	</form:form>

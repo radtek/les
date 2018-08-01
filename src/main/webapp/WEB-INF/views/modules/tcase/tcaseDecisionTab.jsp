@@ -22,6 +22,26 @@
 					}
 				}
 			});
+			
+		    $('#btnSubmit').click(function() {
+				$("#inputForm").attr("action","${ctx}/tcase/caseDecision/save");
+				$("#inputForm").submit();		    	
+		    });			
+			
+		    $('#btnLaunch').click(function() {
+				$("#inputForm").attr("action","${ctx}/tcase/caseDecision/exportDecisionLaunchPDF");
+				$("#inputForm").submit();		    	
+		    });	
+		    
+		    $('#btnDecision').click(function() {
+				$("#inputForm").attr("action","${ctx}/tcase/caseDecision/exportDecisionPDF");
+				$("#inputForm").submit();		    	
+		    });
+
+		    $('#btnReach').click(function() {
+				$("#inputForm").attr("action","${ctx}/tcase/caseDecision/exportReachPDF");
+				$("#inputForm").submit();		    	
+		    });		    
 		});
 	</script>
 </head>
@@ -117,7 +137,7 @@
 			</div>
 		</div>
 		<div class="form-actions">
-			<shiro:hasPermission name="case:tcase:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;
+			<shiro:hasPermission name="case:tcase:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保 存"/>&nbsp;
 			<input id="btnLaunch" class="btn btn-primary" type="button" value="发文稿"/>&nbsp;
 			<input id="btnDecision" class="btn btn-primary" type="button" value="处罚决定书"/>&nbsp;
 			<input id="btnReach" class="btn btn-primary" type="button" value="送达回证"/>&nbsp;
