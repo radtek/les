@@ -147,6 +147,11 @@ public class PdfUtil {
     }
     
     public static PdfPTable generateTableRow(String[] strs, Font rowFont, float[] widths, int tableWidth, int textAlign, float bordWidth, float minimumHeight) throws DocumentException{
+    	
+    	return generateTableRow(strs, rowFont, widths, tableWidth, textAlign, bordWidth, minimumHeight, false);
+    } 
+    
+    public static PdfPTable generateTableRow(String[] strs, Font rowFont, float[] widths, int tableWidth, int textAlign, float bordWidth, float minimumHeight, boolean firstCellAlignCenter) throws DocumentException{
     	int columns = widths.length;
     	//int rows = items.size()+1;
     	
@@ -160,17 +165,24 @@ public class PdfUtil {
         if(strs!=null){
         	//write items
 
+        	int index = 0;
     		for(String str:strs){
             	phrase = new Phrase(str, rowFont);
             	cell = new PdfPCell(phrase);
             	cell.setBorderWidth(bordWidth);
             	cell.setHorizontalAlignment(textAlign);
             	
+            	if(firstCellAlignCenter && index==0){
+                	cell.setHorizontalAlignment(Element.ALIGN_CENTER); //水平居中
+                	cell.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直居中            		
+            	}
+            	
             	if(minimumHeight>0){
             		cell.setMinimumHeight(minimumHeight);
             	}
 
             	table.addCell(cell);
+            	index ++;
     		}
        	
         }
@@ -213,14 +225,27 @@ public class PdfUtil {
     } 
     
 	public static PdfPCell getContentCell(String content, int align, float borderWidth, Font font){
-		return getContentCell(content, align, borderWidth, font, 1, 1);
+		return getContentCell(content, align, borderWidth, font, 1, 1, 0);
+	}
+	
+	public static PdfPCell getContentCell(String content, int align, float borderWidth, Font font, float minimumHeight){ 
+		return getContentCell(content, align, borderWidth, font, 1, 1, minimumHeight);
 	}
 	
 	public static PdfPCell getContentCell(String content, int align, float borderWidth, Font font, int rowSpan, int colSpan){
+		return getContentCell(content, align, borderWidth, font, 1, 1, 0);
+	}
+	
+	public static PdfPCell getContentCell(String content, int align, float borderWidth, Font font, int rowSpan, int colSpan, float minimumHeight){
 		Phrase phrase = new Phrase(content, font);
 		PdfPCell cell = new PdfPCell(phrase);
     	cell.setBorderWidth(borderWidth);
     	cell.setHorizontalAlignment(align);
+    	
+    	if(minimumHeight>0){
+    		cell.setMinimumHeight(minimumHeight);
+    	}
+    	
     	if(rowSpan>1){
     		cell.setRowspan(rowSpan);
     	}
@@ -297,6 +322,16 @@ public class PdfUtil {
         }
         return filename;
     }
+    
+	public static String transferVertical(String str){
+		StringBuffer buffer = new StringBuffer();
+		
+		for(int i=0;i<str.length();i++){
+			buffer.append("\n").append(str.substring(i, i+1));
+		}
+		
+		return buffer.substring(1);
+	}
 
 }
 

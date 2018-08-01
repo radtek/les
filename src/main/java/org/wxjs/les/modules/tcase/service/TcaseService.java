@@ -203,13 +203,19 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 		
 		//init process
 		if(isNew){
-			tcase.getCaseProcess().setCaseId(tcase.getId());
+			CaseProcess caseProcess = tcase.getCaseProcess();
+			/*
+			if(caseProcess == null){
+				caseProcess = new CaseProcess();
+			}
+			*/
+			caseProcess.setCaseId(tcase.getId());
 			
 			//save case process
-			caseProcessDao.insert(tcase.getCaseProcess());
+			caseProcessDao.insert(caseProcess);
 			
 			//初始化
-			caseProcessDao.initProcessExcludeAcceptance(tcase.getCaseProcess());
+			caseProcessDao.initProcessExcludeAcceptance(caseProcess);
 
 		}else{
 			caseProcessDao.update(tcase.getCaseProcess());

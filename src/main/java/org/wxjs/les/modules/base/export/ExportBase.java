@@ -25,20 +25,24 @@ import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.utils.Encodes;
 import org.wxjs.les.common.utils.IdGen;
 import org.wxjs.les.common.utils.PdfUtil;
+import org.wxjs.les.common.utils.SpringContextHolder;
+import org.wxjs.les.modules.base.dao.SignatureDao;
 import org.wxjs.les.modules.base.entity.Signature;
+import org.wxjs.les.modules.sys.dao.UserDao;
 import org.wxjs.les.modules.sys.utils.DictUtils;
 import org.wxjs.les.modules.tcase.entity.Tcase;
 
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
 import com.lowagie.text.Font;
+import com.lowagie.text.Phrase;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 
 
 public abstract class ExportBase<T> {
 	
-	protected Logger log = LoggerFactory.getLogger(this.getClass());
+	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	protected int tableWidth = 100;
 	
@@ -47,6 +51,8 @@ public abstract class ExportBase<T> {
 	protected final static Font fontTitle = PdfUtil.getTitle22Font(true);
 	
 	protected final static Font fontContent = PdfUtil.getFont12(Font.NORMAL);
+	
+	private SignatureDao signatureDao = SpringContextHolder.getBean(SignatureDao.class);
 	
 	public abstract void generate(OutputStream os) throws DocumentException;
 
@@ -116,49 +122,53 @@ public abstract class ExportBase<T> {
         table = new PdfPTable(6);
         table.setWidths(new float[]{0.1f, 0.1f, 0.15f, 0.3f, 0.15f, 0.2f});
         table.setWidthPercentage(tableWidth);
+        
+        final float minheight = 25;
 
         PdfPCell cell;
     	
-    	cell = PdfUtil.getContentCell("当\n事\n人\n情\n况", Element.ALIGN_LEFT, borderWidth, fontContent, 3, 1);
+    	cell = PdfUtil.getContentCell("当\n事\n人\n情\n况", Element.ALIGN_LEFT, borderWidth, fontContent, 3, 1, 0);
 
     	cell.setHorizontalAlignment(Element.ALIGN_CENTER); //水平居中
     	cell.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直居中
     	table.addCell(cell);
     	
-    	cell = PdfUtil.getContentCell("法人或其他组织", Element.ALIGN_LEFT, borderWidth, fontContent, 3, 1);
+    	cell = PdfUtil.getContentCell("法人或其他组织", Element.ALIGN_LEFT, borderWidth, fontContent, 3, 1, 0);
+    	cell.setHorizontalAlignment(Element.ALIGN_CENTER); //水平居中
+    	cell.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直居中
     	table.addCell(cell);
     	
-    	cell = PdfUtil.getContentCell("名称", Element.ALIGN_LEFT, borderWidth, fontContent);
+    	cell = PdfUtil.getContentCell("名称", Element.ALIGN_LEFT, borderWidth, fontContent, minheight);
     	table.addCell(cell);
     	
     	cell = PdfUtil.getContentCell(tcase.getOrgName(), Element.ALIGN_LEFT, borderWidth, fontContent);
     	table.addCell(cell);
     	
-    	cell = PdfUtil.getContentCell("法定代表人", Element.ALIGN_LEFT, borderWidth, fontContent);
+    	cell = PdfUtil.getContentCell("法定代表人", Element.ALIGN_LEFT, borderWidth, fontContent, minheight);
     	table.addCell(cell);
     	
     	cell = PdfUtil.getContentCell(tcase.getOrgAgent(), Element.ALIGN_LEFT, borderWidth, fontContent);
     	table.addCell(cell);  
     	
-    	cell = PdfUtil.getContentCell("组织机构代码", Element.ALIGN_LEFT, borderWidth, fontContent);
+    	cell = PdfUtil.getContentCell("组织机构代码", Element.ALIGN_LEFT, borderWidth, fontContent, minheight);
     	table.addCell(cell);
     	
     	cell = PdfUtil.getContentCell(tcase.getOrgCode(), Element.ALIGN_LEFT, borderWidth, fontContent);
     	table.addCell(cell);
     	
-    	cell = PdfUtil.getContentCell("负责人", Element.ALIGN_LEFT, borderWidth, fontContent);
+    	cell = PdfUtil.getContentCell("负责人", Element.ALIGN_LEFT, borderWidth, fontContent, minheight);
     	table.addCell(cell);
     	
     	cell = PdfUtil.getContentCell(tcase.getOrgResponsiblePerson()+" ("+tcase.getOrgResponsiblePersonPost()+")", Element.ALIGN_LEFT, borderWidth, fontContent);
     	table.addCell(cell); 
     	
-    	cell = PdfUtil.getContentCell("住址", Element.ALIGN_LEFT, borderWidth, fontContent);
+    	cell = PdfUtil.getContentCell("住址", Element.ALIGN_LEFT, borderWidth, fontContent, minheight);
     	table.addCell(cell);
     	
     	cell = PdfUtil.getContentCell(tcase.getOrgAddress(), Element.ALIGN_LEFT, borderWidth, fontContent);
     	table.addCell(cell);
     	
-    	cell = PdfUtil.getContentCell("联系电话", Element.ALIGN_LEFT, borderWidth, fontContent);
+    	cell = PdfUtil.getContentCell("联系电话", Element.ALIGN_LEFT, borderWidth, fontContent, minheight);
     	table.addCell(cell);
     	
     	cell = PdfUtil.getContentCell(tcase.getOrgPhone(), Element.ALIGN_LEFT, borderWidth, fontContent);
@@ -173,46 +183,53 @@ public abstract class ExportBase<T> {
         table = new PdfPTable(6);
         table.setWidths(new float[]{0.1f, 0.1f, 0.15f, 0.3f, 0.15f, 0.2f});
         table.setWidthPercentage(tableWidth);
+        
+        final float minheight = 25;
 
         PdfPCell cell;
     	
-    	cell = PdfUtil.getContentCell("当事人情况", Element.ALIGN_LEFT, borderWidth, fontContent, 3, 1);
+    	cell = PdfUtil.getContentCell("当\n事\n人\n情\n况", Element.ALIGN_LEFT, borderWidth, fontContent, 3, 1, 0);
+
+    	cell.setHorizontalAlignment(Element.ALIGN_CENTER); //水平居中
+    	cell.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直居中
     	table.addCell(cell);
     	
-    	cell = PdfUtil.getContentCell("公民", Element.ALIGN_LEFT, borderWidth, fontContent, 3, 1);
+    	cell = PdfUtil.getContentCell("公民", Element.ALIGN_LEFT, borderWidth, fontContent, 3, 1, 0);
+    	cell.setHorizontalAlignment(Element.ALIGN_CENTER); //水平居中
+    	cell.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直居中
     	table.addCell(cell);
     	
-    	cell = PdfUtil.getContentCell("姓名", Element.ALIGN_LEFT, borderWidth, fontContent);
+    	cell = PdfUtil.getContentCell("姓名", Element.ALIGN_LEFT, borderWidth, fontContent, minheight);
     	table.addCell(cell);
     	
     	cell = PdfUtil.getContentCell(tcase.getPsnName(), Element.ALIGN_LEFT, borderWidth, fontContent);
     	table.addCell(cell);
     	
-    	cell = PdfUtil.getContentCell("性别", Element.ALIGN_LEFT, borderWidth, fontContent);
+    	cell = PdfUtil.getContentCell("性别", Element.ALIGN_LEFT, borderWidth, fontContent, minheight);
     	table.addCell(cell);
     	
     	cell = PdfUtil.getContentCell(DictUtils.getDictLabel(tcase.getPsnSex(),"sex",""), Element.ALIGN_LEFT, borderWidth, fontContent);
     	table.addCell(cell);  
     	
-    	cell = PdfUtil.getContentCell("身份证", Element.ALIGN_LEFT, borderWidth, fontContent);
+    	cell = PdfUtil.getContentCell("身份证", Element.ALIGN_LEFT, borderWidth, fontContent, minheight);
     	table.addCell(cell);
     	
     	cell = PdfUtil.getContentCell(tcase.getPsnCode(), Element.ALIGN_LEFT, borderWidth, fontContent);
     	table.addCell(cell);
     	
-    	cell = PdfUtil.getContentCell("出生年月", Element.ALIGN_LEFT, borderWidth, fontContent);
+    	cell = PdfUtil.getContentCell("出生年月", Element.ALIGN_LEFT, borderWidth, fontContent, minheight);
     	table.addCell(cell);
     	
     	cell = PdfUtil.getContentCell(DateUtil.formatDate(tcase.getPsnBirthday(), "yyyy-MM"), Element.ALIGN_LEFT, borderWidth, fontContent);
     	table.addCell(cell); 
     	
-    	cell = PdfUtil.getContentCell("住址", Element.ALIGN_LEFT, borderWidth, fontContent);
+    	cell = PdfUtil.getContentCell("住址", Element.ALIGN_LEFT, borderWidth, fontContent, minheight);
     	table.addCell(cell);
     	
     	cell = PdfUtil.getContentCell(tcase.getPsnAddress(), Element.ALIGN_LEFT, borderWidth, fontContent);
     	table.addCell(cell);
     	
-    	cell = PdfUtil.getContentCell("联系电话", Element.ALIGN_LEFT, borderWidth, fontContent);
+    	cell = PdfUtil.getContentCell("联系电话", Element.ALIGN_LEFT, borderWidth, fontContent, minheight);
     	table.addCell(cell);
     	
     	cell = PdfUtil.getContentCell(tcase.getPsnPhone(), Element.ALIGN_LEFT, borderWidth, fontContent);
@@ -221,34 +238,52 @@ public abstract class ExportBase<T> {
     	return table;
     }
     
-    public PdfPTable getSignatureTable(List<Signature> sigs) throws DocumentException{
+    public PdfPTable getSignatureTable(String procInstId) throws DocumentException{
+    	
+		//get signatures
+		Signature signatureParam = new Signature(false);
+		signatureParam.setProcInstId(procInstId);
+		List<Signature> signatures = signatureDao.findList(signatureParam);
+    	
     	PdfPTable table = new PdfPTable(4);
     	table.setWidths(new float[]{0.1f, 0.4f, 0.1f, 0.4f});
     	table.setWidthPercentage(tableWidth);
     	
     	PdfPCell cell;
     	
-    	for(Signature sig : sigs){
-        	cell = PdfUtil.getContentCell(sig.getTaskName(), Element.ALIGN_LEFT, borderWidth, fontContent, 2, 1);
+    	for(Signature sig : signatures){
+        	cell = PdfUtil.getContentCell(PdfUtil.transferVertical(sig.getTaskName()), Element.ALIGN_LEFT, borderWidth, fontContent, 1, 1, 0);
+        	cell.setHorizontalAlignment(Element.ALIGN_CENTER); //水平居中
+        	cell.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直居中
         	table.addCell(cell);
+        	
         	//sub table
         	PdfPTable tableSub = new PdfPTable(2);
-
+        	tableSub.setWidths(new float[]{0.6f, 0.4f});
         	//opinion
-        	cell = PdfUtil.getContentCell(sig.getApproveOpinion(), Element.ALIGN_LEFT, 0, fontContent, 1, 2);
+        	cell = PdfUtil.getContentCell(sig.getApproveOpinion(), Element.ALIGN_LEFT, 0, fontContent, 1, 2, 0);
         	cell.setMinimumHeight(50);
         	tableSub.addCell(cell);
         	//signature
-        	tableSub.addCell(PdfUtil.getSignatureImage(sig.getSignature())); 
+        	cell = new PdfPCell();
+        	cell.setBorderWidth(0);
+        	cell.addElement(PdfUtil.getSignatureImage(sig.getSignature()));
+        	tableSub.addCell(cell); 
         	//date
-        	tableSub.addCell(DateUtil.formatDate(sig.getUpdateDate(), "yyyy-MM-dd"));
+    		Phrase phrase = new Phrase(DateUtil.formatDate(sig.getUpdateDate(), "yyyy-MM-dd"), fontContent);
+    		cell = new PdfPCell(phrase);
+        	cell.setBorderWidth(0);
+        	cell.setHorizontalAlignment(Element.ALIGN_CENTER); //水平居中
+        	cell.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直居中
+        	
+        	tableSub.addCell(cell);
         	
         	table.addCell(tableSub);
     	}
     	
     	//单数，补空
-    	if((sigs.size() % 2) ==1){
-        	cell = PdfUtil.getContentCell("", Element.ALIGN_LEFT, borderWidth, fontContent, 2, 1);
+    	if((signatures.size() % 2) ==1){
+        	cell = PdfUtil.getContentCell("", Element.ALIGN_LEFT, borderWidth, fontContent, 1, 1, 0);
         	table.addCell(cell);   
         	table.addCell(cell);
     	}

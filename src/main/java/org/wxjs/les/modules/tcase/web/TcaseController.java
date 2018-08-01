@@ -801,12 +801,6 @@ public class TcaseController extends BaseController {
 		
 		CaseProcess caseProcess = this.caseProcessService.get(caseAct.getTcase().getId(), Global.CASE_STAGE_INITIAL);
 		
-		//get signatures
-		Signature signatureParam = new Signature();
-		signatureParam.setProcInstId(caseProcess.getProcInstId());
-		List<Signature> signatures = signatureService.findList(signatureParam);
-		caseProcess.setSignatures(signatures);
-		
 		tcase.setCaseProcess(caseProcess);
 		
 		try {

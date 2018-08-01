@@ -27,6 +27,13 @@ public class Signature extends DataEntity<Signature> {
 		super();
 		this.initialId();
 	}
+	
+	public Signature(boolean initialId) {
+		super();
+		if(initialId){
+			this.initialId();
+		}
+	}
 
 	public Signature(String id){
 		super(id);

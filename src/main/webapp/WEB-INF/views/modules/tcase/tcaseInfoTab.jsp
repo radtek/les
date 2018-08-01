@@ -321,8 +321,6 @@
 		        </div>
 		    </div>
 		</div>
-
-        <c:if test="${ not empty tcase.caseProcess }">
         
 		<div class="control-group container-fluid nopadding">
 			<div class="row-fluid">
@@ -353,8 +351,6 @@
 		        </div>
 		    </div>
 		</div>
-		
-		</c:if>
 		
 		<div class="form-actions">
 			<shiro:hasPermission name="case:tcase:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保 存"/>&nbsp;

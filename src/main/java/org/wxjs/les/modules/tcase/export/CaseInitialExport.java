@@ -71,19 +71,19 @@ public class CaseInitialExport extends ExportBase<CaseInitialExport> {
         	
         	document.add(table);  
         	
-            items = new String[]{"案件来源", this.tcase.getCaseSource()};
+            items = new String[]{"案件\n来源", this.tcase.getCaseSource()};
             table = PdfUtil.generateTableRow(items, fontContent, 
-            		new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 50);
+            		new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 80, true);
             document.add(table);
             
-            items = new String[]{"案情摘要", this.tcase.getCaseProcess().getCaseSummary()};
+            items = new String[]{"案\n情\n摘\n要", this.tcase.getCaseProcess().getCaseSummary()};
             table = PdfUtil.generateTableRow(items, fontContent, 
-            		new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 200);
+            		new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 250, true);
             document.add(table);
             
             //签字信息
             
-            table = this.getSignatureTable(this.tcase.getCaseProcess().getSignatures());
+            table = this.getSignatureTable(this.tcase.getCaseProcess().getProcInstId());
             document.add(table);
 
 

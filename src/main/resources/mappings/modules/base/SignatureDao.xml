@@ -47,7 +47,7 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC
+				ORDER BY a.update_date ASC
 			</otherwise>
 		</choose>
 	</select>
@@ -108,10 +108,7 @@
 		UPDATE tsignature SET 	
 			proc_inst_id = #{procInstId},
 			task_name = #{taskName},
-			approve_opinion = #{approveOpinion},
-			update_by = #{updateBy.id},
-			update_date = #{updateDate},
-			remarks = #{remarks}
+			approve_opinion = #{approveOpinion}
 		WHERE id = #{id}
 	</update>	
 	
