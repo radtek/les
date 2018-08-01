@@ -7,6 +7,37 @@
 	
 	<script type="text/javascript">
 			 
+	$(document).ready(function() {	
+		
+		$("#inputForm").validate({
+			submitHandler: function(form){
+				loading('正在提交，请稍等...');
+				form.submit();
+				closeLoading();
+			},
+			errorContainer: "#messageBox",
+			errorPlacement: function(error, element) {
+				$("#messageBox").text("输入有误，请先更正。");
+				if (element.is(":checkbox")||element.is(":radio")||element.parent().is(".input-append")){
+					error.appendTo(element.parent().parent());
+				} else {
+					error.insertAfter(element);
+				}
+			}
+		});			
+		
+		 $('#btnSubmit').click(function() {
+			$("#inputForm").attr("action","${ctx}/cr/siteCheckRecord/save");
+			$("#inputForm").submit();		    	
+	    });	
+		 
+		 $('#btnExportPdf').click(function() {
+			$("#inputForm").attr("action","${ctx}/cr/siteCheckRecord/exportPDF");
+			$("#inputForm").submit();		    	
+		 });
+	});
+	
+	
 			function f1(value){	
 				if(value == "个人"){
 				   console.log(value);	
@@ -33,18 +64,13 @@
 				
 			});
 			
-			 function exportPdf(){
-					$("#inputForm").attr("action","${ctx}/cr/siteCheckRecord/exportPDF");
-					$("#inputForm").submit();
-			 }
+			
 	</script>
 </head>
 <body>
 	
 	<h3>现场检查笔录</h3>
-    <div style="text-align:right" >
-    <input id="btnExportPdf" class="btn btn-primary" type="button" value="导出PDF " onclick="exportPdf()"/>
-    </div>
+    
 	
 	
 	<form:form id="inputForm" modelAttribute="siteCheckRecord" action="${ctx}/cr/siteCheckRecord/save" method="get" class="form-horizontal">
@@ -283,7 +309,10 @@
 		    </div>
 		</div>		
 			<div class="form-actions">
-			<shiro:hasPermission name="cr:siteCheckRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+			<shiro:hasPermission name="cr:siteCheckRecord:edit">
+				<input id="btnSubmit" class="btn btn-primary" type="button" value="保 存"/>&nbsp;
+				<input id="btnExportPdf" class="btn btn-primary" type="button" value="导出PDF " />
+			</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>
