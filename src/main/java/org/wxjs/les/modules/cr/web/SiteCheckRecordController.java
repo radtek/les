@@ -65,7 +65,7 @@ public class SiteCheckRecordController extends BaseController {
 			//tcase.setCaseStage("10");
 			//tcase.setCaseStageStatus("0");
 			siteCheckRecord.setSitePictureMemo("时间："+"2018年7月25日"+"\n"
-			+"方位："+"无锡"+"\n"+"绘制人姓名："+"张三"+"\n"+"身份："+"科长");
+			+"方位："+"\n"+"绘制人姓名："+"\n"+"身份：");
 		}
 		model.addAttribute("siteCheckRecord", siteCheckRecord);
 		return "modules/cr/siteCheckRecordForm";
