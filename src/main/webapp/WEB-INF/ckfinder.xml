@@ -52,6 +52,13 @@
 			<allowedExtensions>swf,flv</allowedExtensions>
 			<deniedExtensions></deniedExtensions>
 		</type>
+		<type name="all">
+			<url>%BASE_URL%files/</url>
+			<directory>%BASE_DIR%files</directory>
+			<maxSize>100M</maxSize>
+			<allowedExtensions>jpeg,jpg,pdf,doc,docx,txt,bmp,gif,jpeg,jpg,png,swf,flv,avi,dat,mkv,vob,rm,rmvb,mpg,mpeg,mpe,wmv,mp4</allowedExtensions>
+			<deniedExtensions></deniedExtensions>
+		</type>		
 	</types>
 	<accessControls>
 		<accessControl>
