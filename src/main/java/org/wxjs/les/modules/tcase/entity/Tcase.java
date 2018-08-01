@@ -46,7 +46,7 @@ public class Tcase extends DataEntity<Tcase> {
 	private String psnName;		// 姓名
 	private String psnOrganization;		// 工作单位
 	private String psnCode;		// 身份证
-	private String psnBirthday;		// 出生年月
+	private Date psnBirthday;		// 出生年月
 	private String psnPost;		// 职务
 	private String psnAddress;		// 住址
 	private String psnPhone;		// 联系电话
@@ -227,11 +227,11 @@ public class Tcase extends DataEntity<Tcase> {
 		this.psnCode = psnCode;
 	}
 	
-	public String getPsnBirthday() {
+	public Date getPsnBirthday() {
 		return psnBirthday;
 	}
 
-	public void setPsnBirthday(String psnBirthday) {
+	public void setPsnBirthday(Date psnBirthday) {
 		this.psnBirthday = psnBirthday;
 	}
 

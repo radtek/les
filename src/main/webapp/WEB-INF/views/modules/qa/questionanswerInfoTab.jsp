@@ -25,6 +25,22 @@
 					}
 				}
 			});
+			
+			$("#qaInputForm").validate({
+				submitHandler: function(form){
+					loading('正在提交，请稍等...');
+					form.submit();
+				},
+				errorContainer: "#messageBox",
+				errorPlacement: function(error, element) {
+					$("#messageBox").text("输入有误，请先更正。");
+					if (element.is(":checkbox")||element.is(":radio")||element.parent().is(".input-append")){
+						error.appendTo(element.parent().parent());
+					} else {
+						error.insertAfter(element);
+					}
+				}
+			});
 		});
 		
 	    function exportPdf(){
@@ -32,7 +48,7 @@
 			$("#infoInputForm").attr("action","${ctx}/qa/questionanswer/exportPDF");
 			$("#infoInputForm").submit();
 	    	
-	    }
+	    }btnSaveInfo
 
 		function addQA(){
 			$("#qaContent").val($("#qaContent").val() + "\n\r问：\n\r答：");
@@ -50,9 +66,6 @@
 <body>
     
     <h3>询问笔录</h3>
-    <div style="text-align:right;margin-right:30px;">
-    <input id="btnExportPdf" class="btn btn-primary" type="button" value="导出PDF " onclick="exportPdf()"/>
-    </div>
 
 	<h4>基本信息</h4>
 	<sys:message content="${message}"/>
@@ -184,7 +197,7 @@
 		    </div>
 		</div>		
 		<div class="form-actions">
-			<shiro:hasPermission name="qa:questionanswer:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保存基本信息"/>&nbsp;</shiro:hasPermission>
+			<shiro:hasPermission name="qa:questionanswer:edit"><input id="btnSaveInfo" class="btn btn-primary" type="button" value="保存基本信息"/>&nbsp;</shiro:hasPermission>
 		</div>
 	</form:form>
 	<h4>问答记录</h4>
@@ -201,7 +214,8 @@
 			<div class="control-group">
 				<label class="control-label control-tight"></label>
 				<div class="controls controls-tight">
-				 <form:textarea path="qaContent" style="width:800px;height:600px;"/>
+				 <form:textarea path="qaContent" class="required" style="width:800px;height:600px;"/>
+				 <span class="help-inline"><font color="red">*</font> </span>
 				</div>
 			</div>
 			<div class="control-group">
@@ -212,6 +226,7 @@
 			</div>	
 		<div class="form-actions">
 			<shiro:hasPermission name="qa:questionanswer:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保存询问笔录"/>&nbsp;</shiro:hasPermission>
+			<input id="btnExportPdf" class="btn btn-primary" type="button" value="导出PDF " onclick="exportPdf()"/>
 		</div>			
 		<div class="control-group container-fluid nopadding">
 			<div class="row-fluid">			

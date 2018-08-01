@@ -58,7 +58,7 @@ public class CaseInitialExport extends ExportBase<CaseInitialExport> {
             
             //add title
             
-            pragraph = new Paragraph("title", fontTitle);
+            pragraph = new Paragraph("案件立案审批表", fontTitle);
             pragraph.setAlignment(Paragraph.ALIGN_CENTER);
             document.add(pragraph);
             
@@ -66,7 +66,10 @@ public class CaseInitialExport extends ExportBase<CaseInitialExport> {
             
             String[] items;
            
-            
+            //当事人信息
+            table = this.getPartyInfo(tcase);
+        	
+        	document.add(table);            
 
 
 		}finally{

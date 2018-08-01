@@ -6,8 +6,6 @@ package org.wxjs.les.modules.tcase.web;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,16 +16,15 @@ import org.activiti.engine.HistoryService;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
-import org.activiti.engine.delegate.Expression;
-import org.activiti.engine.history.HistoricProcessInstance;
+
 import org.activiti.engine.impl.task.TaskDefinition;
-import org.activiti.engine.runtime.ProcessInstance;
+
 import org.activiti.engine.task.Task;
-import org.activiti.engine.task.TaskQuery;
+
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
+
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,6 +49,8 @@ import org.wxjs.les.modules.tcase.entity.CaseProcess;
 import org.wxjs.les.modules.tcase.entity.CaseSerious;
 import org.wxjs.les.modules.tcase.entity.CaseSettle;
 import org.wxjs.les.modules.tcase.entity.Tcase;
+import org.wxjs.les.modules.tcase.export.CaseInitialExport;
+
 import org.wxjs.les.modules.tcase.service.CaseAttachService;
 import org.wxjs.les.modules.tcase.service.CaseDecisionService;
 import org.wxjs.les.modules.tcase.service.CaseFinishService;
@@ -784,6 +783,25 @@ public class TcaseController extends BaseController {
 		tcaseService.delete(tcase);
 		addMessage(redirectAttributes, "删除案件成功");
 		return "redirect:"+Global.getAdminPath()+"/case/tcase/infoTab?repage";
+	}
+	
+	
+	@RequestMapping(value = "exportPDF")
+	public String exportPDF(CaseAct caseAct, HttpServletResponse response,  Model model, RedirectAttributes redirectAttributes) {
+		
+		Tcase tcase = tcaseService.get(caseAct.getTcase().getId());
+		
+		try {
+            String fileName = "案件立案审批表"+DateUtils.getDate("yyyyMMddHHmmss")+".pdf";
+            CaseInitialExport export = new CaseInitialExport(tcase);
+            export.write(response, fileName);
+    		return null;
+		} catch (Exception e) {
+			logger.error("导出失败", e);
+			addMessage(redirectAttributes, "导出失败！失败信息："+e.getMessage());
+		}		
+
+		return "redirect:"+Global.getAdminPath()+"/case/tcase/infoTab?"+caseAct.getParamUri();
 	}
 
 }

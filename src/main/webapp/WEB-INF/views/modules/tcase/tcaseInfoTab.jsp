@@ -34,8 +34,18 @@
 		        }
 		    });	
 		    
+		    $('#btnSubmit').click(function() {
+				$("#inputForm").attr("action","${ctx}/case/tcase/save");
+				$("#inputForm").submit();		    	
+		    });
+		    
 		    $('#btnStart').click(function() {
 				$("#inputForm").attr("action","${ctx}/case/tcase/saveAndStart");
+				$("#inputForm").submit();		    	
+		    });
+		    
+		    $('#btnApproveTable').click(function() {
+				$("#inputForm").attr("action","${ctx}/case/tcase/exportPDF");
 				$("#inputForm").submit();		    	
 		    });
 		});
@@ -312,6 +322,8 @@
 		    </div>
 		</div>
 
+        <c:if test="${ not empty tcase.caseProcess }">
+        
 		<div class="control-group container-fluid nopadding">
 			<div class="row-fluid">
 				<div class="span12">		
@@ -342,14 +354,17 @@
 		    </div>
 		</div>
 		
+		</c:if>
+		
 		<div class="form-actions">
-			<shiro:hasPermission name="case:tcase:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;
+			<shiro:hasPermission name="case:tcase:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保 存"/>&nbsp;
 			<c:if test="${caseAct.operateType eq 'start'}">
 			   <input id="btnStart" class="btn btn-primary" type="button" value="启动事件"/>&nbsp;
 			</c:if>
-			<c:if test="${caseAct.operateType eq 'handle' and caseAct.tcase.caseProcess.caseStage eq '20'}">
-			   <input id="btnApproveTable" class="btn btn-primary" type="button" value="案件立案审批表"/>&nbsp;
+			<c:if test="${caseAct.tcase.caseProcess.caseStage ge '20'}">
+
 			</c:if>
+			<input id="btnApproveTable" class="btn btn-primary" type="button" value="案件立案审批表"/>&nbsp;
 			</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
