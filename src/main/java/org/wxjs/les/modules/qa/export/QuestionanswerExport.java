@@ -87,28 +87,9 @@ public class QuestionanswerExport {
             
             //签名
             
-            Image qsig = null;
-            try {
-            	String filename = this.base64StringToImage(this.qa.getQsig().getSignature());
-				qsig = Image.getInstance(filename);
-				FileUtils.deleteFile(filename);
-			} catch (MalformedURLException e) {
-				log.error("qsig error", e);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				log.error("qsig error", e);
-			}
+            Image qsig = PdfUtil.getSignatureImage(this.qa.getQsig().getSignature());
             
-            Image asig = null;
-            try {
-            	String filename = this.base64StringToImage(this.qa.getAsig().getSignature());
-				asig = Image.getInstance(filename);
-				FileUtils.deleteFile(filename);
-			} catch (MalformedURLException e) {
-				log.error("asig error", e);
-			} catch (IOException e) {
-				log.error("asig error", e);
-			}
+            Image asig = PdfUtil.getSignatureImage(this.qa.getAsig().getSignature());
             
             PdfPTable footerTable = new PdfPTable(4);
             footerTable.setWidths(new float[]{0.2f, 0.3f, 0.2f, 0.3f});
@@ -264,20 +245,7 @@ public class QuestionanswerExport {
 		return this;
 	}
 	
-    public String base64StringToImage(String base64String) {
-    	String filename = Global.getConfig("userfiles.basedir") + "/" + IdGen.uuid()+".png";
-        try {
-        	
-            byte[] bytes1 = Base64.decodeBase64(base64String);
-            ByteArrayInputStream bais = new ByteArrayInputStream(bytes1);
-            BufferedImage bi1 = ImageIO.read(bais);
-            File f1 = new File(filename);
-            ImageIO.write(bi1, "png", f1);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return filename;
-    }
+
 
 
 }

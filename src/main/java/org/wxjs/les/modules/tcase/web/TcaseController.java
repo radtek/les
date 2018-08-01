@@ -6,25 +6,24 @@ package org.wxjs.les.modules.tcase.web;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.wxjs.les.modules.act.utils.ProcessUtils;
 import org.wxjs.les.modules.base.entity.ActTask; 
+import org.wxjs.les.modules.base.entity.Signature;
+import org.wxjs.les.modules.base.service.SignatureService;
 import org.wxjs.les.modules.sys.utils.UserUtils;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
-
 import org.activiti.engine.impl.task.TaskDefinition;
-
 import org.activiti.engine.task.Task;
-
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,7 +49,6 @@ import org.wxjs.les.modules.tcase.entity.CaseSerious;
 import org.wxjs.les.modules.tcase.entity.CaseSettle;
 import org.wxjs.les.modules.tcase.entity.Tcase;
 import org.wxjs.les.modules.tcase.export.CaseInitialExport;
-
 import org.wxjs.les.modules.tcase.service.CaseAttachService;
 import org.wxjs.les.modules.tcase.service.CaseDecisionService;
 import org.wxjs.les.modules.tcase.service.CaseFinishService;
@@ -120,6 +118,9 @@ public class TcaseController extends BaseController {
 	
 	@Autowired
 	private CaseTaskService actTaskService;
+	
+	@Autowired
+	private SignatureService signatureService;
 	
 	@ModelAttribute
 	public Tcase get(@RequestParam(required=false) String id) {
@@ -756,6 +757,13 @@ public class TcaseController extends BaseController {
 		CaseProcess caseProcess = new CaseProcess();
 		caseProcess.setProcInstId(actTask.getProcInsId());
 		if("pass".equals(actTask.getApprove())){
+			
+			//update opinion to signature
+			actTask.getSignature().setProcInstId(actTask.getProcInsId());
+			actTask.getSignature().setTaskName(actTask.getTaskName());
+			actTask.getSignature().setApproveOpinion(actTask.getApproveOpinion());
+			signatureService.updateOpinion(actTask.getSignature());
+			
 			logger.debug("nextTaskDef==null:{}",(nextTaskDef==null));
 			if(nextTaskDef == null){ //if nextTaskDef is null, it is the last userTask 
 				caseProcess.setCaseStageStatus(Global.CASE_STAGE_STATUS_FINISHED);
@@ -790,6 +798,16 @@ public class TcaseController extends BaseController {
 	public String exportPDF(CaseAct caseAct, HttpServletResponse response,  Model model, RedirectAttributes redirectAttributes) {
 		
 		Tcase tcase = tcaseService.get(caseAct.getTcase().getId());
+		
+		CaseProcess caseProcess = this.caseProcessService.get(caseAct.getTcase().getId(), Global.CASE_STAGE_INITIAL);
+		
+		//get signatures
+		Signature signatureParam = new Signature();
+		signatureParam.setProcInstId(caseProcess.getProcInstId());
+		List<Signature> signatures = signatureService.findList(signatureParam);
+		caseProcess.setSignatures(signatures);
+		
+		tcase.setCaseProcess(caseProcess);
 		
 		try {
             String fileName = "案件立案审批表"+DateUtils.getDate("yyyyMMddHHmmss")+".pdf";

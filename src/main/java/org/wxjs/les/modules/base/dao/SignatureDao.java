@@ -15,4 +15,6 @@ import org.wxjs.les.modules.base.entity.Signature;
 @MyBatisDao
 public interface SignatureDao extends CrudDao<Signature> {
 	
+	public void updateOpinion(Signature signature);
+	
 }

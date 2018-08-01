@@ -69,7 +69,22 @@ public class CaseInitialExport extends ExportBase<CaseInitialExport> {
             //当事人信息
             table = this.getPartyInfo(tcase);
         	
-        	document.add(table);            
+        	document.add(table);  
+        	
+            items = new String[]{"案件来源", this.tcase.getCaseSource()};
+            table = PdfUtil.generateTableRow(items, fontContent, 
+            		new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 50);
+            document.add(table);
+            
+            items = new String[]{"案情摘要", this.tcase.getCaseProcess().getCaseSummary()};
+            table = PdfUtil.generateTableRow(items, fontContent, 
+            		new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 200);
+            document.add(table);
+            
+            //签字信息
+            
+            table = this.getSignatureTable(this.tcase.getCaseProcess().getSignatures());
+            document.add(table);
 
 
 		}finally{

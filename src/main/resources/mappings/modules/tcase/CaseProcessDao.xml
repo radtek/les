@@ -40,6 +40,9 @@
 			<if test="caseId != null and caseId != ''">
 				AND a.case_id = #{caseId}
 			</if>
+			<if test="caseStage != null and caseStage != ''">
+				AND a.case_stage = #{caseStage}
+			</if>			
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

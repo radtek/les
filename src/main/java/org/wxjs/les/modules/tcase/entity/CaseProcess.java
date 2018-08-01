@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
 import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.DataEntity;
+import org.wxjs.les.modules.base.entity.Signature;
 import org.wxjs.les.modules.sys.entity.User;
 import org.wxjs.les.modules.sys.utils.UserUtils;
 
@@ -36,6 +37,9 @@ public class CaseProcess extends DataEntity<CaseProcess> {
 	private String procDefId;		// 流程定义号
 	
 	private String executionId;		// 执行号
+	
+	//签名信息
+	private List<Signature> signatures = Lists.newArrayList();
 	
 	public CaseProcess() {
 		super();
@@ -172,6 +176,14 @@ public class CaseProcess extends DataEntity<CaseProcess> {
 
 	public void setExecutionId(String executionId) {
 		this.executionId = executionId;
+	}
+
+	public List<Signature> getSignatures() {
+		return signatures;
+	}
+
+	public void setSignatures(List<Signature> signatures) {
+		this.signatures = signatures;
 	}
 	
 }

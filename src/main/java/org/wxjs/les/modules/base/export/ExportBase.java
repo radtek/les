@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +25,7 @@ import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.utils.Encodes;
 import org.wxjs.les.common.utils.IdGen;
 import org.wxjs.les.common.utils.PdfUtil;
+import org.wxjs.les.modules.base.entity.Signature;
 import org.wxjs.les.modules.sys.utils.DictUtils;
 import org.wxjs.les.modules.tcase.entity.Tcase;
 
@@ -215,6 +217,41 @@ public abstract class ExportBase<T> {
     	
     	cell = PdfUtil.getContentCell(tcase.getPsnPhone(), Element.ALIGN_LEFT, borderWidth, fontContent);
     	table.addCell(cell); 
+    	
+    	return table;
+    }
+    
+    public PdfPTable getSignatureTable(List<Signature> sigs) throws DocumentException{
+    	PdfPTable table = new PdfPTable(4);
+    	table.setWidths(new float[]{0.1f, 0.4f, 0.1f, 0.4f});
+    	table.setWidthPercentage(tableWidth);
+    	
+    	PdfPCell cell;
+    	
+    	for(Signature sig : sigs){
+        	cell = PdfUtil.getContentCell(sig.getTaskName(), Element.ALIGN_LEFT, borderWidth, fontContent, 2, 1);
+        	table.addCell(cell);
+        	//sub table
+        	PdfPTable tableSub = new PdfPTable(2);
+
+        	//opinion
+        	cell = PdfUtil.getContentCell(sig.getApproveOpinion(), Element.ALIGN_LEFT, 0, fontContent, 1, 2);
+        	cell.setMinimumHeight(50);
+        	tableSub.addCell(cell);
+        	//signature
+        	tableSub.addCell(PdfUtil.getSignatureImage(sig.getSignature())); 
+        	//date
+        	tableSub.addCell(DateUtil.formatDate(sig.getUpdateDate(), "yyyy-MM-dd"));
+        	
+        	table.addCell(tableSub);
+    	}
+    	
+    	//单数，补空
+    	if((sigs.size() % 2) ==1){
+        	cell = PdfUtil.getContentCell("", Element.ALIGN_LEFT, borderWidth, fontContent, 2, 1);
+        	table.addCell(cell);   
+        	table.addCell(cell);
+    	}
     	
     	return table;
     }

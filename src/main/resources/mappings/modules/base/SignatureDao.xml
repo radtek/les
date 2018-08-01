@@ -5,7 +5,10 @@
 	<sql id="signatureColumns">
 		a.id AS "id",
 		a.title AS "title",
-		a.signature AS "signature",
+		a.signature AS "signature",	
+		a.proc_inst_id AS "procInstId",
+		a.task_name AS "taskName",
+		a.approve_opinion AS "approveOpinion",		
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -35,6 +38,9 @@
 			<if test="id != null and id != ''">
 				AND a.id = #{id}
 			</if>
+			<if test="procInstId != null and procInstId != ''">
+				AND a.proc_inst_id = #{procInstId}
+			</if>			
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -97,6 +103,17 @@
 			remarks = #{remarks}
 		WHERE id = #{id}
 	</update>
+	
+	<update id="updateOpinion">
+		UPDATE tsignature SET 	
+			proc_inst_id = #{procInstId},
+			task_name = #{taskName},
+			approve_opinion = #{approveOpinion},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>	
 	
 	<update id="delete">
 		UPDATE tsignature SET 

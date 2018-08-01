@@ -26,6 +26,18 @@ public class CaseProcessService extends CrudService<CaseProcessDao, CaseProcess>
 		return super.get(id);
 	}
 	
+	public CaseProcess get(String caseId, String caseStage) {
+		CaseProcess caseProcess = new CaseProcess();
+		caseProcess.setCaseId(caseId);
+		caseProcess.setCaseStage(caseStage);
+		List<CaseProcess> list = this.findList(caseProcess);
+		CaseProcess rst = null;
+		if(list!=null && list.size()>0){
+			rst = list.get(0);
+		}
+		return rst;
+	}
+	
 	public List<CaseProcess> findList(CaseProcess caseProcess) {
 		return super.findList(caseProcess);
 	}

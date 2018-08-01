@@ -46,6 +46,11 @@ public class SignatureService extends CrudService<SignatureDao, Signature> {
 	}
 	
 	@Transactional(readOnly = false)
+	public void updateOpinion(Signature signature) {
+		dao.updateOpinion(signature);
+	}
+	
+	@Transactional(readOnly = false)
 	public void delete(Signature signature) {
 		super.delete(signature);
 	}

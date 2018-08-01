@@ -1,11 +1,17 @@
 package org.wxjs.les.common.utils;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 
+import com.lowagie.text.BadElementException;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
 import com.lowagie.text.Font;
+import com.lowagie.text.Image;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfPCell;
@@ -13,7 +19,11 @@ import com.lowagie.text.pdf.PdfPTable;
 
 import java.util.List;
 
+import javax.imageio.ImageIO;
+
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
+import org.wxjs.les.common.config.Global;
 
 public class PdfUtil {
 	
@@ -255,6 +265,37 @@ public class PdfUtil {
 		}else{
 			return src;
 		}
+    }
+    
+    public static Image getSignatureImage(String signature){
+        Image sig = null;
+        try {
+        	String filename = base64StringToImage(signature);
+        	sig = Image.getInstance(filename);
+			FileUtils.deleteFile(filename);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (BadElementException e) {
+			e.printStackTrace();
+		}
+        return sig;
+    }
+    
+    private static String base64StringToImage(String base64String) {
+    	String filename = Global.getConfig("userfiles.basedir") + "/" + IdGen.uuid()+".png";
+        try {
+        	
+            byte[] bytes1 = Base64.decodeBase64(base64String);
+            ByteArrayInputStream bais = new ByteArrayInputStream(bytes1);
+            BufferedImage bi1 = ImageIO.read(bais);
+            File f1 = new File(filename);
+            ImageIO.write(bi1, "png", f1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return filename;
     }
 
 }

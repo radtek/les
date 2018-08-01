@@ -95,6 +95,10 @@
 	    <input id="procInsId" name="procInsId" type="hidden" value="${actTaskAttr.procInsId}"/>
 	    <input id="approve" name="approve" type="hidden" value=""/>
 	    <input id="businesskey" name="businesskey" type="hidden" value="${actTaskAttr.businesskey}"/>
+	    
+	    <input id="taskName" name="taskName" type="hidden" value="${actTaskAttr.taskName}"/>
+	    
+	    <input id="signature.id" name="signature.id" type="hidden" value="${actTaskAttr.signature.id}"/>
 	              
 		<div class="control-group container-fluid nopadding">
 			<div class="row-fluid">

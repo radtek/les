@@ -127,7 +127,7 @@
 			org_agent,
 			org_code,
 			org_responsible_person,
-			a.org_responsible_person_post,
+			org_responsible_person_post,
 			org_address,
 			org_phone,
 			psn_name,
