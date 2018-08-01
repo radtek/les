@@ -81,8 +81,13 @@ public class PunishLibController extends BaseController {
 		if (!beanValidator(model, punishLib)){
 			return importTab(punishLib, model);
 		}
-		punishLibService.importLib(punishLib);
-		addMessage(redirectAttributes, "导入处罚基准库成功");
+		if(!StringUtils.isEmpty(punishLib.getFilepath())){
+			punishLibService.importLib(punishLib);
+			addMessage(redirectAttributes, "导入处罚基准库成功");
+		}else{
+			addMessage(redirectAttributes, "导入处罚基准库失败！找不到文件。");
+		}
+
 		return "redirect:"+Global.getAdminPath()+"/base/punishLib/importTab?repage";
 	}
 
