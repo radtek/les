@@ -64,8 +64,8 @@ public class MaterialController extends BaseController {
 			//tcase.setCaseStage("10");
 			//tcase.setCaseStageStatus("0");
 			material.setMaterialComment("拍摄时间："+"2018年7月25日"+"\n"
-			+"拍摄地点："+"无锡"+"\n"+"拍摄内容："+"房屋筑建"+"\n"+"拍摄张数："+"第一张"
-			+"\n"+"拍摄人："+"张晓宇");
+			+"拍摄地点："+"\n"+"拍摄内容："+"\n"+"拍摄张数："
+			+"\n"+"拍摄人：");
 		}
 		model.addAttribute("material", material);
 		return "modules/material/materialForm";
