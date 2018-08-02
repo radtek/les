@@ -193,12 +193,8 @@ public class QuestionanswerExport {
             
             //问答
             
-            Paragraph paragraph = new Paragraph();
-            paragraph.setFont(PdfUtil.getFont12(Font.UNDERLINE));
-            
-            Chunk chunk = new Chunk(this.qa.getQaContent()); 
-            
-            paragraph.add(chunk);
+            Paragraph paragraph = new Paragraph(this.qa.getQaContent(), PdfUtil.getFont12(Font.UNDERLINE));
+            pragraph.setAlignment(Paragraph.ALIGN_JUSTIFIED);
             
             document.add(paragraph);
 
@@ -210,14 +206,6 @@ public class QuestionanswerExport {
 				}
 			}
 		}
-	}
-	
-	private PdfPCell getContentCell(String content, int align){
-		Phrase phrase = new Phrase(content, PdfUtil.getTextFont(false));
-		PdfPCell cell = new PdfPCell(phrase);
-    	cell.setBorderWidth(0);
-    	cell.setHorizontalAlignment(align);
-    	return cell;
 	}
 
 	
