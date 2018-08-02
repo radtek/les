@@ -55,7 +55,7 @@ public abstract class ExportBase<T> {
 	
 	protected final static Font fontNumber = PdfUtil.getFont10(Font.NORMAL);
 	
-	private SignatureDao signatureDao = SpringContextHolder.getBean(SignatureDao.class);
+	protected SignatureDao signatureDao = SpringContextHolder.getBean(SignatureDao.class);
 	
 	public abstract void generate(OutputStream os) throws DocumentException;
 
@@ -153,7 +153,7 @@ public abstract class ExportBase<T> {
     	cell = PdfUtil.getContentCell(tcase.getOrgAgent(), Element.ALIGN_LEFT, borderWidth, fontContent);
     	table.addCell(cell);  
     	
-    	cell = PdfUtil.getContentCell("组织机构代码", Element.ALIGN_LEFT, borderWidth, fontContent, minheight);
+    	cell = PdfUtil.getContentCell("统一社会\n信用代码", Element.ALIGN_LEFT, borderWidth, fontContent, minheight);
     	table.addCell(cell);
     	
     	cell = PdfUtil.getContentCell(tcase.getOrgCode(), Element.ALIGN_LEFT, borderWidth, fontContent);
@@ -280,7 +280,7 @@ public abstract class ExportBase<T> {
         	cell.addElement(PdfUtil.getSignatureImage(sig.getSignature()));
         	tableSub.addCell(cell); 
         	//date
-    		Phrase phrase = new Phrase(DateUtil.formatDate(sig.getUpdateDate(), "yyyy-MM-dd"), fontContent);
+    		Phrase phrase = new Phrase(DateUtil.formatDate(sig.getUpdateDate(), "yyyy年MM月dd日"), fontContent);
     		cell = new PdfPCell(phrase);
         	cell.setBorderWidth(0);
         	cell.setHorizontalAlignment(Element.ALIGN_CENTER); //水平居中
