@@ -78,6 +78,10 @@ public class PdfUtil {
     	return new Font(bfChinese, 12, fontType);
     }
     
+    public static Font getFont10(int fontType){
+    	return new Font(bfChinese, 10, fontType);
+    }
+    
     public static Font getTitle3Font(boolean bold){
     	int fontType = Font.NORMAL;
     	if(bold){

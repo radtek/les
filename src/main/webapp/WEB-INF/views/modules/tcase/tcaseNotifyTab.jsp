@@ -24,17 +24,17 @@
 			});
 			
 		    $('#btnSubmit').click(function() {
-				$("#inputForm").attr("action","${ctx}/tcase/caseNotify/save");
+				$("#inputForm").attr("action","${ctx}/case/caseNotify/save");
 				$("#inputForm").submit();		    	
 		    });			
 			
 		    $('#btnNotify').click(function() {
-				$("#inputForm").attr("action","${ctx}/tcase/caseNotify/exportPDF");
+				$("#inputForm").attr("action","${ctx}/case/caseNotify/exportPDF");
 				$("#inputForm").submit();		    	
 		    });	
 		    
 		    $('#btnNotifyStub').click(function() {
-				$("#inputForm").attr("action","${ctx}/tcase/caseNotify/exportCopyPDF");
+				$("#inputForm").attr("action","${ctx}/case/caseNotify/exportCopyPDF");
 				$("#inputForm").submit();		    	
 		    });	
 		});

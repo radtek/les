@@ -53,6 +53,8 @@ public abstract class ExportBase<T> {
 	
 	protected final static Font fontContent = PdfUtil.getFont12(Font.NORMAL);
 	
+	protected final static Font fontNumber = PdfUtil.getFont10(Font.NORMAL);
+	
 	private SignatureDao signatureDao = SpringContextHolder.getBean(SignatureDao.class);
 	
 	public abstract void generate(OutputStream os) throws DocumentException;

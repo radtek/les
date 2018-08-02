@@ -14,6 +14,7 @@ import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.DataEntity;
 import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.Util;
+import org.wxjs.les.modules.sys.utils.DictUtils;
 
 /**
  * 案件告知书Entity
@@ -134,6 +135,18 @@ public class CaseNotify extends DataEntity<CaseNotify> {
 
 	public void setParamUri(String paramUri) {
 		this.paramUri = paramUri;
+	}
+	
+	public String getFullNumber(){
+		StringBuffer buffer = new StringBuffer();
+		
+		String notifyType = DictUtils.getDictLabel(this.notifyType, "case_notify_type", "锡建监权告字");
+		
+		buffer.append(notifyType);
+		buffer.append("[").append(this.year).append("]");
+		buffer.append("第").append(this.seq).append("号");
+		
+		return buffer.toString();
 	}
 	
 	
