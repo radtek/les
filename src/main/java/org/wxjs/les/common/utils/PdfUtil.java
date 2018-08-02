@@ -98,7 +98,7 @@ public class PdfUtil {
     	return generateTable(headers, headerFont, items, rowFont, widths, tableWidth, false, 1);
     }
     
-    public static PdfPTable generateTable(String[] headers, Font headerFont, List<String[]> items, Font rowFont, float[] widths, int tableWidth, boolean headerCenter, float bordWidth) throws DocumentException{
+    public static PdfPTable generateTable(String[] headers, Font headerFont, List<String[]> items, Font rowFont, float[] widths, int tableWidth, boolean headerCenter, float borderWidth) throws DocumentException{
     	int columns = widths.length;
     	//int rows = items.size()+1;
     	
@@ -114,7 +114,7 @@ public class PdfUtil {
             for(String header: headers){
             	phrase = new Phrase(header, headerFont);
             	cell = new PdfPCell(phrase);
-            	cell.setBorderWidth(bordWidth);
+            	cell.setBorderWidth(borderWidth);
             	if(headerCenter){
             		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
             	}else{
@@ -132,7 +132,7 @@ public class PdfUtil {
         		for(String str:strs){
                 	phrase = new Phrase(str, rowFont);
                 	cell = new PdfPCell(phrase);
-                	cell.setBorderWidth(bordWidth);
+                	cell.setBorderWidth(borderWidth);
                 	if(isMoneyArea(str)){
                 		cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
                 	}else{
@@ -146,12 +146,12 @@ public class PdfUtil {
     	return table;
     }
     
-    public static PdfPTable generateTableRow(String[] strs, Font rowFont, float[] widths, int tableWidth, int textAlign, float bordWidth, float minimumHeight) throws DocumentException{
+    public static PdfPTable generateTableRow(String[] strs, Font rowFont, float[] widths, int tableWidth, int textAlign, float borderWidth, float minimumHeight) throws DocumentException{
     	
-    	return generateTableRow(strs, rowFont, widths, tableWidth, textAlign, bordWidth, minimumHeight, false);
+    	return generateTableRow(strs, rowFont, widths, tableWidth, textAlign, borderWidth, minimumHeight, false);
     } 
     
-    public static PdfPTable generateTableRow(String[] strs, Font rowFont, float[] widths, int tableWidth, int textAlign, float bordWidth, float minimumHeight, boolean firstCellAlignCenter) throws DocumentException{
+    public static PdfPTable generateTableRow(String[] strs, Font rowFont, float[] widths, int tableWidth, int textAlign, float borderWidth, float minimumHeight, boolean firstCellAlignCenter) throws DocumentException{
     	int columns = widths.length;
     	//int rows = items.size()+1;
     	
@@ -169,7 +169,7 @@ public class PdfUtil {
     		for(String str:strs){
             	phrase = new Phrase(str, rowFont);
             	cell = new PdfPCell(phrase);
-            	cell.setBorderWidth(bordWidth);
+            	cell.setBorderWidth(borderWidth);
             	cell.setHorizontalAlignment(textAlign);
             	
             	if(firstCellAlignCenter && index==0){
@@ -190,7 +190,7 @@ public class PdfUtil {
     	return table;
     } 
     
-    public static PdfPTable generateTableRow(String[] strs, Font[] rowFonts, float[] widths, int tableWidth, int textAlign, float bordWidth, float minimumHeight) throws DocumentException{
+    public static PdfPTable generateTableRow(String[] strs, Font[] rowFonts, float[] widths, int tableWidth, int textAlign, float borderWidth, float minimumHeight) throws DocumentException{
     	int columns = widths.length;
     	//int rows = items.size()+1;
     	
@@ -208,7 +208,7 @@ public class PdfUtil {
     		for(String str:strs){
             	phrase = new Phrase(str, rowFonts[index]);
             	cell = new PdfPCell(phrase);
-            	cell.setBorderWidth(bordWidth);
+            	cell.setBorderWidth(borderWidth);
             	cell.setHorizontalAlignment(textAlign);
             	
             	if(minimumHeight>0){

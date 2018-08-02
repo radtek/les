@@ -40,7 +40,10 @@
 			</if>
 			<if test="procInstId != null and procInstId != ''">
 				AND a.proc_inst_id = #{procInstId}
-			</if>			
+			</if>	
+			<if test="taskName != null and taskName != ''">
+				AND a.task_name = #{taskName}
+			</if>					
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

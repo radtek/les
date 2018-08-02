@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.httpclient.util.DateParseException;
 import org.apache.commons.httpclient.util.DateUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wxjs.les.common.config.Global;
@@ -240,9 +241,16 @@ public abstract class ExportBase<T> {
     
     public PdfPTable getSignatureTable(String procInstId) throws DocumentException{
     	
+		return this.getSignatureTable(procInstId, "");
+    }
+    
+    public PdfPTable getSignatureTable(String procInstId, String taskName) throws DocumentException{
 		//get signatures
 		Signature signatureParam = new Signature(false);
 		signatureParam.setProcInstId(procInstId);
+		if(!StringUtils.isEmpty(taskName)){
+			signatureParam.setTaskName(taskName);
+		}
 		List<Signature> signatures = signatureDao.findList(signatureParam);
     	
     	PdfPTable table = new PdfPTable(4);
@@ -288,7 +296,7 @@ public abstract class ExportBase<T> {
         	table.addCell(cell);
     	}
     	
-    	return table;
+    	return table;   	
     }
 
 

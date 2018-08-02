@@ -61,16 +61,28 @@ public class CaseHandleReportExport extends ExportBase<CaseHandleReportExport> {
             
             //add title
             
-            pragraph = new Paragraph("title", fontTitle);
+            pragraph = new Paragraph("案件调查报告", fontTitle);
             pragraph.setAlignment(Paragraph.ALIGN_CENTER);
             document.add(pragraph);
             
             document.add(PdfUtil.generateTable4Padding());
             
             String[] items;
-           
             
-
+            //当事人信息
+            table = this.getPartyInfo(tcase);
+        	
+        	document.add(table);  
+        	
+        	//内容
+            items = new String[]{"报\n告\n内\n容", this.caseHandle.getInvestReport()};
+            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 400, true);
+            document.add(table);
+           
+            //签字信息
+            
+            table = this.getSignatureTable(this.tcase.getCaseProcess().getProcInstId(), "办案人意见");
+            document.add(table);
 
 		}finally{
 			if(document!=null){
