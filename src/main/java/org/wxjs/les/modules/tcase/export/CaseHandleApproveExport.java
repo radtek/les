@@ -5,6 +5,7 @@ package org.wxjs.les.modules.tcase.export;
 
 import java.io.OutputStream;
 
+import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.PdfUtil;
 import org.wxjs.les.modules.base.export.ExportBase;
@@ -61,15 +62,33 @@ public class CaseHandleApproveExport extends ExportBase<CaseHandleApproveExport>
             
             //add title
             
-            pragraph = new Paragraph("title", fontTitle);
+            pragraph = new Paragraph("案件处理审批表", fontTitle);
             pragraph.setAlignment(Paragraph.ALIGN_CENTER);
             document.add(pragraph);
             
             document.add(PdfUtil.generateTable4Padding());
             
             String[] items;
-           
             
+        	//案由等
+            items = new String[]{"案由", this.tcase.getCaseCause(), "承办\n部门", Global.getConfig("CBBM")};
+            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.1f, 0.5f, 0.1f, 0.3f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 30, true);
+            document.add(table);            
+           
+            //当事人信息
+            table = this.getPartyInfo(tcase);
+        	
+        	document.add(table);  
+        	
+        	//内容
+            items = new String[]{"案\n件\n事\n实\n经\n过\n及\n证\n据", this.caseHandle.getFact()};
+            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 300, true);
+            document.add(table);
+           
+            //签字信息
+            
+            table = this.getSignatureTable(this.tcase.getCaseProcess().getProcInstId());
+            document.add(table);            
 
 
 		}finally{

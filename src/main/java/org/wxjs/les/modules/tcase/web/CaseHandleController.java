@@ -23,10 +23,12 @@ import org.wxjs.les.common.web.BaseController;
 import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.StringUtils;
 import org.wxjs.les.modules.tcase.entity.CaseHandle;
+import org.wxjs.les.modules.tcase.entity.CaseProcess;
 import org.wxjs.les.modules.tcase.entity.Tcase;
 import org.wxjs.les.modules.tcase.export.CaseHandleApproveExport;
 import org.wxjs.les.modules.tcase.export.CaseHandleReportExport;
 import org.wxjs.les.modules.tcase.service.CaseHandleService;
+import org.wxjs.les.modules.tcase.service.CaseProcessService;
 import org.wxjs.les.modules.tcase.service.TcaseService;
 
 /**
@@ -43,6 +45,9 @@ public class CaseHandleController extends BaseController {
 
 	@Autowired
 	private CaseHandleService caseHandleService;
+	
+	@Autowired
+	private CaseProcessService caseProcessService;
 	
 	@ModelAttribute
 	public CaseHandle get(@RequestParam(required=false) String id) {
@@ -121,6 +126,10 @@ public class CaseHandleController extends BaseController {
 		
 		Tcase tcase = tcaseService.get(entity.getCaseId());
 		
+		CaseProcess caseProcess = this.caseProcessService.get(tcase.getId(), Global.CASE_STAGE_HANDLE);
+		
+		tcase.setCaseProcess(caseProcess);
+		
 		try {
             String fileName = "案件调查报告"+DateUtils.getDate("yyyyMMddHHmmss")+".pdf";
             CaseHandleReportExport export = new CaseHandleReportExport(tcase, caseHandle);
@@ -140,6 +149,10 @@ public class CaseHandleController extends BaseController {
 		CaseHandle caseHandle = caseHandleService.get(entity.getCaseId());
 		
 		Tcase tcase = tcaseService.get(entity.getCaseId());
+		
+		CaseProcess caseProcess = this.caseProcessService.get(tcase.getId(), Global.CASE_STAGE_HANDLE);
+		
+		tcase.setCaseProcess(caseProcess);
 		
 		try {
             String fileName = "案件处理审批表"+DateUtils.getDate("yyyyMMddHHmmss")+".pdf";
