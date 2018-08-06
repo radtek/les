@@ -4,10 +4,12 @@
 package org.wxjs.les.modules.tcase.export;
 
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 
-import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.PdfUtil;
 import org.wxjs.les.modules.base.export.ExportBase;
+import org.wxjs.les.modules.tcase.entity.CaseDecision;
+import org.wxjs.les.modules.tcase.entity.CaseFinish;
 import org.wxjs.les.modules.tcase.entity.CaseSettle;
 import org.wxjs.les.modules.tcase.entity.Tcase;
 
@@ -29,12 +31,17 @@ public class CaseSettleExport extends ExportBase<CaseSettleExport> {
 
 	private Tcase tcase;
 	private CaseSettle caseSettle;
+	private CaseDecision caseDecision;
+	private CaseFinish caseFinish;
 	
-	public CaseSettleExport(Tcase tcase, CaseSettle caseSettle){
+	public CaseSettleExport(Tcase tcase, CaseSettle caseSettle,CaseDecision caseDecision,CaseFinish caseFinish){
 		this.tcase = tcase;
 		this.caseSettle = caseSettle;
+		this.caseDecision = caseDecision;
+		this.caseFinish = caseFinish;
 	}
 	
+
 	public void generate(OutputStream os) throws DocumentException{
 		
 		Document document = null;
@@ -60,7 +67,7 @@ public class CaseSettleExport extends ExportBase<CaseSettleExport> {
             
             //add title
             
-            pragraph = new Paragraph("title", fontTitle);
+            pragraph = new Paragraph("案 件 结 案 审 批 表", fontTitle);
             pragraph.setAlignment(Paragraph.ALIGN_CENTER);
             document.add(pragraph);
             
@@ -68,9 +75,44 @@ public class CaseSettleExport extends ExportBase<CaseSettleExport> {
             
             String[] items;
            
-            
-
-
+            //案由
+            items = new String[]{"案由", this.tcase.getCaseCause()};
+            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.1f,0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 30, true);
+            document.add(table);  
+            //当事人信息
+            table = this.getPartyInfo(tcase);
+        	document.add(table); 
+        	//受案、立案、结案日期
+        	SimpleDateFormat sdft=new SimpleDateFormat("yyyy年MM月dd日");
+        	String sa=sdft.format(this.tcase.getAcceptDate());
+        	String la=sdft.format(this.caseDecision.getLaunchDate());
+        	String ja=sdft.format(this.caseFinish.getFinishDate());
+        	items=new String[] {"受案\n时间",sa,"立案",la,"结案",ja};
+        	 table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.1f, 0.25f, 0.1f, 0.2f, 0.15f, 0.2f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 30, true);
+        	 document.add(table); 
+        	
+        	
+        	  
+         //案情摘要
+        	  items = new String[]{"案\n情\n摘\n要", this.tcase.getCaseProcess().getCaseSummary()};
+              table = PdfUtil.generateTableRow(items, fontContent, 
+              		new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 120, true);
+              document.add(table);	 
+        //处理情况
+              items = new String[]{"处\n理\n情\n况", this.caseSettle.getHandleSummary()};
+              table = PdfUtil.generateTableRow(items, fontContent, 
+              		new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 120, true);
+              document.add(table);	
+        //执行情况
+              items = new String[]{"执\n行\n情\n况", this.caseSettle.getExecuteSummary(),"\n\n\n       复\n       议\n       情\n       况",this.caseSettle.getReviewSummary()};
+              table = PdfUtil.generateTableRow(items, fontContent, 
+              		new float[]{0.1f, 0.4f,0.1f,0.4f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 120, true);
+              document.add(table);
+       //签字信息
+              
+              table = this.getSignatureTable(this.tcase.getCaseProcess().getProcInstId(),"");
+              document.add(table);
+       
 		}finally{
 			if(document!=null){
 				try{
