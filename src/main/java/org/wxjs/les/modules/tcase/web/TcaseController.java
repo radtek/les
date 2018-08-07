@@ -237,6 +237,52 @@ public class TcaseController extends BaseController {
 	}
 	
 	@RequiresPermissions("case:tcase:view")
+	@RequestMapping(value = "acceptanceTab")
+	public String acceptanceTab(CaseAct caseAct, Model model) {
+		
+		caseAct.setCaseTransfer("0");
+		
+		String businesskey = caseAct.getBusinesskey();
+		String[] strs = businesskey.split(":");
+		
+		Tcase tcase = tcaseService.getCaseAndProcess(strs[0], Global.CASE_STAGE_ACCEPTANCE);
+		
+		logger.debug("businesskey:{}", businesskey);
+		
+		if(tcase.getCaseProcess() != null){
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase);
+			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
+		}
+		
+		caseAct.setTcase(tcase);
+		
+		return "modules/tcase/tcaseAcceptanceTab";
+	}
+	
+	@RequiresPermissions("case:tcase:view")
+	@RequestMapping(value = "initialTab")
+	public String initialTab(CaseAct caseAct, Model model) {
+		
+		caseAct.setCaseTransfer("0");
+		
+		String businesskey = caseAct.getBusinesskey();
+		String[] strs = businesskey.split(":");
+		
+		Tcase tcase = tcaseService.getCaseAndProcess(strs[0], Global.CASE_STAGE_INITIAL);
+		
+		logger.debug("businesskey:{}", businesskey);
+		
+		if(tcase.getCaseProcess() != null){
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase);
+			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
+		}
+		
+		caseAct.setTcase(tcase);
+		
+		return "modules/tcase/tcaseInitialTab";
+	}
+	
+	@RequiresPermissions("case:tcase:view")
 	@RequestMapping(value = "handleTab")
 	public String handleTab(CaseAct caseAct, Model model) {
 		

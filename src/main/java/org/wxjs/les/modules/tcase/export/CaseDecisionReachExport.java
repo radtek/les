@@ -31,12 +31,10 @@ public class CaseDecisionReachExport extends ExportBase<CaseDecisionReachExport>
 
 	private Tcase tcase;
 	private CaseDecision caseDecision;
-	private CaseHandle  caseHandle;
 	
-	public CaseDecisionReachExport(Tcase tcase, CaseDecision caseDecision,CaseHandle  caseHandle){
+	public CaseDecisionReachExport(Tcase tcase, CaseDecision caseDecision){
 		this.tcase = tcase;
 		this.caseDecision = caseDecision;
-		this.caseHandle = caseHandle;
 	}
 	
 	public void generate(OutputStream os) throws DocumentException{
@@ -73,7 +71,7 @@ public class CaseDecisionReachExport extends ExportBase<CaseDecisionReachExport>
             String[] items;
            
             //事由
-            items = new String[]{"事由", this.caseHandle.getFact()};
+            items = new String[]{"事由", this.tcase.getCaseCause()};
             table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 40, true);
             document.add(table);  
             //受送达人

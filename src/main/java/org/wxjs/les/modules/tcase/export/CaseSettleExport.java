@@ -31,14 +31,10 @@ public class CaseSettleExport extends ExportBase<CaseSettleExport> {
 
 	private Tcase tcase;
 	private CaseSettle caseSettle;
-	private CaseDecision caseDecision;
-	private CaseFinish caseFinish;
 	
-	public CaseSettleExport(Tcase tcase, CaseSettle caseSettle,CaseDecision caseDecision,CaseFinish caseFinish){
+	public CaseSettleExport(Tcase tcase, CaseSettle caseSettle){
 		this.tcase = tcase;
 		this.caseSettle = caseSettle;
-		this.caseDecision = caseDecision;
-		this.caseFinish = caseFinish;
 	}
 	
 
@@ -85,9 +81,11 @@ public class CaseSettleExport extends ExportBase<CaseSettleExport> {
         	//受案、立案、结案日期
         	SimpleDateFormat sdft=new SimpleDateFormat("yyyy年MM月dd日");
         	String sa=sdft.format(this.tcase.getAcceptDate());
-        	String la=sdft.format(this.caseDecision.getLaunchDate());
-        	String ja=sdft.format(this.caseFinish.getFinishDate());
-        	items=new String[] {"受案\n时间",sa,"立案",la,"结案",ja};
+        	//String la=sdft.format(this.caseDecision.getLaunchDate());
+        	//String ja=sdft.format(this.caseFinish.getFinishDate());
+        	String la = "";
+        	String ja = "";
+        	items=new String[] {"受案\n日期",sa,"立案\n日期",la,"结案\n日期",ja};
         	 table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.1f, 0.25f, 0.1f, 0.2f, 0.15f, 0.2f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 30, true);
         	 document.add(table); 
         	

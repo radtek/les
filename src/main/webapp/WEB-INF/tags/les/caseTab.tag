@@ -20,7 +20,9 @@
 		</c:if>
 		
 		<c:if test="${caseActAttr.caseTransfer ne '1' }">
-		<li <c:if test="${tab eq 'handle'}">class="active"</c:if>><a href="${ctx}/case/tcase/handleTab?${caseActAttr.paramUri}">案件审理</a></li>
+		<li <c:if test="${tab eq 'acceptance'}">class="active"</c:if>><a href="${ctx}/case/tcase/acceptanceTab?${caseActAttr.paramUri}">受理</a></li>
+		<li <c:if test="${tab eq 'initial'}">class="active"</c:if>><a href="${ctx}/case/tcase/initialTab?${caseActAttr.paramUri}">立案</a></li>
+		<li <c:if test="${tab eq 'handle'}">class="active"</c:if>><a href="${ctx}/case/tcase/handleTab?${caseActAttr.paramUri}">审理</a></li>
 		<li <c:if test="${tab eq 'notify'}">class="active"</c:if>><a href="${ctx}/case/tcase/notifyTab?${caseActAttr.paramUri}">告知书</a></li>
 		<li <c:if test="${tab eq 'decision'}">class="active"</c:if>><a href="${ctx}/case/tcase/decisionTab?${caseActAttr.paramUri}">决定书</a></li>
 		<li <c:if test="${tab eq 'settle'}">class="active"</c:if>><a href="${ctx}/case/tcase/settleTab?${caseActAttr.paramUri}">结案书</a></li>

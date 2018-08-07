@@ -53,7 +53,7 @@
 				title="自由裁量权" url="/base/punishLib/treeData" cssClass="input-xxlarge" allowClear="true" notAllowSelectParent="true"/>
 			<shiro:hasPermission name="case:tcase:edit"><input id="btnSavePublishLib" class="btn btn-primary" type="button" value="添 加"/>&nbsp;
 			</shiro:hasPermission>
-		<BR>
+		<BR><BR>
 		<c:forEach items="${libList}" var="libEntity" varStatus="status">
 		   
 		   <les:punishLibTag punishLibAttr="${libEntity}" paramUri="${caseAct.paramUri}"></les:punishLibTag>

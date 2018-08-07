@@ -179,7 +179,8 @@
 	
 	<update id="updateStageStatus">
 		UPDATE tcase_process SET 
-			case_stage_status = #{caseStageStatus}
+			case_stage_status = #{caseStageStatus},
+			update_date = #{updateDate}			
 		WHERE proc_inst_id = #{procInstId}
 	</update>
 		

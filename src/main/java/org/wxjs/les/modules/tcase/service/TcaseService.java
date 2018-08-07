@@ -111,6 +111,23 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 		
 		return entity;
 	}
+	
+	public Tcase getCaseAndProcess(String caseId, String caseStage) {
+		
+		Tcase entity = super.get(caseId);
+		
+		CaseProcess processParam = new CaseProcess();
+		processParam.setCaseId(caseId);
+		processParam.setCaseStage(caseStage);
+		
+		List<CaseProcess> processList = caseProcessDao.findList(processParam);
+		
+		if(processList!=null && processList.size()>0){
+			entity.setCaseProcess(processList.get(0));	
+		}
+
+		return entity;
+	}
 
 	
 	/**
