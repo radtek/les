@@ -29,6 +29,16 @@ public class PdfUtil {
 	
     private static BaseFont bfChinese;
     
+    public static final float RealWidthChinese = 2f;
+    public static final float RealWidthNumber = 0.92f;
+    public static final float RealWidthLowerCase = 0.869f;
+    public static final float RealWidthUpperCase = 1.28f;
+    
+    public static final String ChineseChar = "[^\\x00-\\xff]";  //双字节字符
+    public static final String NumberChar = "^[0-9]";  //number
+    public static final String LowerCaseChar = "^[a-z]";  //lowerCase
+    public static final String UpperCaseChar = "^[A-Z]";  //upperCase
+    
     static{
     	try {
 			bfChinese = BaseFont.createFont("STSong-Light", "UniGB-UCS2-H", BaseFont.NOT_EMBEDDED);
@@ -80,6 +90,10 @@ public class PdfUtil {
     
     public static Font getFont10(int fontType){
     	return new Font(bfChinese, 10, fontType);
+    }
+    
+    public static Font getFont8(int fontType){
+    	return new Font(bfChinese, 8, fontType);
     }
     
     public static Font getTitle3Font(boolean bold){
@@ -301,6 +315,8 @@ public class PdfUtil {
         try {
         	String filename = base64StringToImage(signature);
         	sig = Image.getInstance(filename);
+        	sig.setBorderWidth(0);
+        	sig.scaleAbsoluteWidth(50f);
 			FileUtils.deleteFile(filename);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();

@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +34,7 @@ import org.wxjs.les.modules.sys.dao.UserDao;
 import org.wxjs.les.modules.sys.utils.DictUtils;
 import org.wxjs.les.modules.tcase.entity.Tcase;
 
+import com.google.common.collect.Lists;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
 import com.lowagie.text.Font;
@@ -52,6 +54,10 @@ public abstract class ExportBase<T> {
 	protected final static Font fontTitle = PdfUtil.getTitle22Font(true);
 	
 	protected final static Font fontContent = PdfUtil.getFont12(Font.NORMAL);
+	
+	protected final static Font fontContentSmall = PdfUtil.getFont10(Font.NORMAL);
+	
+	protected final static Font fontContentTiny = PdfUtil.getFont8(Font.NORMAL);
 	
 	protected final static Font fontNumber = PdfUtil.getFont10(Font.NORMAL);
 	
@@ -261,26 +267,111 @@ public abstract class ExportBase<T> {
     	
     	PdfPCell cell;
     	
+    	//filter 办案人意见，做特殊处理  	
+    	List<Signature> sigsOthers = Lists.newArrayList();
+    	String taskNameBar = "办案人意见";
+    	String opinionBar = "";
+    	Calendar cal = Calendar.getInstance();
+    	cal.add(Calendar.YEAR, -100);
+    	Date dateBar = cal.getTime();
+    	List<String> sigStrBar = Lists.newArrayList();
+    	
     	for(Signature sig : signatures){
+    		if(taskNameBar.equals(sig.getTaskName())){
+    			sigStrBar.add(sig.getSignature());
+    			if(sig.getApproveOpinion().length() > opinionBar.length()){
+    				opinionBar = sig.getApproveOpinion();
+    			}
+    			if(sig.getUpdateDate().compareTo(dateBar)>0){
+    				dateBar = sig.getUpdateDate();
+    			}
+    		}else{
+    			sigsOthers.add(sig);
+    		}
+    	}
+    	
+    	//办案人签名输出
+    	cell = PdfUtil.getContentCell(PdfUtil.transferVertical(taskNameBar), Element.ALIGN_LEFT, borderWidth, fontContent, 1, 1, 0);
+    	cell.setHorizontalAlignment(Element.ALIGN_CENTER); //水平居中
+    	cell.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直居中
+    	table.addCell(cell);
+    	
+    	//sub table
+    	PdfPTable tableSub = new PdfPTable(2);
+    	tableSub.setWidths(new float[]{0.2f, 0.8f});
+    	
+    	//opinion
+        Font font = fontContentSmall;
+        
+        if(opinionBar.length()>50){
+        	font = fontContentTiny;
+        }
+    	cell = PdfUtil.getContentCell(opinionBar, Element.ALIGN_LEFT, 0, font, 1, 2, 0);
+    	cell.setMinimumHeight(50);
+    	tableSub.addCell(cell);
+    	
+    	//signature
+		Phrase phrase = new Phrase("签名", fontContent);
+		cell = new PdfPCell(phrase);
+    	cell.setBorderWidth(0);
+    	cell.setHorizontalAlignment(Element.ALIGN_CENTER); //水平居中
+    	cell.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直居中    	
+    	tableSub.addCell(cell); 
+    	
+    	PdfPTable tableSubSig = new PdfPTable(sigStrBar.size());
+    	for(String sigStr : sigStrBar){
+        	cell = new PdfPCell();
+        	cell.setBorderWidth(0);
+        	cell.setHorizontalAlignment(Element.ALIGN_CENTER); //水平居中
+        	cell.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直居中 
+        	cell.addElement(PdfUtil.getSignatureImage(sigStr));   
+        	tableSubSig.addCell(cell);
+    	}
+    	cell = new PdfPCell(tableSubSig);
+    	cell.setBorderWidth(0);
+    	tableSub.addCell(cell); 
+    	//date
+		cell = new PdfPCell();
+    	cell.setBorderWidth(0);
+    	tableSub.addCell(cell);
+		phrase = new Phrase(DateUtil.formatDate(dateBar, "yyyy年MM月dd日"), fontContentSmall);
+		cell = new PdfPCell(phrase);
+    	cell.setBorderWidth(0);
+    	cell.setHorizontalAlignment(Element.ALIGN_CENTER); //水平居中
+    	cell.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直居中
+    	
+    	tableSub.addCell(cell);
+    	
+    	table.addCell(tableSub);    	
+    	
+    	
+    	for(Signature sig : sigsOthers){
         	cell = PdfUtil.getContentCell(PdfUtil.transferVertical(sig.getTaskName()), Element.ALIGN_LEFT, borderWidth, fontContent, 1, 1, 0);
         	cell.setHorizontalAlignment(Element.ALIGN_CENTER); //水平居中
         	cell.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直居中
         	table.addCell(cell);
         	
         	//sub table
-        	PdfPTable tableSub = new PdfPTable(2);
-        	tableSub.setWidths(new float[]{0.6f, 0.4f});
+        	tableSub = new PdfPTable(3);
+        	tableSub.setWidths(new float[]{0.15f, 0.45f, 0.4f});
         	//opinion
-        	cell = PdfUtil.getContentCell(sig.getApproveOpinion(), Element.ALIGN_LEFT, 0, fontContent, 1, 2, 0);
-        	cell.setMinimumHeight(50);
+        	cell = PdfUtil.getContentCell(sig.getApproveOpinion(), Element.ALIGN_LEFT, 0, fontContentSmall, 1, 3, 0);
+        	cell.setMinimumHeight(30);
         	tableSub.addCell(cell);
         	//signature
+    		phrase = new Phrase("签名", fontContent);
+    		cell = new PdfPCell(phrase);
+        	cell.setBorderWidth(0);
+        	cell.setHorizontalAlignment(Element.ALIGN_CENTER); //水平居中
+        	cell.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直居中    	
+        	tableSub.addCell(cell);  
+        	
         	cell = new PdfPCell();
         	cell.setBorderWidth(0);
         	cell.addElement(PdfUtil.getSignatureImage(sig.getSignature()));
         	tableSub.addCell(cell); 
         	//date
-    		Phrase phrase = new Phrase(DateUtil.formatDate(sig.getUpdateDate(), "yyyy年MM月dd日"), fontContent);
+    		phrase = new Phrase(DateUtil.formatDate(sig.getUpdateDate(), "yyyy年MM月dd日"), fontContentSmall);
     		cell = new PdfPCell(phrase);
         	cell.setBorderWidth(0);
         	cell.setHorizontalAlignment(Element.ALIGN_CENTER); //水平居中

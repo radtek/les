@@ -112,8 +112,7 @@ public class CaseHandleReportExport extends ExportBase<CaseHandleReportExport> {
             	cell = new PdfPCell();
             	cell.setBorderWidth(0);
             	Image image = PdfUtil.getSignatureImage(sig.getSignature());
-            	image.setBorderWidth(0);
-            	image.scaleAbsoluteWidth(50f);
+
             	cell.addElement(image);
             	subtable.addCell(cell); 
             	

@@ -15,6 +15,7 @@ import org.wxjs.les.modules.tcase.entity.Tcase;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
+import com.lowagie.text.Font;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
@@ -82,7 +83,14 @@ public class CaseHandleApproveExport extends ExportBase<CaseHandleApproveExport>
         	
         	//内容
             items = new String[]{"案\n件\n事\n实\n经\n过\n及\n证\n据", this.caseHandle.getFact()};
-            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 300, true);
+            
+            Font font = fontContentSmall;
+            
+            if(this.caseHandle.getFact().length()>400){
+            	font = fontContentTiny;
+            }
+            
+            table = PdfUtil.generateTableRow(items, font,  new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 250, true);
             document.add(table);
            
             //签字信息
