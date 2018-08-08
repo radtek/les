@@ -124,11 +124,7 @@ public class CaseHandleController extends BaseController {
 		
 		CaseHandle caseHandle = caseHandleService.get(entity.getCaseId());
 		
-		Tcase tcase = tcaseService.get(entity.getCaseId());
-		
-		CaseProcess caseProcess = this.caseProcessService.get(tcase.getId(), Global.CASE_STAGE_HANDLE);
-		
-		tcase.setCaseProcess(caseProcess);
+		Tcase tcase = tcaseService.getCaseAndProcess(entity.getCaseId(), Global.CASE_STAGE_HANDLE);	
 		
 		try {
             String fileName = "案件调查报告"+DateUtils.getDate("yyyyMMddHHmmss")+".pdf";
@@ -148,11 +144,7 @@ public class CaseHandleController extends BaseController {
 		
 		CaseHandle caseHandle = caseHandleService.get(entity.getCaseId());
 		
-		Tcase tcase = tcaseService.get(entity.getCaseId());
-		
-		CaseProcess caseProcess = this.caseProcessService.get(tcase.getId(), Global.CASE_STAGE_HANDLE);
-		
-		tcase.setCaseProcess(caseProcess);
+		Tcase tcase = tcaseService.getCaseAndProcess(entity.getCaseId(), Global.CASE_STAGE_HANDLE);		
 		
 		try {
             String fileName = "案件处理审批表"+DateUtils.getDate("yyyyMMddHHmmss")+".pdf";

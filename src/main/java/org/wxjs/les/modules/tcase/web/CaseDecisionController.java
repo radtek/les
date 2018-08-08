@@ -95,7 +95,7 @@ public class CaseDecisionController extends BaseController {
 		
 		CaseDecision caseDecision = caseDecisionService.get(entity.getCaseId());
 		
-		Tcase tcase = tcaseService.get(entity.getCaseId());
+		Tcase tcase = tcaseService.getCaseAndProcess(entity.getCaseId(), Global.CASE_STAGE_DECISION);
 		
 		try {
             String fileName = "处罚决定书"+DateUtils.getDate("yyyyMMddHHmmss")+".pdf";
@@ -114,8 +114,8 @@ public class CaseDecisionController extends BaseController {
 	public String exportDecisionLaunchPDF(CaseDecision entity, HttpServletResponse response,  Model model, RedirectAttributes redirectAttributes) {
 		
 		CaseDecision caseDecision = caseDecisionService.get(entity.getCaseId());
-		
-		Tcase tcase = tcaseService.get(entity.getCaseId());
+
+		Tcase tcase = tcaseService.getCaseAndProcess(entity.getCaseId(), Global.CASE_STAGE_DECISION);
 		
 		try {
             String fileName = "处罚决定书发文稿"+DateUtils.getDate("yyyyMMddHHmmss")+".pdf";
@@ -135,7 +135,7 @@ public class CaseDecisionController extends BaseController {
 		
 		CaseDecision caseDecision = caseDecisionService.get(entity.getCaseId());
 		
-		Tcase tcase = tcaseService.get(entity.getCaseId());
+		Tcase tcase = tcaseService.getCaseAndProcess(entity.getCaseId(), Global.CASE_STAGE_DECISION);
 		
 		try {
             String fileName = "处罚决定书送达回证"+DateUtils.getDate("yyyyMMddHHmmss")+".pdf";

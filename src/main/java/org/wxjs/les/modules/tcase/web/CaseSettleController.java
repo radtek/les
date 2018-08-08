@@ -92,7 +92,7 @@ public class CaseSettleController extends BaseController {
 		
 		CaseSettle caseSettle = caseSettleService.get(entity.getCaseId());
 		
-		Tcase tcase = tcaseService.get(entity.getCaseId());
+		Tcase tcase = tcaseService.getCaseAndProcess(entity.getCaseId(), Global.CASE_STAGE_SETTLE);	
 		
 		try {
             String fileName = "案件结案审批表"+DateUtils.getDate("yyyyMMddHHmmss")+".pdf";

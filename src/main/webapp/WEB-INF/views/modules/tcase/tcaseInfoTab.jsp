@@ -315,38 +315,13 @@
 				<div class="span12">		
 			<label class="control-label">案由：</label>
 			<div class="controls controls-tight">
+			    <!--  
 				<form:textarea path="tcase.caseCause" htmlEscape="false"  style="width:800px;height:80px;" class="required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		        </div>
-		    </div>
-		</div>
-        
-		<div class="control-group container-fluid nopadding">
-			<div class="row-fluid">
-				<div class="span12">		
-			<label class="control-label">案情摘要：</label>
-			<div class="controls controls-tight">
-			    <form:hidden path="tcase.caseProcess.id"/>
-			    <form:hidden path="tcase.caseProcess.caseId"/>
-			    <form:hidden path="tcase.caseProcess.caseStage"/>
-			    <form:hidden path="tcase.caseProcess.caseStageStatus"/>
-				<form:textarea path="tcase.caseProcess.caseSummary" htmlEscape="false"  style="width:800px;height:80px;" class="required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		        </div>
-		    </div>
-		</div>
-
-		<div class="control-group container-fluid nopadding">
-			<div class="row-fluid">
-				<div class="span12">		
-			<label class="control-label">办案人：</label>
-			<div class="controls controls-tight">
-			    
-		       <form:checkboxes path="tcase.caseProcess.caseHandlerList" items="${caseAct.tcase.caseProcess.availableHandlers}" itemLabel="name" itemValue="loginName" htmlEscape="false" class="required"/>
-		       <span class="help-inline"><font color="red">*</font> </span>			              			
+				-->
 				
+                <sys:treeselectWithTextArea id="tcase.caseCause" name="tcase.caseCause" value="" labelName="tcase.caseCause" labelValue="${caseAct.tcase.caseCause}" 
+				title="案由" url="/base/punishLib/treeData" cssStyle="width:800px;height:80px;" cssStyleButton="width:40px;height:80px;" allowClear="true" allowInput="true" notAllowSelectParent="true"/>				
+				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		        </div>
 		    </div>
@@ -354,13 +329,6 @@
 		
 		<div class="form-actions">
 			<shiro:hasPermission name="case:tcase:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保 存"/>&nbsp;
-			<c:if test="${caseAct.operateType eq 'start'}">
-			   <input id="btnStart" class="btn btn-primary" type="button" value="启动事件"/>&nbsp;
-			</c:if>
-			<c:if test="${caseAct.tcase.caseProcess.caseStage ge '20'}">
-
-			</c:if>
-			<input id="btnApproveTable" class="btn btn-primary" type="button" value="案件立案审批表"/>&nbsp;
 			</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>

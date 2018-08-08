@@ -53,7 +53,7 @@ public class QuestionanswerExport {
 	private static Logger log = LoggerFactory
 			.getLogger(QuestionanswerExport.class);
 	
-	private final static int defaultRealLineLen = 80; //中文字符 2， 英文 1
+	private final static float defaultRealLineLen = 80; //中文字符 2， 英文 1
 
 	private final static int tableWidth = 100;
 
@@ -388,7 +388,7 @@ public class QuestionanswerExport {
 		return cell;
 	}
 
-	private List<String> separate(String str, int realLineLen) {
+	private List<String> separate(String str, float realLineLen) {
 		List<String> list = Lists.newArrayList();
 		int totalLen = str.length();
 		int startIndex = 0;
@@ -401,6 +401,8 @@ public class QuestionanswerExport {
 			String temp = str.substring(i, i + 1);
 			if (temp.matches(PdfUtil.ChineseChar)) {
 				realLength += PdfUtil.RealWidthChinese;
+			} else if (temp.matches(PdfUtil.NarrowChar)) {
+				realLength += PdfUtil.RealWidthNarrow;
 			} else if (temp.matches(PdfUtil.NumberChar)) {
 				realLength += PdfUtil.RealWidthNumber;
 			} else if (temp.matches(PdfUtil.UpperCaseChar)) {

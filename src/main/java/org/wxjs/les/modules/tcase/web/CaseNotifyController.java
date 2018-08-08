@@ -92,7 +92,7 @@ public class CaseNotifyController extends BaseController {
 		
 		CaseNotify caseNotify = caseNotifyService.get(entity.getCaseId());
 		
-		Tcase tcase = tcaseService.get(entity.getCaseId());
+		Tcase tcase = tcaseService.getCaseAndProcess(entity.getCaseId(), Global.CASE_STAGE_NOTIFY);	
 		
 		try {
             String fileName = "告知书"+DateUtils.getDate("yyyyMMddHHmmss")+".pdf";
@@ -112,7 +112,7 @@ public class CaseNotifyController extends BaseController {
 		
 		CaseNotify caseNotify = caseNotifyService.get(entity.getCaseId());
 		
-		Tcase tcase = tcaseService.get(entity.getCaseId());
+		Tcase tcase = tcaseService.getCaseAndProcess(entity.getCaseId(), Global.CASE_STAGE_NOTIFY);	
 		
 		try {
             String fileName = "告知书(存根)"+DateUtils.getDate("yyyyMMddHHmmss")+".pdf";

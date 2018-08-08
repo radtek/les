@@ -93,7 +93,7 @@ public class CaseSeriousController extends BaseController {
 		
 		CaseSerious caseSerious = caseSeriousService.get(entity.getCaseId());
 		
-		Tcase tcase = tcaseService.get(entity.getCaseId());
+		Tcase tcase = tcaseService.getCaseAndProcess(entity.getCaseId(), Global.CASE_STAGE_SERIOUS);	
 		
 		try {
             String fileName = "重大行政处罚审查"+DateUtils.getDate("yyyyMMddHHmmss")+".pdf";

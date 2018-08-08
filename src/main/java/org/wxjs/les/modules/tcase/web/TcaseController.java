@@ -267,8 +267,8 @@ public class TcaseController extends BaseController {
 		
 		String businesskey = caseAct.getBusinesskey();
 		String[] strs = businesskey.split(":");
-		
-		Tcase tcase = tcaseService.getCaseAndProcess(strs[0], Global.CASE_STAGE_INITIAL);
+		String caseId = strs[0];
+		Tcase tcase = tcaseService.getCaseAndProcess(caseId, Global.CASE_STAGE_INITIAL);
 		
 		logger.debug("businesskey:{}", businesskey);
 		
@@ -287,10 +287,16 @@ public class TcaseController extends BaseController {
 	public String handleTab(CaseAct caseAct, Model model) {
 		
 		String businesskey = caseAct.getBusinesskey();
+		String[] strs = businesskey.split(":");
+		String caseId = strs[0];
+		Tcase tcase = tcaseService.getCaseAndProcess(caseId, Global.CASE_STAGE_HANDLE);
 		
 		logger.debug("businesskey:{}", businesskey);
 		
-		Tcase tcase = tcaseService.getCaseAndProcess(businesskey);
+		if(tcase.getCaseProcess() != null){
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase);
+			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
+		}
 		
 		caseAct.setTcase(tcase);
 		
@@ -318,10 +324,16 @@ public class TcaseController extends BaseController {
 	public String notifyTab(CaseAct caseAct, Model model) {
 		
 		String businesskey = caseAct.getBusinesskey();
-		
-		Tcase tcase = tcaseService.getCaseAndProcess(businesskey);
+		String[] strs = businesskey.split(":");
+		String caseId = strs[0];
+		Tcase tcase = tcaseService.getCaseAndProcess(caseId, Global.CASE_STAGE_NOTIFY);
 		
 		logger.debug("businesskey:{}", businesskey);
+		
+		if(tcase.getCaseProcess() != null){
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase);
+			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
+		}
 		
 		caseAct.setTcase(tcase);
 		
@@ -344,10 +356,16 @@ public class TcaseController extends BaseController {
 	public String decisionTab(CaseAct caseAct, Model model) {
 		
 		String businesskey = caseAct.getBusinesskey();
-		
-		Tcase tcase = tcaseService.getCaseAndProcess(businesskey);
+		String[] strs = businesskey.split(":");
+		String caseId = strs[0];
+		Tcase tcase = tcaseService.getCaseAndProcess(caseId, Global.CASE_STAGE_DECISION);
 		
 		logger.debug("businesskey:{}", businesskey);
+		
+		if(tcase.getCaseProcess() != null){
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase);
+			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
+		}
 		
 		caseAct.setTcase(tcase);
 		
@@ -371,10 +389,16 @@ public class TcaseController extends BaseController {
 	public String settleTab(CaseAct caseAct, Model model) {
 		
 		String businesskey = caseAct.getBusinesskey();
-		
-		Tcase tcase = tcaseService.getCaseAndProcess(businesskey);
+		String[] strs = businesskey.split(":");
+		String caseId = strs[0];
+		Tcase tcase = tcaseService.getCaseAndProcess(caseId, Global.CASE_STAGE_SETTLE);
 		
 		logger.debug("businesskey:{}", businesskey);
+		
+		if(tcase.getCaseProcess() != null){
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase);
+			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
+		}
 		
 		caseAct.setTcase(tcase);
 		
@@ -397,10 +421,16 @@ public class TcaseController extends BaseController {
 	public String finishTab(CaseAct caseAct, Model model) {
 		
 		String businesskey = caseAct.getBusinesskey();
-		
-		Tcase tcase = tcaseService.getCaseAndProcess(businesskey);
+		String[] strs = businesskey.split(":");
+		String caseId = strs[0];
+		Tcase tcase = tcaseService.getCaseAndProcess(caseId, Global.CASE_STAGE_FINISH);
 		
 		logger.debug("businesskey:{}", businesskey);
+		
+		if(tcase.getCaseProcess() != null){
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase);
+			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
+		}
 		
 		caseAct.setTcase(tcase);
 		

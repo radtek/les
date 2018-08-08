@@ -100,8 +100,8 @@ public class CaseFinishController extends BaseController {
 	public String exportPDF(CaseFinish entity, HttpServletResponse response,  Model model, RedirectAttributes redirectAttributes) {
 		
 		CaseFinish caseFinish = caseFinishService.get(entity.getCaseId());
-		
-		Tcase tcase = tcaseService.get(entity.getCaseId());
+
+		Tcase tcase = tcaseService.getCaseAndProcess(entity.getCaseId(), Global.CASE_STAGE_FINISH);
 		
 		try {
             String fileName = "备考表"+DateUtils.getDate("yyyyMMddHHmmss")+".pdf";

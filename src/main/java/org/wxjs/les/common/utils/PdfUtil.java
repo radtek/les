@@ -31,10 +31,12 @@ public class PdfUtil {
     
     public static final float RealWidthChinese = 2f;
     public static final float RealWidthNumber = 0.92f;
+    public static final float RealWidthNarrow = 0.5f;
     public static final float RealWidthLowerCase = 0.869f;
     public static final float RealWidthUpperCase = 1.28f;
     
     public static final String ChineseChar = "[^\\x00-\\xff]";  //双字节字符
+    public static final String NarrowChar = "^[JjlIi]";  //narrow
     public static final String NumberChar = "^[0-9]";  //number
     public static final String LowerCaseChar = "^[a-z]";  //lowerCase
     public static final String UpperCaseChar = "^[A-Z]";  //upperCase
