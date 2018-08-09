@@ -6,6 +6,10 @@
 
 <%@ attribute name="paramUri" type="java.lang.String" required="true" description=""%>
 
+<%@ attribute name="editable" type="java.lang.Boolean" required="true" description=""%>
+
+
+
     <script type="text/javascript">
     
     $(document).ready(function() {
@@ -35,7 +39,7 @@
 
 <form:form class="form-horizontal">
 	<fieldset>
-	    <font bold="true">编号：${punishLibAttr.punishLib.seq}</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="${ctx}/tcase/caseHandlePunishLib/delete?id=${punishLibAttr.id}&${paramUri}"><font color="red">删除</font></a>
+	    <font bold="true">编号：${punishLibAttr.punishLib.seq}</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <c:if test="${editable }"> <a href="${ctx}/tcase/caseHandlePunishLib/delete?id=${punishLibAttr.id}&${paramUri}"><font color="red">删除</font></a></c:if>
 		<table class="table-form" style="width:90%">
 			<tr>
 				<td class="tit" width="20%">行为名称</td><td width="80%" colspan="3">${punishLibAttr.punishLib.behavior}</td>
@@ -56,7 +60,9 @@
 			    <td class="tit" width="20%" rowspan="${listSize}">情形描述</td>
 			   </c:if>
 			    <td width="30%">
-			    <input type="radio" id="range${entity.id}" name="punishLib${punishLibAttr.punishLib.id}" value="${entity.id}" <c:if test="${entity.id eq punishLibAttr.punishLibRange.id}">checked</c:if> style="width:20px; height:20px;"/>${entity.situation}
+			    <input type="radio" id="range${entity.id}" name="punishLib${punishLibAttr.punishLib.id}" value="${entity.id}" 
+			    <c:if test="${entity.id eq punishLibAttr.punishLibRange.id}" >checked</c:if> 
+			    <c:if test="${not editable }">readonly</c:if> style="width:20px; height:20px;"/>${entity.situation}
 			    </td>
 			    <c:if test="${status.index eq 0}">
 			    <td class="tit" width="20%" rowspan="${listSize}">裁量幅度</td>

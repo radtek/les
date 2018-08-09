@@ -229,7 +229,7 @@ public class Global {
     public static final String GROUP_caseSettleProcess = "jcbar";
     public static final String GROUP_caseFinishProcess = "jcbar";
     
-    public static final String GROUP_caseSeriousProcess = "fgcfzrOp";
+    public static final String GROUP_caseSeriousProcess = "fgcfzr";
     
     public static final String GROUP_caseCancelProcess1 = "jcbar";
     public static final String GROUP_caseCancelProcess2 = "jcksfzr";

@@ -37,6 +37,7 @@
 				$("#inputForm").attr("action","${ctx}/case/caseNotify/exportCopyPDF");
 				$("#inputForm").submit();		    	
 		    });	
+		    			    
 		});
 	</script>
 </head>
@@ -47,17 +48,24 @@
     
     <les:caseTab tab="notify" caseActAttr="${caseAct}"></les:caseTab> 
     
+	<les:caseProcessTag></les:caseProcessTag>    
+    
+    <form:form class="form-horizontal">
+	   	<div class="control-group">
+			<label class="control-label">案件事实经过及证据<BR>(供参照)：</label>
+			<div class="controls">
+			<textarea style="width:800px;height:300px;" readonly="readonly">${caseHandle.fact}
+			</textarea>
+			</div>
+		</div>
+	</form:form>
+    
 	<form:form id="inputForm" modelAttribute="caseNotify" action="${ctx}/case/caseNotify/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<form:hidden path="caseId"/>
 		<form:hidden path="paramUri" value="${caseAct.paramUri}"/>
 		<sys:message content="${message}"/>		
-		<div class="control-group">
-			<label class="control-label">案件事实经过及证据：</label>
-			<div class="controls">
-			${caseHandle.fact}
-			</div>
-		</div>		
+		
 		<div class="control-group">
 			<label class="control-label">告知书编号：</label>
 			<div class="controls">

@@ -11,15 +11,10 @@
 
 
 	<ul class="nav nav-tabs tabText">
-	    <c:if test="${caseActAttr.caseTransfer ne '1' }">
+
+        <c:if test="${caseActAttr.caseTransfer ne '1' }">
 		<li <c:if test="${empty tab || tab eq 'info'}">class="active"</c:if> ><a href="${ctx}/case/tcase/infoTab?${caseActAttr.paramUri}">基本信息</a></li>
-		</c:if>
 		
-		<c:if test="${caseActAttr.caseTransfer eq '1' }">
-		<li <c:if test="${empty tab || tab eq 'infoTransfer'}">class="active"</c:if> ><a href="${ctx}/case/tcase/infoTabTransfer?${caseActAttr.paramUri}">基本信息</a></li>
-		</c:if>
-		
-		<c:if test="${caseActAttr.caseTransfer ne '1' }">
 		<li <c:if test="${tab eq 'acceptance'}">class="active"</c:if>><a href="${ctx}/case/tcase/acceptanceTab?${caseActAttr.paramUri}">受理</a></li>
 		<li <c:if test="${tab eq 'initial'}">class="active"</c:if>><a href="${ctx}/case/tcase/initialTab?${caseActAttr.paramUri}">立案</a></li>
 		<li <c:if test="${tab eq 'handle'}">class="active"</c:if>><a href="${ctx}/case/tcase/handleTab?${caseActAttr.paramUri}">审理</a></li>
@@ -28,6 +23,12 @@
 		<li <c:if test="${tab eq 'settle'}">class="active"</c:if>><a href="${ctx}/case/tcase/settleTab?${caseActAttr.paramUri}">结案书</a></li>
 		<li <c:if test="${tab eq 'finish'}">class="active"</c:if>><a href="${ctx}/case/tcase/finishTab?${caseActAttr.paramUri}">案件结束</a></li>		
 		<li <c:if test="${tab eq 'serious'}">class="active"</c:if>><a href="${ctx}/case/tcase/seriousTab?${caseActAttr.paramUri}">重大行政处罚</a></li>	
+		<li <c:if test="${tab eq 'cancel'}">class="active"</c:if>><a href="${ctx}/case/tcase/cancelTab?${caseActAttr.paramUri}">案件撤销</a></li>
+		
+		</c:if>
+		
+		<c:if test="${caseActAttr.caseTransfer eq '1' }">
+		<li <c:if test="${empty tab || tab eq 'infoTransfer'}">class="active"</c:if> ><a href="${ctx}/case/tcase/infoTabTransfer?${caseActAttr.paramUri}">基本信息</a></li>
 		</c:if>
 		
 		<c:if test="${not empty caseActAttr.tcase.id and caseActAttr.operateType ne 'start'}">

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.wxjs.les.modules.tcase.dao.CaseHandlePunishLibDao">
+<mapper namespace="org.wxjs.les.modules.tcase.dao.CaseCancelDao">
     
-	<sql id="caseHandlePunishLibColumns">
+	<sql id="caseCancelColumns">
 		a.id AS "id",
 		a.case_id AS "caseId",
-		a.punish_lib_id AS "punishLib.id",
-		a.punish_lib_range_id AS "punishLibRange.id",
+		a.content AS "content",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -15,23 +14,22 @@
 		a.del_flag AS "delFlag"
 	</sql>
 	
-	<sql id="caseHandlePunishLibJoins">
-
+	<sql id="caseCancelJoins">
 	</sql>
     
-	<select id="get" resultType="CaseHandlePunishLib">
+	<select id="get" resultType="CaseCancel">
 		SELECT 
-			<include refid="caseHandlePunishLibColumns"/>
-		FROM tcase_handle_punish_lib a
-		<include refid="caseHandlePunishLibJoins"/>
+			<include refid="caseCancelColumns"/>
+		FROM tcase_cancel a
+		<include refid="caseCancelJoins"/>
 		WHERE a.id = #{id}
 	</select>
 	
-	<select id="findList" resultType="CaseHandlePunishLib">
+	<select id="findList" resultType="CaseCancel">
 		SELECT 
-			<include refid="caseHandlePunishLibColumns"/>
-		FROM tcase_handle_punish_lib a
-		<include refid="caseHandlePunishLibJoins"/>
+			<include refid="caseCancelColumns"/>
+		FROM tcase_cancel a
+		<include refid="caseCancelJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			<if test="caseId != null and caseId != ''">
@@ -48,11 +46,11 @@
 		</choose>
 	</select>
 	
-	<select id="findAllList" resultType="CaseHandlePunishLib">
+	<select id="findAllList" resultType="CaseCancel">
 		SELECT 
-			<include refid="caseHandlePunishLibColumns"/>
-		FROM tcase_handle_punish_lib a
-		<include refid="caseHandlePunishLibJoins"/>
+			<include refid="caseCancelColumns"/>
+		FROM tcase_cancel a
+		<include refid="caseCancelJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 		</where>		
@@ -67,9 +65,9 @@
 	</select>
 	
 	<insert id="insert">
-		INSERT INTO tcase_handle_punish_lib(
+		INSERT INTO tcase_cancel(
 			case_id,
-			punish_lib_id,
+			content,
 			create_by,
 			create_date,
 			update_by,
@@ -78,7 +76,7 @@
 			del_flag
 		) VALUES (
 			#{caseId},
-			#{punishLib.id},
+			#{content},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -88,9 +86,10 @@
 		)
 	</insert>
 	
-	<update id="updateRange">
-		UPDATE tcase_handle_punish_lib SET
-			punish_lib_range_id = #{punishLibRange.id},
+	<update id="update">
+		UPDATE tcase_cancel SET 	
+			case_id = #{caseId},
+			content = #{content},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks}
@@ -98,7 +97,8 @@
 	</update>
 	
 	<update id="delete">
-		DELETE FROM tcase_handle_punish_lib
+		UPDATE tcase_cancel SET 
+			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>
 	

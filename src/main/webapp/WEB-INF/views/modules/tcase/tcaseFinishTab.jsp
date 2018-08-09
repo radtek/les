@@ -42,6 +42,8 @@
     
     <les:caseTab tab="finish" caseActAttr="${caseAct}"></les:caseTab> 
     
+    <les:caseProcessTag></les:caseProcessTag>
+    
 	<form:form id="inputForm" modelAttribute="caseFinish" action="${ctx}/tcase/caseFinish/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<form:hidden path="caseId"/>
@@ -72,9 +74,12 @@
 			</div>
 		</div>
 		<div class="form-actions">
+		<c:if test="${caseAct.tcase.caseProcess.editable}">
 			<shiro:hasPermission name="case:tcase:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保 存"/>&nbsp;
-			<input id="btnFinish" class="btn btn-primary" type="button" value="备考表"/>
+			
 			</shiro:hasPermission>
+		</c:if>
+		    <input id="btnFinish" class="btn btn-primary" type="button" value="备考表"/>
 		</div>
 	</form:form>
 </body>

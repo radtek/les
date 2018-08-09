@@ -38,16 +38,7 @@
 				$("#inputForm").attr("action","${ctx}/case/tcase/save");
 				$("#inputForm").submit();		    	
 		    });
-		    
-		    $('#btnStart').click(function() {
-				$("#inputForm").attr("action","${ctx}/case/tcase/saveAndStart");
-				$("#inputForm").submit();		    	
-		    });
-		    
-		    $('#btnApproveTable').click(function() {
-				$("#inputForm").attr("action","${ctx}/case/tcase/exportPDF");
-				$("#inputForm").submit();		    	
-		    });
+
 		});
 	</script>
 </head>
@@ -315,12 +306,13 @@
 				<div class="span12">		
 			<label class="control-label">案由：</label>
 			<div class="controls controls-tight">
-			    <!--  
+
 				<form:textarea path="tcase.caseCause" htmlEscape="false"  style="width:800px;height:80px;" class="required"/>
-				-->
-				
+
+				<!--  
                 <sys:treeselectWithTextArea id="tcase.caseCause" name="tcase.caseCause" value="" labelName="tcase.caseCause" labelValue="${caseAct.tcase.caseCause}" 
 				title="案由" url="/base/punishLib/treeData" cssStyle="width:800px;height:80px;" cssStyleButton="width:40px;height:80px;" allowClear="true" allowInput="true" notAllowSelectParent="true"/>				
+				-->
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		        </div>

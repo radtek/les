@@ -30,7 +30,8 @@
 		    $('#btnApprove').click(function() {
 				$("#inputReportForm").attr("action","${ctx}/tcase/caseHandle/exportApprovePDF");
 				$("#inputReportForm").submit();		    	
-		    });		    	
+		    });	
+	    
 		});
 	</script>
 </head>
@@ -42,6 +43,21 @@
     <les:caseTab tab="handle" caseActAttr="${caseAct}"></les:caseTab> 
     
     <sys:message content="${message}"/>	
+    <!--  
+    <form:form class="form-horizontal">
+	   	<div class="control-group">
+			<label class="control-label">案情摘要<BR>(前一环节)：</label>
+			<div class="controls">
+			<textarea style="width:800px;height:300px;" readonly="readonly">${previousCaseSummary}
+			</textarea>
+			</div>
+		</div>
+	</form:form> 
+	-->
+	<les:caseProcessTag></les:caseProcessTag>  
+	
+	<c:set var="editable" value="${caseAct.tcase.caseProcess.editable}"></c:set>
+	    
 	<form:form id="punishLibForm" modelAttribute="caseHandlePunishLib" action="${ctx}/tcase/caseHandlePunishLib/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<form:hidden path="caseId"/>
@@ -49,14 +65,23 @@
 		
 		<h5>案件上报资料编辑 </h5>	
 		
-			自由裁量权：<sys:treeselect id="punishLib" name="punishLib.id" value="" labelName="punishLib.behavior" labelValue="" 
-				title="自由裁量权" url="/base/punishLib/treeData" cssClass="input-xxlarge" allowClear="true" notAllowSelectParent="true"/>
+        
+		<div class="control-group">
+			<label class="control-label">自由裁量权：</label>
+			<div class="controls">
+			<sys:treeselectExtend id="punishLib" name="punishLib.id" value="" labelName="punishLib.behavior" labelValue="" 
+				title="自由裁量权" url="/base/punishLib/treeData" cssClass="input-xxlarge" allowClear="true" notAllowSelectParent="true" dialogWidth="800" dialogHeight="500"/>
+			<c:if test="${editable }">
 			<shiro:hasPermission name="case:tcase:edit"><input id="btnSavePublishLib" class="btn btn-primary" type="button" value="添 加"/>&nbsp;
 			</shiro:hasPermission>
+			</c:if>
+			</div>
+		</div>			
+			
 		<BR><BR>
 		<c:forEach items="${libList}" var="libEntity" varStatus="status">
 		   
-		   <les:punishLibTag punishLibAttr="${libEntity}" paramUri="${caseAct.paramUri}"></les:punishLibTag>
+		   <les:punishLibTag punishLibAttr="${libEntity}" paramUri="${caseAct.paramUri}" editable="${editable }"></les:punishLibTag>
 		
 		</c:forEach>	
 	</form:form>

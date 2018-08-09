@@ -309,6 +309,16 @@ public class User extends DataEntity<User> {
 		return Collections3.extractToString(roleList, "name", ",");
 	}
 	
+	public String getRoleEnname() {
+		String ennames = Collections3.extractToString(roleList, "enname", ",");
+		String rst = ennames;
+		int dotIndex = ennames.lastIndexOf(",");
+		if(dotIndex>=0){
+			rst = ennames.substring(dotIndex+1);
+		}
+		return rst;
+	}
+	
 	public boolean isAdmin(){
 		return isAdmin(this.id);
 	}

@@ -34,11 +34,13 @@ import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.web.BaseController;
 import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.StringUtils;
+import org.wxjs.les.modules.sys.entity.Role;
 import org.wxjs.les.modules.sys.entity.User;
 import org.wxjs.les.modules.sys.service.SystemService;
 import org.wxjs.les.modules.task.entity.CaseAct;
 import org.wxjs.les.modules.task.service.CaseTaskService;
 import org.wxjs.les.modules.tcase.entity.CaseAttach;
+import org.wxjs.les.modules.tcase.entity.CaseCancel;
 import org.wxjs.les.modules.tcase.entity.CaseDecision;
 import org.wxjs.les.modules.tcase.entity.CaseFinish;
 import org.wxjs.les.modules.tcase.entity.CaseHandle;
@@ -50,6 +52,7 @@ import org.wxjs.les.modules.tcase.entity.CaseSettle;
 import org.wxjs.les.modules.tcase.entity.Tcase;
 import org.wxjs.les.modules.tcase.export.CaseInitialExport;
 import org.wxjs.les.modules.tcase.service.CaseAttachService;
+import org.wxjs.les.modules.tcase.service.CaseCancelService;
 import org.wxjs.les.modules.tcase.service.CaseDecisionService;
 import org.wxjs.les.modules.tcase.service.CaseFinishService;
 import org.wxjs.les.modules.tcase.service.CaseHandlePunishLibService;
@@ -92,6 +95,9 @@ public class TcaseController extends BaseController {
 	
 	@Autowired
 	private CaseSeriousService caseSeriousService;
+	
+	@Autowired
+	private CaseCancelService caseCancelService;
 	
 	@Autowired
 	private CaseHandleService caseHandleService;
@@ -270,6 +276,15 @@ public class TcaseController extends BaseController {
 		String caseId = strs[0];
 		Tcase tcase = tcaseService.getCaseAndProcess(caseId, Global.CASE_STAGE_INITIAL);
 		
+		//获取前一环节案情摘要
+		Tcase tcasePrevious = tcaseService.getCaseAndProcess(caseId, Global.CASE_STAGE_ACCEPTANCE);
+		if(StringUtils.isEmpty(tcase.getCaseProcess().getCaseSummary())){
+			//copy from previous
+			tcase.getCaseProcess().setCaseSummary(tcasePrevious.getCaseProcess().getCaseSummary());
+			tcase.getCaseProcess().setCaseHandler(tcasePrevious.getCaseProcess().getCaseHandler());
+			tcaseService.saveProcess(tcase);
+		}
+		
 		logger.debug("businesskey:{}", businesskey);
 		
 		if(tcase.getCaseProcess() != null){
@@ -290,6 +305,15 @@ public class TcaseController extends BaseController {
 		String[] strs = businesskey.split(":");
 		String caseId = strs[0];
 		Tcase tcase = tcaseService.getCaseAndProcess(caseId, Global.CASE_STAGE_HANDLE);
+		
+		//获取前一环节案情摘要
+		Tcase tcasePrevious = tcaseService.getCaseAndProcess(caseId, Global.CASE_STAGE_INITIAL);
+		if(StringUtils.isEmpty(tcase.getCaseProcess().getCaseSummary())){
+			//copy from previous
+			tcase.getCaseProcess().setCaseSummary(tcasePrevious.getCaseProcess().getCaseSummary());
+			tcase.getCaseProcess().setCaseHandler(tcasePrevious.getCaseProcess().getCaseHandler());
+			tcaseService.saveProcess(tcase);
+		}
 		
 		logger.debug("businesskey:{}", businesskey);
 		
@@ -328,6 +352,15 @@ public class TcaseController extends BaseController {
 		String caseId = strs[0];
 		Tcase tcase = tcaseService.getCaseAndProcess(caseId, Global.CASE_STAGE_NOTIFY);
 		
+		//获取前一环节案情摘要
+		Tcase tcasePrevious = tcaseService.getCaseAndProcess(caseId, Global.CASE_STAGE_HANDLE);
+		if(StringUtils.isEmpty(tcase.getCaseProcess().getCaseSummary())){
+			//copy from previous
+			tcase.getCaseProcess().setCaseSummary(tcasePrevious.getCaseProcess().getCaseSummary());
+			tcase.getCaseProcess().setCaseHandler(tcasePrevious.getCaseProcess().getCaseHandler());
+			tcaseService.saveProcess(tcase);
+		}		
+		
 		logger.debug("businesskey:{}", businesskey);
 		
 		if(tcase.getCaseProcess() != null){
@@ -359,6 +392,15 @@ public class TcaseController extends BaseController {
 		String[] strs = businesskey.split(":");
 		String caseId = strs[0];
 		Tcase tcase = tcaseService.getCaseAndProcess(caseId, Global.CASE_STAGE_DECISION);
+		
+		//获取前一环节案情摘要
+		Tcase tcasePrevious = tcaseService.getCaseAndProcess(caseId, Global.CASE_STAGE_NOTIFY);
+		if(StringUtils.isEmpty(tcase.getCaseProcess().getCaseSummary())){
+			//copy from previous
+			tcase.getCaseProcess().setCaseSummary(tcasePrevious.getCaseProcess().getCaseSummary());
+			tcase.getCaseProcess().setCaseHandler(tcasePrevious.getCaseProcess().getCaseHandler());
+			tcaseService.saveProcess(tcase);
+		}
 		
 		logger.debug("businesskey:{}", businesskey);
 		
@@ -393,6 +435,15 @@ public class TcaseController extends BaseController {
 		String caseId = strs[0];
 		Tcase tcase = tcaseService.getCaseAndProcess(caseId, Global.CASE_STAGE_SETTLE);
 		
+		//获取前一环节案情摘要
+		Tcase tcasePrevious = tcaseService.getCaseAndProcess(caseId, Global.CASE_STAGE_DECISION);
+		if(StringUtils.isEmpty(tcase.getCaseProcess().getCaseSummary())){
+			//copy from previous
+			tcase.getCaseProcess().setCaseSummary(tcasePrevious.getCaseProcess().getCaseSummary());
+			tcase.getCaseProcess().setCaseHandler(tcasePrevious.getCaseProcess().getCaseHandler());
+			tcaseService.saveProcess(tcase);
+		}		
+		
 		logger.debug("businesskey:{}", businesskey);
 		
 		if(tcase.getCaseProcess() != null){
@@ -425,6 +476,15 @@ public class TcaseController extends BaseController {
 		String caseId = strs[0];
 		Tcase tcase = tcaseService.getCaseAndProcess(caseId, Global.CASE_STAGE_FINISH);
 		
+		//获取前一环节案情摘要
+		Tcase tcasePrevious = tcaseService.getCaseAndProcess(caseId, Global.CASE_STAGE_SETTLE);
+		if(StringUtils.isEmpty(tcase.getCaseProcess().getCaseSummary())){
+			//copy from previous
+			tcase.getCaseProcess().setCaseSummary(tcasePrevious.getCaseProcess().getCaseSummary());
+			tcase.getCaseProcess().setCaseHandler(tcasePrevious.getCaseProcess().getCaseHandler());
+			tcaseService.saveProcess(tcase);
+		}
+		
 		logger.debug("businesskey:{}", businesskey);
 		
 		if(tcase.getCaseProcess() != null){
@@ -451,9 +511,16 @@ public class TcaseController extends BaseController {
 		
 		String businesskey = caseAct.getBusinesskey();
 		
-		Tcase tcase = tcaseService.getCaseAndProcess(businesskey);
-		
 		logger.debug("businesskey:{}", businesskey);
+		
+		String[] strs = businesskey.split(":");
+		String caseId = strs[0];
+		Tcase tcase = tcaseService.getCaseAndProcess(caseId, Global.CASE_STAGE_SERIOUS);
+		
+		if(tcase.getCaseProcess() != null){
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase);
+			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
+		}
 		
 		caseAct.setTcase(tcase);
 		
@@ -469,6 +536,39 @@ public class TcaseController extends BaseController {
 		model.addAttribute("caseSerious", caseSerious);
 		
 		return "modules/tcase/tcaseSeriousTab";
+	}
+	
+	@RequiresPermissions("case:tcase:view")
+	@RequestMapping(value = "cancelTab")
+	public String cancelTab(CaseAct caseAct, Model model) {
+		
+		String businesskey = caseAct.getBusinesskey();
+		
+		logger.debug("businesskey:{}", businesskey);
+		
+		String[] strs = businesskey.split(":");
+		String caseId = strs[0];
+		Tcase tcase = tcaseService.getCaseAndProcess(caseId, Global.CASE_STAGE_CANCEL);
+		
+		if(tcase.getCaseProcess() != null){
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase);
+			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
+		}
+		
+		caseAct.setTcase(tcase);
+		
+		//add caseHandle for reference
+		//model.addAttribute("caseHandle", this.caseHandleService.get(tcase.getId()));
+		
+		CaseCancel caseCancel = this.caseCancelService.get(tcase.getId());
+		
+		if(caseCancel==null){
+			caseCancel = CaseCancel.getInstance(tcase);
+		}
+		
+		model.addAttribute("caseCancel", caseCancel);
+		
+		return "modules/tcase/tcaseCancelTab";
 	}
 	
 	@RequiresPermissions("case:tcase:view")
@@ -564,9 +664,13 @@ public class TcaseController extends BaseController {
 
 		String caseStage = tcase.getCaseProcess().getCaseStage();
 		
-		String group = ProcessCommonUtils.getFirstTaskGroupByStage(caseStage);
+		User user = UserUtils.getUser();
 		
-		logger.debug("caseStage:{}, group:{}", caseStage, group);
+		String roleEnname = user.getRoleEnname();
+		
+		String group = ProcessCommonUtils.getFirstTaskGroupByStage(caseStage, roleEnname);
+		
+		logger.debug("caseStage:{}, group:{}, roleEnname:{}", caseStage, group, roleEnname);
 		
 		return this.getCaseHandlerByGroup(group);
 	}
@@ -712,7 +816,7 @@ public class TcaseController extends BaseController {
 		
 		model.addAttribute("operateType", caseAct.getOperateType());
 		
-		String businesskey = tcase.getId()+":"+tcase.getCaseProcess().getId();
+		String businesskey = tcase.getId();
 		
 		logger.debug("caseAct.getOperateType():{}, businesskey:{}", caseAct.getOperateType(), businesskey);
 		
@@ -720,6 +824,43 @@ public class TcaseController extends BaseController {
 		addMessage(redirectAttributes, "保存案件成功");
 		return "redirect:"+Global.getAdminPath()+"/case/tcase/infoTab?businesskey="+businesskey+"&operateType="+caseAct.getOperateType();
 	}
+	
+	@RequiresPermissions("case:tcase:edit")
+	@RequestMapping(value = "saveProcess")
+	public String saveProcess(CaseAct caseAct, Model model, RedirectAttributes redirectAttributes) {
+		Tcase tcase = caseAct.getTcase();
+		
+		tcaseService.saveProcess(tcase);
+		
+		model.addAttribute("operateType", caseAct.getOperateType());
+		
+		String businesskey = tcase.getId();
+		
+		addMessage(redirectAttributes, "保存成功");
+		String tabControl = this.getTabControlByStage(tcase.getCaseProcess().getCaseStage());
+		return "redirect:"+Global.getAdminPath()+"/case/tcase/"+tabControl+"?businesskey="+businesskey+"&operateType="+caseAct.getOperateType();
+	}
+	
+	private String getTabControlByStage(String stage){
+		String tabControl = "";
+		if(stage.equals(Global.CASE_STAGE_ACCEPTANCE)){
+			tabControl = "acceptanceTab";
+		}else if(stage.equals(Global.CASE_STAGE_INITIAL)){
+			tabControl = "initialTab";
+		}else if(stage.equals(Global.CASE_STAGE_HANDLE)){
+			tabControl = "handleTab";
+		}else if(stage.equals(Global.CASE_STAGE_NOTIFY)){
+			tabControl = "notifyTab";
+		}else if(stage.equals(Global.CASE_STAGE_DECISION)){
+			tabControl = "decisionTab";
+		}else if(stage.equals(Global.CASE_STAGE_SETTLE)){
+			tabControl = "settleTab";
+		}else if(stage.equals(Global.CASE_STAGE_FINISH)){
+			tabControl = "finishTab";
+		}
+		return tabControl;
+	}
+	
 	
 	@RequiresPermissions("case:tcase:edit")
 	@RequestMapping(value = "saveAndStart")

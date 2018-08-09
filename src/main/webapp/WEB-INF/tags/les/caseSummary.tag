@@ -9,7 +9,7 @@
 		<table class="table-form" style="width:90%">
 			<tr>
 				<td class="tit" width="20%">事项序号：</td><td width="30%">${caseAttr.caseSeq}</td>
-				<td class="tit" width="20%">事项类型：</td><td width="30%">${fns:getDictLabel(caseAttr.caseProcess.caseStage, 'case_stage', '')}</td>
+				<td class="tit" width="20%">事项类型：</td><td width="30%">${fns:getDictLabel(caseAttr.caseProcess.caseStage, 'case_stage', '')}：${fns:getDictLabel(caseAttr.caseProcess.caseStageStatus, 'case_stage_status', '未启动')}</td>
 			</tr>	
 			<tr>
 				<td class="tit">当事人类型：</td><td>${fns:getDictLabel(caseAttr.partyType, 'party_type', '')}</td>

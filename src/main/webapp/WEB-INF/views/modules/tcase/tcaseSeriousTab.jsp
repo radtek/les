@@ -41,11 +41,15 @@
     <les:caseSummary caseAttr="${caseAct.tcase}"></les:caseSummary>	
     
     <les:caseTab tab="serious" caseActAttr="${caseAct}"></les:caseTab> 
+    
+    <les:caseProcessTag></les:caseProcessTag>
+    
 	<form:form id="inputForm" modelAttribute="caseSerious" action="${ctx}/tcase/caseSerious/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<form:hidden path="caseId"/>
 		<form:hidden path="paramUri" value="${caseAct.paramUri}"/>
 		<sys:message content="${message}"/>		
+		<h4>重大行政处罚</h4>
 		<div class="control-group">
 			<label class="control-label">时间：</label>
 			<div class="controls">

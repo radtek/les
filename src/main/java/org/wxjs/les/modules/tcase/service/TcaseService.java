@@ -22,6 +22,7 @@ import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.service.CrudService;
 import org.wxjs.les.common.utils.StringUtils;
 import org.wxjs.les.modules.act.utils.ProcessUtils;
+import org.wxjs.les.modules.sys.entity.Role;
 import org.wxjs.les.modules.sys.entity.User;
 import org.wxjs.les.modules.sys.utils.SequenceUtils;
 import org.wxjs.les.modules.sys.utils.UserUtils;
@@ -220,23 +221,25 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 		
 		//init process
 		if(isNew){
-			CaseProcess caseProcess = tcase.getCaseProcess();
-			/*
-			if(caseProcess == null){
-				caseProcess = new CaseProcess();
-			}
-			*/
+			CaseProcess caseProcess = new CaseProcess();
+
 			caseProcess.setCaseId(tcase.getId());
-			
-			//save case process
-			caseProcessDao.insert(caseProcess);
+
+			caseProcessDao.initProcess(caseProcess);
 			
 			//初始化
-			caseProcessDao.initProcessExcludeAcceptance(caseProcess);
+			//caseProcessDao.initProcessExcludeAcceptance(caseProcess);
 
 		}else{
-			caseProcessDao.update(tcase.getCaseProcess());
+			//caseProcessDao.update(tcase.getCaseProcess());
 		}
+		
+	}
+	
+	@Transactional(readOnly = false)
+	public void saveProcess(Tcase tcase) {
+
+		caseProcessDao.update(tcase.getCaseProcess());
 		
 	}
 	
@@ -320,11 +323,15 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 	@Transactional(readOnly = false)
 	public ProcessInstance startWorkflow(Tcase tcase){
 		
-		String processDefKey = ProcessCommonUtils.getProcessDefKeyByStage(tcase.getCaseProcess().getCaseStage());
+		User user = UserUtils.getUser();
+		
+		String roleEnname = user.getRoleEnname();
+		
+		String processDefKey = ProcessCommonUtils.getProcessDefKeyByStage(tcase.getCaseProcess().getCaseStage(), roleEnname);
 		
 		String businesskey = tcase.getId()+":"+tcase.getCaseProcess().getId();
 		
-		String userid = UserUtils.getUser().getLoginName();
+		String userid = user.getLoginName();
 		
 		Map<String,Object> variables=new HashMap<String, Object>();
 		variables.put("starter", userid);

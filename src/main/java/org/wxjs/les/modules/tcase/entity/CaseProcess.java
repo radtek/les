@@ -186,4 +186,12 @@ public class CaseProcess extends DataEntity<CaseProcess> {
 		this.signatures = signatures;
 	}
 	
+	public boolean getEditable(){
+		return StringUtils.isEmpty(this.caseStageStatus) || "0".equals(this.caseStageStatus) || "1".equals(this.caseStageStatus);
+	}
+	
+	public boolean getStartable(){
+		return StringUtils.isEmpty(this.caseStageStatus) || "0".equals(this.caseStageStatus);
+	}
+	
 }

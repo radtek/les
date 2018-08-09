@@ -41,7 +41,8 @@
 		    $('#btnReach').click(function() {
 				$("#inputForm").attr("action","${ctx}/tcase/caseDecision/exportReachPDF");
 				$("#inputForm").submit();		    	
-		    });		    
+		    });	
+		    		    
 		});
 	</script>
 </head>
@@ -52,17 +53,23 @@
     
     <les:caseTab tab="decision" caseActAttr="${caseAct}"></les:caseTab>  
     
+    <les:caseProcessTag></les:caseProcessTag>    
+    
+    <form:form class="form-horizontal">
+	   	<div class="control-group">
+			<label class="control-label">案件事实经过及证据<BR>(供参照)：</label>
+			<div class="controls">
+			<textarea style="width:800px;height:300px;" readonly="readonly">${caseHandle.fact}
+			</textarea>
+			</div>
+		</div>
+	</form:form>    
+    
 	<form:form id="inputForm" modelAttribute="caseDecision" action="${ctx}/tcase/caseDecision/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<form:hidden path="caseId"/>
 		<form:hidden path="paramUri" value="${caseAct.paramUri}"/>
-		<sys:message content="${message}"/>		
-		<div class="control-group">
-			<label class="control-label">案件事实经过及证据：</label>
-			<div class="controls">
-			${caseHandle.fact}
-			</div>
-		</div>		
+		<sys:message content="${message}"/>			
 		<div class="control-group">
 			<label class="control-label">主送：</label>
 			<div class="controls">
@@ -137,11 +144,13 @@
 			</div>
 		</div>
 		<div class="form-actions">
+		<c:if test="${caseAct.tcase.caseProcess.editable}">
 			<shiro:hasPermission name="case:tcase:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保 存"/>&nbsp;
+			</shiro:hasPermission>
+		</c:if>
 			<input id="btnLaunch" class="btn btn-primary" type="button" value="发文稿"/>&nbsp;
 			<input id="btnDecision" class="btn btn-primary" type="button" value="处罚决定书"/>&nbsp;
-			<input id="btnReach" class="btn btn-primary" type="button" value="送达回证"/>&nbsp;
-			</shiro:hasPermission>
+			<input id="btnReach" class="btn btn-primary" type="button" value="送达回证"/>&nbsp;		
 		</div>
 	</form:form>
 </body>

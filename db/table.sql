@@ -257,6 +257,24 @@ CREATE TABLE `tcase_serious` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='重大行政处罚';
 
 -- ----------------------------
+-- Table structure for tcase_cancel
+-- ----------------------------
+DROP TABLE IF EXISTS `tcase_cancel`;
+CREATE TABLE `tcase_cancel` (
+  `id` int(11) NOT NULL auto_increment  COMMENT '编号',
+  `case_id` varchar(32) NOT NULL COMMENT '案件编号',
+  `content` text NULL COMMENT '内容',
+  `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_by` varchar(32) DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  `remarks` varchar(64) DEFAULT NULL COMMENT '备注信息',
+  `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`),
+  unique(case_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='案件撤销';
+
+-- ----------------------------
 -- Table structure for tsitecheck
 -- ----------------------------
 DROP TABLE IF EXISTS `tsitecheck`;

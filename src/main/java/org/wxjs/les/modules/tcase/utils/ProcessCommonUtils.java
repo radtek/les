@@ -4,56 +4,82 @@ import org.wxjs.les.common.config.Global;
 
 public class ProcessCommonUtils {
 	
-	public static String getFirstTaskGroupByStage(String caseStage){
+	public static String getFirstTaskGroupByStage(String caseStage, String roleEnname){
 		String group = "";
-		if("10".equals(caseStage)){
+		if(Global.CASE_STAGE_ACCEPTANCE.equals(caseStage)){
 			group = Global.GROUP_caseAcceptanceProcess;
-		}else if("20".equals(caseStage)){
+		}else if(Global.CASE_STAGE_INITIAL.equals(caseStage)){
 			group = Global.GROUP_caseInitialProcess;
-		}else if("30".equals(caseStage)){
+		}else if(Global.CASE_STAGE_HANDLE.equals(caseStage)){
 			group = Global.GROUP_caseHandleProcess; 
-		}else if("40".equals(caseStage)){
+		}else if(Global.CASE_STAGE_NOTIFY.equals(caseStage)){
 			group = Global.GROUP_caseNotifyProcess;
-		}else if("50".equals(caseStage)){
+		}else if(Global.CASE_STAGE_DECISION.equals(caseStage)){
 			group = Global.GROUP_caseDecisionProcess;
-		}else if("60".equals(caseStage)){
+		}else if(Global.CASE_STAGE_SETTLE.equals(caseStage)){
 			group = Global.GROUP_caseSettleProcess; 
-		}else if("70".equals(caseStage)){
+		}else if(Global.CASE_STAGE_FINISH.equals(caseStage)){
 			group = Global.GROUP_caseFinishProcess;
-		}else if("110".equals(caseStage)){
-			group = Global.GROUP_caseCancelProcess1;
-		}else if("120".equals(caseStage)){
+		}else if(Global.CASE_STAGE_CANCEL.equals(caseStage)){
+			if("jcksfzr".equals(roleEnname)){
+				group = Global.GROUP_caseCancelProcess2;
+			}else if("zdfzr".equals(roleEnname)){
+				group = Global.GROUP_caseCancelProcess3;
+			}else if("jld".equals(roleEnname)){
+				group = Global.GROUP_caseCancelProcess4;
+			}else{
+				group = Global.GROUP_caseCancelProcess1;
+			}
+			
+		}else if(Global.CASE_STAGE_SERIOUS.equals(caseStage)){
 			group = Global.GROUP_caseSeriousProcess;
-		}else if("210".equals(caseStage)){
+		}else if(Global.CASE_STAGE_TRANSFER.equals(caseStage)){
 			group = Global.GROUP_caseTransferProcess;
 		}
 		return group;
 	}
 	
-	public static String getProcessDefKeyByStage(String caseStage){
+	public static String getFirstTaskGroupByStage(String caseStage){
+		return getFirstTaskGroupByStage(caseStage, "");
+	}
+	
+	public static String getProcessDefKeyByStage(String caseStage, String roleEnname){
 		String processDefKey = "";
-		if("10".equals(caseStage)){
+		if(Global.CASE_STAGE_ACCEPTANCE.equals(caseStage)){
 			processDefKey = Global.PN_caseAcceptanceProcess;
-		}else if("20".equals(caseStage)){
+		}else if(Global.CASE_STAGE_INITIAL.equals(caseStage)){
 			processDefKey = Global.PN_caseInitialProcess;
-		}else if("30".equals(caseStage)){
+		}else if(Global.CASE_STAGE_HANDLE.equals(caseStage)){
 			processDefKey = Global.PN_caseHandleProcess; 
-		}else if("40".equals(caseStage)){
+		}else if(Global.CASE_STAGE_NOTIFY.equals(caseStage)){
 			processDefKey = Global.PN_caseNotifyProcess;
-		}else if("50".equals(caseStage)){
+		}else if(Global.CASE_STAGE_DECISION.equals(caseStage)){
 			processDefKey = Global.PN_caseDecisionProcess;
-		}else if("60".equals(caseStage)){
+		}else if(Global.CASE_STAGE_SETTLE.equals(caseStage)){
 			processDefKey = Global.PN_caseSettleProcess; 
-		}else if("70".equals(caseStage)){
+		}else if(Global.CASE_STAGE_FINISH.equals(caseStage)){
 			processDefKey = Global.PN_caseFinishProcess;
-		}else if("110".equals(caseStage)){
+		}else if(Global.CASE_STAGE_CANCEL.equals(caseStage)){
+			if("jcksfzr".equals(roleEnname)){
+				processDefKey = Global.PN_caseCancelProcess2;
+			}else if("zdfzr".equals(roleEnname)){
+				processDefKey = Global.PN_caseCancelProcess3;
+			}else if("jld".equals(roleEnname)){
+				processDefKey = Global.PN_caseCancelProcess4;
+			}else{
+				processDefKey = Global.PN_caseCancelProcess1;
+			}			
+			
+		}else if(Global.CASE_STAGE_SERIOUS.equals(caseStage)){
 			processDefKey = Global.PN_caseSeriousProcess;
-		}else if("120".equals(caseStage)){
-			processDefKey = Global.PN_caseCancelProcess1;
-		}else if("210".equals(caseStage)){
+		}else if(Global.CASE_STAGE_TRANSFER.equals(caseStage)){
 			processDefKey = Global.PN_caseTransferProcess;
 		}
 		return processDefKey;
+	}
+	
+	public static String getProcessDefKeyByStage(String caseStage){
+		return getProcessDefKeyByStage(caseStage, "");
 	}
 
 }
