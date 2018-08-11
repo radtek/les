@@ -168,7 +168,14 @@ public abstract class ExportBase<T> {
     	cell = PdfUtil.getContentCell("负责人", Element.ALIGN_LEFT, borderWidth, fontContent, minheight);
     	table.addCell(cell);
     	
-    	cell = PdfUtil.getContentCell(tcase.getOrgResponsiblePerson()+" ("+tcase.getOrgResponsiblePersonPost()+")", Element.ALIGN_LEFT, borderWidth, fontContent);
+    	StringBuffer buffer = new StringBuffer();
+    	buffer.append(tcase.getOrgResponsiblePerson());
+    	if(StringUtils.isNotEmpty(tcase.getOrgResponsiblePersonPost())){
+    		buffer.append(" ("+tcase.getOrgResponsiblePersonPost()+")");
+    	}
+    	String responsibleMan = buffer.toString();
+    	
+    	cell = PdfUtil.getContentCell(responsibleMan, Element.ALIGN_LEFT, borderWidth, fontContent);
     	table.addCell(cell); 
     	
     	cell = PdfUtil.getContentCell("住址", Element.ALIGN_LEFT, borderWidth, fontContent, minheight);

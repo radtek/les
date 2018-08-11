@@ -4,9 +4,11 @@
 package org.wxjs.les.modules.tcase.export;
 
 import java.io.OutputStream;
+import java.util.List;
 
 import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.PdfUtil;
+import org.wxjs.les.modules.base.entity.Signature;
 import org.wxjs.les.modules.base.export.ExportBase;
 import org.wxjs.les.modules.tcase.entity.CaseSerious;
 import org.wxjs.les.modules.tcase.entity.Tcase;
@@ -14,6 +16,7 @@ import org.wxjs.les.modules.tcase.entity.Tcase;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
+import com.lowagie.text.Image;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
@@ -66,7 +69,8 @@ public class CaseSeriousExport extends ExportBase<CaseSeriousExport> {
             
             String[] items;
            
-            items = new String[]{"时间", DateUtils.formatDate(this.caseSerious.getMeetingDate(), "yyyy-MM-dd HH:mm"),
+            items = new String[]{"时间", 
+            		DateUtils.formatDate(this.caseSerious.getMeetingDateFrom(), "yyyy-MM-dd HH:mm")+" 到 "+DateUtils.formatDate(this.caseSerious.getMeetingDateTo(), "yyyy-MM-dd HH:mm"),
             		"地点：", this.caseSerious.getMeetingAddress()};
             table = PdfUtil.generateTableRow(items, fontContent,
             		new float[]{0.1f, 0.4f, 0.1f, 0.4f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);           
@@ -116,25 +120,68 @@ public class CaseSeriousExport extends ExportBase<CaseSeriousExport> {
             		new float[]{0.1f, 0.4f, 0.1f, 0.15f, 0.1f, 0.15f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);
             document.add(table);
             
-            items = new String[]{"执法机构汇报案情", this.caseSerious.getCaseSummary()};
+            items = new String[]{PdfUtil.transferVertical("执法机构汇报案情", 2), this.caseSerious.getCaseSummary()};
             table = PdfUtil.generateTableRow(items, fontContent, 
             		new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 180f);
             document.add(table);
             
-            items = new String[]{"执法机构处罚建议", this.caseSerious.getPunishProposal()};
+            items = new String[]{PdfUtil.transferVertical("执法机构处罚建议", 2), this.caseSerious.getPunishProposal()};
             table = PdfUtil.generateTableRow(items, fontContent, 
             		new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 100f);
             document.add(table);
             
-            items = new String[]{"审查小组审查意见", this.caseSerious.getCheckOpinion()};
+            items = new String[]{PdfUtil.transferVertical("审查小组审查意见", 2), this.caseSerious.getCheckOpinion()};
             table = PdfUtil.generateTableRow(items, fontContent, 
             		new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 180f);
             document.add(table);
             
-            items = new String[]{"参加审查人员签名", ""};
-            table = PdfUtil.generateTableRow(items, fontContent, 
-            		new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 100f);
-            document.add(table);
+            //签字信息
+    		Signature signatureParam = new Signature(false);
+    		signatureParam.setProcInstId(this.tcase.getCaseProcess().getProcInsId());
+    		signatureParam.setTaskName("领导会签");
+
+    		List<Signature> signatures = signatureDao.findList(signatureParam);
+    		
+            table = new PdfPTable(2);
+            table.setWidths(new float[]{0.1f, 0.9f});
+            table.setWidthPercentage(tableWidth);
+
+    	
+        	cell = PdfUtil.getContentCell(PdfUtil.transferVertical("参加审查人员签名", 2), Element.ALIGN_CENTER, borderWidth, fontContent, 1, 1, 30);
+        	cell.setHorizontalAlignment(Element.ALIGN_CENTER); //水平居中
+        	cell.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直居中
+        	table.addCell(cell);
+
+        	//String date = "";
+        	int subtableCols = 4;
+        	if(signatures.size()>8){
+        		subtableCols = 5;
+        	}
+        	PdfPTable subtable = new PdfPTable(subtableCols);
+        	for(Signature sig : signatures){
+            	cell = new PdfPCell();
+            	cell.setBorderWidth(0);
+            	Image image = PdfUtil.getSignatureImage(sig.getSignature());
+
+            	cell.addElement(image);
+            	subtable.addCell(cell); 
+            	
+            	//date = DateUtil.formatDate(sig.getUpdateDate(), "yyyy年MM月dd日");
+        	}
+        	
+        	table.addCell(subtable);
+        	
+        	/*
+    		phrase = new Phrase(date, fontContent);
+    		cell = new PdfPCell(phrase);
+        	cell.setBorderWidth(borderWidth);
+        	cell.setHorizontalAlignment(Element.ALIGN_CENTER); //水平居中
+        	cell.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直居中
+        	
+        	table.addCell(cell);
+        	*/
+    		
+            document.add(table);            
 
 
 		}finally{

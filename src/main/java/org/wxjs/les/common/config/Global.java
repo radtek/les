@@ -201,6 +201,11 @@ public class Global {
     
     public static final String CASE_STAGE_TRANSFER = "210";
     
+    public static final String CASE_STATUS_NOSTART = "0";
+    public static final String CASE_STATUS_STARTED = "1";
+    public static final String CASE_STATUS_FINISHED = "2";
+    public static final String CASE_STATUS_CANCELED = "9";
+    
     public static final String PN_caseTransferProcess = "caseTransferProcess";
     
     public static final String PN_caseAcceptanceProcess = "caseAcceptanceProcess";
@@ -229,7 +234,7 @@ public class Global {
     public static final String GROUP_caseSettleProcess = "jcbar";
     public static final String GROUP_caseFinishProcess = "jcbar";
     
-    public static final String GROUP_caseSeriousProcess = "fgcfzr";
+    public static final String GROUP_caseSeriousProcess = "fgcblr";
     
     public static final String GROUP_caseCancelProcess1 = "jcbar";
     public static final String GROUP_caseCancelProcess2 = "jcksfzr";

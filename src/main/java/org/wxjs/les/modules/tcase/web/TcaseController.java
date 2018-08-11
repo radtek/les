@@ -763,7 +763,7 @@ public class TcaseController extends BaseController {
 				actTask.setTaskName(caseAct.getTask().getName());
 			}
 			
-			actTask.setProcInsId(caseAct.getTcase().getCaseProcess().getProcInstId());
+			actTask.setProcInsId(caseAct.getTcase().getCaseProcess().getProcInsId());
 			
 			actTask.setNextHandlers(tcase.getCaseProcess().getCaseHandler());
 			
@@ -857,6 +857,10 @@ public class TcaseController extends BaseController {
 			tabControl = "settleTab";
 		}else if(stage.equals(Global.CASE_STAGE_FINISH)){
 			tabControl = "finishTab";
+		}else if(stage.equals(Global.CASE_STAGE_CANCEL)){
+			tabControl = "cancelTab";
+		}else if(stage.equals(Global.CASE_STAGE_SERIOUS)){
+			tabControl = "seriousTab";
 		}
 		return tabControl;
 	}
@@ -868,7 +872,9 @@ public class TcaseController extends BaseController {
 		if (!beanValidator(model, caseAct)){
 			return infoTab(caseAct, model);
 		}
-		tcaseService.saveAndStartFlow(caseAct.getTcase());
+		//tcaseService.saveAndStartFlow(caseAct.getTcase());
+		tcaseService.saveProcess(caseAct.getTcase());
+		tcaseService.startWorkflow(caseAct.getTcase());
 		addMessage(redirectAttributes, "事件启动成功");
 		return "redirect:"+Global.getAdminPath()+"/task/todo";
 	}
@@ -940,7 +946,7 @@ public class TcaseController extends BaseController {
 			if(strs.length==1){
 				String group = pu.getNextTaskGroupText(actTask.getTaskId());
 				variables.put(group+"Assignee", strs[0]);				
-			}else if(strs.length>11){
+			}else if(strs.length>1){
 				List<String> assigneeList = Lists.newArrayList();
 				for(String str : strs){
 					assigneeList.add(str);
@@ -972,7 +978,7 @@ public class TcaseController extends BaseController {
 		
 		//update stage status if necessary
 		CaseProcess caseProcess = new CaseProcess();
-		caseProcess.setProcInstId(actTask.getProcInsId());
+		caseProcess.setProcInsId(actTask.getProcInsId());
 		if("pass".equals(actTask.getApprove())){
 			
 			//update opinion to signature

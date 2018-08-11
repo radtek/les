@@ -31,6 +31,7 @@
 		a.case_cause AS "caseCause",
 		a.case_transfer AS "caseTransfer",
 		a.transfer_case_id AS "transferCaseId",
+		a.status AS "status",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -228,6 +229,12 @@
 	<update id="updateTransferCaseId">
 		UPDATE tcase SET 	
 			transfer_case_id = #{transferCaseId}
+		WHERE id = #{id}
+	</update>	
+	
+	<update id="updateStatus">
+		UPDATE tcase SET 	
+			status = #{status}
 		WHERE id = #{id}
 	</update>		
 	

@@ -60,6 +60,8 @@ public class Tcase extends DataEntity<Tcase> {
 	private String caseTransfer;    //是否案源移交， 1：是案源移交
 	private String transferCaseId;  //移交后的case id
 	
+	private String status;
+	
 	private CaseProcess caseProcess; //
 	
 	private CaseAttach caseAttach; //
@@ -329,6 +331,14 @@ public class Tcase extends DataEntity<Tcase> {
 
 	public void setTransferCaseId(String transferCaseId) {
 		this.transferCaseId = transferCaseId;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public CaseProcess getCaseProcess() {

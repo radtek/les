@@ -24,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
 import org.wxjs.les.common.beanvalidator.BeanValidators;
 import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.Page;
@@ -35,6 +36,7 @@ import org.wxjs.les.common.web.BaseController;
 import org.wxjs.les.modules.sys.entity.Office;
 import org.wxjs.les.modules.sys.entity.Role;
 import org.wxjs.les.modules.sys.entity.User;
+import org.wxjs.les.modules.sys.service.OfficeService;
 import org.wxjs.les.modules.sys.service.SystemService;
 import org.wxjs.les.modules.sys.utils.UserUtils;
 
@@ -49,6 +51,9 @@ public class UserController extends BaseController {
 
 	@Autowired
 	private SystemService systemService;
+	
+	@Autowired
+	private OfficeService officeService;
 	
 	@ModelAttribute
 	public User get(@RequestParam(required=false) String id) {
@@ -90,6 +95,9 @@ public class UserController extends BaseController {
 		if (user.getOffice()==null || user.getOffice().getId()==null){
 			user.setOffice(UserUtils.getUser().getOffice());
 		}
+		if (StringUtils.isEmpty(user.getUserType())){
+			user.setUserType("1");
+		}		
 		model.addAttribute("user", user);
 		model.addAttribute("allRoles", systemService.findRoles());
 		return "modules/sys/userForm";
@@ -355,13 +363,26 @@ public class UserController extends BaseController {
 	@RequestMapping(value = "treeDataWithLoginName")
 	public List<Map<String, Object>> treeDataWithLoginName(@RequestParam(required=false) String officeId, HttpServletResponse response) {
 		List<Map<String, Object>> mapList = Lists.newArrayList();
+		Map<String, Object> map;
+		//add office
+		List<Office> officeList = officeService.findList(true);
+		for(Office o : officeList){
+			map = Maps.newHashMap();
+			map.put("id", o.getId());
+			map.put("loginName", "");
+			map.put("pId", o.getParentId());
+			map.put("name", StringUtils.replace(o.getName(), " ", ""));		
+			mapList.add(map);
+		}
+		
+		//add user
 		List<User> list = systemService.findUserByOfficeId(officeId);
 		for (int i=0; i<list.size(); i++){
 			User e = list.get(i);
-			Map<String, Object> map = Maps.newHashMap();
+			map = Maps.newHashMap();
 			map.put("id", e.getLoginName());
 			map.put("loginName", e.getLoginName());
-			map.put("pId", officeId);
+			map.put("pId", e.getOffice().getId());
 			map.put("name", StringUtils.replace(e.getName(), " ", ""));
 			mapList.add(map);
 		}

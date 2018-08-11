@@ -2,7 +2,7 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef">
   <process id="caseCancelProcess1" name="撤销流程-办案人发起" isExecutable="true">
     <startEvent id="start" name="Start"></startEvent>
-    <userTask id="sid-8A4472D0-CDFC-42C4-808D-76FE57E55826" name="办案人意见" activiti:candidateGroups="jcbar">
+    <userTask id="sid-8A4472D0-CDFC-42C4-808D-76FE57E55826" name="办案人意见" activiti:assignee="${assignee}" activiti:candidateGroups="jcbar">
       <multiInstanceLoopCharacteristics isSequential="false" activiti:collection="assigneeList" activiti:elementVariable="assignee"></multiInstanceLoopCharacteristics>
     </userTask>
     <sequenceFlow id="sid-60689434-EF4F-4210-A888-9C047100FA6C" sourceRef="start" targetRef="sid-8A4472D0-CDFC-42C4-808D-76FE57E55826"></sequenceFlow>
@@ -16,6 +16,9 @@
     <sequenceFlow id="sid-E0252BE5-CF9B-4E86-9A96-8346C9B9BAD7" sourceRef="sid-E2AF9AE3-1D2C-42A8-A85F-9EE0317DB275" targetRef="sid-C47DC249-F311-4B69-A5E0-CF054BA1472F"></sequenceFlow>
     <endEvent id="sid-619AB5A8-D242-4294-AC3D-8211F3FCA239" name="End"></endEvent>
     <sequenceFlow id="sid-7C0ACA4E-17A1-4D47-9CE0-74C10096919C" name="通过" sourceRef="exclusivegateway1" targetRef="sid-619AB5A8-D242-4294-AC3D-8211F3FCA239">
+      <extensionElements>
+        <activiti:executionListener event="take" class="org.wxjs.les.modules.tcase.listener.CaseCancelPassListener"></activiti:executionListener>
+      </extensionElements>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${jldOp=='pass'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="sid-275A8280-138C-4875-8068-BDFA8CA94F7C" name="通过" sourceRef="sid-60F5DD1C-C7B6-4E45-980F-9B6467D64C46" targetRef="sid-E2AF9AE3-1D2C-42A8-A85F-9EE0317DB275">
@@ -104,7 +107,7 @@
         <omgdi:waypoint x="970.0" y="190.0"></omgdi:waypoint>
         <omgdi:waypoint x="1010.0" y="189.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="24.0" x="972.0" y="198.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="972.0" y="198.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sid-275A8280-138C-4875-8068-BDFA8CA94F7C" id="BPMNEdge_sid-275A8280-138C-4875-8068-BDFA8CA94F7C">

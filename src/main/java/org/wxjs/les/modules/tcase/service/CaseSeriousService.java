@@ -3,20 +3,36 @@
  */
 package org.wxjs.les.modules.tcase.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.activiti.engine.IdentityService;
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
+import org.activiti.engine.impl.task.TaskDefinition;
+import org.activiti.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
+import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.service.CrudService;
-import org.wxjs.les.common.utils.Util;
+import org.wxjs.les.common.utils.StringUtils;
+import org.wxjs.les.modules.act.utils.ProcessUtils;
+import org.wxjs.les.modules.base.entity.ActTask;
 import org.wxjs.les.modules.sys.dao.UserDao;
 import org.wxjs.les.modules.sys.entity.User;
 import org.wxjs.les.modules.sys.utils.UserUtils;
+import org.wxjs.les.modules.tcase.entity.CaseProcess;
 import org.wxjs.les.modules.tcase.entity.CaseSerious;
-import org.wxjs.les.modules.tcase.dao.CaseAttachDao;
+import org.wxjs.les.modules.tcase.entity.Tcase;
+import org.wxjs.les.modules.tcase.utils.ProcessCommonUtils;
+import org.wxjs.les.modules.tcase.dao.CaseProcessDao;
 import org.wxjs.les.modules.tcase.dao.CaseSeriousDao;
+
+import com.google.common.collect.Lists;
 
 /**
  * 重大行政处罚Service
@@ -29,6 +45,17 @@ public class CaseSeriousService extends CrudService<CaseSeriousDao, CaseSerious>
 	
 	@Autowired
 	private	UserDao userDao;
+	
+	@Autowired
+	private	CaseProcessDao caseProcessDao;
+	
+	@Autowired
+	IdentityService identityService;
+	@Autowired
+	RuntimeService runtimeService;
+	
+	@Autowired
+	TaskService taskService;
 
 	public CaseSerious get(String id) {
 		CaseSerious entity = super.get(id);
@@ -98,5 +125,39 @@ public class CaseSeriousService extends CrudService<CaseSeriousDao, CaseSerious>
 	public void delete(CaseSerious caseSerious) {
 		super.delete(caseSerious);
 	}
+	
+	@Transactional(readOnly = false)
+	public ProcessInstance startWorkflow(Tcase tcase){
+		
+		User user = UserUtils.getUser();
+		
+		String processDefKey = ProcessCommonUtils.getProcessDefKeyByStage(Global.CASE_STAGE_SERIOUS);
+		
+		logger.debug("processDefKey:{}", processDefKey);
+		
+		String businesskey = tcase.getId()+":"+tcase.getCaseProcess().getId();
+		
+		String userid = user.getLoginName();
+		
+		Map<String,Object> variables=new HashMap<String, Object>();
+		variables.put("starter", userid);
+		
+		String assignee = tcase.getCaseProcess().getCaseHandler(); //分配任务的人员
+		
+		variables.put("fgcblrAssignee", assignee);
+		
+		identityService.setAuthenticatedUserId(userid);
+		ProcessInstance instance = runtimeService.startProcessInstanceByKey(processDefKey, businesskey, variables);
+		
+		//set process instance id
+		String procInstId = instance.getId();
+		String procDefId = instance.getProcessDefinitionId();
+		tcase.getCaseProcess().setProcInsId(procInstId);
+		tcase.getCaseProcess().setProcDefId(procDefId);
+		caseProcessDao.updateProcInfo(tcase.getCaseProcess());
+		
+		return instance;		
+	}
+
 	
 }

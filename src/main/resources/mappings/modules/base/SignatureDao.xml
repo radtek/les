@@ -38,11 +38,9 @@
 			<if test="id != null and id != ''">
 				AND a.id = #{id}
 			</if>
-			<if test="procInstId != null and procInstId != ''">
-				AND a.proc_inst_id = #{procInstId}
-			</if>	
+			AND a.proc_inst_id = #{procInstId}	
 			<if test="taskName != null and taskName != ''">
-				AND a.task_name = #{taskName}
+				AND a.task_name like concat(#{taskName},'%')
 			</if>					
 		</where>
 		<choose>

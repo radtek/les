@@ -60,6 +60,12 @@ VALUES
 ('case_notify_type_1', '1', '锡建监权告字', 'case_notify_type', 'case_notify_type', 10, '0','1',now(),'1',now()),
 ('case_notify_type_2', '2', '锡建监听告字', 'case_notify_type', 'case_notify_type', 20, '0','1',now(),'1',now());
 
+delete from sys_dict where `type`= 'sys_user_type';
+INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `parent_id`, `create_by`,`create_date`,`update_by`,`update_date`) 
+VALUES 
+('sys_user_type_1', '1', '普通用户', 'sys_user_type', '用户类型', 10, '0','1',now(),'1',now()),
+('sys_user_type_9', '9', '系统管理', 'sys_user_type', '用户类型', 90, '0','1',now(),'1',now());
+
 
 
 

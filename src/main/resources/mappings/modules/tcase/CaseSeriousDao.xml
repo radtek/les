@@ -5,7 +5,8 @@
 	<sql id="caseSeriousColumns">
 		a.id AS "id",
 		a.case_id AS "caseId",
-		a.meeting_date AS "meetingDate",
+		a.meeting_date_from AS "meetingDateFrom",
+		a.meeting_date_to AS "meetingDateTo",
 		a.meeting_address AS "meetingAddress",
 		a.master AS "master.loginName",
 		a.voter AS "voter.loginName",
@@ -78,12 +79,13 @@
 	<insert id="insert">
 		INSERT INTO tcase_serious(
 			case_id,
-			meeting_date,
+			meeting_date_from,
+			meeting_date_to,			
 			meeting_address,
-			master.loginName,
-			voter.loginName,
+			master,
+			voter,
 			voter_add,
-			attendee.loginName,
+			attendee,
 			attendee_add,
 			recorder,
 			case_summary,
@@ -97,12 +99,13 @@
 			del_flag
 		) VALUES (
 			#{caseId},
-			#{meetingDate},
+			#{meetingDateFrom},
+			#{meetingDateTo},
 			#{meetingAddress},
-			#{master},
-			#{voter},
+			#{master.loginName},
+			#{voter.loginName},
 			#{voterAdd},
-			#{attendee},
+			#{attendee.loginName},
 			#{attendeeAdd},
 			#{recorder.loginName},
 			#{caseSummary},
@@ -119,7 +122,8 @@
 	
 	<update id="update">
 		UPDATE tcase_serious SET 	
-			meeting_date = #{meetingDate},
+			meeting_date_from = #{meetingDateFrom},
+			meeting_date_to = #{meetingDateTo},
 			meeting_address = #{meetingAddress},
 			master = #{master.loginName},
 			voter = #{voter.loginName},

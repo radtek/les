@@ -85,21 +85,21 @@ public class CaseDecisionLaunchExport extends
 			items = new String[] { "文稿\n名称", "行政处罚决定书" };
 			table = PdfUtil.generateTableRow(items, fontContent, new float[] {
 					0.1f, 0.9f }, tableWidth, Element.ALIGN_LEFT, borderWidth,
-					40, true);
+					40);
 			document.add(table);
 
 			// partyName 主送
 			items = new String[] { "主送", this.caseDecision.getPartyName() };
 			table = PdfUtil.generateTableRow(items, fontContent, new float[] {
 					0.1f, 0.9f }, tableWidth, Element.ALIGN_LEFT, borderWidth,
-					40, true);
+					40);
 			document.add(table);
 
 			// 备案单位
 			items = new String[] { "备案\n单位", this.caseDecision.getRecordOrg() };
 			table = PdfUtil.generateTableRow(items, fontContent, new float[] {
 					0.1f, 0.9f }, tableWidth, Element.ALIGN_LEFT, borderWidth,
-					40, true);
+					40);
 			document.add(table);
 			// 编号
 			String type = this.caseDecision.getDecisionType();
@@ -113,7 +113,7 @@ public class CaseDecisionLaunchExport extends
 			items = new String[] { "编号", name };
 			table = PdfUtil.generateTableRow(items, fontContent, new float[] {
 					0.1f, 0.9f }, tableWidth, Element.ALIGN_LEFT, borderWidth,
-					40, true);
+					40);
 			document.add(table);
 
 			// 拟稿日期 、印数
@@ -122,7 +122,7 @@ public class CaseDecisionLaunchExport extends
 					this.caseDecision.getPrintCount() };
 			table = PdfUtil.generateTableRow(items, fontContent, new float[] {
 					0.1f, 0.4f, 0.1f, 0.4f }, tableWidth, Element.ALIGN_LEFT,
-					borderWidth, 40, true);
+					borderWidth, 40);
 			document.add(table);
 
 			// 承办部门
@@ -130,13 +130,13 @@ public class CaseDecisionLaunchExport extends
 					this.caseDecision.getDestinationAddress() };
 			table = PdfUtil.generateTableRow(items, fontContent, new float[] {
 					0.1f, 0.9f }, tableWidth, Element.ALIGN_LEFT, borderWidth,
-					40, true);
+					40);
 			document.add(table);
 
 			// 打印、校对
 			Signature signatureParam = new Signature(false);
 			signatureParam.setProcInstId(this.tcase.getCaseProcess()
-					.getProcInstId());
+					.getProcInsId());
 			List<Signature> signatures = signatureDao.findList(signatureParam);
 
 			table = new PdfPTable(4);

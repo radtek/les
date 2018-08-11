@@ -42,7 +42,7 @@
     
     <les:caseTab tab="finish" caseActAttr="${caseAct}"></les:caseTab> 
     
-    <les:caseProcessTag></les:caseProcessTag>
+    <les:caseProcessTag hideCaseSummary="1"></les:caseProcessTag>
     
 	<form:form id="inputForm" modelAttribute="caseFinish" action="${ctx}/tcase/caseFinish/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>

@@ -27,7 +27,7 @@ public class CaseNotify extends DataEntity<CaseNotify> {
 	private String caseId;		// 案件编号
 	private String notifyType; 
 	private String year;		// 年份
-	private String seq;		// 流水号
+	private String seq = "";		// 流水号
 	private String partyName;		// 名称
 	private String content;		// 正文
 	private String launchDept;		// 发证部门

@@ -22,7 +22,7 @@
 			<include refid="caseCancelColumns"/>
 		FROM tcase_cancel a
 		<include refid="caseCancelJoins"/>
-		WHERE a.id = #{id}
+		WHERE case_id = #{caseId}
 	</select>
 	
 	<select id="findList" resultType="CaseCancel">
@@ -93,13 +93,13 @@
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks}
-		WHERE id = #{id}
+		WHERE case_id = #{caseId}
 	</update>
 	
 	<update id="delete">
 		UPDATE tcase_cancel SET 
 			del_flag = #{DEL_FLAG_DELETE}
-		WHERE id = #{id}
+		WHERE case_id = #{caseId}
 	</update>
 	
 </mapper>

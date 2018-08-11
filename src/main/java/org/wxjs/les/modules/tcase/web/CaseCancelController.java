@@ -14,13 +14,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.web.BaseController;
+import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.StringUtils;
 import org.wxjs.les.modules.tcase.entity.CaseCancel;
+import org.wxjs.les.modules.tcase.entity.Tcase;
+import org.wxjs.les.modules.tcase.export.CaseCancelExport;
 import org.wxjs.les.modules.tcase.service.CaseCancelService;
+import org.wxjs.les.modules.tcase.service.TcaseService;
 
 /**
  * 案件撤销Controller
@@ -34,6 +37,9 @@ public class CaseCancelController extends BaseController {
 	@Autowired
 	private CaseCancelService caseCancelService;
 	
+	@Autowired
+	private TcaseService tcaseService;
+	
 	@ModelAttribute
 	public CaseCancel get(@RequestParam(required=false) String id) {
 		CaseCancel entity = null;
@@ -46,7 +52,7 @@ public class CaseCancelController extends BaseController {
 		return entity;
 	}
 	
-	@RequiresPermissions("tcase:caseCancel:view")
+	@RequiresPermissions("case:tcase:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(CaseCancel caseCancel, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<CaseCancel> page = caseCancelService.findPage(new Page<CaseCancel>(request, response), caseCancel); 
@@ -54,14 +60,14 @@ public class CaseCancelController extends BaseController {
 		return "modules/tcase/caseCancelList";
 	}
 
-	@RequiresPermissions("tcase:caseCancel:view")
+	@RequiresPermissions("case:tcase:view")
 	@RequestMapping(value = "form")
 	public String form(CaseCancel caseCancel, Model model) {
 		model.addAttribute("caseCancel", caseCancel);
 		return "modules/tcase/caseCancelForm";
 	}
 
-	@RequiresPermissions("tcase:caseCancel:edit")
+	@RequiresPermissions("case:tcase:edit")
 	@RequestMapping(value = "save")
 	public String save(CaseCancel caseCancel, Model model, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, caseCancel)){
@@ -72,12 +78,32 @@ public class CaseCancelController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/case/tcase/cancelTab?"+caseCancel.getParamUri();		
 	}
 	
-	@RequiresPermissions("tcase:caseCancel:edit")
+	@RequiresPermissions("case:tcase:edit")
 	@RequestMapping(value = "delete")
 	public String delete(CaseCancel caseCancel, RedirectAttributes redirectAttributes) {
 		caseCancelService.delete(caseCancel);
 		addMessage(redirectAttributes, "删除案件撤销成功");
 		return "redirect:"+Global.getAdminPath()+"/tcase/caseCancel/?repage";
+	}
+	
+	@RequestMapping(value = "exportPDF")
+	public String exportPDF(CaseCancel entity, HttpServletResponse response,  Model model, RedirectAttributes redirectAttributes) {
+		
+		CaseCancel caseCancel = caseCancelService.get(entity.getCaseId());
+		
+		Tcase tcase = tcaseService.getCaseAndProcess(entity.getCaseId(), Global.CASE_STAGE_CANCEL);	
+		
+		try {
+            String fileName = "案件撤销"+DateUtils.getDate("yyyyMMddHHmmss")+".pdf";
+            CaseCancelExport export = new CaseCancelExport(tcase, caseCancel);
+            export.write(response, fileName);
+    		return null;
+		} catch (Exception e) {
+			logger.error("导出失败", e);
+			addMessage(redirectAttributes, "导出失败！失败信息："+e.getMessage());
+		}		
+
+		return "redirect:"+Global.getAdminPath()+"/case/tcase/cancelTab?"+entity.getParamUri();
 	}
 
 }

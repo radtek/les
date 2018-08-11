@@ -5,7 +5,11 @@
     <userTask id="sid-8A4472D0-CDFC-42C4-808D-76FE57E55826" name="办案人意见" activiti:assignee="${assignee}" activiti:candidateGroups="jcbar">
       <multiInstanceLoopCharacteristics isSequential="false" activiti:collection="assigneeList" activiti:elementVariable="assignee"></multiInstanceLoopCharacteristics>
     </userTask>
-    <sequenceFlow id="sid-60689434-EF4F-4210-A888-9C047100FA6C" sourceRef="start" targetRef="sid-8A4472D0-CDFC-42C4-808D-76FE57E55826"></sequenceFlow>
+    <sequenceFlow id="sid-60689434-EF4F-4210-A888-9C047100FA6C" sourceRef="start" targetRef="sid-8A4472D0-CDFC-42C4-808D-76FE57E55826">
+      <extensionElements>
+        <activiti:executionListener event="take" class="org.wxjs.les.modules.tcase.listener.CaseStartListener"></activiti:executionListener>
+      </extensionElements>
+    </sequenceFlow>
     <exclusiveGateway id="sid-44B65C17-2439-4C5E-B404-8D5C1B3CD22A"></exclusiveGateway>
     <sequenceFlow id="sid-286ED97C-F79E-4B7C-AD6F-E16DE89A069A" sourceRef="sid-8A4472D0-CDFC-42C4-808D-76FE57E55826" targetRef="sid-44B65C17-2439-4C5E-B404-8D5C1B3CD22A"></sequenceFlow>
     <userTask id="sid-B61C936E-F27C-4023-BCB0-CDD43CF27CFA" name="监察科室负责人意见" activiti:assignee="${jcksfzrAssignee}" activiti:candidateGroups="jcksfzr"></userTask>

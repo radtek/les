@@ -13,6 +13,7 @@ import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.impl.RepositoryServiceImpl;
+import org.activiti.engine.impl.bpmn.behavior.ParallelMultiInstanceBehavior;
 import org.activiti.engine.impl.bpmn.behavior.UserTaskActivityBehavior;
 import org.activiti.engine.impl.javax.el.ExpressionFactory;
 import org.activiti.engine.impl.javax.el.ValueExpression;
@@ -135,8 +136,8 @@ public class ProcessUtils {
 		if ("userTask".equals(activityImpl.getProperty("type"))
 				&& !activityId.equals(activityImpl.getId())) {
 			// 获取该节点下一个节点信息
-			TaskDefinition taskDefinition = ((UserTaskActivityBehavior) activityImpl
-					.getActivityBehavior()).getTaskDefinition();
+			TaskDefinition taskDefinition = ((UserTaskActivityBehavior) activityImpl.getActivityBehavior()).getTaskDefinition();
+			
 			return taskDefinition;
 		} else {
 			// 获取节点所有流向线路信息
@@ -238,6 +239,7 @@ public class ProcessUtils {
 
 	}
 	
+	
 	private String nextConditionTexts(ActivityImpl activityImpl,
 			String activityId, String processInstanceId) {
 		
@@ -278,6 +280,11 @@ public class ProcessUtils {
 
 	}
 	
+	/**
+	 * 获取条件变量
+	 * @param taskId
+	 * @return
+	 */
 	public String getConditionVariable(String taskId){
 
 		ProcessDefinitionEntity processDefinitionEntity = null;
@@ -329,6 +336,11 @@ public class ProcessUtils {
 		return variable;
 	}
 	
+	/**
+	 * 获取条件表达式
+	 * @param taskId
+	 * @return
+	 */
 	public String getConditionTexts(String taskId){
 
 		ProcessDefinitionEntity processDefinitionEntity = null;
@@ -439,6 +451,11 @@ public class ProcessUtils {
 		return taskDef;
 	}
 	
+	/**
+	 * 获取本关关处理人角色
+	 * @param taskId
+	 * @return
+	 */
 	public String getTaskGroupText(String taskId) {
 		String rst = "";
 
@@ -459,6 +476,11 @@ public class ProcessUtils {
 		return rst;
 	}
 
+	/**
+	 * 获取下一关处理人角色
+	 * @param taskId
+	 * @return
+	 */
 	public String getNextTaskGroupText(String taskId) {
 		String rst = "";
 

@@ -26,7 +26,7 @@ public class CaseDecision extends DataEntity<CaseDecision> {
 	private String caseId;		// 案件编号
 	private String decisionType;		// 处罚书类型
 	private String year;		// 年份
-	private String seq;		// 流水号
+	private String seq = "";		// 流水号
 	private String recordOrg;		// 备案单位
 	private String compileDate;		// 拟稿日期
 	private String printCount;		// 印数

@@ -29,7 +29,7 @@ public class CaseProcess extends DataEntity<CaseProcess> {
 	private String caseHandler;		// 办案人
 	private String caseStage;		// 事项类型
 	private String caseStageStatus;		// 事项类型状态
-	private String procInstId;		// 受理流程号
+	private String procInsId;		// 受理流程号
 
 	private List<User> availableHandlers = Lists.newArrayList();
 	private boolean multiple = false;
@@ -133,12 +133,12 @@ public class CaseProcess extends DataEntity<CaseProcess> {
 	}
 	
 	@Length(min=0, max=64, message="受理流程号长度必须介于 0 和 64 之间")
-	public String getProcInstId() {
-		return procInstId;
+	public String getProcInsId() {
+		return procInsId;
 	}
 
-	public void setProcInstId(String procInstId) {
-		this.procInstId = procInstId;
+	public void setProcInsId(String procInsId) {
+		this.procInsId = procInsId;
 	}
 	
 	public boolean isIndependentFlow(){

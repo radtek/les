@@ -28,13 +28,13 @@
 		    });
 		    
 		    $('#btnStart').click(function() {
-				$("#processForm").attr("action","${ctx}/case/tcase/saveAndStart");
+				$("#processForm").attr("action","${ctx}/tcase/caseSerious/saveAndStart");
 				$("#processForm").submit();		    	
 		    });		    
 		});
 	</script>
 
-	<form:form id="processForm" modelAttribute="caseAct" action="${ctx}/case/tcase/saveProcess" method="post" class="form-horizontal">
+	<form:form id="processForm" modelAttribute="caseAct" action="" method="post" class="form-horizontal">
 		<form:hidden path="tcase.id"/>
 		
 		<form:hidden path="operateType"/>

@@ -135,5 +135,15 @@ public class ActTask {
 	public boolean getNeedReturnButton(){
 		return this.nextConditionTexts.contains("'return'");
 	}
+	
+	public String getCaseIdFromBusinesskey(){
+		String rst = "";
+		String[] strs = this.businesskey.split(":");
+		if(strs.length>0){
+			rst = strs[0];
+		}
+		
+		return rst;
+	}
 
 }

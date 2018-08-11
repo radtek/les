@@ -9,7 +9,7 @@
 		a.case_handler AS "caseHandler",
 		a.case_stage AS "caseStage",
 		a.case_stage_status AS "caseStageStatus",
-		a.proc_inst_id AS "procInstId",
+		a.proc_inst_id AS "procInsId",
 		a.proc_def_id AS "procDefId",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
@@ -106,7 +106,7 @@
 			#{caseHandler},
 			#{caseStage},
 			#{caseStageStatus},
-			#{procInstId},
+			#{procInsId},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -163,7 +163,7 @@
 			case_handler = #{caseHandler},
 			case_stage = #{caseStage},
 			case_stage_status = #{caseStageStatus},
-			proc_inst_id = #{procInstId},
+			proc_inst_id = #{procInsId},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks}
@@ -173,7 +173,7 @@
 	<update id="updateProcInfo">
 		UPDATE tcase_process SET 
 			case_stage_status = '1',
-			proc_inst_id = #{procInstId},
+			proc_inst_id = #{procInsId},
 			proc_def_id = #{procDefId}
 		WHERE id = #{id}
 	</update>
@@ -182,7 +182,7 @@
 		UPDATE tcase_process SET 
 			case_stage_status = #{caseStageStatus},
 			update_date = #{updateDate}			
-		WHERE proc_inst_id = #{procInstId}
+		WHERE proc_inst_id = #{procInsId}
 	</update>
 		
 	<update id="delete">

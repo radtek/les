@@ -107,7 +107,7 @@ public class CaseFinishExport extends ExportBase<CaseFinishExport> {
         	table.addCell(cell);
            
             Signature signatureParam = new Signature(false);
-    		signatureParam.setProcInstId(this.tcase.getCaseProcess().getProcInstId());
+    		signatureParam.setProcInstId(this.tcase.getCaseProcess().getProcInsId());
     		List<Signature> signatures = signatureDao.findList(signatureParam);
              cell = new PdfPCell();
         	cell.setBorderWidth(0);
@@ -131,7 +131,7 @@ public class CaseFinishExport extends ExportBase<CaseFinishExport> {
         	table.addCell(cell);
            
         	signatureParam = new Signature(false);
-    		signatureParam.setProcInstId(this.tcase.getCaseProcess().getProcInstId());
+    		signatureParam.setProcInstId(this.tcase.getCaseProcess().getProcInsId());
     		signatures = signatureDao.findList(signatureParam);
              cell = new PdfPCell();
         	cell.setBorderWidth(0);

@@ -73,7 +73,7 @@ public class CaseHandleApproveExport extends ExportBase<CaseHandleApproveExport>
             
         	//案由等
             items = new String[]{"案由", this.tcase.getCaseCause(), "承办\n部门", Global.getConfig("CBBM")};
-            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.1f, 0.5f, 0.1f, 0.3f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 30, true);
+            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.1f, 0.5f, 0.1f, 0.3f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 30);
             document.add(table);            
            
             //当事人信息
@@ -90,12 +90,12 @@ public class CaseHandleApproveExport extends ExportBase<CaseHandleApproveExport>
             	font = fontContentTiny;
             }
             
-            table = PdfUtil.generateTableRow(items, font,  new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 250, true);
+            table = PdfUtil.generateTableRow(items, font,  new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 250);
             document.add(table);
            
             //签字信息
             
-            table = this.getSignatureTable(this.tcase.getCaseProcess().getProcInstId());
+            table = this.getSignatureTable(this.tcase.getCaseProcess().getProcInsId());
             document.add(table);            
 
 

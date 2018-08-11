@@ -348,6 +348,9 @@ public class Util {
 	}
 	
 	public static String fillZeroPre(String str, int len){
+		if(StringUtils.isEmpty(str)){
+			return "";
+		}
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(str);
 		while(buffer.length() < len){

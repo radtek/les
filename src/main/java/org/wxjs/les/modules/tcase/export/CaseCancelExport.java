@@ -7,17 +7,19 @@ import java.io.OutputStream;
 import java.util.List;
 
 import org.apache.commons.httpclient.util.DateUtil;
-import org.apache.commons.lang3.StringUtils;
+import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.PdfUtil;
 import org.wxjs.les.modules.base.entity.Signature;
 import org.wxjs.les.modules.base.export.ExportBase;
-import org.wxjs.les.modules.tcase.entity.CaseHandle;
+import org.wxjs.les.modules.tcase.entity.CaseCancel;
+import org.wxjs.les.modules.tcase.entity.CaseDecision;
 import org.wxjs.les.modules.tcase.entity.Tcase;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
+import com.lowagie.text.Font;
 import com.lowagie.text.Image;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
@@ -27,20 +29,21 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
 /**
- * 案件调查报告
+ * 案件撤销
  * @author GLQ
  *
  */
-public class CaseHandleReportExport extends ExportBase<CaseHandleReportExport> {
+public class CaseCancelExport extends ExportBase<CaseCancelExport> {
 
 	private Tcase tcase;
-	private CaseHandle caseHandle;
+	private CaseCancel caseCancel;
 	
-	public CaseHandleReportExport(Tcase tcase, CaseHandle caseHandle){
+	public CaseCancelExport(Tcase tcase, CaseCancel caseCancel){
 		this.tcase = tcase;
-		this.caseHandle = caseHandle;
+		this.caseCancel = caseCancel;
 	}
 	
+
 	public void generate(OutputStream os) throws DocumentException{
 		
 		Document document = null;
@@ -80,7 +83,7 @@ public class CaseHandleReportExport extends ExportBase<CaseHandleReportExport> {
         	document.add(table);  
         	
         	//内容
-            items = new String[]{"报\n告\n内\n容", this.caseHandle.getInvestReport()};
+            items = new String[]{"报\n告\n内\n容", this.caseCancel.getContent()};
             table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 550);
             document.add(table);
            

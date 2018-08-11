@@ -207,11 +207,16 @@
 	<!-- 根据OfficeId获取用户（树查询用户时用） -->
 	<select id="findUserByOfficeId" resultType="User" useCache="true">
 		SELECT
-			a.id, a.name, a.login_name
+			<include refid="userColumns"/>
 		FROM sys_user a
+		<include refid="userJoins"/>
 		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		AND a.user_type !='9'
 		<if test="office != null and office.id != null and office.id != ''">
-			AND a.office_id = #{office.id}
+			AND (o.id = #{office.id} OR o.parent_ids LIKE 
+					<if test="dbName == 'oracle'">'%,'||#{office.id}||',%')</if>
+					<if test="dbName == 'mssql'">'%,'+#{office.id}+',%')</if>
+					<if test="dbName == 'mysql'">CONCAT('%,', #{office.id}, ',%'))</if>
 		</if>		
 			
 		ORDER BY a.name

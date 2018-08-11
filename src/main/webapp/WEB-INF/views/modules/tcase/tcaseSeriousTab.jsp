@@ -42,7 +42,19 @@
     
     <les:caseTab tab="serious" caseActAttr="${caseAct}"></les:caseTab> 
     
-    <les:caseProcessTag></les:caseProcessTag>
+    <c:choose>
+       <c:when test="${caseAct.tcase.caseProcess.caseStageStatus eq '1' and not empty caseAct.task}">
+         <h5>&nbsp;流程处理</h5>
+         <les:processHandleTag handleAction="${ctx}/tcase/caseSerious/handletask"
+         availableHandlers="${caseAct.tcase.caseProcess.availableHandlers}" 
+         actTaskAttr="${actTask}" >
+         </les:processHandleTag>
+       </c:when>       
+       <c:otherwise>
+       </c:otherwise>
+    </c:choose>    
+
+    <les:caseProcessTag4Serious hideCaseSummary="1"></les:caseProcessTag4Serious>
     
 	<form:form id="inputForm" modelAttribute="caseSerious" action="${ctx}/tcase/caseSerious/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
@@ -53,9 +65,12 @@
 		<div class="control-group">
 			<label class="control-label">时间：</label>
 			<div class="controls">
-				<input name="meetingDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate "
-					value="<fmt:formatDate value="${caseSerious.meetingDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
-					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
+				<input name="meetingDateFrom" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate "
+					value="<fmt:formatDate value="${caseSerious.meetingDateFrom}" pattern="yyyy-MM-dd HH:mm"/>"
+					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',isShowClear:false});"/>到
+				<input name="meetingDateTo" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate "
+					value="<fmt:formatDate value="${caseSerious.meetingDateTo}" pattern="yyyy-MM-dd HH:mm"/>"
+					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',isShowClear:false});"/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -126,7 +141,6 @@
 			<shiro:hasPermission name="case:tcase:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保 存"/>&nbsp;
 			<input id="btnExport" class="btn btn-primary" type="button" value="无锡市建设局重大行政处罚审查表"/>&nbsp;
 			</shiro:hasPermission>
-			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>
 </body>

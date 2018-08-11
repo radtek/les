@@ -304,7 +304,7 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 		tcase.getCaseProcess().setCaseStage(Global.CASE_STAGE_ACCEPTANCE);
 		tcase.getCaseProcess().setCaseStageStatus("0");
 		tcase.getCaseProcess().setProcDefId("");
-		tcase.getCaseProcess().setProcInstId("");
+		tcase.getCaseProcess().setProcInsId("");
 		
 		this.save(tcase);
 		
@@ -346,7 +346,7 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 		//set process instance id
 		String procInstId = instance.getId();
 		String procDefId = instance.getProcessDefinitionId();
-		tcase.getCaseProcess().setProcInstId(procInstId);
+		tcase.getCaseProcess().setProcInsId(procInstId);
 		tcase.getCaseProcess().setProcDefId(procDefId);
 		caseProcessDao.updateProcInfo(tcase.getCaseProcess());
 		

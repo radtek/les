@@ -42,6 +42,7 @@ CREATE TABLE `tcase` (
   `case_cause` varchar(200) NOT NULL COMMENT '案由',
   `case_transfer` char(1) DEFAULT '0' COMMENT '是否案源, 1：表示为案源',
   `transfer_case_id` varchar(32) NULL COMMENT '移交后的case_id',
+  `status` varchar(32) default '0' COMMENT '状态',
   `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
   `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_by` varchar(32) DEFAULT NULL COMMENT '更新者',
@@ -235,7 +236,8 @@ DROP TABLE IF EXISTS `tcase_serious`;
 CREATE TABLE `tcase_serious` (
   `id` int(11) NOT NULL auto_increment  COMMENT '编号',
   `case_id` varchar(32) NOT NULL COMMENT '案件编号',
-  `meeting_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '时间',
+  `meeting_date_from` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '开始时间',
+  `meeting_date_to` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '结束时间',
   `meeting_address` varchar(64) DEFAULT NULL COMMENT '地点',
   `master` varchar(64) DEFAULT NULL COMMENT '主持人',
   `voter` varchar(128) DEFAULT NULL COMMENT '参会人员',

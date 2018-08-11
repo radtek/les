@@ -67,22 +67,19 @@
 			<div class="controls controls-tight">
 			    
 		       <form:checkboxes path="tcase.caseProcess.caseHandlerList" items="${caseAct.tcase.caseProcess.availableHandlers}" itemLabel="name" itemValue="loginName" htmlEscape="false" class="required"/>
-		       <span class="help-inline"><font color="red">*</font> </span>			              			
-				
+		       <span class="help-inline"><font color="red">*</font> </span>	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		              			
+				<c:if test="${caseAct.tcase.caseProcess.editable}">
+				    <shiro:hasPermission name="case:tcase:edit"><input id="btnSaveProcess" class="btn btn-primary" type="button" value="保 存"/>&nbsp;
+					<c:if test="${caseAct.tcase.caseProcess.startable}">
+					   <input id="btnStart" class="btn btn-primary" type="button" value="启动事件"/>&nbsp;
+					   
+					</c:if>
+					</shiro:hasPermission>
+					
+				</c:if>	
+				<input id="btnApproveTable" class="btn btn-primary" type="button" value="案件立案审批表"/>&nbsp;			
 			</div>
 		        </div>
 		    </div>
-		</div>
-		
-		<div class="form-actions" style="margin-top:0px;">
-		<c:if test="${caseAct.tcase.caseProcess.editable}">
-			<shiro:hasPermission name="case:tcase:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保 存"/>&nbsp;
-			<c:if test="${caseAct.tcase.caseProcess.startable}">
-			   <input id="btnStart" class="btn btn-primary" type="button" value="启动事件"/>&nbsp;
-			</c:if>
-			
-			</shiro:hasPermission>
-		</c:if>
-		    <input id="btnApproveTable" class="btn btn-primary" type="button" value="案件立案审批表"/>&nbsp;
 		</div>
 	</form:form>

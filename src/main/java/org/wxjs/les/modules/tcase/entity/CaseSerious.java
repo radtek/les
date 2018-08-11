@@ -22,7 +22,8 @@ public class CaseSerious extends DataEntity<CaseSerious> {
 	
 	private static final long serialVersionUID = 1L;
 	private String caseId;		// 案件编号
-	private Date meetingDate;		// 时间
+	private Date meetingDateFrom;		// 时间
+	private Date meetingDateTo;		// 时间
 	private String meetingAddress;		// 地点
 	private User master;		// 主持人
 	private User voter;		// 参会人员
@@ -50,7 +51,8 @@ public class CaseSerious extends DataEntity<CaseSerious> {
 		
 		if(tcase!=null){
 			entity.setCaseId(tcase.getId());
-			entity.setMeetingDate(Calendar.getInstance().getTime());
+			entity.setMeetingDateFrom(Calendar.getInstance().getTime());
+			entity.setMeetingDateTo(Calendar.getInstance().getTime());
 		}
 		
 		return entity;
@@ -66,12 +68,21 @@ public class CaseSerious extends DataEntity<CaseSerious> {
 	}
 	
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	public Date getMeetingDate() {
-		return meetingDate;
+	public Date getMeetingDateFrom() {
+		return meetingDateFrom;
 	}
 
-	public void setMeetingDate(Date meetingDate) {
-		this.meetingDate = meetingDate;
+	public void setMeetingDateFrom(Date meetingDateFrom) {
+		this.meetingDateFrom = meetingDateFrom;
+	}
+	
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	public Date getMeetingDateTo() {
+		return meetingDateTo;
+	}
+
+	public void setMeetingDateTo(Date meetingDateTo) {
+		this.meetingDateTo = meetingDateTo;
 	}
 	
 	@Length(min=0, max=64, message="地点长度必须介于 0 和 64 之间")
@@ -82,9 +93,7 @@ public class CaseSerious extends DataEntity<CaseSerious> {
 	public void setMeetingAddress(String meetingAddress) {
 		this.meetingAddress = meetingAddress;
 	}
-	
 
-	
 	public User getMaster() {
 		return master;
 	}

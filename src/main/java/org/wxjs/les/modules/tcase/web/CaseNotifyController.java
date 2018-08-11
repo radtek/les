@@ -115,7 +115,7 @@ public class CaseNotifyController extends BaseController {
 		Tcase tcase = tcaseService.getCaseAndProcess(entity.getCaseId(), Global.CASE_STAGE_NOTIFY);	
 		
 		try {
-            String fileName = "告知书(存根)"+DateUtils.getDate("yyyyMMddHHmmss")+".pdf";
+            String fileName = "告知书_存根"+DateUtils.getDate("yyyyMMddHHmmss")+".pdf";
             CaseNotifyExport export = new CaseNotifyExport(tcase, caseNotify, true);
             export.write(response, fileName);
     		return null;

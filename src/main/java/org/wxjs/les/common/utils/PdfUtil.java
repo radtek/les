@@ -1,6 +1,5 @@
 package org.wxjs.les.common.utils;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -166,12 +165,8 @@ public class PdfUtil {
     	return table;
     }
     
-    public static PdfPTable generateTableRow(String[] strs, Font rowFont, float[] widths, int tableWidth, int textAlign, float borderWidth, float minimumHeight) throws DocumentException{
+    public static PdfPTable generateTableRowCenter(String[] strs, Font rowFont, float[] widths, int tableWidth, int textAlign, float borderWidth, float minimumHeight) throws DocumentException{
     	
-    	return generateTableRow(strs, rowFont, widths, tableWidth, textAlign, borderWidth, minimumHeight, false);
-    } 
-    
-    public static PdfPTable generateTableRow(String[] strs, Font rowFont, float[] widths, int tableWidth, int textAlign, float borderWidth, float minimumHeight, boolean firstCellAlignCenter) throws DocumentException{
     	int columns = widths.length;
     	//int rows = items.size()+1;
     	
@@ -192,10 +187,56 @@ public class PdfUtil {
             	cell.setBorderWidth(borderWidth);
             	cell.setHorizontalAlignment(textAlign);
             	
-            	if(firstCellAlignCenter && index==0){
-                	cell.setHorizontalAlignment(Element.ALIGN_CENTER); //水平居中
-                	cell.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直居中            		
+            	if(index%2==0){
+                	cell.setHorizontalAlignment(Element.ALIGN_CENTER); //水平居中       		
+            	}else{
+                	cell.setHorizontalAlignment(Element.ALIGN_LEFT); //水平居中
+                	                   		
             	}
+            	cell.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直居中 
+            	
+            	
+            	if(minimumHeight>0){
+            		cell.setMinimumHeight(minimumHeight);
+            	}
+
+            	table.addCell(cell);
+            	index ++;
+    		}
+       	
+        }
+    	
+    	return table;
+    } 
+    
+    public static PdfPTable generateTableRow(String[] strs, Font rowFont, float[] widths, int tableWidth, int textAlign, float borderWidth, float minimumHeight) throws DocumentException{
+    	int columns = widths.length;
+    	//int rows = items.size()+1;
+    	
+        PdfPTable table = new PdfPTable(columns);
+        table.setWidths(widths);
+        table.setWidthPercentage(tableWidth);
+        
+        Phrase phrase;
+        PdfPCell cell;
+	
+        if(strs!=null){
+        	//write items
+
+        	int index = 0;
+    		for(String str:strs){
+            	phrase = new Phrase(str, rowFont);
+            	cell = new PdfPCell(phrase);
+            	cell.setBorderWidth(borderWidth);
+            	cell.setHorizontalAlignment(textAlign);
+            	
+            	if(index%2==0){
+                	cell.setHorizontalAlignment(Element.ALIGN_CENTER); //水平居中       		
+            	}else{
+                	cell.setHorizontalAlignment(Element.ALIGN_LEFT); //水平居中
+                	                   		
+            	}
+            	cell.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直居中
             	
             	if(minimumHeight>0){
             		cell.setMinimumHeight(minimumHeight);
@@ -345,14 +386,40 @@ public class PdfUtil {
         return filename;
     }
     
-	public static String transferVertical(String str){
+    /**
+     * 
+     * @param str
+     * @param lineLen  单行长度
+     * @return
+     */
+	public static String transferVertical(String str, int lineLen){
 		StringBuffer buffer = new StringBuffer();
-		
-		for(int i=0;i<str.length();i++){
-			buffer.append("\n").append(str.substring(i, i+1));
+		int startIndex = 0;
+		int endIndex = 0;
+		for(int i=0;i<str.length();i=i+lineLen){
+			startIndex = i;
+			endIndex = i+lineLen;
+			if(endIndex>str.length()){
+				endIndex = str.length();
+			}
+			buffer.append("\n").append(str.substring(startIndex, endIndex));
 		}
 		
 		return buffer.substring(1);
+	}
+	
+	public static String transferVertical(String str){
+		return transferVertical(str, 1);
+	}
+	
+	public static void main(String[] args){
+		String str = "我是中国人，你是日本人";
+		
+		System.out.println(transferVertical(str));
+		System.out.println(transferVertical(str, 2));
+		System.out.println(transferVertical(str, 3));
+		System.out.println(transferVertical(str, 4));
+		
 	}
 
 }

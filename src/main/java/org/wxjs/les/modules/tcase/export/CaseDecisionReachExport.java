@@ -72,15 +72,15 @@ public class CaseDecisionReachExport extends ExportBase<CaseDecisionReachExport>
            
             //事由
             items = new String[]{"事由", this.tcase.getCaseCause()};
-            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 40, true);
+            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 40);
             document.add(table);  
             //受送达人
             items = new String[]{"受送达人", this.caseDecision.getPartyName()};
-            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 40, true);
+            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 40);
             document.add(table);  
             //送达地点
             items = new String[]{"送达地点", this.caseDecision.getDestinationAddress()};
-            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 40, true);
+            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 40);
             document.add(table);  
             //送达文书 名称及文号
             String type=this.caseDecision.getDecisionType();
@@ -91,28 +91,28 @@ public class CaseDecisionReachExport extends ExportBase<CaseDecisionReachExport>
             	name="锡建监不罚字"+name;
             }
             items = new String[]{"送达文书\n名称及文号", Global.getConfig("defaultLaunchDept")+"行政处罚决定书\n"+name};
-            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 40, true);
+            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 40);
             document.add(table);
             //收件人 签名或印章
             items = new String[]{"收件人\n签名或印章", ""};
-            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 40, true);
+            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 40);
             document.add(table);
             //收到时间
             items = new String[]{"收件人\n签名或印章", "\n                                                     "
             		+ "                                            年          月          日          时           分"};
-            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 40, true);
+            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 40);
             document.add(table);
             //代收人证明代收理由
             items = new String[]{"代收人证明\n代收理由", ""};
-            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 40, true);
+            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 40);
             document.add(table);
             //备注
             items = new String[]{"备\n注", ""};
-            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 120, true);
+            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 120);
             document.add(table);
             //送达人
             items = new String[]{"送达人", ""};
-            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 40, true);
+            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 40);
             document.add(table);
             
             String str="注: 1.送达文书交受给送达人本人,如本人不在可以交给其成年家属或所在单位负责人代收。\n" + 

@@ -19,5 +19,5 @@ public interface TcaseDao extends CrudDao<Tcase> {
 	
 	public void updateTransferCaseId(Tcase entity);
 
-	
+	public void updateStatus(Tcase entity);
 }

@@ -58,7 +58,7 @@ public class CaseCancel extends DataEntity<CaseCancel> {
 	}
 
 	public String getParamUri() {
-		return paramUri;
+		return this.paramUri==null?"":this.paramUri.replaceAll("&amp;", "&");
 	}
 
 	public void setParamUri(String paramUri) {

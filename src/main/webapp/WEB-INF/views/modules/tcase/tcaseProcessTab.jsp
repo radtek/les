@@ -21,11 +21,21 @@
     <les:caseSummary caseAttr="${caseAct.tcase}"></les:caseSummary>	
     
     <les:caseTab tab="process" caseActAttr="${caseAct}"></les:caseTab>  
+    
+    <c:if test="${caseAct.tcase.caseProcess.caseStage eq ''}"></c:if>
+    <c:choose>
+       <c:when test="${caseAct.tcase.caseProcess.caseStage eq '110'}">
+          <c:set var="handleAction" value="${ctx}/tcase/caseSerious/handletask"></c:set>
+       </c:when>       
+       <c:otherwise>
+          <c:set var="handleAction" value="${ctx}/case/tcase/handletask"></c:set>
+       </c:otherwise>
+    </c:choose>
 
     <c:choose>
        <c:when test="${caseAct.tcase.caseProcess.caseStageStatus eq '1' and not empty caseAct.task}">
          <h5>&nbsp;流程处理</h5>
-         <les:processHandleTag handleAction="${ctx}/case/tcase/handletask"
+         <les:processHandleTag handleAction="${handleAction}"
          availableHandlers="${caseAct.tcase.caseProcess.availableHandlers}" 
          actTaskAttr="${actTask}" >
          </les:processHandleTag>
@@ -64,11 +74,11 @@
 				<c:if test="${process.caseStageStatus eq '2' or process.caseStageStatus eq '9'}">
 				  <a href="${ctx}/case/tcase/toView?businesskey=${caseAct.tcase.id}:${process.id}">查看</a>
 				</c:if>				
-				<c:if test="${not empty process.procInstId}">
+				<c:if test="${not empty process.procInsId}">
 				  <!-- 		 
-				  <a target="_blank" href="${pageContext.request.contextPath}/act/diagram-viewer?processDefinitionId=${process.procDefId}&processInstanceId=${process.procInstId}">跟踪</a>&nbsp;
+				  <a target="_blank" href="${pageContext.request.contextPath}/act/diagram-viewer?processDefinitionId=${process.procDefId}&processInstanceId=${process.procInsId}">跟踪</a>&nbsp;
 				  -->
-				  <a target="_blank" href="${ctx}/common/activiti/toProcTrack?procDefId=${process.procDefId}&procInsId=${process.procInstId}&executionId=">跟踪</a>&nbsp;
+				  <a target="_blank" href="${ctx}/common/activiti/toProcTrack?procDefId=${process.procDefId}&procInsId=${process.procInsId}&executionId=">跟踪</a>&nbsp;
 
 				</c:if>
 				<c:if test="${process.caseStageStatus eq '2'}">
@@ -106,11 +116,11 @@
 				<c:if test="${process.caseStageStatus eq '0'}">
 				  <a href="${ctx}/case/tcase/toStart?businesskey=${caseAct.tcase.id}:${process.id}">启动</a>
 				</c:if>
-				<c:if test="${not empty process.procInstId}">
+				<c:if test="${not empty process.procInsId}">
  <!--
-				  <a target="_blank" href="${pageContext.request.contextPath}/act/diagram-viewer?processDefinitionId=${process.procDefId}&processInstanceId=${process.procInstId}">跟踪</a>&nbsp;
+				  <a target="_blank" href="${pageContext.request.contextPath}/act/diagram-viewer?processDefinitionId=${process.procDefId}&processInstanceId=${process.procInsId}">跟踪</a>&nbsp;
 	  -->			  
-				  <a target="_blank" href="${ctx}/common/activiti/toProcTrack?procDefId=${process.procDefId}&procInsId=${process.procInstId}&executionId=">跟踪</a>&nbsp;
+				  <a target="_blank" href="${ctx}/common/activiti/toProcTrack?procDefId=${process.procDefId}&procInsId=${process.procInsId}&executionId=">跟踪</a>&nbsp;
 				
 				</c:if>
 				<c:if test="${process.caseStageStatus eq '2'}">
@@ -144,11 +154,11 @@
 				<c:if test="${process.caseStageStatus eq '0'}">
 				  <a href="${ctx}/case/tcase/toStartTransfer?businesskey=${caseAct.tcase.id}:${process.id}">启动</a>
 				</c:if>
-				<c:if test="${not empty process.procInstId}">
+				<c:if test="${not empty process.procInsId}">
  <!--
-				  <a target="_blank" href="${pageContext.request.contextPath}/act/diagram-viewer?processDefinitionId=${process.procDefId}&processInstanceId=${process.procInstId}">跟踪</a>&nbsp;
+				  <a target="_blank" href="${pageContext.request.contextPath}/act/diagram-viewer?processDefinitionId=${process.procDefId}&processInstanceId=${process.procInsId}">跟踪</a>&nbsp;
 	  -->			  
-				  <a target="_blank" href="${ctx}/common/activiti/toProcTrack?procDefId=${process.procDefId}&procInsId=${process.procInstId}&executionId=">跟踪</a>&nbsp;
+				  <a target="_blank" href="${ctx}/common/activiti/toProcTrack?procDefId=${process.procDefId}&procInsId=${process.procInsId}&executionId=">跟踪</a>&nbsp;
 				
 				</c:if>			
 				</td>
