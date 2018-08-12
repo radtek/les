@@ -6,16 +6,19 @@ package org.wxjs.les.modules.tcase.export;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 
+import java.util.List;
+import org.apache.commons.httpclient.util.DateUtil;
 import org.wxjs.les.common.utils.PdfUtil;
+import org.wxjs.les.common.utils.StringUtils;
+import org.wxjs.les.modules.base.entity.Signature;
 import org.wxjs.les.modules.base.export.ExportBase;
-import org.wxjs.les.modules.tcase.entity.CaseDecision;
-import org.wxjs.les.modules.tcase.entity.CaseFinish;
 import org.wxjs.les.modules.tcase.entity.CaseSettle;
 import org.wxjs.les.modules.tcase.entity.Tcase;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
+import com.lowagie.text.Font;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
@@ -108,9 +111,9 @@ public class CaseSettleExport extends ExportBase<CaseSettleExport> {
               document.add(table);
        //签字信息
               
-              table = this.getSignatureTable(this.tcase.getCaseProcess().getProcInsId(),"");
+              table = getSignatureTables(this.tcase.getCaseProcess().getProcInsId(),150);
               document.add(table);
-       
+
 		}finally{
 			if(document!=null){
 				try{
@@ -120,6 +123,95 @@ public class CaseSettleExport extends ExportBase<CaseSettleExport> {
 			}
 		}
 	}
-
+	
+    public PdfPTable getSignatureTables(String procInstId,float borderHeight) throws DocumentException{
+    	
+		return this.getSignatureTable(procInstId, "", borderHeight);
+    }
+    
+    public PdfPTable getSignatureTable(String procInstId, String taskName,float borderHeight) throws DocumentException{
+		//get signatures
+		Signature signatureParam = new Signature(false);
+		signatureParam.setProcInstId(procInstId);
+		if(!StringUtils.isEmpty(taskName)){
+			signatureParam.setTaskName(taskName);
+		}
+		List<Signature> signatures = signatureDao.findList(signatureParam);
+    	
+    	PdfPTable table = new PdfPTable(4);
+    	table.setWidths(new float[]{0.1f, 0.4f, 0.1f, 0.4f});
+    	table.setWidthPercentage(tableWidth);
+    	
+    	PdfPCell cell=new PdfPCell();
+    	
+    	for(int i=1;i<signatures.size();i++) {
+        	cell = PdfUtil.getContentCell(PdfUtil.transferVertical(signatures.get(i).getTaskName()), Element.ALIGN_LEFT, borderWidth, fontContent, 1, 1, 0);
+        	cell.setMinimumHeight(borderHeight);
+        	cell.setHorizontalAlignment(Element.ALIGN_CENTER); //水平居中
+        	cell.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直居中
+        	table.addCell(cell);
+        	
+        	//sub table
+        	PdfPTable	tableSub = new PdfPTable(3);
+        	tableSub.setWidths(new float[]{0.2f, 0.4f, 0.4f});
+        	//opinion
+        	cell = PdfUtil.getContentCell(signatures.get(i).getApproveOpinion(), Element.ALIGN_LEFT, 0, fontContentSmall, 1, 3, 0);
+        	cell.setMinimumHeight(30);
+        	tableSub.addCell(cell);
+        	//signature
+    		Phrase phrase = new Phrase("签名：", fontContent);
+    		cell = new PdfPCell(phrase);
+        	cell.setBorderWidth(0);
+        	cell.setHorizontalAlignment(Element.ALIGN_RIGHT); //水平
+        	cell.setVerticalAlignment(Element.ALIGN_BOTTOM); //垂直 	
+        	tableSub.addCell(cell);  
+        	
+        	cell = new PdfPCell();
+        	cell.setBorderWidth(0);
+        	cell.addElement(PdfUtil.getSignatureImage(signatures.get(i).getSignature()));
+        	cell.setHorizontalAlignment(Element.ALIGN_LEFT); //水平
+        	cell.setVerticalAlignment(Element.ALIGN_BOTTOM); //垂直    	
+        	tableSub.addCell(cell); 
+        	//date
+    		phrase = new Phrase(DateUtil.formatDate(signatures.get(i).getUpdateDate(), "yyyy年MM月dd日"), fontContentSmall);
+    		cell = new PdfPCell(phrase);
+        	cell.setBorderWidth(0);
+        	cell.setHorizontalAlignment(Element.ALIGN_RIGHT); //水平
+        	cell.setVerticalAlignment(Element.ALIGN_BOTTOM); //垂直
+        	tableSub.addCell(cell);
+        	table.addCell(tableSub);
+    	}
+    	return table;   	
+    }
+    
+    
+	  public static PdfPTable generateTableRows(String[] strs, Font rowFont, float[] widths, int tableWidth, int textAlign,int heightAlign, float borderWidth, float minimumHeight, boolean firstCellAlignCenter) throws DocumentException{
+	    	int columns = widths.length;
+	        PdfPTable table = new PdfPTable(columns);
+	        table.setWidths(widths);
+	        table.setWidthPercentage(tableWidth);
+	        Phrase phrase;
+	        PdfPCell cell;
+	        if(strs!=null){
+	        	int index = 0;
+	    		for(String str:strs){
+	            	phrase = new Phrase(str, rowFont);
+	            	cell = new PdfPCell(phrase);
+	            	cell.setBorderWidth(borderWidth);
+	            	cell.setHorizontalAlignment(textAlign);
+	            	cell.setVerticalAlignment(heightAlign);
+	            	if(firstCellAlignCenter && index==0){
+	                	cell.setHorizontalAlignment(Element.ALIGN_CENTER); //水平
+	                	cell.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直        		
+	            	}
+	            	if(minimumHeight>0){
+	            		cell.setMinimumHeight(minimumHeight);
+	            	}
+	            	table.addCell(cell);
+	            	index ++;
+	    		}
+	        }
+	    	return table;
+	    } 
 
 }

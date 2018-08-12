@@ -108,11 +108,11 @@ public class CaseDecisionExport extends ExportBase<CaseDecisionExport> {
             
             String[] items;
             items = new String[]{"", Global.getConfig("defaultLaunchDept")};
-            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.5f, 0.5f}, tableWidth, Element.ALIGN_CENTER, 0, 0);
+            table = generateTableRow(items, fontContent,  new float[]{0.5f, 0.5f}, tableWidth, Element.ALIGN_CENTER, 0, 0,false);
             document.add(table); 
             
             items = new String[]{"", DateUtils.getDate("yyyy年MM月dd日")};
-            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.5f, 0.5f}, tableWidth, Element.ALIGN_CENTER, 0, 0);
+            table =generateTableRow(items, fontContent,  new float[]{0.5f, 0.5f}, tableWidth, Element.ALIGN_CENTER, 0, 0,false);
             document.add(table);  
             
             document.add(PdfUtil.generateTable4Padding());
@@ -128,5 +128,32 @@ public class CaseDecisionExport extends ExportBase<CaseDecisionExport> {
 		}
 	}
 
+	    public static PdfPTable generateTableRow(String[] strs, Font rowFont, float[] widths, int tableWidth, int textAlign, float borderWidth, float minimumHeight, boolean firstCellAlignCenter) throws DocumentException{
+	    	int columns = widths.length;
+	        PdfPTable table = new PdfPTable(columns);
+	        table.setWidths(widths);
+	        table.setWidthPercentage(tableWidth);
+	        Phrase phrase;
+	        PdfPCell cell;
+	        if(strs!=null){
+	        	int index = 0;
+	    		for(String str:strs){
+	            	phrase = new Phrase(str, rowFont);
+	            	cell = new PdfPCell(phrase);
+	            	cell.setBorderWidth(borderWidth);
+	            	cell.setHorizontalAlignment(textAlign);
+	            	if(firstCellAlignCenter && index==0){
+	                	cell.setHorizontalAlignment(Element.ALIGN_CENTER); //水平居中
+	                	cell.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直居中            		
+	            	}
+	            	if(minimumHeight>0){
+	            		cell.setMinimumHeight(minimumHeight);
+	            	}
+	            	table.addCell(cell);
+	            	index ++;
+	    		}
+	        }
+	    	return table;
+	    } 
 
 }

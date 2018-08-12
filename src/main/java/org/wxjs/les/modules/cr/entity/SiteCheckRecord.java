@@ -60,9 +60,6 @@ public class SiteCheckRecord extends DataEntity<SiteCheckRecord> {
 		this.partyType = partyType;
 	}
 	
-//	public String getParty(){
-//		return "单位".equals(this.partyType)? this.orgName:this.psnName;
-//	}
 	
 	@Length(min=0, max=100, message="名称长度必须介于 0 和 100 之间")
 	public String getOrgName() {
