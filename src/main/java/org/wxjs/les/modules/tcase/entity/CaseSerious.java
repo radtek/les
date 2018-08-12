@@ -34,6 +34,7 @@ public class CaseSerious extends DataEntity<CaseSerious> {
 	private String caseSummary;		// 执法机构汇报案情
 	private String punishProposal;		// 执法机构处罚建议
 	private String checkOpinion;		// 审查小组审查意见
+	private String meetingRecord;
 	
 	//临时
 	private String paramUri;
@@ -166,6 +167,14 @@ public class CaseSerious extends DataEntity<CaseSerious> {
 
 	public void setCheckOpinion(String checkOpinion) {
 		this.checkOpinion = checkOpinion;
+	}
+
+	public String getMeetingRecord() {
+		return meetingRecord;
+	}
+
+	public void setMeetingRecord(String meetingRecord) {
+		this.meetingRecord = meetingRecord;
 	}
 
 	public String getParamUri() {

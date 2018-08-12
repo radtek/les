@@ -251,6 +251,47 @@ public class PdfUtil {
     	return table;
     } 
     
+    public static PdfPTable generateTableRow4LongText(String[] strs, Font rowFont, float[] widths, int tableWidth, int textAlign, float borderWidth, float minimumHeight) throws DocumentException{
+    	int columns = widths.length;
+    	//int rows = items.size()+1;
+    	
+        PdfPTable table = new PdfPTable(columns);
+        table.setWidths(widths);
+        table.setWidthPercentage(tableWidth);
+        
+        Phrase phrase;
+        PdfPCell cell;
+	
+        if(strs!=null){
+        	//write items
+
+        	int index = 0;
+    		for(String str:strs){
+            	phrase = new Phrase(str, rowFont);
+            	cell = new PdfPCell(phrase);
+            	cell.setBorderWidth(borderWidth);
+            	cell.setHorizontalAlignment(textAlign);
+            	
+            	if(index%2==0){
+                	cell.setHorizontalAlignment(Element.ALIGN_CENTER); //水平居中       	
+                	cell.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直居中
+            	}else{
+                	cell.setHorizontalAlignment(Element.ALIGN_LEFT); //水平居中
+                	                   		
+            	}
+            	if(minimumHeight>0){
+            		cell.setMinimumHeight(minimumHeight);
+            	}
+
+            	table.addCell(cell);
+            	index ++;
+    		}
+       	
+        }
+    	
+    	return table;
+    }
+    
     public static PdfPTable generateTableRow(String[] strs, Font[] rowFonts, float[] widths, int tableWidth, int textAlign, float borderWidth, float minimumHeight) throws DocumentException{
     	int columns = widths.length;
     	//int rows = items.size()+1;

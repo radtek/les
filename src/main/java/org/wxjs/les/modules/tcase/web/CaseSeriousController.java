@@ -37,6 +37,7 @@ import org.wxjs.les.modules.tcase.entity.CaseProcess;
 import org.wxjs.les.modules.tcase.entity.CaseSerious;
 import org.wxjs.les.modules.tcase.entity.Tcase;
 import org.wxjs.les.modules.tcase.export.CaseSeriousExport;
+import org.wxjs.les.modules.tcase.export.CaseSeriousRecordExport;
 import org.wxjs.les.modules.tcase.service.CaseProcessService;
 import org.wxjs.les.modules.tcase.service.CaseSeriousService;
 import org.wxjs.les.modules.tcase.service.TcaseService;
@@ -117,6 +118,14 @@ public class CaseSeriousController extends BaseController {
 	}
 	
 	@RequiresPermissions("case:tcase:edit")
+	@RequestMapping(value = "saveMeetingRecord")
+	public String saveMeetingRecord(CaseSerious caseSerious, Model model, RedirectAttributes redirectAttributes) {
+		caseSeriousService.save(caseSerious);
+		addMessage(redirectAttributes, "保存重大行政处罚成功");
+		return "redirect:"+Global.getAdminPath()+"/case/tcase/seriousTab?"+caseSerious.getParamUri();
+	}
+	
+	@RequiresPermissions("case:tcase:edit")
 	@RequestMapping(value = "delete")
 	public String delete(CaseSerious caseSerious, RedirectAttributes redirectAttributes) {
 		caseSeriousService.delete(caseSerious);
@@ -135,6 +144,26 @@ public class CaseSeriousController extends BaseController {
 		try {
             String fileName = "重大行政处罚审查"+DateUtils.getDate("yyyyMMddHHmmss")+".pdf";
             CaseSeriousExport export = new CaseSeriousExport(tcase, caseSerious);
+            export.write(response, fileName);
+    		return null;
+		} catch (Exception e) {
+			logger.error("导出失败", e);
+			addMessage(redirectAttributes, "导出失败！失败信息："+e.getMessage());
+		}		
+
+		return "redirect:"+Global.getAdminPath()+"/case/tcase/seriousTab?"+entity.getParamUri();
+	}
+	
+	@RequestMapping(value = "exportRecordPDF")
+	public String exportRecordPDF(CaseSerious entity, HttpServletResponse response,  Model model, RedirectAttributes redirectAttributes) {
+		
+		CaseSerious caseSerious = caseSeriousService.get(entity.getCaseId());
+		
+		Tcase tcase = tcaseService.getCaseAndProcess(entity.getCaseId(), Global.CASE_STAGE_SERIOUS);	
+		
+		try {
+            String fileName = "重大行政处罚会议记录"+DateUtils.getDate("yyyyMMddHHmmss")+".pdf";
+            CaseSeriousRecordExport export = new CaseSeriousRecordExport(tcase, caseSerious);
             export.write(response, fileName);
     		return null;
 		} catch (Exception e) {

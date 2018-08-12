@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.wxjs.les.common.config.Global;
+import org.wxjs.les.common.utils.SpringContextHolder;
 import org.wxjs.les.modules.tcase.dao.TcaseDao;
 import org.wxjs.les.modules.tcase.dao.CaseProcessDao;
 import org.wxjs.les.modules.tcase.entity.CaseProcess;
@@ -25,13 +26,13 @@ public class CaseCancelPassListener implements ExecutionListener {
 	protected Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Autowired
-	RuntimeService runtimeService;
+	RuntimeService runtimeService = SpringContextHolder.getBean(RuntimeService.class);
 	
 	@Autowired
-	CaseProcessDao caseProcessDao;
+	CaseProcessDao caseProcessDao = SpringContextHolder.getBean(CaseProcessDao.class);
 	
 	@Autowired
-	TcaseDao caseDao;
+	TcaseDao caseDao = SpringContextHolder.getBean(TcaseDao.class);
 
 
 	@Override

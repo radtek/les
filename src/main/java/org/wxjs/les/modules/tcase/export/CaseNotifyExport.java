@@ -15,7 +15,6 @@ import org.wxjs.les.modules.tcase.entity.Tcase;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
-import com.lowagie.text.Font;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
@@ -107,11 +106,11 @@ public class CaseNotifyExport extends ExportBase<CaseNotifyExport> {
             
             if(isCopy){
                 items = new String[]{"当事人:", "__________________________", "送达人:", "__________________________"};
-                table = PdfUtil.generateTableRow(items, fontContent, new float[]{0.15f, 0.35f, 0.15f, 0.35f}, tableWidth, Element.ALIGN_CENTER, 0, 0);
+                table = PdfUtil.generateTableRow(items, fontContent, new float[]{0.15f, 0.35f, 0.15f, 0.35f}, tableWidth, Element.ALIGN_CENTER, 0, 30f);
                 document.add(table); 
                 
                 items = new String[]{"送达日期:", "__________________________", "送达地点:", "__________________________"};
-                table = PdfUtil.generateTableRow(items, fontContent, new float[]{0.15f, 0.35f, 0.15f, 0.35f}, tableWidth, Element.ALIGN_CENTER, 0, 0);
+                table = PdfUtil.generateTableRow(items, fontContent, new float[]{0.15f, 0.35f, 0.15f, 0.35f}, tableWidth, Element.ALIGN_CENTER, 0, 30f);
                 document.add(table);                 
             }
 

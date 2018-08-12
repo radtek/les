@@ -1001,8 +1001,21 @@ public class TcaseController extends BaseController {
 				}
 			}
 		}else if("cancel".equals(actTask.getApprove())){
+			//update case process status
 			caseProcess.setCaseStageStatus(Global.CASE_STAGE_STATUS_CANCELED);
 			this.caseProcessService.updateStageStatus(caseProcess);
+			
+			//update case status
+			String businesskey = actTask.getBusinesskey();
+			String[] strs = businesskey.split(":");
+			if(strs.length>0){
+				String caseId = strs[0];
+				Tcase tcase = new Tcase();
+				tcase.setId(caseId);
+				tcase.setStatus(Global.CASE_STATUS_CANCELED);
+				this.tcaseService.updateStatus(tcase);
+			}
+
 		}		
 		
 		return "redirect:"+Global.getAdminPath()+"/task/todo";

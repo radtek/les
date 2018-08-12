@@ -8,7 +8,15 @@
 	<fieldset>
 		<table class="table-form" style="width:90%">
 			<tr>
-				<td class="tit" width="20%">事项序号：</td><td width="30%">${caseAttr.caseSeq}</td>
+				<td class="tit" width="20%">事项序号：</td><td width="30%">${caseAttr.caseSeq}
+				    <c:choose>
+				        <c:when test="${caseAttr.status eq '0'}">（未开始）</c:when>
+				        <c:when test="${fns:startsWith(caseAttr.status, '1')}">（办理中）</c:when>
+					    <c:when test="${caseAttr.status eq '2'}">（已办结）</c:when>
+					    <c:when test="${caseAttr.status eq '9'}">（已撤销）</c:when>					    
+					    <c:otherwise>${caseAttr.status}</c:otherwise>
+				    </c:choose>				
+				</td>
 				<td class="tit" width="20%">事项类型：</td><td width="30%">${fns:getDictLabel(caseAttr.caseProcess.caseStage, 'case_stage', '')}：${fns:getDictLabel(caseAttr.caseProcess.caseStageStatus, 'case_stage_status', '未启动')}</td>
 			</tr>	
 			<tr>

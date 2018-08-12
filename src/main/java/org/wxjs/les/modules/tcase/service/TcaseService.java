@@ -90,6 +90,12 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 		
 		Tcase entity = super.get(caseId);
 		
+		CaseProcess processParam = new CaseProcess();
+		processParam.setCaseId(caseId);
+		
+		List<CaseProcess> processList = caseProcessDao.findList(processParam);
+		entity.setCaseProcesses(processList);
+		
 		if(strs.length > 1){
 			String caseProcessId = strs[1];
 			
@@ -117,11 +123,16 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 		
 		Tcase entity = super.get(caseId);
 		
+		List<CaseProcess> processList = Lists.newArrayList();
+		
 		CaseProcess processParam = new CaseProcess();
 		processParam.setCaseId(caseId);
-		processParam.setCaseStage(caseStage);
 		
-		List<CaseProcess> processList = caseProcessDao.findList(processParam);
+		processList = caseProcessDao.findList(processParam);
+		entity.setCaseProcesses(processList);
+		
+		processParam.setCaseStage(caseStage);
+		processList = caseProcessDao.findList(processParam);
 		
 		if(processList!=null && processList.size()>0){
 			entity.setCaseProcess(processList.get(0));	
@@ -237,6 +248,12 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 	}
 	
 	@Transactional(readOnly = false)
+	public void updateStatus(Tcase tcase){
+		dao.updateStatus(tcase);
+		
+	}
+	
+	@Transactional(readOnly = false)
 	public void saveProcess(Tcase tcase) {
 
 		caseProcessDao.update(tcase.getCaseProcess());
@@ -330,6 +347,8 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 		String processDefKey = ProcessCommonUtils.getProcessDefKeyByStage(tcase.getCaseProcess().getCaseStage(), roleEnname);
 		
 		String businesskey = tcase.getId()+":"+tcase.getCaseProcess().getId();
+		
+		logger.debug("businesskey:{}", businesskey);
 		
 		String userid = user.getLoginName();
 		

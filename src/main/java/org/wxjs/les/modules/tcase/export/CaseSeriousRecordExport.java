@@ -24,14 +24,14 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
-public class CaseSeriousExport extends ExportBase<CaseSeriousExport> {
+public class CaseSeriousRecordExport extends ExportBase<CaseSeriousRecordExport> {
 	
 	protected float borderWidth = 0.5f;
 
 	private Tcase tcase;
 	private CaseSerious caseSerious;
 	
-	public CaseSeriousExport(Tcase tcase, CaseSerious caseSerious){
+	public CaseSeriousRecordExport(Tcase tcase, CaseSerious caseSerious){
 		this.tcase = tcase;
 		this.caseSerious = caseSerious;
 	}
@@ -61,7 +61,7 @@ public class CaseSeriousExport extends ExportBase<CaseSeriousExport> {
             
             //add title
             
-            pragraph = new Paragraph("无锡市建设局重大行政处罚审查", fontTitle);
+            pragraph = new Paragraph("无锡市建设局重大行政处罚会议记录", fontTitle);
             pragraph.setAlignment(Paragraph.ALIGN_CENTER);
             document.add(pragraph);
             
@@ -88,11 +88,11 @@ public class CaseSeriousExport extends ExportBase<CaseSeriousExport> {
 
             PdfPCell cell;
         	
-        	cell = PdfUtil.getContentCell("参加审查人员", Element.ALIGN_CENTER, borderWidth, fontContent, 2, 1);
+        	cell = PdfUtil.getContentCell("参加审查人员", Element.ALIGN_LEFT, borderWidth, fontContent, 2, 1);
 
         	table.addCell(cell);
         	
-        	cell = PdfUtil.getContentCell("参加人员", Element.ALIGN_CENTER, borderWidth, fontContent);
+        	cell = PdfUtil.getContentCell("参加人员", Element.ALIGN_LEFT, borderWidth, fontContent);
 
         	table.addCell(cell);
         	
@@ -100,7 +100,7 @@ public class CaseSeriousExport extends ExportBase<CaseSeriousExport> {
 
         	table.addCell(cell);
         	
-        	cell = PdfUtil.getContentCell("列席人员", Element.ALIGN_CENTER, borderWidth, fontContent);
+        	cell = PdfUtil.getContentCell("列席人员", Element.ALIGN_LEFT, borderWidth, fontContent);
 
         	table.addCell(cell);
         	
@@ -120,19 +120,9 @@ public class CaseSeriousExport extends ExportBase<CaseSeriousExport> {
             		new float[]{0.1f, 0.4f, 0.1f, 0.15f, 0.1f, 0.15f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);
             document.add(table);
             
-            items = new String[]{PdfUtil.transferVertical("执法机构汇报案情", 2), this.caseSerious.getCaseSummary()};
+            items = new String[]{PdfUtil.transferVertical("会议记录", 2), this.caseSerious.getMeetingRecord()};
             table = PdfUtil.generateTableRow4LongText(items, fontContent, 
-            		new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 180f);
-            document.add(table);
-            
-            items = new String[]{PdfUtil.transferVertical("执法机构处罚建议", 2), this.caseSerious.getPunishProposal()};
-            table = PdfUtil.generateTableRow4LongText(items, fontContent, 
-            		new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 100f);
-            document.add(table);
-            
-            items = new String[]{PdfUtil.transferVertical("审查小组审查意见", 2), this.caseSerious.getCheckOpinion()};
-            table = PdfUtil.generateTableRow4LongText(items, fontContent, 
-            		new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 180f);
+            		new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 460f);
             document.add(table);
             
             //签字信息

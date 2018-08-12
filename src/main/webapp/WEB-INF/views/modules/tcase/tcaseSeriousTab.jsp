@@ -32,6 +32,11 @@
 				$("#inputForm").attr("action","${ctx}/tcase/caseSerious/exportPDF");
 				$("#inputForm").submit();		    	
 		    });
+		    
+		    $('#btnRecordExport').click(function() {
+				$("#inputForm").attr("action","${ctx}/tcase/caseSerious/exportRecordPDF");
+				$("#inputForm").submit();		    	
+		    });
 		});
 	</script>
 </head>
@@ -137,9 +142,16 @@
 				<form:textarea path="checkOpinion" htmlEscape="false"  style="width:800px;height:300px;" class="required"/>
 			</div>
 		</div>
+		<div class="control-group">
+			<label class="control-label">会议记录：</label>
+			<div class="controls">
+				<form:textarea path="meetingRecord" htmlEscape="false"  style="width:800px;height:300px;" class="required"/>
+			</div>
+		</div>		
 		<div class="form-actions">
 			<shiro:hasPermission name="case:tcase:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保 存"/>&nbsp;
 			<input id="btnExport" class="btn btn-primary" type="button" value="无锡市建设局重大行政处罚审查表"/>&nbsp;
+			<input id="btnRecordExport" class="btn btn-primary" type="button" value="会议记录"/>&nbsp;
 			</shiro:hasPermission>
 		</div>
 	</form:form>

@@ -248,6 +248,7 @@ CREATE TABLE `tcase_serious` (
   `case_summary` text NULL COMMENT '执法机构汇报案情',
   `punish_proposal` text NULL COMMENT '执法机构处罚建议',
   `check_opinion` text NULL COMMENT '审查小组审查意见',
+  `meeting_record` text NULL COMMENT '会议记录',
   `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
   `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_by` varchar(32) DEFAULT NULL COMMENT '更新者',

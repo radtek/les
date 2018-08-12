@@ -17,6 +17,7 @@
 		a.case_summary AS "caseSummary",
 		a.punish_proposal AS "punishProposal",
 		a.check_opinion AS "checkOpinion",
+		a.meeting_record AS "meetingRecord",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -91,6 +92,7 @@
 			case_summary,
 			punish_proposal,
 			check_opinion,
+			meeting_record,
 			create_by,
 			create_date,
 			update_by,
@@ -111,6 +113,7 @@
 			#{caseSummary},
 			#{punishProposal},
 			#{checkOpinion},
+			#{meetingRecord},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -134,12 +137,20 @@
 			case_summary = #{caseSummary},
 			punish_proposal = #{punishProposal},
 			check_opinion = #{checkOpinion},
+			meeting_record = #{meetingRecord},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks}
 		WHERE case_id = #{caseId}
 	</update>
 	
+	<update id="updateMeetingRecord">
+		UPDATE tcase_serious SET 	
+			meeting_record = #{meetingRecord},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate}
+		WHERE case_id = #{caseId}
+	</update>	
 	<update id="delete">
 		UPDATE tcase_serious SET 
 			del_flag = #{DEL_FLAG_DELETE}

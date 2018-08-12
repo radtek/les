@@ -72,13 +72,23 @@
 				</td>
 				<td>
 					${tcase.caseSource}
-				</td>				
+				</td>								
 				<td>
-					<c:forEach items="${tcase.currentCaseProcesses}" var="process" varStatus="pstatus">
-					<c:if test="${pstatus.index gt 0}"><BR></c:if>
-					${fns:getDictLabel(process.caseStage, 'case_stage', '无')},
-					状态：${fns:getDictLabel(process.caseStageStatus, 'case_stage_status', '无')}		
-					</c:forEach>
+				    <c:choose>
+				        <c:when test="${tcase.status eq '0'}">未开始</c:when>
+					    <c:when test="${tcase.status eq '2'}">已办结</c:when>
+					    <c:when test="${tcase.status eq '9'}">已撤销</c:when>	
+					    <c:when test="${fns:startsWith(tcase.status, '1')}">
+		
+							<c:forEach items="${tcase.currentCaseProcesses}" var="process" varStatus="pstatus">
+							<c:if test="${pstatus.index gt 0}"><BR></c:if>
+							${fns:getDictLabel(process.caseStage, 'case_stage', '无')},
+							状态：${fns:getDictLabel(process.caseStageStatus, 'case_stage_status', '无')}		
+							</c:forEach>
+					    </c:when>				    
+					    <c:otherwise>												    
+					    </c:otherwise>
+				    </c:choose>
 				</td>				
 				<shiro:hasPermission name="case:tcase:edit"><td>
     				<a href="${ctx}/case/tcase/infoTab?businesskey=${tcase.id}">进入</a>

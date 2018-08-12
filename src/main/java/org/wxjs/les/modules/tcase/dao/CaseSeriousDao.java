@@ -15,4 +15,6 @@ import org.wxjs.les.modules.tcase.entity.CaseSerious;
 @MyBatisDao
 public interface CaseSeriousDao extends CrudDao<CaseSerious> {
 	
+	public void updateMeetingRecord(CaseSerious entity);
+	
 }

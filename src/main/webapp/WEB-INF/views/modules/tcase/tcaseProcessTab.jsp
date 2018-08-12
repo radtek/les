@@ -64,12 +64,15 @@
 				<td>${fns:getDictLabel(process.caseStageStatus, 'case_stage_status', '')}</td>	
 				<td>
 				<c:if test="${process.caseStageStatus eq '0'}">
-				<!-- test, delete later -->
+				<!-- test, delete later 
 				<a href="${ctx}/case/tcase/toStart?businesskey=${caseAct.tcase.id}:${process.id}">启动</a>
+				-->
 				
+				<!--  
 				<c:if test="${allowStart eq true or process.caseStage eq '10'}">
 				  <a href="${ctx}/case/tcase/toStart?businesskey=${caseAct.tcase.id}:${process.id}">启动</a>
 				</c:if>
+				-->
 				</c:if>
 				<c:if test="${process.caseStageStatus eq '2' or process.caseStageStatus eq '9'}">
 				  <a href="${ctx}/case/tcase/toView?businesskey=${caseAct.tcase.id}:${process.id}">查看</a>

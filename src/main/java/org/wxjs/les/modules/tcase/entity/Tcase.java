@@ -17,6 +17,7 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.collect.Lists;
 
+import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.DataEntity;
 import org.wxjs.les.modules.sys.entity.User;
 
@@ -67,6 +68,8 @@ public class Tcase extends DataEntity<Tcase> {
 	private CaseAttach caseAttach; //
 	
 	private List<CaseProcess> currentCaseProcesses = Lists.newArrayList(); //当前process
+	
+	private List<CaseProcess> caseProcesses = Lists.newArrayList(); //相关process
 	
 	
 	//-- 临时属性 --//
@@ -356,6 +359,14 @@ public class Tcase extends DataEntity<Tcase> {
 	public void setCurrentCaseProcesses(List<CaseProcess> currentCaseProcesses) {
 		this.currentCaseProcesses = currentCaseProcesses;
 	}
+	
+	public List<CaseProcess> getCaseProcesses() {
+		return caseProcesses;
+	}
+
+	public void setCaseProcesses(List<CaseProcess> caseProcesses) {
+		this.caseProcesses = caseProcesses;
+	}
 
 	public CaseAttach getCaseAttach() {
 		return caseAttach;
@@ -466,6 +477,68 @@ public class Tcase extends DataEntity<Tcase> {
 
 	public void setOldCaseId(String oldCaseId) {
 		this.oldCaseId = oldCaseId;
+	}
+	
+	public boolean getAcceptanceTabVisible(){
+		boolean flag = true;
+		return flag;
+	}
+	
+	public boolean getInitialTabVisible(){		
+		return this.getTabVisibleByPreviousStage(Global.CASE_STAGE_ACCEPTANCE);
+	}
+	
+	public boolean getHandleTabVisible(){
+		return this.getTabVisibleByPreviousStage(Global.CASE_STAGE_INITIAL);
+	}
+	
+	public boolean getNotifyTabVisible(){
+		return this.getTabVisibleByPreviousStage(Global.CASE_STAGE_HANDLE);
+	}
+	
+	public boolean getDecisionTabVisible(){
+		return this.getTabVisibleByPreviousStage(Global.CASE_STAGE_NOTIFY);
+	}
+	
+	public boolean getSettleTabVisible(){
+		return this.getTabVisibleByPreviousStage(Global.CASE_STAGE_DECISION);
+	}
+	
+	public boolean getFinishTabVisible(){
+		return this.getTabVisibleByPreviousStage(Global.CASE_STAGE_SETTLE);
+	}
+	
+	public String getCaseProcessStatus(String stage){
+		String status = "";
+		
+		for(CaseProcess entity : this.caseProcesses){
+			if(stage.equals(entity.getCaseStage())){
+				status = entity.getCaseStageStatus();
+			}
+		}
+		
+		return status;
+	}
+	
+	public CaseProcess getCaseProcess(String stage){
+		CaseProcess rst = null;
+		
+		for(CaseProcess entity : this.caseProcesses){
+			if(stage.equals(entity.getCaseStage())){
+				rst = entity;
+			}
+		}
+		
+		return rst;
+	}
+	
+	private boolean getTabVisibleByPreviousStage(String previousStage){
+		boolean flag = false;
+		String statusPre = this.getCaseProcessStatus(previousStage);
+		if(Global.CASE_STAGE_STATUS_FINISHED.equals(statusPre)){
+			flag = true;
+		}
+		return flag;		
 	}
 	
 }

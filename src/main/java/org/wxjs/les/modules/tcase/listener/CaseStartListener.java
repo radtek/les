@@ -7,7 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.wxjs.les.common.config.Global;
-import org.wxjs.les.common.utils.Util;
+ 
+import org.wxjs.les.common.utils.SpringContextHolder;
+
 import org.wxjs.les.modules.tcase.dao.CaseProcessDao;
 import org.wxjs.les.modules.tcase.dao.TcaseDao;
 import org.wxjs.les.modules.tcase.entity.CaseProcess;
@@ -27,16 +29,18 @@ public class CaseStartListener implements ExecutionListener {
 
 	
 	@Autowired
-	TcaseDao caseDao;
+	TcaseDao caseDao = SpringContextHolder.getBean(TcaseDao.class);
 	
 	@Autowired
-	CaseProcessDao caseProcessDao;
+	CaseProcessDao caseProcessDao = SpringContextHolder.getBean(CaseProcessDao.class);
 
 
 	@Override
 	public void notify(DelegateExecution execution) throws Exception {
 		
 		String businesskey = execution.getProcessBusinessKey();
+		
+		logger.debug("businesskey:{}", businesskey);
 		
 		String caseStage = "";
 		

@@ -23,6 +23,7 @@ import org.wxjs.les.common.utils.Encodes;
 import org.wxjs.les.common.utils.StringUtils;
 import org.wxjs.les.common.utils.TimeUtils;
 import org.wxjs.les.modules.act.utils.Variable;
+import org.wxjs.les.modules.tcase.entity.CaseProcess;
 import org.wxjs.les.modules.tcase.entity.Tcase;
 
 /**
@@ -438,6 +439,23 @@ public class CaseAct extends BaseEntity<CaseAct> {
 		formUrl.append("&operateType=").append(this.getOperateType());
 		formUrl.append("&caseTransfer=").append(this.getCaseTransfer());
 		return formUrl.toString();
+	}
+	
+	public boolean getSeriousTabVisible(){
+		return this.getIndependentProcessTabVisible(Global.CASE_STAGE_SERIOUS);
+	}
+	
+	public boolean getCancelTabVisible(){
+		return this.getIndependentProcessTabVisible(Global.CASE_STAGE_CANCEL);
+	}
+	
+	private boolean getIndependentProcessTabVisible(String stage){
+		CaseProcess entity = this.tcase.getCaseProcess(stage);
+		
+		String status = entity.getCaseStageStatus();
+		String entityId = entity.getId();
+		
+		return (!Global.CASE_STAGE_STATUS_NOSTART.equals(status)) || this.businesskey.endsWith(":"+entityId);		
 	}
 
 }
