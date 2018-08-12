@@ -6,16 +6,15 @@ package org.wxjs.les.modules.tcase.export;
 import java.io.OutputStream;
 
 import org.wxjs.les.common.config.Global;
-import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.PdfUtil;
 import org.wxjs.les.modules.base.export.ExportBase;
 import org.wxjs.les.modules.tcase.entity.CaseDecision;
-import org.wxjs.les.modules.tcase.entity.CaseHandle;
 import org.wxjs.les.modules.tcase.entity.Tcase;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
+import com.lowagie.text.Font;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
@@ -71,16 +70,16 @@ public class CaseDecisionReachExport extends ExportBase<CaseDecisionReachExport>
             String[] items;
            
             //事由
-            items = new String[]{"事由", this.tcase.getCaseCause()};
-            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 40);
+            items = new String[]{"事由", "       "+this.tcase.getCaseCause()};
+            table = generateTableRows(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT,Element.ALIGN_MIDDLE, borderWidth, 50, true);
             document.add(table);  
             //受送达人
-            items = new String[]{"受送达人", this.caseDecision.getPartyName()};
-            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 40);
+            items = new String[]{"受送达人", "       "+this.caseDecision.getPartyName()};
+            table = generateTableRows(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT,Element.ALIGN_MIDDLE, borderWidth, 50, true);
             document.add(table);  
             //送达地点
-            items = new String[]{"送达地点", this.caseDecision.getDestinationAddress()};
-            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 40);
+            items = new String[]{"送达地点", "       "+this.caseDecision.getDestinationAddress()};
+            table = generateTableRows(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth,Element.ALIGN_LEFT,Element.ALIGN_MIDDLE, borderWidth, 50, true);
             document.add(table);  
             //送达文书 名称及文号
             String type=this.caseDecision.getDecisionType();
@@ -90,29 +89,29 @@ public class CaseDecisionReachExport extends ExportBase<CaseDecisionReachExport>
             }else {
             	name="锡建监不罚字"+name;
             }
-            items = new String[]{"送达文书\n名称及文号", Global.getConfig("defaultLaunchDept")+"行政处罚决定书\n"+name};
-            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 40);
+            items = new String[]{"送达文书\n名称及文号", "       "+Global.getConfig("defaultLaunchDept")+"行政处罚决定书\n"+"       "+name};
+            table =generateTableRows(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT,Element.ALIGN_MIDDLE, borderWidth, 50, true);
             document.add(table);
             //收件人 签名或印章
             items = new String[]{"收件人\n签名或印章", ""};
-            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 40);
+            table = generateTableRows(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT,Element.ALIGN_MIDDLE, borderWidth, 50, true);
             document.add(table);
             //收到时间
             items = new String[]{"收件人\n签名或印章", "\n                                                     "
             		+ "                                            年          月          日          时           分"};
-            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 40);
+            table =generateTableRows(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT,Element.ALIGN_MIDDLE, borderWidth, 50, true);
             document.add(table);
             //代收人证明代收理由
             items = new String[]{"代收人证明\n代收理由", ""};
-            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 40);
+            table = generateTableRows(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT,Element.ALIGN_MIDDLE, borderWidth, 50, true);
             document.add(table);
             //备注
             items = new String[]{"备\n注", ""};
-            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 120);
+            table = generateTableRows(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT,Element.ALIGN_MIDDLE, borderWidth, 130, true);
             document.add(table);
             //送达人
             items = new String[]{"送达人", ""};
-            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 40);
+            table = generateTableRows(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT,Element.ALIGN_MIDDLE, borderWidth, 50, true);
             document.add(table);
             
             String str="注: 1.送达文书交受给送达人本人,如本人不在可以交给其成年家属或所在单位负责人代收。\n" + 
@@ -134,6 +133,34 @@ public class CaseDecisionReachExport extends ExportBase<CaseDecisionReachExport>
 			}
 		}
 	}
-
+	
+	  public static PdfPTable generateTableRows(String[] strs, Font rowFont, float[] widths, int tableWidth, int textAlign,int heightAlign, float borderWidth, float minimumHeight, boolean firstCellAlignCenter) throws DocumentException{
+	    	int columns = widths.length;
+	        PdfPTable table = new PdfPTable(columns);
+	        table.setWidths(widths);
+	        table.setWidthPercentage(tableWidth);
+	        Phrase phrase;
+	        PdfPCell cell;
+	        if(strs!=null){
+	        	int index = 0;
+	    		for(String str:strs){
+	            	phrase = new Phrase(str, rowFont);
+	            	cell = new PdfPCell(phrase);
+	            	cell.setBorderWidth(borderWidth);
+	            	cell.setHorizontalAlignment(textAlign);
+	            	cell.setVerticalAlignment(heightAlign);
+	            	if(firstCellAlignCenter && index==0){
+	                	cell.setHorizontalAlignment(Element.ALIGN_CENTER); //水平居中
+	                	cell.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直居中            		
+	            	}
+	            	if(minimumHeight>0){
+	            		cell.setMinimumHeight(minimumHeight);
+	            	}
+	            	table.addCell(cell);
+	            	index ++;
+	    		}
+	        }
+	    	return table;
+	    } 
 
 }

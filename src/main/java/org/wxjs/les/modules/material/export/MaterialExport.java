@@ -20,6 +20,8 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.httpclient.util.DateUtil;
+
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -230,6 +232,7 @@ public class MaterialExport {
            }
          
            Image partySig=null;
+            
 	           try {
 	     	   String filename=this.base64StringToImage(this.material.getPartySig().getSignature());
 	         	   partySig=Image.getInstance(filename);
@@ -239,29 +242,28 @@ public class MaterialExport {
 	            } catch (IOException e) {
 	         	   logger.error("partySig error",e);
 	            }
-	           widths = new float[]{12,33,12,33};
+	           widths = new float[]{8, 42,8,42};
 	           table = new PdfPTable(widths.length);
 	           table.setWidths(widths);
 	           table.setWidthPercentage(tableWidth);
-	           
-//	          SimpleDateFormat sdf=new SimpleDateFormat("yyyy年MM月dd日");
-//		      String str=sdf.format(tsitecheck.getCheckDate());
-	          Phrase  phrase=new Phrase("当事人(签名)",fontMap.get("textFont"));
-	          PdfPCell  cell=new PdfPCell(phrase);
-	            cell.setBorderWidth(borderWidth);
-	            cell.setHorizontalAlignment(Element.ALIGN_CENTER);   // 设置水平样式
-	            cell.setVerticalAlignment(Element.ALIGN_MIDDLE); 
-	            table.addCell(cell);
-	            table.addCell(partySig);  
-	        
-	            phrase=new Phrase("巡查人(签名)",fontMap.get("textFont"));
-	            cell=new PdfPCell(phrase);
-	            cell.setBorderWidth(borderWidth);
-	            cell.setHorizontalAlignment(Element.ALIGN_CENTER);   // 设置水平样式
-	            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-	            table.addCell(cell);
-	            table.addCell(getterSig);
-	            
+	          
+	          date=material.getGetDate();
+	    	  PdfPTable	tableSub = new PdfPTable(3);
+	      
+    	    Phrase  phrase=new Phrase("\n\n\n\n    当\n    事\n    人",fontMap.get("textFont"));
+    	    table.addCell(phrase);
+         
+    	    tableSub=getSignatureTable(partySig,date);
+	        table.addCell(tableSub); 
+      
+        	
+    	   phrase=new Phrase("\n\n\n\n    收 \n    集\n    人",fontMap.get("textFont"));
+    	   table.addCell(phrase);
+    		
+    	   tableSub=getSignatureTable(getterSig,date);
+	       table.addCell(tableSub); 
+            
+  
             /* ============ 表格中的第四部分数据 ============ */
             table.addCell(createPDFCellToImage(material.getMaterialPath().split("\\|"), defaultImageWidth, defaultImageHeight, 0, 4, borderWidth, contentBigTableHeight));
             /* ============ 表格中的第五部分数据 ============ */
@@ -277,7 +279,34 @@ public class MaterialExport {
         }
     }
 
-	
+    public PdfPTable getSignatureTable(Image sig,Date date) throws DocumentException{
+    	PdfPTable tableSub = new PdfPTable(3);
+        tableSub.setWidths(new float[]{0.25f, 0.35f, 0.4f});
+   	  
+        Phrase phrase = new Phrase("签名：", PdfUtil.getFont12(Font.NORMAL));
+        PdfPCell cell = new PdfPCell(phrase);
+		cell.setMinimumHeight(120);
+    	cell.setBorderWidth(0);
+    	cell.setHorizontalAlignment(Element.ALIGN_LEFT); //水平
+    	cell.setVerticalAlignment(Element.ALIGN_BOTTOM); //垂直 	
+    	tableSub.addCell(cell);  
+    	
+    	cell = new PdfPCell();
+    	cell.setBorderWidth(0);
+    	cell.addElement(sig);
+    	cell.setHorizontalAlignment(Element.ALIGN_LEFT); //水平
+    	cell.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直    	
+    	tableSub.addCell(cell); 
+    	
+    	phrase = new Phrase(DateUtil.formatDate(date, "yyyy年MM月dd日"), PdfUtil.getFont10(Font.NORMAL));
+		cell = new PdfPCell(phrase);
+    	cell.setBorderWidth(0);
+    	cell.setHorizontalAlignment(Element.ALIGN_RIGHT); //水平
+    	cell.setVerticalAlignment(Element.ALIGN_BOTTOM); //垂直
+    	tableSub.addCell(cell);
+    	
+    	return tableSub;
+    }
 
 	/**
      * 输出到文件

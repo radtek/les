@@ -4,7 +4,6 @@
 package org.wxjs.les.modules.tcase.export;
 
 import java.io.OutputStream;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.httpclient.util.DateUtil;
@@ -22,6 +21,7 @@ import org.wxjs.les.modules.tcase.entity.Tcase;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
+import com.lowagie.text.Font;
 import com.lowagie.text.Image;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
@@ -82,24 +82,24 @@ public class CaseDecisionLaunchExport extends
 			String[] items;
 
 			// 文稿
-			items = new String[] { "文稿\n名称", "行政处罚决定书" };
-			table = PdfUtil.generateTableRow(items, fontContent, new float[] {
-					0.1f, 0.9f }, tableWidth, Element.ALIGN_LEFT, borderWidth,
-					40);
+			items = new String[] { "文稿\n名称", "      行政处罚决定书" };
+			table =generateTableRows(items, fontContent, new float[] {
+					0.1f, 0.9f }, tableWidth,Element.ALIGN_LEFT,Element.ALIGN_MIDDLE, borderWidth,
+					50, true);
 			document.add(table);
 
 			// partyName 主送
-			items = new String[] { "主送", this.caseDecision.getPartyName() };
-			table = PdfUtil.generateTableRow(items, fontContent, new float[] {
-					0.1f, 0.9f }, tableWidth, Element.ALIGN_LEFT, borderWidth,
-					40);
+			items = new String[] { "主送", "       "+this.caseDecision.getPartyName() };
+			table = generateTableRows(items, fontContent, new float[] {
+					0.1f, 0.9f }, tableWidth, Element.ALIGN_LEFT,Element.ALIGN_MIDDLE, borderWidth,
+					50, true);
 			document.add(table);
 
 			// 备案单位
-			items = new String[] { "备案\n单位", this.caseDecision.getRecordOrg() };
-			table = PdfUtil.generateTableRow(items, fontContent, new float[] {
-					0.1f, 0.9f }, tableWidth, Element.ALIGN_LEFT, borderWidth,
-					40);
+			items = new String[] { "备案\n单位", "       "+this.caseDecision.getRecordOrg() };
+			table = generateTableRows(items, fontContent, new float[] {
+					0.1f, 0.9f }, tableWidth,Element.ALIGN_LEFT,Element.ALIGN_MIDDLE, borderWidth,
+					50, true);
 			document.add(table);
 			// 编号
 			String type = this.caseDecision.getDecisionType();
@@ -110,27 +110,29 @@ public class CaseDecisionLaunchExport extends
 			} else {
 				name = "锡建监不罚字" + name;
 			}
-			items = new String[] { "编号", name };
-			table = PdfUtil.generateTableRow(items, fontContent, new float[] {
-					0.1f, 0.9f }, tableWidth, Element.ALIGN_LEFT, borderWidth,
-					40);
+			items = new String[] { "编号", "       "+name };
+			table = generateTableRows(items, fontContent, new float[] {
+					0.1f, 0.9f }, tableWidth, Element.ALIGN_LEFT,Element.ALIGN_MIDDLE, borderWidth,
+					50, true);
 			document.add(table);
 
 			// 拟稿日期 、印数
 			items = new String[] { "拟稿\n日期",
-					DateUtils.getDate("yyyy年MM月dd日  "), "\n     印数",
-					this.caseDecision.getPrintCount() };
-			table = PdfUtil.generateTableRow(items, fontContent, new float[] {
-					0.1f, 0.4f, 0.1f, 0.4f }, tableWidth, Element.ALIGN_LEFT,
-					borderWidth, 40);
+					"       "+DateUtils.getDate("yyyy年MM月dd日  "), "\n     印数",
+					"       "+this.caseDecision.getPrintCount() };
+			
+			table = generateTableRows(items, fontContent, new float[] {
+					0.1f, 0.4f, 0.1f, 0.4f }, tableWidth,  Element.ALIGN_LEFT,Element.ALIGN_MIDDLE,
+					borderWidth, 50, true);
+			
 			document.add(table);
 
 			// 承办部门
 			items = new String[] { "承办\n部门",
-					this.caseDecision.getDestinationAddress() };
-			table = PdfUtil.generateTableRow(items, fontContent, new float[] {
-					0.1f, 0.9f }, tableWidth, Element.ALIGN_LEFT, borderWidth,
-					40);
+					"       "+this.caseDecision.getDestinationAddress() };
+			table = generateTableRows(items, fontContent, new float[] {
+					0.1f, 0.9f }, tableWidth, Element.ALIGN_LEFT,Element.ALIGN_MIDDLE, borderWidth,
+					50, true);
 			document.add(table);
 
 			// 打印、校对
@@ -144,35 +146,35 @@ public class CaseDecisionLaunchExport extends
 			table.setWidthPercentage(tableWidth);
 
 			if(signatures.size()>0){	
-				table.addCell(this.getTitleCell("打印", 30));
-				table.addCell(this.getImageCell(signatures.get(0).getSignature(), "", 50f));
+				table.addCell(this.getTitleCell("打印", 60));
+				table.addCell(this.getImageCell(signatures.get(0).getSignature(), "", 70f));
 			}
 
-			if(signatures.size()>1){				
-				table.addCell(this.getTitleCell("校对", 30));
-				table.addCell(this.getImageCell(signatures.get(1).getSignature(), "", 50f));
-			}
-
-			if(signatures.size()>2){
-				table.addCell(this.getTitleCell("拟稿", 30));
-				table.addCell(this.getImageCell(signatures.get(2).getSignature(), "", 50f));				
+			if(signatures.size()>0){
+				table.addCell(this.getTitleCell("拟稿", 60));
+				table.addCell(this.getImageCell(signatures.get(0).getSignature(), "", 70f));	
 			}
 			
+			if(signatures.size()>2){				
+				table.addCell(this.getTitleCell("校对",60));
+				table.addCell(this.getImageCell(signatures.get(1).getSignature(), "", 70f));
+			}
+
 			if(signatures.size()>3){
-				table.addCell(this.getTitleCell("核稿", 30));
-				table.addCell(this.getImageCell(signatures.get(3).getSignature(), "", 50f));				
+				table.addCell(this.getTitleCell("核稿", 60));
+				table.addCell(this.getImageCell(signatures.get(2).getSignature(), "", 70f));				
 			}
 			
 			if(signatures.size()>4){
-				table.addCell(this.getTitleCell("审稿", 150));
-				Signature sig = signatures.get(4);
-				table.addCell(this.getImageCell(sig.getSignature(), DateUtil.formatDate(sig.getCreateDate(), "yyyy年MM月dd日"), 100f));				
+				table.addCell(this.getTitleCell("审稿", 180));
+				Signature sig = signatures.get(3);
+				table.addCell(this.getImageCell(sig.getSignature(), DateUtil.formatDate(sig.getCreateDate(), "yyyy年MM月dd日"),130f));				
 			}
 			
 			if(signatures.size()>5){
-				table.addCell(this.getTitleCell("签发", 150));
-				Signature sig = signatures.get(5);
-				table.addCell(this.getImageCell(sig.getSignature(), DateUtil.formatDate(sig.getCreateDate(), "yyyy年MM月dd日"), 100f));				
+				table.addCell(this.getTitleCell("签发", 180));
+				Signature sig = signatures.get(4);
+				table.addCell(this.getImageCell(sig.getSignature(), DateUtil.formatDate(sig.getCreateDate(), "yyyy年MM月dd日"),130f));				
 			}
 
 			document.add(table);
@@ -213,8 +215,8 @@ public class CaseDecisionLaunchExport extends
 		if(StringUtils.isNotEmpty(dateStr)){
 			cell = new PdfPCell();
 			cell.setBorderWidth(0);
-			cell.setHorizontalAlignment(Element.ALIGN_RIGHT); // 水平居中
-			cell.setVerticalAlignment(Element.ALIGN_MIDDLE); // 垂直居中
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER); // 水平居中
+			cell.setVerticalAlignment(Element.ALIGN_BOTTOM); // 垂直居中
 			Phrase phrase = new Phrase(dateStr, fontContent);
 			cell.addElement(phrase);
 			subtable.addCell(cell);
@@ -223,8 +225,36 @@ public class CaseDecisionLaunchExport extends
 		cell = new PdfPCell();
 		cell.addElement(subtable);	
 		cell.setHorizontalAlignment(Element.ALIGN_CENTER); // 水平居中
-		cell.setVerticalAlignment(Element.ALIGN_MIDDLE); // 垂直居中
+		cell.setVerticalAlignment(Element.ALIGN_BOTTOM); // 垂直居中
 		return cell;
 	}
+	  public static PdfPTable generateTableRows(String[] strs, Font rowFont, float[] widths, int tableWidth, int textAlign,int heightAlign, float borderWidth, float minimumHeight, boolean firstCellAlignCenter) throws DocumentException{
+	    	int columns = widths.length;
+	        PdfPTable table = new PdfPTable(columns);
+	        table.setWidths(widths);
+	        table.setWidthPercentage(tableWidth);
+	        Phrase phrase;
+	        PdfPCell cell;
+	        if(strs!=null){
+	        	int index = 0;
+	    		for(String str:strs){
+	            	phrase = new Phrase(str, rowFont);
+	            	cell = new PdfPCell(phrase);
+	            	cell.setBorderWidth(borderWidth);
+	            	cell.setHorizontalAlignment(textAlign);
+	            	cell.setVerticalAlignment(heightAlign);
+	            	if(firstCellAlignCenter && index==0){
+	                	cell.setHorizontalAlignment(Element.ALIGN_CENTER); //水平居中
+	                	cell.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直居中            		
+	            	}
+	            	if(minimumHeight>0){
+	            		cell.setMinimumHeight(minimumHeight);
+	            	}
+	            	table.addCell(cell);
+	            	index ++;
+	    		}
+	        }
+	    	return table;
+	    } 
 
 }

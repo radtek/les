@@ -20,6 +20,8 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.httpclient.util.DateUtil;
+
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -333,53 +335,60 @@ public class SiteCheckRecordExport {
 	           table.setWidths(widths);
 	           table.setWidthPercentage(tableWidth);
 	           
-	           Phrase  phrase=new Phrase("当事人(签名)",fontMap.get("textFont"));
-	          	PdfPCell  cell=new PdfPCell(phrase);
-	            cell.setBorderWidth(borderWidth);
-	            cell.setHorizontalAlignment(Element.ALIGN_CENTER);   // 设置水平样式
-	            cell.setVerticalAlignment(Element.ALIGN_MIDDLE); 
-	            table.addCell(cell);
-	            table.addCell(partySig);
+	           PdfPTable	tableSub = new PdfPTable(2);
+	           Phrase  phrase=new Phrase("\n\n\n    当\n    事\n    人",fontMap.get("textFont"));
+	           table.addCell(phrase);
+	           tableSub=getSignatureTable(partySig);
+	           table.addCell(tableSub); 
 	           
 	        
-	            phrase=new Phrase("见证人(签名)",fontMap.get("textFont"));
-	            cell=new PdfPCell(phrase);
-	            cell.setBorderWidth(borderWidth);
-	            cell.setHorizontalAlignment(Element.ALIGN_CENTER);   // 设置水平样式
-	            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-	            table.addCell(cell);
-	            table.addCell(witnessSig);
-	            
-	            phrase=new Phrase("勘查人(签名)",fontMap.get("textFont"));
-	            cell=new PdfPCell(phrase);
-	            cell.setBorderWidth(borderWidth);
-	            cell.setHorizontalAlignment(Element.ALIGN_CENTER);   // 设置水平样式
-	            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-	            table.addCell(cell);
-	            table.addCell(checkerSig);
-	            
-	            phrase=new Phrase("记录人(签名)",fontMap.get("textFont"));
-	            cell=new PdfPCell(phrase);
-	            cell.setBorderWidth(borderWidth);
-	            cell.setHorizontalAlignment(Element.ALIGN_CENTER);   // 设置水平样式
-	            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-	            table.addCell(cell);
-	            table.addCell(recorderSig);
-	            
-	            document.add(table);
+		        phrase=new Phrase("\n\n\n    见\n    证\n    人",fontMap.get("textFont"));
+		        table.addCell(phrase);
+	        	tableSub=getSignatureTable(witnessSig);
+	        	table.addCell(tableSub); 
+		           
+		        	
+	           phrase=new Phrase("\n\n\n    勘\n    查\n    人",fontMap.get("textFont"));
+	           table.addCell(phrase);
+	     	   tableSub=getSignatureTable(checkerSig);
+	     	   table.addCell(tableSub); 
 	           
+
+	           phrase=new Phrase("\n\n\n    记\n    录\n    人",fontMap.get("textFont"));
+	           table.addCell(phrase);
+	     	   tableSub=getSignatureTable(recorderSig);
+	     	   table.addCell(tableSub); 
+	      document.add(table);
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("生成PDF数据异常{}", e.getMessage());
         } finally {
             document.close();
-        
         }
-       
     }
 
-    
-
+   
+    public PdfPTable getSignatureTable(Image sig) throws DocumentException{
+    	PdfPTable	tableSub = new PdfPTable(2);
+        tableSub.setWidths(new float[]{0.3f, 0.7f});
+   	  
+        Phrase phrase = new Phrase("签名：", PdfUtil.getFont12(Font.NORMAL));
+        PdfPCell cell = new PdfPCell(phrase);
+		cell.setMinimumHeight(120);
+    	cell.setBorderWidth(0);
+    	cell.setHorizontalAlignment(Element.ALIGN_LEFT); //水平
+    	cell.setVerticalAlignment(Element.ALIGN_BOTTOM); //垂直 	
+    	tableSub.addCell(cell);  
+    	
+    	cell = new PdfPCell();
+    	cell.setBorderWidth(0);
+    	cell.addElement(sig);
+    	cell.setHorizontalAlignment(Element.ALIGN_LEFT); //水平
+    	cell.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直    	
+    	tableSub.addCell(cell); 
+    	
+    	return tableSub;
+    }
 	/**
      * 输出到文件
      *
