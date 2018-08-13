@@ -20,6 +20,8 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.httpclient.util.DateUtil;
+
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -28,6 +30,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -255,27 +258,21 @@ public class TsitecheckExport {
 	           table = new PdfPTable(widths.length);
 	           table.setWidths(widths);
 	           table.setWidthPercentage(tableWidth);
-	           
-	         
-	          Phrase  phrase=new Phrase("勘查人(签名)",fontMap.get("textFont"));
-	          PdfPCell  cell=new PdfPCell(phrase);
 	          
-	            cell.setBorderWidth(borderWidth);
-	            cell.setHorizontalAlignment(Element.ALIGN_CENTER);   // 设置水平样式
-	            cell.setVerticalAlignment(Element.ALIGN_MIDDLE); 
-	            table.addCell(cell);
-	            table.addCell(checkerSig);
-	           
-	        
-	            phrase=new Phrase("当事人(签名)",fontMap.get("textFont"));
-	            cell=new PdfPCell(phrase);
-	            cell.setBorderWidth(borderWidth);
-	            cell.setHorizontalAlignment(Element.ALIGN_CENTER);   // 设置水平样式
-	            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-	            table.addCell(cell);
-	            table.addCell(partySig);
+	          Date date=tsitecheck.getCheckDate();
+	    	  PdfPTable	tableSub = new PdfPTable(3);
+	      
+	    	  Phrase  phrase=new Phrase("\n\n\n\n    勘\n    查\n    人",fontMap.get("textFont"));
+	    	  table.addCell(phrase);
+	    	  tableSub=getSignatureTable(checkerSig,date);
+	    	  table.addCell(tableSub); 
+      
+	    	  phrase=new Phrase("\n\n\n\n    当 \n    事\n    人",fontMap.get("textFont"));
+	    	  table.addCell(phrase);
+	    	  tableSub=getSignatureTable(partySig,date);
+	    	  table.addCell(tableSub);
 	            
-	            document.add(table);
+	       document.add(table);
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("生成PDF数据异常{}", e.getMessage());
@@ -285,6 +282,37 @@ public class TsitecheckExport {
     }
 
 	
+    public PdfPTable getSignatureTable(Image sig,Date date) throws DocumentException{
+    	PdfPTable tableSub = new PdfPTable(3);
+        tableSub.setWidths(new float[]{0.25f, 0.35f, 0.4f});
+   	  
+        Phrase phrase = new Phrase("签名：", PdfUtil.getFont12(Font.NORMAL));
+        PdfPCell cell = new PdfPCell(phrase);
+		cell.setMinimumHeight(120);
+    	cell.setBorderWidth(0);
+    	cell.setHorizontalAlignment(Element.ALIGN_LEFT); //水平
+    	cell.setVerticalAlignment(Element.ALIGN_BOTTOM); //垂直 	
+    	tableSub.addCell(cell);  
+    	
+    	cell = new PdfPCell();
+    	cell.setBorderWidth(0);
+    	cell.addElement(sig);
+    	cell.setHorizontalAlignment(Element.ALIGN_LEFT); //水平
+    	cell.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直    	
+    	tableSub.addCell(cell); 
+    	
+    	phrase = new Phrase(DateUtil.formatDate(date, "yyyy年MM月dd日"), PdfUtil.getFont10(Font.NORMAL));
+		cell = new PdfPCell(phrase);
+    	cell.setBorderWidth(0);
+    	cell.setHorizontalAlignment(Element.ALIGN_RIGHT); //水平
+    	cell.setVerticalAlignment(Element.ALIGN_BOTTOM); //垂直
+    	tableSub.addCell(cell);
+    	return tableSub;
+    
+    
+    }
+    
+    
 
 	/**
      * 输出到文件
