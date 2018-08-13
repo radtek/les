@@ -31,35 +31,31 @@
 	
 	<form:form id="inputForm" modelAttribute="caseAttach" action="${ctx}/case/caseAttach/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
-		<form:hidden path="caseId"/>
+		<form:hidden path="caseId" value="${caseAct.tcase.id}"/>
 		<form:hidden path="paramUri" value="${caseAct.paramUri}"/>
 		<sys:message content="${message}"/>
 		<div class="control-group">
 			<label class="control-label">资料类型：</label>
 			<div class="controls">
-				<form:radiobuttons path="attachType" items="${fns:getDictList('case_stage_filetype')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required"/>
+				<form:input path="attachType" htmlEscape="false" maxlength="64" class="input-xlarge required"/>	
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
+		<div class="control-group">
+			<label class="control-label">流程阶段：</label>
+			<div class="controls">
+				<form:select path="flowNode" class="input-xlarge required">
+			       <form:options items="${fns:getDictList('case_stage')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+			    </form:select>			
+				<span class="help-inline"><font color="red">*</font> </span>
+			</div>
+		</div>		
 		<div class="control-group">
 			<label class="control-label">保存路径：</label>
 			<div class="controls">
 				<form:hidden id="filepath" path="filepath" htmlEscape="false" maxlength="256" class="input-xlarge"/>
-				<sys:ckfinder input="filepath" type="files" uploadPath="/${caseAttach.caseId}" selectMultiple="false"/>				
+				<sys:ckfinder input="filepath" type="files" uploadPath="/${caseAct.tcase.id}" selectMultiple="false"/>				
 				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">流程点：</label>
-			<div class="controls">
-				<form:input path="flowNode" htmlEscape="false" maxlength="32" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">备注信息：</label>
-			<div class="controls">
-				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="64" class="input-xxlarge "/>
 			</div>
 		</div>
 		<div class="form-actions">

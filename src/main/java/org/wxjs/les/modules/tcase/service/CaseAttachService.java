@@ -48,6 +48,13 @@ public class CaseAttachService extends CrudService<CaseAttachDao, CaseAttach> {
 	}
 	
 	@Transactional(readOnly = false)
+	public void initialDefaultItems(String caseId){
+		Tcase tcase = new Tcase();
+		tcase.setId(caseId);
+		dao.initialDefaultItems(tcase);
+	}
+	
+	@Transactional(readOnly = false)
 	public void delete(CaseAttach caseAttach) {
 		super.delete(caseAttach);
 	}

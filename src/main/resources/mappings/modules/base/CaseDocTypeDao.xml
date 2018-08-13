@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wxjs.les.modules.base.dao.CaseDocTypeDao">
+    
+	<sql id="caseDocTypeColumns">
+		a.id AS "id",
+		a.case_stage AS "caseStage",
+		a.document_type AS "documentType",
+		a.mandatory AS "mandatory",
+		a.upload_method AS "uploadMethod",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="caseDocTypeJoins">
+	</sql>
+    
+	<select id="get" resultType="CaseDocType">
+		SELECT 
+			<include refid="caseDocTypeColumns"/>
+		FROM tcase_doc_type a
+		<include refid="caseDocTypeJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="CaseDocType">
+		SELECT 
+			<include refid="caseDocTypeColumns"/>
+		FROM tcase_doc_type a
+		<include refid="caseDocTypeJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="caseStage != null and caseStage != ''">
+				AND a.case_stage = #{caseStage}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="CaseDocType">
+		SELECT 
+			<include refid="caseDocTypeColumns"/>
+		FROM tcase_doc_type a
+		<include refid="caseDocTypeJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO tcase_doc_type(
+			case_stage,
+			document_type,
+			mandatory,
+			upload_method,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{caseStage},
+			#{documentType},
+			#{mandatory},
+			#{uploadMethod},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE tcase_doc_type SET 	
+			case_stage = #{caseStage},
+			document_type = #{documentType},
+			mandatory = #{mandatory},
+			upload_method = #{uploadMethod},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE tcase_doc_type SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

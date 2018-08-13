@@ -9,6 +9,7 @@
 		a.filename AS "filename",
 		a.filepath AS "filepath",
 		a.flow_node AS "flowNode",
+		a.mandatory AS "mandatory",
 		a.create_by AS "createBy.id",
 		u.name AS "createBy.name",
 		a.create_date AS "createDate",
@@ -76,6 +77,7 @@
 			filename,
 			filepath,
 			flow_node,
+			mandatory,
 			create_by,
 			create_date,
 			update_by,
@@ -88,6 +90,7 @@
 			#{filename},
 			#{filepath},
 			#{flowNode},
+			'0',
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -102,6 +105,12 @@
 		SELECT #{id} case_id, attach_type,filename,filepath,flow_node
 		FROM tcase_attach a
 		WHERE a.case_id=#{oldCaseId}
+	</insert>	
+	
+	<insert id="initialDefaultItems">
+		INSERT INTO tcase_attach(case_id, flow_node, attach_type, mandatory)
+		SELECT #{id} case_id, a.case_stage, a.document_type, mandatory
+		FROM tcase_doc_type a	
 	</insert>	
 	
 	<update id="update">

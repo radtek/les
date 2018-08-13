@@ -34,11 +34,10 @@
 		<thead>
 			<tr>
 			    <th>序号</th>
-			    <th>流程点</th>
+			    <th>阶段</th>
 				<th>资料类型</th>
+				<th>是否必须</th>
 				<th>文件名称</th>
-				<th>添加人</th>
-				<th>添加时间</th>
 				<shiro:hasPermission name="case:tcase:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
@@ -47,22 +46,25 @@
 			<tr>
 			    <td>${status.index + 1}</td>
 				<td>
-					${caseAttach.flowNode}
+					${fns:getDictLabel(caseAttach.flowNode, 'case_stage', caseAttach.flowNode)}
 				</td>			
 				<td>
-				    ${fns:getDictLabel(caseAttach.attachType, 'case_stage_filetype', '')}
+				    ${caseAttach.attachType}
 				</td>
+				<td>
+					${fns:getDictLabel(caseAttach.mandatory, 'yes_no', '')}
+				</td>				
 				<td>
 					<a href="${caseAttach.filepath}" target="_blank">${caseAttach.filename}</a>
 				</td>
-				<td>
-					${caseAttach.createBy.name}
-				</td>
-				<td>
-					<fmt:formatDate value="${caseAttach.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
-				</td>
 				<shiro:hasPermission name="case:tcase:edit"><td>
-					<a href="${ctx}/tcase/caseAttach/delete?id=${caseAttach.id}" onclick="return confirmx('确认要删除该案件资料吗？', this.href)">删除</a>
+				    <a href="${ctx}/case/caseAttach/form?attachId=${caseAttach.id}&paramUri=${caseAct.paramUri}">
+				    <c:if test="${empty caseAttach.filepath}">上传</c:if>
+				    <c:if test="${not empty caseAttach.filepath}">修改</c:if>
+				    </a>
+				<c:if test="${caseAttach.mandatory ne '1'}">
+				    <a href="${ctx}/case/caseAttach/delete?id=${caseAttach.id}&paramUri=${caseAct.paramUri}" onclick="return confirmx('确认要删除该案件资料吗？', this.href)">删除</a>
+				</c:if>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>

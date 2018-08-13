@@ -21,6 +21,8 @@ public class CaseAttach extends DataEntity<CaseAttach> {
 	private String filepath;		// 保存路径
 	private String flowNode;		// 流程点
 	
+	private String mandatory;
+	
 	private String paramUri;
 	
 	public CaseAttach() {
@@ -74,6 +76,14 @@ public class CaseAttach extends DataEntity<CaseAttach> {
 
 	public void setFlowNode(String flowNode) {
 		this.flowNode = flowNode;
+	}
+
+	public String getMandatory() {
+		return mandatory;
+	}
+
+	public void setMandatory(String mandatory) {
+		this.mandatory = mandatory;
 	}
 
 	public String getParamUri() {

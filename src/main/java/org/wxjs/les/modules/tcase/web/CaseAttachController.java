@@ -18,6 +18,7 @@ import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.web.BaseController;
 import org.wxjs.les.common.utils.StringUtils;
+import org.wxjs.les.common.utils.Util;
 import org.wxjs.les.modules.task.entity.CaseAct;
 import org.wxjs.les.modules.tcase.entity.CaseAttach;
 import org.wxjs.les.modules.tcase.entity.Tcase;
@@ -61,7 +62,7 @@ public class CaseAttachController extends BaseController {
 
 	@RequiresPermissions("case:tcase:view")
 	@RequestMapping(value = "form")
-	public String form(CaseAct caseAct, Model model) {
+	public String form(CaseAct caseAct, HttpServletRequest request, Model model) {
 		
 		String businesskey = caseAct.getBusinesskey();
 		
@@ -69,8 +70,13 @@ public class CaseAttachController extends BaseController {
 		
 		caseAct.setTcase(tcase);
 		
+		String attachId = Util.getString(request.getParameter("attachId"));
 		CaseAttach caseAttach = new CaseAttach();
-		caseAttach.setCaseId(tcase.getId());
+		
+		if(StringUtils.isNotEmpty(attachId)){
+			caseAttach = caseAttachService.get(attachId);
+		}
+
 		model.addAttribute("caseAttach", caseAttach);
 		
 		return "modules/tcase/caseAttachForm";
@@ -97,7 +103,7 @@ public class CaseAttachController extends BaseController {
 	public String delete(CaseAttach caseAttach, RedirectAttributes redirectAttributes) {
 		caseAttachService.delete(caseAttach);
 		addMessage(redirectAttributes, "删除案件资料成功");
-		return "redirect:"+Global.getAdminPath()+"/case/caseAttach/?id="+caseAttach.getCaseId();
+		return "redirect:"+Global.getAdminPath()+"/case/tcase/attachTab?"+caseAttach.getParamUri();
 	}
 
 }

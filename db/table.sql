@@ -82,9 +82,10 @@ CREATE TABLE `tcase_attach` (
   `id` int(11) NOT NULL auto_increment  COMMENT '编号',
   `case_id` varchar(32) NOT NULL COMMENT '案件编号',
   `attach_type` varchar(100) NOT NULL COMMENT '资料类型',
-  `filename` varchar(100) NOT NULL COMMENT '文件名称',
-  `filepath` varchar(300) NOT NULL COMMENT '保存路径',
-  `flow_node` varchar(32) NOT NULL COMMENT '流程点',
+  `filename` varchar(100) NULL COMMENT '文件名称',
+  `filepath` varchar(300) NULL COMMENT '保存路径',
+  `flow_node` varchar(32) NULL COMMENT '流程点',
+  `mandatory` varchar(32) default '0' COMMENT '是否必须',
   `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
   `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_by` varchar(32) DEFAULT NULL COMMENT '更新者',
@@ -501,3 +502,22 @@ CREATE TABLE `tpunish_lib_range` (
   `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='自由裁量权';
+
+-- ----------------------------
+-- Table structure for tcase_doc_type
+-- ----------------------------
+DROP TABLE IF EXISTS `tcase_doc_type`;
+CREATE TABLE `tcase_doc_type` (
+  `id` int(11) NOT NULL auto_increment  COMMENT '编号',
+  `case_stage` varchar(64) NOT NULL COMMENT '阶段',
+  `document_type` varchar(64) NOT NULL COMMENT '文档类型',
+  `mandatory` varchar(8) NOT NULL COMMENT '是否必须',
+  `upload_method` varchar(16) NOT NULL COMMENT '上传方式',
+  `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_by` varchar(32) DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  `remarks` varchar(64) DEFAULT NULL COMMENT '备注信息',
+  `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文档类型';

@@ -18,4 +18,6 @@ public interface CaseAttachDao extends CrudDao<CaseAttach> {
 	
 	public void attachTransfer(Tcase tcase);
 	
+	public void initialDefaultItems(Tcase tcase);
+	
 }

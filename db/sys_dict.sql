@@ -66,6 +66,12 @@ VALUES
 ('sys_user_type_1', '1', '普通用户', 'sys_user_type', '用户类型', 10, '0','1',now(),'1',now()),
 ('sys_user_type_9', '9', '系统管理', 'sys_user_type', '用户类型', 90, '0','1',now(),'1',now());
 
+delete from sys_dict where `type`= 'upload_method';
+INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `parent_id`, `create_by`,`create_date`,`update_by`,`update_date`) 
+VALUES 
+('upload_method_1', '1', '自动生成', 'upload_method', '上传方式', 10, '0','1',now(),'1',now()),
+('upload_method_2', '2', '手动上传', 'upload_method', '上传方式', 20, '0','1',now(),'1',now());
+
 
 
 
