@@ -386,7 +386,6 @@ public class SiteCheckRecordExport {
     	cell.setHorizontalAlignment(Element.ALIGN_LEFT); //水平
     	cell.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直    	
     	tableSub.addCell(cell); 
-    	
     	return tableSub;
     }
 	/**

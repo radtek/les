@@ -257,11 +257,11 @@ public class MaterialExport {
 	        table.addCell(tableSub); 
       
         	
-    	   phrase=new Phrase("\n\n\n\n    收 \n    集\n    人",fontMap.get("textFont"));
-    	   table.addCell(phrase);
+    	    phrase=new Phrase("\n\n\n\n    收 \n    集\n    人",fontMap.get("textFont"));
+    	    table.addCell(phrase);
     		
-    	   tableSub=getSignatureTable(getterSig,date);
-	       table.addCell(tableSub); 
+    	    tableSub=getSignatureTable(getterSig,date);
+	        table.addCell(tableSub); 
             
   
             /* ============ 表格中的第四部分数据 ============ */
@@ -288,7 +288,7 @@ public class MaterialExport {
 		cell.setMinimumHeight(120);
     	cell.setBorderWidth(0);
     	cell.setHorizontalAlignment(Element.ALIGN_LEFT); //水平
-    	cell.setVerticalAlignment(Element.ALIGN_BOTTOM); //垂直 	
+    	cell.setVerticalAlignment(Element.ALIGN_TOP); //垂直 	
     	tableSub.addCell(cell);  
     	
     	cell = new PdfPCell();
