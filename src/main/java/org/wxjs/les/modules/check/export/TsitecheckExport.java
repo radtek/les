@@ -291,7 +291,7 @@ public class TsitecheckExport {
 		cell.setMinimumHeight(120);
     	cell.setBorderWidth(0);
     	cell.setHorizontalAlignment(Element.ALIGN_LEFT); //水平
-    	cell.setVerticalAlignment(Element.ALIGN_BOTTOM); //垂直 	
+    	cell.setVerticalAlignment(Element.ALIGN_TOP); //垂直 	
     	tableSub.addCell(cell);  
     	
     	cell = new PdfPCell();
