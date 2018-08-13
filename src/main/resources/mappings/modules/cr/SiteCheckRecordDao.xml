@@ -37,8 +37,8 @@
 		ts1.signature AS "checkerSig.signature",
 		
 		a.recorder_sig AS "recorderSig.id",
-	    s2.title AS "recorderSig.title",
-		s2.signature AS "recorderSig.signature",
+	    ts2.title AS "recorderSig.title",
+		ts2.signature AS "recorderSig.signature",
 		
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
