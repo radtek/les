@@ -85,7 +85,7 @@
 				<label class="control-label control-tight">资料路径：</label>&nbsp;&nbsp;&nbsp;
 				<div class="controls controls-tight">
 					<form:hidden id="nameImage" path="materialPath" htmlEscape="false" maxlength="255" class="input-xxlarge required"/>
-					<sys:ckfinder input="nameImage" type="pic_video" uploadPath="/material" selectMultiple="true"/>
+					<sys:ckfinder input="nameImage" type="all" uploadPath="/material" selectMultiple="false"/>
 					<span class="help-inline"><font color="red">*</font> </span>
 				</div>
 			</div>
