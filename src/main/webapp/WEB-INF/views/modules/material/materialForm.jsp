@@ -120,7 +120,7 @@
 		        </div>
 					
 				<div class="span6">		
-			<label class="control-label">巡查人签名：</label>
+			<label class="control-label">收集人签名：</label>
 			<div class="controls controls-tight">
 				<les:signatureLoader sig="${material.getterSig}" path="getterSig.id"></les:signatureLoader>
 				<les:signatureModal></les:signatureModal>

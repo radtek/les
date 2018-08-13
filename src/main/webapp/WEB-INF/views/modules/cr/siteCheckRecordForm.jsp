@@ -303,7 +303,6 @@
 			<label class="control-label controls-tight">记录人签名：</label>
 			<div class="controls controls-tight">
 				<les:signatureLoader sig="${siteCheckRecord.recorderSig}" path="recorderSig.id"></les:signatureLoader>
-				<les:signatureModal></les:signatureModal>
 			</div>
 		        </div> 
 		    </div>
