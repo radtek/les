@@ -19,6 +19,7 @@ import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.web.BaseController;
 import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.StringUtils;
+import org.wxjs.les.modules.task.entity.CaseAct;
 import org.wxjs.les.modules.tcase.entity.CaseCancel;
 import org.wxjs.les.modules.tcase.entity.Tcase;
 import org.wxjs.les.modules.tcase.export.CaseCancelExport;
@@ -76,6 +77,16 @@ public class CaseCancelController extends BaseController {
 		caseCancelService.save(caseCancel);
 		addMessage(redirectAttributes, "保存案件撤销成功");
 		return "redirect:"+Global.getAdminPath()+"/case/tcase/cancelTab?"+caseCancel.getParamUri();		
+	}
+	
+	@RequiresPermissions("case:tcase:edit")
+	@RequestMapping(value = "saveAndStart")
+	public String saveAndStart(CaseAct caseAct, Model model, RedirectAttributes redirectAttributes) {
+		//tcaseService.saveAndStartFlow(caseAct.getTcase());
+		tcaseService.saveProcess(caseAct.getTcase());
+		caseCancelService.startWorkflow(caseAct.getTcase());
+		addMessage(redirectAttributes, "事件启动成功");
+		return "redirect:"+Global.getAdminPath()+"/task/todo";
 	}
 	
 	@RequiresPermissions("case:tcase:edit")

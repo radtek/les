@@ -12,7 +12,7 @@
 			//$("#name").focus();
 			$("#infoInputForm").validate({
 				submitHandler: function(form){
-					loading('正在提交，请稍等...');
+					//loading('正在提交，请稍等...');
 					form.submit();
 				},
 				errorContainer: "#messageBox",
@@ -28,7 +28,7 @@
 			
 			$("#qaInputForm").validate({
 				submitHandler: function(form){
-					loading('正在提交，请稍等...');
+					//loading('正在提交，请稍等...');
 					form.submit();
 				},
 				errorContainer: "#messageBox",
@@ -41,14 +41,18 @@
 					}
 				}
 			});
+			
+		    $('#btnSaveInfo').click(function() {
+				$("#infoInputForm").attr("action","${ctx}/qa/questionanswer/saveInfo");
+				$("#infoInputForm").submit();		    	
+		    });		
+		    
+		    $('#btnExportPdf').click(function() {
+				$("#infoInputForm").attr("action","${ctx}/qa/questionanswer/exportPDF");
+				$("#infoInputForm").submit();		    	
+		    });	
+		    
 		});
-		
-	    function exportPdf(){
-
-			$("#infoInputForm").attr("action","${ctx}/qa/questionanswer/exportPDF");
-			$("#infoInputForm").submit();
-	    	
-	    }btnSaveInfo
 
 		function addQA(){
 			$("#qaContent").val($("#qaContent").val() + "\n\r问：\n\r答：");
@@ -107,7 +111,11 @@
 				<div class="span7">		
 			<label class="control-label control-tight">调查询问人：</label>
 			<div class="controls controls-tight">
+			<!--  
 				<form:checkboxes path="quizzerList" items="${fns:getUserByOffice('')}" itemLabel="name" itemValue="name" htmlEscape="false" class="required"/>
+			-->
+			    <sys:treeselect id="quizzer" name="quizzer" value="${questionanswer.quizzer}" labelName="name" labelValue="${questionanswer.quizzer}" 
+				title="调查询问人" url="/sys/user/treeDataWithLoginName?officeId=" checked="true" cssClass="input-xxlarge" allowClear="true" notAllowSelectParent="true"/>				
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		        </div>
@@ -202,14 +210,7 @@
 	</form:form>
 	<h4>问答记录</h4>
 	<form:form id="qaInputForm" modelAttribute="questionanswer" action="${ctx}/qa/questionanswer/saveQa" method="post" class="form-horizontal">
-		<form:hidden path="id"/>
-
-			<div class="control-group">
-				<label class="control-label">询问笔录项目：</label>
-				<div class="controls controls-tight">
-				</div>
-				
-			</div>		
+		<form:hidden path="id"/>	
 
 			<div class="control-group">
 				<label class="control-label control-tight"></label>
@@ -226,7 +227,7 @@
 			</div>	
 		<div class="form-actions">
 			<shiro:hasPermission name="qa:questionanswer:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保存询问笔录"/>&nbsp;</shiro:hasPermission>
-			<input id="btnExportPdf" class="btn btn-primary" type="button" value="导出PDF " onclick="exportPdf()"/>
+			<input id="btnExportPdf" class="btn btn-primary" type="button" value="导出PDF "/>
 		</div>			
 		<div class="control-group container-fluid nopadding">
 			<div class="row-fluid">			

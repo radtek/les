@@ -33,20 +33,22 @@ public class CaseHandleService extends CrudService<CaseHandleDao, CaseHandle> {
 		//fill name
 		if(entity!=null){
 			User param = new User();
-			param.setLoginName(entity.getInvestigator().getLoginName());
-			List<User> list = userDao.findList(param);
-			
-			StringBuffer buffer = new StringBuffer();
-			
-			for(User user: list){
+			if(entity.getInvestigator()!=null){
+				String investigator = entity.getInvestigator().getLoginName();
+				param.setLoginName(investigator);
+				List<User> list = userDao.findList(param);
+				
+				StringBuffer buffer = new StringBuffer();
+				
+				for(User user: list){
 
-				buffer.append(",").append(user.getName());
+					buffer.append(",").append(user.getName());
+				}
+				
+				if(buffer.length()>0){
+					entity.getInvestigator().setName(buffer.substring(1));
+				}				
 			}
-			
-			if(buffer.length()>0){
-				entity.getInvestigator().setName(buffer.substring(1));
-			}
-
 		}
 		
 		return entity;

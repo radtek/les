@@ -103,7 +103,7 @@
 	
 	<update id="delete">
 		UPDATE tpunish_lib_range SET 
-			del_flag = #{DEL_FLAG_DELETE}
+			del_flag = '1'
 		<choose>
 			<when test="id !=null and id != ''">
 				WHERE id = #{id}
@@ -116,7 +116,7 @@
 	
 	<update id="deleteAll">
 		UPDATE tpunish_lib_range SET 
-			del_flag = #{DEL_FLAG_DELETE}
+			del_flag = '1'
 	</update>	
 	
 </mapper>

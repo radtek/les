@@ -16,5 +16,7 @@ style="overflow: visible; height: 500px;" scrolling="yes" frameborder="no" width
 <iframe id="flowchart2" name="flowchart2" src="${ctx}/act/task/histoicFlow?procInsId=${procInsId}&startAct=${startAct}&endAct=${endAct}&t="+new Date().getTime() 
 style="overflow: visible; height: 500px;" scrolling="yes" frameborder="no" width="100%" height="500px">
 </iframe>
+
+<act:histoicFlow procInsId="${procInsId}"/>
 </body>
 </html>

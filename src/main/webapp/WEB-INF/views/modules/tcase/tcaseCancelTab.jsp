@@ -42,7 +42,7 @@
     
     <les:caseTab tab="cancel" caseActAttr="${caseAct}"></les:caseTab> 
     
-    <les:caseProcessTag hideCaseSummary="1"></les:caseProcessTag>
+    <les:caseProcessTag4Cancel></les:caseProcessTag4Cancel>
     
 	<form:form id="inputForm" modelAttribute="caseCancel" action="${ctx}/tcase/caseCancel/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
