@@ -4,6 +4,9 @@
 package org.wxjs.les.modules.material.web;
 
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -63,7 +66,10 @@ public class MaterialController extends BaseController {
 		if(material.getIsNewRecord()){
 			//tcase.setCaseStage("10");
 			//tcase.setCaseStageStatus("0");
-			material.setMaterialComment("拍摄时间："+"2018年7月25日"+"\n"
+			Date date=new Date();
+			SimpleDateFormat sdft=new SimpleDateFormat("yyyy年MM月dd日");
+			String str=sdft.format(date);
+			material.setMaterialComment("拍摄时间："+str+"\n"
 			+"拍摄地点："+"\n"+"拍摄内容："+"\n"+"拍摄张数："
 			+"\n"+"拍摄人：");
 		}
