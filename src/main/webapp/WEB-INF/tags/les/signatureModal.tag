@@ -12,7 +12,7 @@
 		//alert("initial...");
 	    //初始化
 	    var dHeight = "320px";
-		var dWidth = "510px" ; 
+		var dWidth = "810px" ; 
 		
 		var $sigdiv = $("#signatureBox");
 		
@@ -58,7 +58,7 @@
 <input type="hidden" id="sigId" value=""/>
 
 <!-- 模态框（Modal） -->
-<div class="modal fade" id="sigModal" style="width:550px;height:450px;display:none;">
+<div class="modal fade" id="sigModal" style="width:850px;height:450px;display:none;">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -69,8 +69,8 @@
 					签名框
 				</h4>
 			</div>
-			<div class="modal-body" style="width: 520px;height: 340px;">
-				<div id="signatureBox" style="width: 510px;height: 320px;border: 1px solid #ccc;margin: 10px 0px;"></div>
+			<div class="modal-body" style="width: 820px;height: 340px;">
+				<div id="signatureBox" style="width: 810px;height: 320px;border: 1px solid #ccc;margin: 10px 0px;"></div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary" onclick="saveSignature()" data-dismiss="modal">保存签名</button>

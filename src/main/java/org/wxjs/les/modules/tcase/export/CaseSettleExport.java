@@ -96,17 +96,17 @@ public class CaseSettleExport extends ExportBase<CaseSettleExport> {
         	  
          //案情摘要
         	  items = new String[]{"案\n情\n摘\n要", this.tcase.getCaseProcess().getCaseSummary()};
-              table = PdfUtil.generateTableRow(items, fontContent, 
+              table = PdfUtil.generateTableRow4LongText(items, fontContent, 
               		new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 120);
               document.add(table);	 
         //处理情况
               items = new String[]{"处\n理\n情\n况", this.caseSettle.getHandleSummary()};
-              table = PdfUtil.generateTableRow(items, fontContent, 
+              table = PdfUtil.generateTableRow4LongText(items, fontContent, 
               		new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 120);
               document.add(table);	
         //执行情况
               items = new String[]{"执\n行\n情\n况", this.caseSettle.getExecuteSummary(),"\n\n\n       复\n       议\n       情\n       况",this.caseSettle.getReviewSummary()};
-              table = PdfUtil.generateTableRow(items, fontContent, 
+              table = PdfUtil.generateTableRow4LongText(items, fontContent, 
               		new float[]{0.1f, 0.4f,0.1f,0.4f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 120);
               document.add(table);
        //签字信息

@@ -399,8 +399,10 @@ public class PdfUtil {
         try {
         	String filename = base64StringToImage(signature);
         	sig = Image.getInstance(filename);
-        	sig.setBorderWidth(0);
+        	//sig.setBorderWidth(0);
+        	sig.setBorderWidth(1);
         	sig.scaleAbsoluteWidth(50f);
+        	sig.setAlignment(Image.ALIGN_CENTER);
 			FileUtils.deleteFile(filename);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();

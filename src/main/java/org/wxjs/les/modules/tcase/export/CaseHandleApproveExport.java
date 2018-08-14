@@ -90,7 +90,7 @@ public class CaseHandleApproveExport extends ExportBase<CaseHandleApproveExport>
             	font = fontContentTiny;
             }
             
-            table = PdfUtil.generateTableRow(items, font,  new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 250);
+            table = PdfUtil.generateTableRow4LongText(items, font,  new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 250);
             document.add(table);
            
             //签字信息

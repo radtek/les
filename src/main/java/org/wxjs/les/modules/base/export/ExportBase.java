@@ -336,6 +336,8 @@ public abstract class ExportBase<T> {
     	}
     	cell = new PdfPCell(tableSubSig);
     	cell.setBorderWidth(0);
+    	cell.setHorizontalAlignment(Element.ALIGN_CENTER); //水平居中
+    	cell.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直居中    	
     	tableSub.addCell(cell); 
     	//date
 		cell = new PdfPCell();
@@ -375,6 +377,8 @@ public abstract class ExportBase<T> {
         	
         	cell = new PdfPCell();
         	cell.setBorderWidth(0);
+        	cell.setHorizontalAlignment(Element.ALIGN_CENTER); //水平居中
+        	cell.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直居中   
         	cell.addElement(PdfUtil.getSignatureImage(sig.getSignature()));
         	tableSub.addCell(cell); 
         	//date

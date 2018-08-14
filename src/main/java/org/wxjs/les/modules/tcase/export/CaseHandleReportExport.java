@@ -81,7 +81,7 @@ public class CaseHandleReportExport extends ExportBase<CaseHandleReportExport> {
         	
         	//内容
             items = new String[]{"报\n告\n内\n容", this.caseHandle.getInvestReport()};
-            table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 550);
+            table = PdfUtil.generateTableRow4LongText(items, fontContent,  new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 550);
             document.add(table);
            
             //签字信息
