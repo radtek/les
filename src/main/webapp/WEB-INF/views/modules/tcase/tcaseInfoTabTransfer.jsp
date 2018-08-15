@@ -9,7 +9,7 @@
 			//$("#name").focus();
 			$("#inputForm").validate({
 				submitHandler: function(form){
-					loading('正在提交，请稍等...');
+					//loading('正在提交，请稍等...');
 					form.submit();
 				},
 				errorContainer: "#messageBox",
@@ -35,14 +35,21 @@
 		    });	
 		    
 		    $('#btnSubmit').click(function() {
-				$("#inputForm").attr("action","${ctx}/case/tcase/saveTransfer");
+				$("#inputForm").attr("action","${ctx}/tcase/caseTransfer/save");
 				$("#inputForm").submit();		    	
 		    });
 		    
 		    $('#btnStart').click(function() {
-				$("#inputForm").attr("action","${ctx}/case/tcase/saveAndStartTransfer");
+				$("#inputForm").attr("action","${ctx}/tcase/caseTransfer/saveAndStart");
 				$("#inputForm").submit();		    	
 		    });
+		    
+		    $('#btnExport').click(function() {
+				$("#inputForm").attr("action","${ctx}/tcase/caseTransfer/exportPDF");
+				$("#inputForm").submit();		    	
+		    });
+		    
+		    
 		});
 	</script>
 </head>
@@ -55,7 +62,7 @@
     
     <les:caseTab tab="infoTransfer" caseActAttr="${caseAct}"></les:caseTab>
     	
-	<form:form id="inputForm" modelAttribute="caseAct" action="${ctx}/case/tcase/saveTransfer" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="caseAct" action="${ctx}/tcase/caseTransfer/save" method="post" class="form-horizontal">
 		<form:hidden path="tcase.id"/>
 		
 		<form:hidden path="operateType"/>
@@ -306,6 +313,7 @@
 			   <input id="btnStart" class="btn btn-primary" type="button" value="启动事件"/>&nbsp;
 			</c:if>
 			</shiro:hasPermission>
+			<input id="btnExport" class="btn btn-primary" type="button" value="案件移送单"/>&nbsp;
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>

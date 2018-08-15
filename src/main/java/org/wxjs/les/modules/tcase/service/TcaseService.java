@@ -45,10 +45,10 @@ import com.google.common.collect.Lists;
 @Transactional(readOnly = true)
 public class TcaseService extends CrudService<TcaseDao, Tcase> {
 	@Autowired
-	private	CaseProcessDao caseProcessDao;
+	protected CaseProcessDao caseProcessDao;
 	
 	@Autowired
-	private	CaseAttachDao caseAttachDao;	
+	protected	CaseAttachDao caseAttachDao;	
 	
 	@Autowired
 	IdentityService identityService;
@@ -270,74 +270,6 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 		
 		//start flow
 		this.startWorkflow(tcase);
-		
-	}
-	
-	@Transactional(readOnly = false)
-	public void saveTransfer(Tcase tcase) {
-		boolean isNew = tcase.getIsNewRecord();
-		if(isNew){
-			tcase.setCaseSeq(SequenceUtils.fetchCaseTransferSeqStr());
-			tcase.setCaseTransfer("1");
-			
-			logger.debug("tcase.getCaseSeq():{}",tcase.getCaseSeq());
-		}
-		super.save(tcase);
-		
-		//init process
-		if(isNew){
-			tcase.getCaseProcess().setCaseId(tcase.getId());
-			
-			//初始化
-			caseProcessDao.initProcessCaseTransfer(tcase.getCaseProcess());
-
-		}else{
-			caseProcessDao.update(tcase.getCaseProcess());			
-		}
-		
-	}
-	
-	@Transactional(readOnly = false)
-	public void saveAndStartFlowTransfer(Tcase tcase) {
-		this.saveTransfer(tcase);
-		
-		//start flow
-		this.startWorkflow(tcase);
-		
-	}
-	
-	@Transactional(readOnly = false)
-	public void doTransfer(Tcase tcase) {
-		
-		//save case
-		String caseId = tcase.getId();
-		tcase.setId("");
-		tcase.setIsNewRecord(true);
-		tcase.setCaseSource("移交");
-		
-		User user = UserUtils.getUser();
-		tcase.setAccepter(user.getName());
-		
-		tcase.setAcceptDate(Calendar.getInstance().getTime());
-		
-		tcase.getCaseProcess().setId("");
-		tcase.getCaseProcess().setCaseHandler("");
-		tcase.getCaseProcess().setCaseStage(Global.CASE_STAGE_ACCEPTANCE);
-		tcase.getCaseProcess().setCaseStageStatus("0");
-		tcase.getCaseProcess().setProcDefId("");
-		tcase.getCaseProcess().setProcInsId("");
-		
-		this.save(tcase);
-		
-		//update new case id for original transfer
-		Tcase case0 = new Tcase();
-		case0.setId(caseId);
-		case0.setTransferCaseId(tcase.getId());
-		dao.updateTransferCaseId(case0);
-		
-		//transfer attach
-		tcase.setOldCaseId(caseId);
-		caseAttachDao.attachTransfer(tcase);
 		
 	}
 	

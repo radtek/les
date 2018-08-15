@@ -52,6 +52,12 @@
 
     	});    	
     }
+    
+    function loadSignature(sigId){
+    	var signature = "${fns:getCache('CurrentUserSignatureContent', '')}";
+    	var title = "${fns:getCache('CurrentUserSignatureTitle', '')}";
+    	$("#imageSig"+sigId).attr("src","data:" + title + "," + signature);
+    }
 
 </script>
 

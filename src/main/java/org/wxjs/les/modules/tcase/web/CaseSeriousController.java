@@ -42,8 +42,6 @@ import org.wxjs.les.modules.tcase.service.CaseProcessService;
 import org.wxjs.les.modules.tcase.service.CaseSeriousService;
 import org.wxjs.les.modules.tcase.service.TcaseService;
 
-import com.google.common.collect.Lists;
-
 /**
  * 重大行政处罚Controller
  * @author GLQ

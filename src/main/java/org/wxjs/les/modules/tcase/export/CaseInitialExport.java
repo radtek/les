@@ -73,7 +73,12 @@ public class CaseInitialExport extends ExportBase<CaseInitialExport> {
         	
             items = new String[]{"案件\n来源", this.tcase.getCaseSource()};
             table = PdfUtil.generateTableRow(items, fontContent, 
-            		new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 80);
+            		new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 30);
+            document.add(table);
+            
+            items = new String[]{"案由", this.tcase.getCaseCause()};
+            table = PdfUtil.generateTableRow(items, fontContent, 
+            		new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 60);
             document.add(table);
             
             items = new String[]{"案\n情\n摘\n要", this.tcase.getCaseProcess().getCaseSummary()};

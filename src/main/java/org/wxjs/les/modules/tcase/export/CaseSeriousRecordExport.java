@@ -158,6 +158,14 @@ public class CaseSeriousRecordExport extends ExportBase<CaseSeriousRecordExport>
             	
             	//date = DateUtil.formatDate(sig.getUpdateDate(), "yyyy年MM月dd日");
         	}
+        	//填充
+        	int appendCount = subtableCols - (signatures.size() % subtableCols);
+        	if(appendCount>0){
+        		for(int i=0;i<appendCount; i++){
+                	cell = PdfUtil.getContentCell("", Element.ALIGN_CENTER, 0, fontContent);
+                	subtable.addCell(cell);        			
+        		}
+        	}
         	
         	table.addCell(subtable);
         	

@@ -61,6 +61,7 @@ import org.wxjs.les.modules.tcase.service.CaseNotifyService;
 import org.wxjs.les.modules.tcase.service.CaseProcessService;
 import org.wxjs.les.modules.tcase.service.CaseSeriousService;
 import org.wxjs.les.modules.tcase.service.CaseSettleService;
+import org.wxjs.les.modules.tcase.service.CaseTransferService;
 import org.wxjs.les.modules.tcase.service.TcaseService;
 import org.wxjs.les.modules.tcase.utils.ProcessCommonUtils;
 
@@ -106,6 +107,9 @@ public class TcaseController extends BaseController {
 	private CaseHandlePunishLibService caseHandlePunishLibService;
 	
 	@Autowired
+	private CaseTransferService caseTransferService;
+	
+	@Autowired
 	private CaseProcessService caseProcessService;
 	
 	@Autowired
@@ -138,28 +142,6 @@ public class TcaseController extends BaseController {
 			entity = new Tcase();
 		}
 		return entity;
-	}
-	
-	@RequiresPermissions("case:tcase:view")
-	@RequestMapping(value = {"listTransfer"})
-	public String listTransfer(Tcase tcase, HttpServletRequest request, HttpServletResponse response, Model model) {
-		
-		tcase.setCaseTransfer("1"); //案源移交标记
-		
-		if(tcase.getAcceptDateFrom() == null){
-			Calendar cal=Calendar.getInstance();
-			cal.add(Calendar.DATE, -180);
-			tcase.setCreateDateFrom(cal.getTime()); 
-		}
-		
-		if(tcase.getAcceptDateTo() == null){
-			Calendar cal=Calendar.getInstance();
-			tcase.setCreateDateTo(cal.getTime());			
-		}
-		
-		Page<Tcase> page = tcaseService.findPage(new Page<Tcase>(request, response), tcase); 
-		model.addAttribute("page", page);
-		return "modules/tcase/tcaseListTransfer";
 	}
 	
 	@RequiresPermissions("case:tcase:view")
@@ -196,28 +178,6 @@ public class TcaseController extends BaseController {
 		}
 		model.addAttribute("tcase", tcase);
 		return "modules/tcase/tcaseForm";
-	}
-	
-	@RequiresPermissions("case:tcase:view")
-	@RequestMapping(value = "infoTabTransfer")
-	public String infoTabTransfer(CaseAct caseAct, Model model) {
-		
-		caseAct.setCaseTransfer("1");
-		
-		String businesskey = caseAct.getBusinesskey();
-		
-		Tcase tcase = tcaseService.getCaseAndProcess(businesskey);
-		
-		logger.debug("businesskey:{}", businesskey);
-		
-		if(tcase.getCaseProcess() != null){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase);
-			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);			
-		}
-	
-		caseAct.setTcase(tcase);
-		
-		return "modules/tcase/tcaseInfoTabTransfer";
 	}	
 	
 	@RequiresPermissions("case:tcase:view")
@@ -600,35 +560,6 @@ public class TcaseController extends BaseController {
 	}
 	
 	@RequiresPermissions("case:tcase:view")
-	@RequestMapping(value = "toStartTransfer")
-	public String toStartTransfer(CaseAct caseAct, Model model) {
-		
-		caseAct.setCaseTransfer("1");
-		
-		caseAct.setOperateType("start");
-		
-		Tcase tcase = new Tcase();
-		
-		tcase.setIsNewRecord(true);
-		tcase.setPartyType("单位");
-		tcase.setAcceptDate(Calendar.getInstance().getTime());
-		tcase.setPsnSex("男");
-		
-		CaseProcess caseProcess = new CaseProcess();
-		caseProcess.setCaseStage(Global.CASE_STAGE_TRANSFER);
-		tcase.setCaseProcess(caseProcess);
-		
-		if("start".equals(caseAct.getOperateType())){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase);
-			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);			
-		}
-		
-		caseAct.setTcase(tcase);
-		
-		return "modules/tcase/tcaseInfoTabTransfer";
-	}
-	
-	@RequiresPermissions("case:tcase:view")
 	@RequestMapping(value = "toStart")
 	public String toStart(CaseAct caseAct, Model model) {
 		caseAct.setOperateType("start");
@@ -660,7 +591,7 @@ public class TcaseController extends BaseController {
 		return "modules/tcase/tcaseInfoTab";
 	}
 	
-	private List<User> getCaseHandler4Start(Tcase tcase){
+	protected List<User> getCaseHandler4Start(Tcase tcase){
 
 		String caseStage = tcase.getCaseProcess().getCaseStage();
 		
@@ -675,7 +606,7 @@ public class TcaseController extends BaseController {
 		return this.getCaseHandlerByGroup(group);
 	}
 	
-	private List<User> getCaseHandler4Handle(String taskId){
+	protected List<User> getCaseHandler4Handle(String taskId){
 		
 		List<User> list = Lists.newArrayList();
 		
@@ -888,39 +819,6 @@ public class TcaseController extends BaseController {
 	}
 	
 	@RequiresPermissions("case:tcase:edit")
-	@RequestMapping(value = "saveTransfer")
-	public String saveTransfer(CaseAct caseAct, Model model, RedirectAttributes redirectAttributes) {
-		if (!beanValidator(model, caseAct)){
-			return infoTabTransfer(caseAct, model);
-		}
-		Tcase tcase = caseAct.getTcase();
-		tcaseService.saveTransfer(tcase);
-		
-		model.addAttribute("operateType", caseAct.getOperateType());
-		
-		String businesskey = tcase.getId()+":"+tcase.getCaseProcess().getId();
-		
-		logger.debug("caseAct.getOperateType():{}, businesskey:{}", caseAct.getOperateType(), businesskey);
-		
-		
-		addMessage(redirectAttributes, "保存案件成功");
-		return "redirect:"+Global.getAdminPath()+"/case/tcase/infoTabTransfer?businesskey="+businesskey+"&operateType="+caseAct.getOperateType();
-	}
-	
-	@RequiresPermissions("case:tcase:edit")
-	@RequestMapping(value = "saveAndStartTransfer")
-	public String saveAndStartTransfer(CaseAct caseAct, Model model, RedirectAttributes redirectAttributes) {
-		if (!beanValidator(model, caseAct)){
-			return infoTabTransfer(caseAct, model);
-		}
-		tcaseService.saveAndStartFlowTransfer(caseAct.getTcase());
-		addMessage(redirectAttributes, "事件启动成功");
-		return "redirect:"+Global.getAdminPath()+"/task/todo";
-	}
-	
-
-	
-	@RequiresPermissions("case:tcase:edit")
 	@RequestMapping(value = "handletask")	
 	public String handletask(ActTask actTask, Model model) {
 		
@@ -997,7 +895,7 @@ public class TcaseController extends BaseController {
 				logger.debug("actTask.getBusinesskey():{}",(actTask.getBusinesskey()));
 				if(Global.CASE_STAGE_TRANSFER.equals(tcase.getCaseProcess().getCaseStage())){
 					logger.debug("tcase.getCaseProcess().getCaseStage():{}",(tcase.getCaseProcess().getCaseStage()));
-					tcaseService.doTransfer(tcase);
+					caseTransferService.doTransfer(tcase);
 				}
 			}
 		}else if("cancel".equals(actTask.getApprove())){
@@ -1028,7 +926,6 @@ public class TcaseController extends BaseController {
 		addMessage(redirectAttributes, "删除案件成功");
 		return "redirect:"+Global.getAdminPath()+"/case/tcase/infoTab?repage";
 	}
-	
 	
 	@RequestMapping(value = "exportPDF")
 	public String exportPDF(CaseAct caseAct, HttpServletResponse response,  Model model, RedirectAttributes redirectAttributes) {

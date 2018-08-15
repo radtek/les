@@ -31,7 +31,7 @@
 		</c:if>
 		
 		<c:if test="${caseActAttr.caseTransfer eq '1' }">
-		<li <c:if test="${empty tab || tab eq 'infoTransfer'}">class="active"</c:if> ><a href="${ctx}/case/tcase/infoTabTransfer?${caseActAttr.paramUri}">基本信息</a></li>
+		<li <c:if test="${empty tab || tab eq 'infoTransfer'}">class="active"</c:if> ><a href="${ctx}/tcase/caseTransfer/infoTab?${caseActAttr.paramUri}">基本信息</a></li>
 		</c:if>
 		
 		<c:if test="${not empty caseActAttr.tcase.id}">

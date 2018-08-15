@@ -91,7 +91,7 @@
 		<form:hidden path="caseId"/>
 		<form:hidden path="paramUri" value="${caseAct.paramUri}"/>
 		<div class="control-group">
-			<label class="control-label">实际罚款金额（元）：</label>
+			<label class="control-label">建议处罚金额（元）：</label>
 			<div class="controls">
 				<form:input path="punishMoney" htmlEscape="false" class="input-xlarge "/>
 			</div>

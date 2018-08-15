@@ -19,7 +19,7 @@
 <body>
     <h3>案源列表</h3>
 	
-	<form:form id="searchForm" modelAttribute="tcase" action="${ctx}/case/tcase/" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="tcase" action="${ctx}/tcase/caseTransfer/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
@@ -41,7 +41,7 @@
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>					
 			</li>					
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
-			<input class="btn btn-primary" type="button" value="录入新案源 " onclick="window.location.href='${ctx}/case/tcase/toStartTransfer'"/>
+			<input class="btn btn-primary" type="button" value="录入新案源 " onclick="window.location.href='${ctx}/tcase/caseTransfer/toStart'"/>
 			</li>
 			<li class="clearfix"></li>
 		</ul>
@@ -77,9 +77,9 @@
 					</c:forEach>
 				</td>				
 				<shiro:hasPermission name="case:tcase:edit"><td>
-    				<a href="${ctx}/case/tcase/infoTabTransfer?businesskey=${tcase.id}">进入</a>
+    				<a href="${ctx}/tcase/caseTransfer/infoTab?businesskey=${tcase.id}">进入</a>
     				<c:if test="${empty tcase.currentCaseProcesses}">
-    				  <a href="${ctx}/case/tcase/delete?id=${tcase.id}" onclick="return confirmx('确认要删除该案源吗？', this.href)">删除</a>
+    				  <a href="${ctx}/tcase/caseTransfer/delete?id=${tcase.id}" onclick="return confirmx('确认要删除该案源吗？', this.href)">删除</a>
     				</c:if>
 					
 				</td></shiro:hasPermission>
