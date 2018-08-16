@@ -105,7 +105,7 @@ public class CaseSettleExport extends ExportBase<CaseSettleExport> {
               		new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 120);
               document.add(table);	
         //执行情况
-              items = new String[]{"执\n行\n情\n况", this.caseSettle.getExecuteSummary(),"\n\n\n       复\n       议\n       情\n       况",this.caseSettle.getReviewSummary()};
+              items = new String[]{"执\n行\n情\n况", this.caseSettle.getExecuteSummary(),"   复\n   议\n   情\n   况",this.caseSettle.getReviewSummary()};
               table = PdfUtil.generateTableRow4LongText(items, fontContent, 
               		new float[]{0.1f, 0.4f,0.1f,0.4f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 120);
               document.add(table);
