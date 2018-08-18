@@ -14,13 +14,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.web.BaseController;
 import org.wxjs.les.common.utils.StringUtils;
 import org.wxjs.les.modules.base.entity.OpinionTemplate;
 import org.wxjs.les.modules.base.service.OpinionTemplateService;
+import org.wxjs.les.modules.sys.entity.User;
+import org.wxjs.les.modules.sys.utils.UserUtils;
 
 /**
  * 常用批语Controller
@@ -49,6 +50,10 @@ public class OpinionTemplateController extends BaseController {
 	@RequiresPermissions("base:opinionTemplate:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(OpinionTemplate opinionTemplate, HttpServletRequest request, HttpServletResponse response, Model model) {
+		if(!UserUtils.getUserIsAdmin().equals("1")){
+			opinionTemplate.setOwner(UserUtils.getUserLoginName());
+		}
+		
 		Page<OpinionTemplate> page = opinionTemplateService.findPage(new Page<OpinionTemplate>(request, response), opinionTemplate); 
 		model.addAttribute("page", page);
 		return "modules/base/opinionTemplateList";
@@ -57,6 +62,11 @@ public class OpinionTemplateController extends BaseController {
 	@RequiresPermissions("base:opinionTemplate:view")
 	@RequestMapping(value = "form")
 	public String form(OpinionTemplate opinionTemplate, Model model) {
+		if(opinionTemplate.getIsNewRecord()){
+			if(!UserUtils.getUserIsAdmin().equals("1")){
+				opinionTemplate.setOwner(UserUtils.getUserLoginName());
+			}
+		}
 		model.addAttribute("opinionTemplate", opinionTemplate);
 		return "modules/base/opinionTemplateForm";
 	}

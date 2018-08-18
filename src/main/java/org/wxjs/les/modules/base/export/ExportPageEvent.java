@@ -1,4 +1,4 @@
-package org.wxjs.les.modules.qa.export;
+package org.wxjs.les.modules.base.export;
 
 import java.io.IOException;
 
@@ -20,7 +20,7 @@ import com.lowagie.text.pdf.PdfTemplate;
 import com.lowagie.text.pdf.PdfWriter;
  
   
-public class QuestionanswerExportPageEvent extends PdfPageEventHelper{  
+public class ExportPageEvent extends PdfPageEventHelper{  
       
 	    /**
 	     * 页眉
@@ -53,7 +53,7 @@ public class QuestionanswerExportPageEvent extends PdfPageEventHelper{
 	     * Creates a new instance of PdfReportM1HeaderFooter 无参构造方法.
 	     *
 	     */
-	    public QuestionanswerExportPageEvent(PdfPTable footerTable) {
+	    public ExportPageEvent(PdfPTable footerTable) {
 	    	this.footerTable = footerTable;
 	    }
 	  
@@ -68,7 +68,7 @@ public class QuestionanswerExportPageEvent extends PdfPageEventHelper{
 	     * @param pageSize
 	     *            页面文档大小，A4，A5，A6横转翻转等Rectangle对象
 	     */
-	    public QuestionanswerExportPageEvent(String yeMei, int presentFontSize, Rectangle pageSize) {
+	    public ExportPageEvent(String yeMei, int presentFontSize, Rectangle pageSize) {
 	        this.header = yeMei;
 	        this.presentFontSize = presentFontSize;
 	        this.pageSize = pageSize;

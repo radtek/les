@@ -15,6 +15,7 @@ import org.wxjs.les.common.persistence.DataEntity;
 public class OpinionTemplate extends DataEntity<OpinionTemplate> {
 	
 	private static final long serialVersionUID = 1L;
+	private String owner;
 	private String opinion;		// 常用批语
 	private String sort;		// 排序
 	
@@ -24,6 +25,14 @@ public class OpinionTemplate extends DataEntity<OpinionTemplate> {
 
 	public OpinionTemplate(String id){
 		super(id);
+	}
+
+	public String getOwner() {
+		return owner;
+	}
+
+	public void setOwner(String owner) {
+		this.owner = owner;
 	}
 
 	@Length(min=1, max=100, message="常用批语长度必须介于 1 和 100 之间")

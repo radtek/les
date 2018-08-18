@@ -3,68 +3,27 @@
  */
 package org.wxjs.les.modules.qa.export;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
-import java.net.MalformedURLException;
-import java.util.List;
 
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.codec.binary.Base64;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.utils.DateUtils;
-import org.wxjs.les.common.utils.Encodes;
-import org.wxjs.les.common.utils.FileUtils;
-import org.wxjs.les.common.utils.IdGen;
 import org.wxjs.les.common.utils.PdfUtil;
+import org.wxjs.les.modules.base.export.ExportPageEvent;
+import org.wxjs.les.modules.base.export.RecordExportBase;
 import org.wxjs.les.modules.qa.entity.Questionanswer;
 
-import com.google.common.collect.Lists;
-import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
-import com.lowagie.text.ExceptionConverter;
 import com.lowagie.text.Font;
-import com.lowagie.text.HeaderFooter;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfPageEventHelper;
-import com.lowagie.text.pdf.PdfTemplate;
 import com.lowagie.text.pdf.PdfWriter;
 import com.lowagie.text.Image;
 
-public class QuestionanswerExport {
-
-	private static Logger log = LoggerFactory
-			.getLogger(QuestionanswerExport.class);
-	
-	private final static float defaultRealLineLen = 80; //中文字符 2， 英文 1
-
-	private final static int tableWidth = 100;
-
-	private final static float borderWidth = 0f;
-
-	private final static float minimumHeight = 25f;
-
-	final static float[] widths = new float[] { 0.25f, 0.12f, 0.16f, 0.24f,
-			0.23f };
-
-	final static float[] widthsGap = new float[] { 0.25f, 0.12f, 0.16f, 0.47f };
+public class QuestionanswerExport  extends RecordExportBase<QuestionanswerExport>{
 
 	private Questionanswer qa;
 
@@ -72,8 +31,7 @@ public class QuestionanswerExport {
 		this.qa = qa;
 	}
 
-	private void generate(OutputStream os) throws DocumentException,
-			MalformedURLException, IOException {
+	public void generate(OutputStream os) throws DocumentException{
 
 		Document document = null;
 		PdfWriter writer = null;
@@ -137,7 +95,7 @@ public class QuestionanswerExport {
 			cell.addElement(asig);
 			footerTable.addCell(cell);
 
-			writer.setPageEvent(new QuestionanswerExportPageEvent(footerTable));
+			writer.setPageEvent(new ExportPageEvent(footerTable));
 
 			// 页脚设置结束
 
@@ -272,23 +230,8 @@ public class QuestionanswerExport {
 			// 问答
 
 			String content = this.qa.getQaContent();
-
-			List<String> lines = Lists.newArrayList();
-
-			String[] strs = content.split("\n");
-
-			for (String str : strs) {
-				List<String> tempList = this.separate(str, defaultRealLineLen);
-				lines.addAll(tempList);
-			}
-
-			table = new PdfPTable(1);
-			table.setWidths(new float[] { 1f });
-			table.setWidthPercentage(tableWidth);
-
-			for (String line : lines) {
-				table.addCell(this.generateContentLine(line));
-			}
+			
+			table = this.generateContentTable(content);
 
 			document.add(table);
 
@@ -302,134 +245,6 @@ public class QuestionanswerExport {
 		}
 	}
 
-	/**
-	 * 输出到客户端
-	 * 
-	 * @param fileName
-	 *            输出文件名
-	 * @throws DocumentException
-	 */
-	public QuestionanswerExport write(HttpServletResponse response,
-			String fileName) throws IOException, DocumentException {
-		response.reset();
-		response.setContentType("application/octet-stream; charset=utf-8");
-		response.setHeader("Content-Disposition", "attachment; filename="
-				+ Encodes.urlEncode(fileName));
-		this.generate(response.getOutputStream());
-		return this;
-	}
 
-	/**
-	 * 输出到文件
-	 * 
-	 * @param fileName
-	 *            输出文件名
-	 * @throws DocumentException
-	 */
-	public QuestionanswerExport writeFile(String name)
-			throws FileNotFoundException, IOException, DocumentException {
-		FileOutputStream os = new FileOutputStream(name);
-		this.generate(os);
-		return this;
-	}
-
-	private PdfPTable generateTableRow(String[] strs, Font[] rowFonts,
-			float[] widths, int tableWidth, int textAlign, float minimumHeight)
-			throws DocumentException {
-		int columns = widths.length;
-		// int rows = items.size()+1;
-
-		PdfPTable table = new PdfPTable(columns);
-		table.setWidths(widths);
-		table.setWidthPercentage(tableWidth);
-
-		Phrase phrase;
-		PdfPCell cell;
-
-		if (strs != null) {
-			// write items
-
-			int index = 0;
-			for (String str : strs) {
-				phrase = new Phrase(str, rowFonts[index]);
-				cell = new PdfPCell(phrase);
-				if (index % 2 == 0) {
-					cell.setBorderWidth(0);
-				} else {
-					cell.setBorderWidth(0);
-					cell.setBorderWidthBottom(0.5f);
-				}
-
-				cell.setHorizontalAlignment(textAlign);
-
-				if (minimumHeight > 0) {
-					cell.setMinimumHeight(minimumHeight);
-				}
-
-				table.addCell(cell);
-				index++;
-			}
-
-		}
-
-		return table;
-	}
-
-	private PdfPCell generateContentLine(String line) throws DocumentException {
-
-		Phrase phrase = new Phrase(line, PdfUtil.getFont12(Font.NORMAL));
-		PdfPCell cell = new PdfPCell(phrase);
-
-		cell.setBorderWidth(0);
-		cell.setBorderWidthBottom(0.5f);
-
-		cell.setMinimumHeight(minimumHeight);
-
-		return cell;
-	}
-
-	private List<String> separate(String str, float realLineLen) {
-		List<String> list = Lists.newArrayList();
-		int totalLen = str.length();
-		int startIndex = 0;
-		int endIndex = 0;
-
-		int length = 0;
-		float realLength = 0;
-		
-		for (int i = 0; i < totalLen; i++) {
-			String temp = str.substring(i, i + 1);
-			if (temp.matches(PdfUtil.ChineseChar)) {
-				realLength += PdfUtil.RealWidthChinese;
-			} else if (temp.matches(PdfUtil.NarrowChar)) {
-				realLength += PdfUtil.RealWidthNarrow;
-			} else if (temp.matches(PdfUtil.NumberChar)) {
-				realLength += PdfUtil.RealWidthNumber;
-			} else if (temp.matches(PdfUtil.UpperCaseChar)) {
-				realLength += PdfUtil.RealWidthUpperCase;
-			} else if (temp.matches(PdfUtil.LowerCaseChar)) {
-				realLength += PdfUtil.RealWidthLowerCase;
-			} else {
-				realLength += 1f;
-			}
-			length ++;
-			if(realLength >= realLineLen){
-				endIndex += length;
-				
-				list.add(str.substring(startIndex, endIndex));
-				
-				startIndex += length;
-				length = 0;
-				realLength = 0;
-				
-			}
-		}
-
-		if (endIndex < totalLen) {
-			list.add(str.substring(endIndex, totalLen));
-		}
-
-		return list;
-	}
 
 }

@@ -310,7 +310,6 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 	
 	public Tcase getRelateCaseByBusinesskey(String businesskey){
 
-
 		String[] strs = businesskey.split(":");
 		String caseId = strs[0];	
 		

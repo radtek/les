@@ -107,8 +107,9 @@
 			</div>
 		        </div>			
 				<div class="span3">		
-			<label class="control-label" style="width: 15px; font-size: 15px; word-wrap: break-word;">常用批语：</label>
+			<label class="control-label" style="width: 15px; font-size: 15px; word-wrap: break-word;"><a href="${ctx}/base/opinionTemplate/list">常用批语：</a></label>
 			<div class="controls" style="margin-left:30px">
+			    
 				<ul id="opinionTemplates">
 				    <c:forEach items="${fns:getOpinionTemplates()}" var="temp">
 				       <li style="cursor: pointer;margin: 3px 0px 3px 0px">${temp.opinion}</li>

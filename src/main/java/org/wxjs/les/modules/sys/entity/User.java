@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 
@@ -320,7 +321,7 @@ public class User extends DataEntity<User> {
 	}
 	
 	public boolean isAdmin(){
-		return isAdmin(this.id);
+		return isAdmin(this.id) || "9".equals(this.userType);
 	}
 	
 	public static boolean isAdmin(String id){
@@ -342,10 +343,13 @@ public class User extends DataEntity<User> {
 	
 	public List<String> getLoginNames(){
 		List<String> list = Lists.newArrayList();
-		String[] strs = this.loginName.split(",");
-		for(String str: strs){
-			list.add(str);
+		if(StringUtils.isNotEmpty(this.loginName)){
+			String[] strs = this.loginName.split(",");
+			for(String str: strs){
+				list.add(str);
+			}			
 		}
+
 		return list;
 	}
 	

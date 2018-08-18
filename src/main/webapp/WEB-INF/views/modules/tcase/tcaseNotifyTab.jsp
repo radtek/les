@@ -48,7 +48,7 @@
     
     <les:caseTab tab="notify" caseActAttr="${caseAct}"></les:caseTab> 
     
-	<les:caseProcessTag></les:caseProcessTag>    
+	<les:caseProcessTag caseSummaryBehaviour="hide"></les:caseProcessTag>    
     
     <form:form class="form-horizontal">
 	   	<div class="control-group">

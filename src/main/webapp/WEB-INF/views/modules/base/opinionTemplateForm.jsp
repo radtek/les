@@ -32,7 +32,21 @@
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="opinionTemplate" action="${ctx}/base/opinionTemplate/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
+		
 		<sys:message content="${message}"/>		
+		<div class="control-group">
+			<label class="control-label">登录名：</label>
+			<div class="controls">
+			<c:if test="${fns:getUserIsAdmin() eq '1'}">
+				<form:input path="owner" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
+				<span class="help-inline"><font color="red">*</font> </span>			
+			</c:if>
+			<c:if test="${fns:getUserIsAdmin() ne '1'}">
+				<form:hidden path="owner"/>	
+				${opinionTemplate.owner }		
+			</c:if>
+			</div>
+		</div>		
 		<div class="control-group">
 			<label class="control-label">常用批语：</label>
 			<div class="controls">

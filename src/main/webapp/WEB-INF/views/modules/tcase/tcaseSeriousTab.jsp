@@ -59,7 +59,7 @@
        </c:otherwise>
     </c:choose>    
 
-    <les:caseProcessTag4Serious hideCaseSummary="1"></les:caseProcessTag4Serious>
+    <les:caseProcessTag4Serious caseSummaryBehaviour="hide"></les:caseProcessTag4Serious>
     
 	<form:form id="inputForm" modelAttribute="caseSerious" action="${ctx}/tcase/caseSerious/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>

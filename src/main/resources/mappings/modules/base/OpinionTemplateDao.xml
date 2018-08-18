@@ -4,6 +4,7 @@
     
 	<sql id="opinionTemplateColumns">
 		a.id AS "id",
+		a.owner AS "owner",
 		a.opinion AS "opinion",
 		a.sort AS "sort",
 		a.create_by AS "createBy.id",
@@ -32,13 +33,16 @@
 		<include refid="opinionTemplateJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="owner != null and owner != ''">
+			AND a.owner=#{owner}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.sort
+				ORDER BY a.owner, a.sort
 			</otherwise>
 		</choose>
 	</select>
@@ -56,13 +60,14 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.sort
+				ORDER BY a.owner, a.sort
 			</otherwise>
 		</choose>
 	</select>
 	
 	<insert id="insert">
 		INSERT INTO topinion_template(
+		    owner,
 			opinion,
 			sort,
 			create_by,
@@ -72,6 +77,7 @@
 			remarks,
 			del_flag
 		) VALUES (
+		    #{owner},
 			#{opinion},
 			#{sort},
 			#{createBy.id},
@@ -84,7 +90,8 @@
 	</insert>
 	
 	<update id="update">
-		UPDATE topinion_template SET 	
+		UPDATE topinion_template SET 
+		    owner = #{owner},	
 			opinion = #{opinion},
 			sort = #{sort},
 			update_by = #{updateBy.id},

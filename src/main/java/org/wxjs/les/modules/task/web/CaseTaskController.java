@@ -1,12 +1,15 @@
 package org.wxjs.les.modules.task.web;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +23,8 @@ import org.wxjs.les.modules.sys.utils.UserUtils;
 import org.wxjs.les.modules.task.entity.CaseAct;
 import org.wxjs.les.modules.task.service.CaseTaskService;
 import org.wxjs.les.modules.task.utils.CaseActUtils;
+import org.wxjs.les.modules.tcase.entity.CaseProcess;
+import org.wxjs.les.modules.tcase.service.CaseProcessService;
 
 
 /**
@@ -31,9 +36,27 @@ import org.wxjs.les.modules.task.utils.CaseActUtils;
 @RequestMapping(value = "${adminPath}/task")
 public class CaseTaskController extends BaseController {
 	
+	final static Map<String, String> formkeyMap = new HashMap<String, String>();
+	static{
+		formkeyMap.put("10", "/case/tcase/acceptanceTab");
+		formkeyMap.put("20", "/case/tcase/initialTab");
+		formkeyMap.put("30", "/case/tcase/handleTab");
+		formkeyMap.put("40", "/case/tcase/notifyTab");
+		formkeyMap.put("50", "/case/tcase/decisionTab");
+		formkeyMap.put("60", "/case/tcase/settleTab");
+		formkeyMap.put("70", "/case/tcase/finishTab");
+		
+		formkeyMap.put("110", "/case/tcase/seriousTab");
+		formkeyMap.put("120", "/case/tcase/cancelTab");
+		formkeyMap.put("210", "/tcase/caseTransfer/infoTab");
+	}
+	
 
 	@Autowired
 	private CaseTaskService actTaskService;
+	
+	@Autowired
+	private CaseProcessService caseProcessService;
 	
 	/**
 	 * 获取待办列表
@@ -81,11 +104,13 @@ public class CaseTaskController extends BaseController {
 		// 获取流程XML上的表单KEY
 		//String formKey = actTaskService.getFormKey(caseAct.getProcDefId(), caseAct.getTaskDefKey());
 		
+		/*
 		String formKey = "/case/tcase/infoTab";
 		
 		if("1".equals(caseAct.getCaseTransfer())){
 			formKey = "/tcase/caseTransfer/infoTab";
 		}
+		*/
 
 		// 获取流程实例对象
 		/*
@@ -103,6 +128,14 @@ public class CaseTaskController extends BaseController {
 		}
 		*/
 		
+		String businesskey = caseAct.getBusinesskey();
+		
+		String caseStage = this.getCaseStageByBusinesskey(businesskey);
+		
+		String formKey = this.getFormkey(caseStage);
+		
+		logger.debug("businesskey:{},caseStage:{},formKey:{}", businesskey, caseStage, formKey);
+		
 		String formUrl = CaseActUtils.getFormUrl(formKey, caseAct);
 		
 		logger.debug("formUrl:{}", formUrl);
@@ -113,6 +146,31 @@ public class CaseTaskController extends BaseController {
 //		model.addAttribute("act", act);
 //		model.addAttribute("formUrl", formUrl);
 //		return "modules/act/actTaskForm";
+	}
+	
+	private String getFormkey(String caseStage){
+		String formKey = "";
+		if(StringUtils.isNotEmpty(caseStage)){
+			formKey = formkeyMap.get(caseStage);
+		}
+		if(StringUtils.isEmpty(formKey)){
+			formKey = "/case/tcase/infoTab";
+		}
+		return formKey;
+	}
+	
+	private String getCaseStageByBusinesskey(String businesskey){
+		String caseStage = "";		
+		String[] keys = businesskey.split(":");
+		if(keys.length>1){
+			String processId = keys[1];
+			CaseProcess caseProcess = caseProcessService.get(processId);
+			if(caseProcess!=null){
+				caseStage = caseProcess.getCaseStage();
+			}
+			
+		}
+		return caseStage;
 	}
 	
 	/**

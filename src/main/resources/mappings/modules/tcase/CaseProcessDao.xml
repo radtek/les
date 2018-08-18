@@ -167,7 +167,16 @@
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks}
-		WHERE id = #{id}
+		WHERE 1=1
+		<if test="id != null and id != ''">
+		AND id = #{id}
+		</if>
+		<if test="caseId != null and caseId != ''">
+		AND case_id = #{caseId}
+		</if>
+		<if test="caseStage != null and caseStage != ''">
+		AND case_stage = #{caseStage}
+		</if>		
 	</update>
 	
 	<update id="updateProcInfo">
@@ -182,7 +191,16 @@
 		UPDATE tcase_process SET 
 			case_stage_status = #{caseStageStatus},
 			update_date = #{updateDate}			
-		WHERE proc_inst_id = #{procInsId}
+		WHERE 1=1
+		<if test="procInsId != null and procInsId != ''">
+		AND proc_inst_id = #{procInsId}
+		</if>
+		<if test="caseId != null and caseId != ''">
+		AND case_id = #{caseId}
+		</if>
+		<if test="caseStage != null and caseStage != ''">
+		AND case_stage = #{caseStage}
+		</if>				
 	</update>
 		
 	<update id="delete">

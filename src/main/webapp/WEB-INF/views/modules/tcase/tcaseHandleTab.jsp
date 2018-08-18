@@ -54,7 +54,7 @@
 		</div>
 	</form:form> 
 	-->
-	<les:caseProcessTag></les:caseProcessTag>  
+	<les:caseProcessTag caseSummaryBehaviour="readonly"></les:caseProcessTag>  
 	
 	<c:set var="editable" value="${caseAct.tcase.caseProcess.editable}"></c:set>
 	    
@@ -127,7 +127,10 @@
 			</div>
 		</div>
 		<div class="form-actions">
-			<shiro:hasPermission name="case:tcase:edit"><input id="btnSaveReport" class="btn btn-primary" type="button" value="保存调查报告"/>&nbsp;
+			<shiro:hasPermission name="case:tcase:edit">
+			<c:if test="${caseAct.tcase.caseProcess.editable}">
+			<input id="btnSaveReport" class="btn btn-primary" type="button" value="保存调查报告"/>&nbsp;
+			</c:if>
 			<input id="btnReport" class="btn btn-primary" type="button" value="案件调查报告"/>&nbsp;
 			<input id="btnApprove" class="btn btn-primary" type="button" value="案件处理审批表"/>&nbsp;
 			</shiro:hasPermission>

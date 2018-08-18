@@ -40,6 +40,8 @@ public class PdfUtil {
     public static final String LowerCaseChar = "^[a-z]";  //lowerCase
     public static final String UpperCaseChar = "^[A-Z]";  //upperCase
     
+    public static final float SignatureImageWidth = 60f;
+    
     static{
     	try {
 			bfChinese = BaseFont.createFont("STSong-Light", "UniGB-UCS2-H", BaseFont.NOT_EMBEDDED);
@@ -400,8 +402,8 @@ public class PdfUtil {
         	String filename = base64StringToImage(signature);
         	sig = Image.getInstance(filename);
         	//sig.setBorderWidth(0);
-        	sig.setBorderWidth(1);
-        	sig.scaleAbsoluteWidth(50f);
+        	//sig.setBorderWidth(1);
+        	sig.scaleAbsoluteWidth(SignatureImageWidth);
         	sig.setAlignment(Image.ALIGN_CENTER);
 			FileUtils.deleteFile(filename);
 		} catch (MalformedURLException e) {

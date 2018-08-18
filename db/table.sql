@@ -455,6 +455,7 @@ CREATE TABLE `tsignature` (
 DROP TABLE IF EXISTS `topinion_template`;
 CREATE TABLE `topinion_template` (
   `id` int(11) NOT NULL auto_increment  COMMENT '编号',
+  `owner` varchar(32) NULL COMMENT '拥有者',
   `opinion` varchar(100) NOT NULL COMMENT '常用批语',
   `sort` decimal(10,0) DEFAULT NULL COMMENT '排序（升序）',
   `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',

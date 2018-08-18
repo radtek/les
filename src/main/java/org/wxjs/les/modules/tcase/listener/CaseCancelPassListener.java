@@ -15,7 +15,6 @@ import org.wxjs.les.modules.tcase.dao.TcaseDao;
 import org.wxjs.les.modules.tcase.dao.CaseProcessDao;
 import org.wxjs.les.modules.tcase.entity.CaseProcess;
 import org.wxjs.les.modules.tcase.entity.Tcase;
-import org.wxjs.les.modules.tcase.service.CaseProcessService;
 
 public class CaseCancelPassListener implements ExecutionListener { 
 	
@@ -25,13 +24,10 @@ public class CaseCancelPassListener implements ExecutionListener {
 	private static final long serialVersionUID = -4998216406176706138L;
 	protected Logger logger = LoggerFactory.getLogger(getClass());
 	
-	@Autowired
 	RuntimeService runtimeService = SpringContextHolder.getBean(RuntimeService.class);
 	
-	@Autowired
 	CaseProcessDao caseProcessDao = SpringContextHolder.getBean(CaseProcessDao.class);
-	
-	@Autowired
+
 	TcaseDao caseDao = SpringContextHolder.getBean(TcaseDao.class);
 
 

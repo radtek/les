@@ -256,10 +256,24 @@ public abstract class ExportBase<T> {
     
     public PdfPTable getSignatureTable(String procInstId) throws DocumentException{
     	
-		return this.getSignatureTable(procInstId, "");
+		return this.getSignatureTable(procInstId, false);
     }
     
-    public PdfPTable getSignatureTable(String procInstId, String taskName) throws DocumentException{
+    public PdfPTable getSignatureTable(String procInstId, boolean firstSigSpan) throws DocumentException{
+    	
+		return this.getSignatureTable(procInstId, "", firstSigSpan);
+    }
+    
+    /**
+     * 
+     * @param procInstId
+     * @param taskName
+     * @param firstSigSpan whether first signature should expand to whole line
+     * @return
+     * @throws DocumentException
+     */
+    public PdfPTable getSignatureTable(String procInstId, String taskName, boolean firstSigSpan) throws DocumentException{
+    	int sigUnits = 0; //签名占据空间，两个占一行的，为1，一个占一行的，为2
 		//get signatures
 		Signature signatureParam = new Signature(false);
 		signatureParam.setProcInstId(procInstId);
@@ -306,6 +320,7 @@ public abstract class ExportBase<T> {
     	//sub table
     	PdfPTable tableSub = new PdfPTable(2);
     	tableSub.setWidths(new float[]{0.2f, 0.8f});
+    	tableSub.setWidthPercentage(100);
     	
     	//opinion
         Font font = fontContentSmall;
@@ -351,7 +366,18 @@ public abstract class ExportBase<T> {
     	
     	tableSub.addCell(cell);
     	
-    	table.addCell(tableSub);    	
+		cell = new PdfPCell();
+    	cell.setBorderWidth(borderWidth);
+    	if(firstSigSpan){
+    		cell.setColspan(3);
+    		sigUnits += 2;
+    	}else{
+    		sigUnits ++;
+    	}
+    	
+    	cell.addElement(tableSub);
+    	
+    	table.addCell(cell);    	
     	 	
     	for(Signature sig : sigsOthers){
     		
@@ -393,10 +419,12 @@ public abstract class ExportBase<T> {
         	tableSub.addCell(cell);
         	
         	table.addCell(tableSub);
+        	
+        	sigUnits ++;
     	}
     	
     	//单数，补空
-    	if(((sigsOthers.size()+1) % 2) ==1){
+    	if(((sigUnits) % 2) ==1){
         	cell = PdfUtil.getContentCell("", Element.ALIGN_LEFT, borderWidth, fontContent, 1, 1, 0);
         	table.addCell(cell);   
         	table.addCell(cell);

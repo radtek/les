@@ -133,6 +133,22 @@ public class UserUtils {
 		// 如果没有登录，则返回实例化空的User对象。
 		return new User();
 	}
+	
+	public static String getUserLoginName(){
+		String rst = "";
+		User user = getUser();
+		if(user!=null){
+			rst = user.getLoginName();
+		}
+		return rst;
+	}
+	
+	public static String getUserIsAdmin(){
+		String rst = "0";
+		User user = getUser();
+		rst = user.isAdmin()?"1":"0";
+		return rst;
+	}
 
 	/**
 	 * 获取当前用户角色列表

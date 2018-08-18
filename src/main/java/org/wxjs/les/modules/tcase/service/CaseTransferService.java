@@ -23,6 +23,7 @@ import org.wxjs.les.modules.sys.utils.UserUtils;
 import org.wxjs.les.modules.tcase.dao.CaseAttachDao;
 import org.wxjs.les.modules.tcase.dao.CaseProcessDao;
 import org.wxjs.les.modules.tcase.dao.TcaseDao;
+import org.wxjs.les.modules.tcase.entity.CaseProcess;
 import org.wxjs.les.modules.tcase.entity.Tcase;
 import org.wxjs.les.modules.tcase.utils.ProcessCommonUtils;
 
@@ -40,7 +41,10 @@ public class CaseTransferService extends CrudService<TcaseDao, Tcase>  {
 	protected CaseProcessDao caseProcessDao;
 	
 	@Autowired
-	protected	CaseAttachDao caseAttachDao;	
+	protected CaseAttachDao caseAttachDao;	
+	
+	@Autowired
+	protected TcaseService tcaseService;
 	
 	@Autowired
 	IdentityService identityService;
@@ -126,30 +130,49 @@ public class CaseTransferService extends CrudService<TcaseDao, Tcase>  {
 		tcase.setId("");
 		tcase.setIsNewRecord(true);
 		tcase.setCaseSource("移交");
+		tcase.setStatus("1:10");
 		
 		User user = UserUtils.getUser();
-		tcase.setAccepter(user.getName());
+		tcase.setAccepter(user.getLoginName());
 		
 		tcase.setAcceptDate(Calendar.getInstance().getTime());
 		
+		/*
 		tcase.getCaseProcess().setId("");
 		tcase.getCaseProcess().setCaseHandler("");
 		tcase.getCaseProcess().setCaseStage(Global.CASE_STAGE_ACCEPTANCE);
-		tcase.getCaseProcess().setCaseStageStatus("0");
+		//移交，跳过受理，直接设置为已办结
+		tcase.getCaseProcess().setCaseStageStatus(Global.CASE_STAGE_STATUS_FINISHED);
 		tcase.getCaseProcess().setProcDefId("");
 		tcase.getCaseProcess().setProcInsId("");
+		*/
 		
-		this.save(tcase);
+		tcaseService.save(tcase);
+		//自动设置受理已办结
+		CaseProcess caseProcess = new CaseProcess();
+		caseProcess.setCaseId(tcase.getId());
+		caseProcess.setCaseStage(Global.CASE_STAGE_ACCEPTANCE);
+		caseProcess.setCaseStageStatus(Global.CASE_STAGE_STATUS_FINISHED);
+		caseProcess.setCaseHandler(user.getLoginName());
+		caseProcess.setCaseSummary(tcase.getCaseProcess().getCaseSummary());
 		
+		caseProcessDao.update(caseProcess);
+		
+	
 		//update new case id for original transfer
 		Tcase case0 = new Tcase();
 		case0.setId(caseId);
 		case0.setTransferCaseId(tcase.getId());
 		dao.updateTransferCaseId(case0);
 		
+		//set case transfer finished
+		case0.setStatus(Global.CASE_STATUS_FINISHED);
+		tcaseService.updateStatus(case0);
+		
 		//transfer attach
 		tcase.setOldCaseId(caseId);
 		caseAttachDao.attachTransfer(tcase);
+	
 		
 	}
 	

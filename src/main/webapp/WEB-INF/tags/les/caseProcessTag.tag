@@ -1,6 +1,6 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 
-<%@ attribute name="hideCaseSummary" type="java.lang.String" required="false" description="whether need to hide case summary"%>
+<%@ attribute name="caseSummaryBehaviour" type="java.lang.String" required="false" description="hide, readonly"%>
 
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 	<script type="text/javascript">
@@ -45,21 +45,36 @@
 		<form:hidden path="tcase.caseProcess.caseStageStatus"/>
 		
 		<sys:message content="${message}"/>	
-        
-        <c:if test="${empty hideCaseSummary}">
-		<div class="control-group container-fluid nopadding">
-			<div class="row-fluid">
-				<div class="span12">		
-			<label class="control-label">案情摘要：</label>
-			<div class="controls controls-tight">
-
-				<form:textarea path="tcase.caseProcess.caseSummary" htmlEscape="false"  style="width:800px;height:300px;" class="required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		        </div>
-		    </div>
-		</div>
-		</c:if>
+        <c:choose>
+ 			<c:when test="${caseSummaryBehaviour eq 'hide'}">
+ 			</c:when>
+ 			<c:when test="${caseSummaryBehaviour eq 'readonly'}">
+		 		<div class="control-group container-fluid nopadding">
+					<div class="row-fluid">
+						<div class="span12">		
+					<label class="control-label">案情摘要：</label>
+					<div class="controls controls-tight">
+						<textarea style="width:800px;height:300px;" readonly="readonly">${caseAct.tcase.caseProcess.caseSummary}</textarea>
+					</div>
+				        </div>
+				    </div>
+				</div>			
+ 			</c:when> 			
+ 			<c:otherwise>
+				<div class="control-group container-fluid nopadding">
+					<div class="row-fluid">
+						<div class="span12">		
+					<label class="control-label">案情摘要：</label>
+					<div class="controls controls-tight">
+		
+						<form:textarea path="tcase.caseProcess.caseSummary" htmlEscape="false"  style="width:800px;height:300px;" class="required"/>
+						<span class="help-inline"><font color="red">*</font> </span>
+					</div>
+				        </div>
+				    </div>
+				</div> 			
+ 			</c:otherwise>
+ 		</c:choose>		
 
 		<div class="control-group container-fluid nopadding">
 			<div class="row-fluid">

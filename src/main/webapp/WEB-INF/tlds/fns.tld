@@ -57,6 +57,14 @@
   </function>
   
   <function>
+    <description>获取当前用户是否管理员</description>
+    <name>getUserIsAdmin</name>
+    <function-class>org.wxjs.les.modules.sys.utils.UserUtils</function-class>
+    <function-signature>java.lang.String getUserIsAdmin()</function-signature>
+    <example>${fns:getUserIsAdmin()}</example>  
+  </function>
+  
+  <function>
     <description>根据编码获取用户对象</description>
     <name>getUserById</name>
     <function-class>org.wxjs.les.modules.sys.utils.UserUtils</function-class>

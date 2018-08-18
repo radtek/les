@@ -94,8 +94,8 @@ public class CaseHandleApproveExport extends ExportBase<CaseHandleApproveExport>
             document.add(table);
            
             //签字信息
-            
-            table = this.getSignatureTable(this.tcase.getCaseProcess().getProcInsId());
+            //办案人意见需扩展到整行
+            table = this.getSignatureTable(this.tcase.getCaseProcess().getProcInsId(), true);
             document.add(table);            
 
 

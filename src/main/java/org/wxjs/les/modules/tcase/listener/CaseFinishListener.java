@@ -21,9 +21,9 @@ public class CaseFinishListener implements ExecutionListener {
 
 	protected Logger logger = LoggerFactory.getLogger(getClass());
 	
-	@Autowired
+
 	TcaseDao caseDao = SpringContextHolder.getBean(TcaseDao.class);
-	@Autowired
+
 	CaseProcessDao caseProcessDao = SpringContextHolder.getBean(CaseProcessDao.class);
 
 	@Override
