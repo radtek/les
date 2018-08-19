@@ -144,37 +144,50 @@ public class CaseDecisionLaunchExport extends
 			table = new PdfPTable(4);
 			table.setWidths(new float[] { 0.1f, 0.4f, 0.1f, 0.4f });
 			table.setWidthPercentage(tableWidth);
+			
+			int count = 0;
 
 			if(signatures.size()>0){	
 				table.addCell(this.getTitleCell("打印", 60));
 				table.addCell(this.getImageCell(signatures.get(0).getSignature(), "", 70f));
+				count ++;
 			}
 
 			if(signatures.size()>0){
 				table.addCell(this.getTitleCell("拟稿", 60));
-				table.addCell(this.getImageCell(signatures.get(0).getSignature(), "", 70f));	
+				table.addCell(this.getImageCell(signatures.get(0).getSignature(), "", 70f));
+				count ++;
 			}
 			
-			if(signatures.size()>2){				
+			if(signatures.size()>1){				
 				table.addCell(this.getTitleCell("校对",60));
 				table.addCell(this.getImageCell(signatures.get(1).getSignature(), "", 70f));
+				count ++;
 			}
 
-			if(signatures.size()>3){
+			if(signatures.size()>2){
 				table.addCell(this.getTitleCell("核稿", 60));
-				table.addCell(this.getImageCell(signatures.get(2).getSignature(), "", 70f));				
+				table.addCell(this.getImageCell(signatures.get(2).getSignature(), "", 70f));
+				count ++;
+			}
+			
+			if(signatures.size()>3){
+				table.addCell(this.getTitleCell("审稿", 180));
+				Signature sig = signatures.get(3);
+				table.addCell(this.getImageCell(sig.getSignature(), DateUtil.formatDate(sig.getCreateDate(), "yyyy年MM月dd日"),130f));		
+				count ++;
 			}
 			
 			if(signatures.size()>4){
-				table.addCell(this.getTitleCell("审稿", 180));
-				Signature sig = signatures.get(3);
-				table.addCell(this.getImageCell(sig.getSignature(), DateUtil.formatDate(sig.getCreateDate(), "yyyy年MM月dd日"),130f));				
-			}
-			
-			if(signatures.size()>5){
 				table.addCell(this.getTitleCell("签发", 180));
 				Signature sig = signatures.get(4);
-				table.addCell(this.getImageCell(sig.getSignature(), DateUtil.formatDate(sig.getCreateDate(), "yyyy年MM月dd日"),130f));				
+				table.addCell(this.getImageCell(sig.getSignature(), DateUtil.formatDate(sig.getCreateDate(), "yyyy年MM月dd日"),130f));	
+				count ++;
+			}
+			
+			//fill empty unit when the count is odd
+			if(count % 2==1){
+				table.addCell(new PdfPCell());	
 			}
 
 			document.add(table);
