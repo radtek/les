@@ -59,6 +59,7 @@
 			<div class="controls">
 				<form:input path="sort" htmlEscape="false" maxlength="10" class="input-large required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
+				<BR>用于排序，一般第一个填10，第二个填20，...
 			</div>
 		</div>		
 		<div class="form-actions">

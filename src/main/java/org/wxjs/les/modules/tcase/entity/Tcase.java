@@ -35,6 +35,8 @@ public class Tcase extends DataEntity<Tcase> {
 	private String caseSeq;		// 事项编号
 	private String accepter;		// 受理人
 	private Date acceptDate;		// 受理时间
+	private Date initialDate;		// 立案日期
+	private Date settleDate;		// 结案日期
 	private String caseSource;		// 案件来源
 	private String partyType;		// 当事人类型
 	private String orgName;		// 名称
@@ -73,6 +75,10 @@ public class Tcase extends DataEntity<Tcase> {
 	
 	
 	//-- 临时属性 --//
+	private CaseDecision caseDecision; //
+	
+	private String partyName;
+	
 	// 流程任务
 	private Task task;
 	private Map<String, Object> variables;
@@ -85,6 +91,12 @@ public class Tcase extends DataEntity<Tcase> {
 	
 	private Date acceptDateFrom;		// 受理时间起始
 	private Date acceptDateTo;		// 受理时间截止
+	
+	private Date initialDateFrom;		// 立案日期起始
+	private Date initialDateTo;		// 立案日期截止
+	
+	private Date settleDateFrom;		// 结案日期起始
+	private Date settleDateTo;		// 结案日期截止
 	
 	private Date createDateFrom;		// 创建时间起始
 	private Date createDateTo;		// 创建时间截止
@@ -125,6 +137,22 @@ public class Tcase extends DataEntity<Tcase> {
 		this.acceptDate = acceptDate;
 	}
 	
+	public Date getInitialDate() {
+		return initialDate;
+	}
+
+	public void setInitialDate(Date initialDate) {
+		this.initialDate = initialDate;
+	}
+
+	public Date getSettleDate() {
+		return settleDate;
+	}
+
+	public void setSettleDate(Date settleDate) {
+		this.settleDate = settleDate;
+	}
+
 	@Length(min=1, max=100, message="案件来源长度必须介于 1 和 100 之间")
 	public String getCaseSource() {
 		return caseSource;
@@ -441,6 +469,38 @@ public class Tcase extends DataEntity<Tcase> {
 		this.acceptDateTo = acceptDateTo;
 	}
 
+	public Date getInitialDateFrom() {
+		return initialDateFrom;
+	}
+
+	public void setInitialDateFrom(Date initialDateFrom) {
+		this.initialDateFrom = initialDateFrom;
+	}
+
+	public Date getInitialDateTo() {
+		return initialDateTo;
+	}
+
+	public void setInitialDateTo(Date initialDateTo) {
+		this.initialDateTo = initialDateTo;
+	}
+
+	public Date getSettleDateFrom() {
+		return settleDateFrom;
+	}
+
+	public void setSettleDateFrom(Date settleDateFrom) {
+		this.settleDateFrom = settleDateFrom;
+	}
+
+	public Date getSettleDateTo() {
+		return settleDateTo;
+	}
+
+	public void setSettleDateTo(Date settleDateTo) {
+		this.settleDateTo = settleDateTo;
+	}
+
 	public Date getCreateDateFrom() {
 		return createDateFrom;
 	}
@@ -532,6 +592,22 @@ public class Tcase extends DataEntity<Tcase> {
 		return rst;
 	}
 	
+	public CaseDecision getCaseDecision() {
+		return caseDecision;
+	}
+
+	public void setCaseDecision(CaseDecision caseDecision) {
+		this.caseDecision = caseDecision;
+	}
+
+	public String getPartyName() {
+		return partyName;
+	}
+
+	public void setPartyName(String partyName) {
+		this.partyName = partyName;
+	}
+
 	private boolean getTabVisibleByPreviousStage(String previousStage){
 		boolean flag = false;
 		String statusPre = this.getCaseProcessStatus(previousStage);

@@ -229,8 +229,8 @@ public class Global {
     public static final String GROUP_caseAcceptanceProcess = "jcbar";
     public static final String GROUP_caseInitialProcess = "jcbar";
     public static final String GROUP_caseHandleProcess = "jcbar";
-    public static final String GROUP_caseNotifyProcess = "jcbar";
-    public static final String GROUP_caseDecisionProcess = "jcbar";
+    public static final String GROUP_caseNotifyProcess = "slkky";
+    public static final String GROUP_caseDecisionProcess = "slkky";
     public static final String GROUP_caseSettleProcess = "jcbar";
     public static final String GROUP_caseFinishProcess = "jcbar";
     

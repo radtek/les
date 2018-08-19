@@ -39,6 +39,7 @@ import org.wxjs.les.modules.sys.entity.User;
 import org.wxjs.les.modules.sys.service.SystemService;
 import org.wxjs.les.modules.task.entity.CaseAct;
 import org.wxjs.les.modules.task.service.CaseTaskService;
+import org.wxjs.les.modules.task.utils.CaseActUtils;
 import org.wxjs.les.modules.tcase.entity.CaseAttach;
 import org.wxjs.les.modules.tcase.entity.CaseCancel;
 import org.wxjs.les.modules.tcase.entity.CaseDecision;
@@ -312,6 +313,7 @@ public class TcaseController extends BaseController {
 		String caseId = strs[0];
 		Tcase tcase = tcaseService.getCaseAndProcess(caseId, Global.CASE_STAGE_NOTIFY);
 		
+		/*
 		//获取前一环节案情摘要
 		Tcase tcasePrevious = tcaseService.getCaseAndProcess(caseId, Global.CASE_STAGE_HANDLE);
 		if(StringUtils.isEmpty(tcase.getCaseProcess().getCaseSummary())){
@@ -320,6 +322,7 @@ public class TcaseController extends BaseController {
 			tcase.getCaseProcess().setCaseHandler(tcasePrevious.getCaseProcess().getCaseHandler());
 			tcaseService.saveProcess(tcase);
 		}		
+		*/
 		
 		logger.debug("businesskey:{}", businesskey);
 		
@@ -353,11 +356,10 @@ public class TcaseController extends BaseController {
 		String caseId = strs[0];
 		Tcase tcase = tcaseService.getCaseAndProcess(caseId, Global.CASE_STAGE_DECISION);
 		
-		//获取前一环节案情摘要
+		//获取前一环节处理人
 		Tcase tcasePrevious = tcaseService.getCaseAndProcess(caseId, Global.CASE_STAGE_NOTIFY);
-		if(StringUtils.isEmpty(tcase.getCaseProcess().getCaseSummary())){
+		if(StringUtils.isEmpty(tcase.getCaseProcess().getCaseHandler())){
 			//copy from previous
-			tcase.getCaseProcess().setCaseSummary(tcasePrevious.getCaseProcess().getCaseSummary());
 			tcase.getCaseProcess().setCaseHandler(tcasePrevious.getCaseProcess().getCaseHandler());
 			tcaseService.saveProcess(tcase);
 		}
@@ -396,7 +398,7 @@ public class TcaseController extends BaseController {
 		Tcase tcase = tcaseService.getCaseAndProcess(caseId, Global.CASE_STAGE_SETTLE);
 		
 		//获取前一环节案情摘要
-		Tcase tcasePrevious = tcaseService.getCaseAndProcess(caseId, Global.CASE_STAGE_DECISION);
+		Tcase tcasePrevious = tcaseService.getCaseAndProcess(caseId, Global.CASE_STAGE_HANDLE);
 		if(StringUtils.isEmpty(tcase.getCaseProcess().getCaseSummary())){
 			//copy from previous
 			tcase.getCaseProcess().setCaseSummary(tcasePrevious.getCaseProcess().getCaseSummary());
@@ -761,6 +763,8 @@ public class TcaseController extends BaseController {
 	public String saveProcess(CaseAct caseAct, Model model, RedirectAttributes redirectAttributes) {
 		Tcase tcase = caseAct.getTcase();
 		
+		logger.debug("caseAct.getTcase().getCaseProcess().getCaseHandler():{}", caseAct.getTcase().getCaseProcess().getCaseHandler());
+		
 		tcaseService.saveProcess(tcase);
 		
 		model.addAttribute("operateType", caseAct.getOperateType());
@@ -769,31 +773,11 @@ public class TcaseController extends BaseController {
 		
 		addMessage(redirectAttributes, "保存成功");
 		String tabControl = this.getTabControlByStage(tcase.getCaseProcess().getCaseStage());
-		return "redirect:"+Global.getAdminPath()+"/case/tcase/"+tabControl+"?businesskey="+businesskey+"&operateType="+caseAct.getOperateType();
+		return "redirect:"+Global.getAdminPath()+ tabControl+"?businesskey="+businesskey+"&operateType="+caseAct.getOperateType();
 	}
 	
-	private String getTabControlByStage(String stage){
-		String tabControl = "";
-		if(stage.equals(Global.CASE_STAGE_ACCEPTANCE)){
-			tabControl = "acceptanceTab";
-		}else if(stage.equals(Global.CASE_STAGE_INITIAL)){
-			tabControl = "initialTab";
-		}else if(stage.equals(Global.CASE_STAGE_HANDLE)){
-			tabControl = "handleTab";
-		}else if(stage.equals(Global.CASE_STAGE_NOTIFY)){
-			tabControl = "notifyTab";
-		}else if(stage.equals(Global.CASE_STAGE_DECISION)){
-			tabControl = "decisionTab";
-		}else if(stage.equals(Global.CASE_STAGE_SETTLE)){
-			tabControl = "settleTab";
-		}else if(stage.equals(Global.CASE_STAGE_FINISH)){
-			tabControl = "finishTab";
-		}else if(stage.equals(Global.CASE_STAGE_CANCEL)){
-			tabControl = "cancelTab";
-		}else if(stage.equals(Global.CASE_STAGE_SERIOUS)){
-			tabControl = "seriousTab";
-		}
-		return tabControl;
+	private String getTabControlByStage(String caseStage){
+		return CaseActUtils.getTabControl(caseStage);
 	}
 	
 	
@@ -804,6 +788,9 @@ public class TcaseController extends BaseController {
 			return infoTab(caseAct, model);
 		}
 		//tcaseService.saveAndStartFlow(caseAct.getTcase());
+		
+		logger.debug("caseAct.getTcase().getCaseProcess().getCaseHandler():{}", caseAct.getTcase().getCaseProcess().getCaseHandler());
+		
 		tcaseService.saveProcess(caseAct.getTcase());
 		tcaseService.startWorkflow(caseAct.getTcase());
 		addMessage(redirectAttributes, "事件启动成功");

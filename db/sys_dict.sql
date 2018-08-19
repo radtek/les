@@ -72,6 +72,14 @@ VALUES
 ('upload_method_1', '1', '自动生成', 'upload_method', '上传方式', 10, '0','1',now(),'1',now()),
 ('upload_method_2', '2', '手动上传', 'upload_method', '上传方式', 20, '0','1',now(),'1',now());
 
+delete from sys_dict where `type`= 'case_status';
+INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `parent_id`, `create_by`,`create_date`,`update_by`,`update_date`) 
+VALUES 
+('case_status_1', '0', '未启动', 'case_status', 'case_status', 10, '0','1',now(),'1',now()),
+('case_status_2', '1', '流转中', 'case_status', 'case_status', 20, '0','1',now(),'1',now()),
+('case_status_3', '2', '已办结', 'case_status', 'case_status', 30, '0','1',now(),'1',now()),
+('case_status_4', '9', '已终止', 'case_status', 'case_status', 40, '0','1',now(),'1',now());
+
 
 
 

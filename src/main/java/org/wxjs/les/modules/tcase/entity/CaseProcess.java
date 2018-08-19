@@ -8,6 +8,8 @@ import java.util.List;
 import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.DataEntity;
 import org.wxjs.les.modules.base.entity.Signature;
@@ -24,6 +26,9 @@ import com.google.common.collect.Lists;
 public class CaseProcess extends DataEntity<CaseProcess> {
 	
 	private static final long serialVersionUID = 1L;
+	
+	protected Logger logger = LoggerFactory.getLogger(getClass());
+	
 	private String caseId;		// 案件编号
 	private String caseSummary;		// 案情摘要
 	private String caseHandler;		// 办案人
@@ -112,6 +117,8 @@ public class CaseProcess extends DataEntity<CaseProcess> {
 			buffer.append(",").append(loginName);
 		}
 		this.caseHandler = buffer.substring(1);
+		
+		logger.debug("this.caseHandler:{}", this.caseHandler);
 	}
 	
 	@Length(min=0, max=8, message="事项类型长度必须介于 0 和 8 之间")

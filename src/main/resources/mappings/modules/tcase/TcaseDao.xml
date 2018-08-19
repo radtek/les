@@ -7,6 +7,8 @@
 		a.case_seq AS "caseSeq",
 		a.accepter AS "accepter",
 		a.accept_date AS "acceptDate",
+		a.initial_date AS "initialDate",
+		a.settle_date AS "settleDate",
 		a.case_source AS "caseSource",
 		a.party_type AS "partyType",
 		a.org_name AS "orgName",
@@ -37,11 +39,14 @@
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
-		a.del_flag AS "delFlag"
+		a.del_flag AS "delFlag",
+		decision.decision_type AS "caseDecision.decisionType", 
+		decision.year AS "caseDecision.year", 
+		decision.seq AS "caseDecision.seq"
 	</sql>
 	
 	<sql id="tcaseJoins">
-	    
+	    LEFT JOIN tcase_decision decision ON decision.case_id=a.id
 	</sql>
     
 	<select id="get" resultType="Tcase">
@@ -64,22 +69,52 @@
 			</if>
 			<if test="acceptDateTo != null and acceptDateTo != ''">
 			    AND DATE_FORMAT(a.accept_date,'%Y-%m-%d') &lt;= DATE_FORMAT(#{acceptDateTo},'%Y-%m-%d')
-			</if>		
+			</if>	
+			<if test="initialDateFrom != null and initialDateFrom != ''">
+				AND DATE_FORMAT(a.initial_date,'%Y-%m-%d') &gt;= DATE_FORMAT(#{initialDateFrom},'%Y-%m-%d')
+			</if>
+			<if test="initialDateTo != null and initialDateTo != ''">
+			    AND DATE_FORMAT(a.initial_date,'%Y-%m-%d') &lt;= DATE_FORMAT(#{initialDateTo},'%Y-%m-%d')
+			</if>
+			<if test="settleDateFrom != null and settleDateFrom != ''">
+				AND DATE_FORMAT(a.settle_date,'%Y-%m-%d') &gt;= DATE_FORMAT(#{settleDateFrom},'%Y-%m-%d')
+			</if>
+			<if test="settleDateTo != null and settleDateTo != ''">
+			    AND DATE_FORMAT(a.settle_date,'%Y-%m-%d') &lt;= DATE_FORMAT(#{settleDateTo},'%Y-%m-%d')
+			</if>							
 			<if test="createDateFrom != null and createDateFrom != ''">
 				AND DATE_FORMAT(a.create_date,'%Y-%m-%d') &gt;= DATE_FORMAT(#{createDateFrom},'%Y-%m-%d')
 			</if>
 			<if test="createDateTo != null and createDateTo != ''">
 			    AND DATE_FORMAT(a.create_date,'%Y-%m-%d') &lt;= DATE_FORMAT(#{createDateTo},'%Y-%m-%d')
-			</if>				
+			</if>		
+			<if test="partyType != null and partyType != ''">
+				AND a.party_type =#{partyType}
+			</if>					
 			<if test="orgName != null and orgName != ''">
 				AND a.org_name like concat('%',#{orgName},'%') 
 			</if>
 			<if test="psnName != null and psnName != ''">
 				AND a.psn_name like concat('%',#{psnName},'%')
-			</if>	
+			</if>
+			<if test="projectName != null and projectName != ''">
+				AND a.project_name like concat('%',#{projectName},'%')
+			</if>
+			<if test="caseDecision.year != null and caseDecision.year != ''">
+				AND decision.year =#{caseDecision.year}
+			</if>
+			<if test="caseDecision.seq != null and caseDecision.seq != ''">
+				AND decision.seq =#{caseDecision.seq}
+			</if>			
+			<if test="projectName != null and projectName != ''">
+				AND a.project_name like concat('%',#{projectName},'%')
+			</if>									
 			<if test="caseCause != null and caseCause != ''">
 				AND a.case_cause like concat('%',#{caseCause},'%') 
 			</if>
+			<if test="status != null and status != ''">
+				AND a.status like concat(#{status},'%') 
+			</if>			
 			<choose>
 				<when test="caseTransfer != null and caseTransfer != ''">
 					AND a.case_transfer=#{caseTransfer}

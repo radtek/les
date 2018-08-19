@@ -36,21 +36,6 @@ import org.wxjs.les.modules.tcase.service.CaseProcessService;
 @RequestMapping(value = "${adminPath}/task")
 public class CaseTaskController extends BaseController {
 	
-	final static Map<String, String> formkeyMap = new HashMap<String, String>();
-	static{
-		formkeyMap.put("10", "/case/tcase/acceptanceTab");
-		formkeyMap.put("20", "/case/tcase/initialTab");
-		formkeyMap.put("30", "/case/tcase/handleTab");
-		formkeyMap.put("40", "/case/tcase/notifyTab");
-		formkeyMap.put("50", "/case/tcase/decisionTab");
-		formkeyMap.put("60", "/case/tcase/settleTab");
-		formkeyMap.put("70", "/case/tcase/finishTab");
-		
-		formkeyMap.put("110", "/case/tcase/seriousTab");
-		formkeyMap.put("120", "/case/tcase/cancelTab");
-		formkeyMap.put("210", "/tcase/caseTransfer/infoTab");
-	}
-	
 
 	@Autowired
 	private CaseTaskService actTaskService;
@@ -149,14 +134,7 @@ public class CaseTaskController extends BaseController {
 	}
 	
 	private String getFormkey(String caseStage){
-		String formKey = "";
-		if(StringUtils.isNotEmpty(caseStage)){
-			formKey = formkeyMap.get(caseStage);
-		}
-		if(StringUtils.isEmpty(formKey)){
-			formKey = "/case/tcase/infoTab";
-		}
-		return formKey;
+		return CaseActUtils.getTabControl(caseStage);
 	}
 	
 	private String getCaseStageByBusinesskey(String businesskey){
