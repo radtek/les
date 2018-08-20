@@ -40,6 +40,12 @@ public class SiteCheckRecordService extends CrudService<SiteCheckRecordDao, Site
 	}
 	
 	@Transactional(readOnly = false)
+	public void saveInfo(SiteCheckRecord siteCheckRecord) {
+		this.save(siteCheckRecord);
+	}
+	
+	
+	@Transactional(readOnly = false)
 	public void delete(SiteCheckRecord siteCheckRecord) {
 		super.delete(siteCheckRecord);
 	}

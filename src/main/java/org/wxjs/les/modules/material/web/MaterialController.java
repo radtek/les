@@ -95,8 +95,11 @@ public class MaterialController extends BaseController {
 			return form(material, model);
 		}
 		materialService.saveInfo(material);
+		model.addAttribute("material", material);
 		addMessage(redirectAttributes, "保存成功");
-		return "redirect:"+Global.getAdminPath()+"/material/material/form?id="+material.getId();
+		return "modules/material/materialForm";
+	  //addMessage(redirectAttributes, "保存成功");
+	  //return "redirect:"+Global.getAdminPath()+"/material/material/form?id="+material.getId();
 	}
 	
 	
