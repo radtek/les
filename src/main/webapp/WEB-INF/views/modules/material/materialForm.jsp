@@ -26,7 +26,7 @@
 			});			
 			
 			 $('#btnSubmit').click(function() {
-				$("#inputForm").attr("action","${ctx}/material/material/save");
+				$("#inputForm").attr("action","${ctx}/material/material/saveInfo");
 				$("#inputForm").submit();		    	
 		    });	
 			 
@@ -43,7 +43,7 @@
 	<h4>基本信息</h4>
 	<sys:message content="${message}"/>
 	
-	<form:form id="inputForm" modelAttribute="material" action="${ctx}/material/material/save" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="material" action="${ctx}/material/material/saveInfo" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 		
@@ -102,34 +102,32 @@
 		</div>
 		
 		<div class="form-actions">
-			<shiro:hasPermission name="material:material:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保 存"/></shiro:hasPermission>
-			
-			<input id="btnExportPdf" class="btn btn-primary" type="button" value="导出PDF " />
-			
-			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
-		</div>
+				<shiro:hasPermission name="material:material:edit">
+					<input id="btnSubmit" class="btn btn-primary" type="button" value="保 存"/>
+					<input id="btnExportPdf" class="btn btn-primary" type="button" value="导出PDF " />
+				</shiro:hasPermission>
+				<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
+			</div>
+	
 		
 		<div class="control-group container-fluid nopadding">
 			<div class="row-fluid">	
-					
 					<div class="span6">		
 			<label class="control-label">当事人签名：</label>
 			<div class="controls controls-tight">
-			    <les:signatureLoader sig="${material.partySig}" path="partySig.id"></les:signatureLoader>
+			    <les:signatureLoader sig="${material.partySig}" path="partySig.id" hideLoadButton="hide"></les:signatureLoader>
 			</div>
 		        </div>
 					
 				<div class="span6">		
 			<label class="control-label">收集人签名：</label>
 			<div class="controls controls-tight">
-				<les:signatureLoader sig="${material.getterSig}" path="getterSig.id"></les:signatureLoader>
+				<les:signatureLoader sig="${material.getterSig}" path="getterSig.id" hideLoadButton="hide"></les:signatureLoader>
 				<les:signatureModal></les:signatureModal>
 			</div>
 		        </div> 
-		        
 		    </div>
 		</div>	
-
 	</form:form>
 </body>
 </html>

@@ -27,7 +27,7 @@
 		});			
 		
 		 $('#btnSubmit').click(function() {
-			$("#inputForm").attr("action","${ctx}/cr/siteCheckRecord/save");
+			$("#inputForm").attr("action","${ctx}/cr/siteCheckRecord/saveInfo");
 			$("#inputForm").submit();		    	
 	    });	
 		 
@@ -36,8 +36,6 @@
 			$("#inputForm").submit();		    	
 		 });
 	});
-	
-	
 			function f1(value){	
 				if(value == "个人"){
 				   console.log(value);	
@@ -73,7 +71,7 @@
     
 	
 	
-	<form:form id="inputForm" modelAttribute="siteCheckRecord" action="${ctx}/cr/siteCheckRecord/save" method="get" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="siteCheckRecord" action="${ctx}/cr/siteCheckRecord/saveInfo" method="get" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>	
 		
@@ -270,12 +268,22 @@
 		</div>
 		
 		
+		<div class="form-actions">
+			<shiro:hasPermission name="cr:siteCheckRecord:edit">
+				<input id="btnSubmit" class="btn btn-primary" type="button" value="保 存"/>&nbsp;
+				<input id="btnExportPdf" class="btn btn-primary" type="button" value="导出PDF " />
+			</shiro:hasPermission>
+	
+			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
+		</div>
+		
+		
 		<div class="control-group container-fluid nopadding">
 			<div class="row-fluid">	
 					<div class="span6">		
 			<label class="control-label controls-tight">当事人签名：</label>
-			<div class="controls controls-tight">
-			    <les:signatureLoader sig="${siteCheckRecord.partySig}" path="partySig.id"></les:signatureLoader>
+			<div class="controls controls-tight"> 
+			    <les:signatureLoader sig="${siteCheckRecord.partySig}" path="partySig.id" hideLoadButton="hide"></les:signatureLoader>
 			</div>
 		        </div>
 					
@@ -283,7 +291,7 @@
 				<div class="span6">		
 			<label class="control-label controls-tight">见证人签名：</label>
 			<div class="controls controls-tight">
-				<les:signatureLoader sig="${siteCheckRecord.witnessSig}" path="witnessSig.id"></les:signatureLoader>
+				<les:signatureLoader sig="${siteCheckRecord.witnessSig}" path="witnessSig.id" hideLoadButton="hide"></les:signatureLoader>
 				<les:signatureModal></les:signatureModal>
 			</div>
 		        </div> 
@@ -295,25 +303,18 @@
 					<div class="span6">		
 			<label class="control-label controls-tight">勘查人签名：</label>
 			<div class="controls controls-tight">
-			    <les:signatureLoader sig="${siteCheckRecord.checkerSig}" path="checkerSig.id"></les:signatureLoader>
+			    <les:signatureLoader sig="${siteCheckRecord.checkerSig}" path="checkerSig.id" hideLoadButton="hide"></les:signatureLoader>
 			</div>
 		        </div>
 					
 				<div class="span6">		
 			<label class="control-label controls-tight">记录人签名：</label>
 			<div class="controls controls-tight">
-				<les:signatureLoader sig="${siteCheckRecord.recorderSig}" path="recorderSig.id"></les:signatureLoader>
+				<les:signatureLoader sig="${siteCheckRecord.recorderSig}" path="recorderSig.id" hideLoadButton="hide"></les:signatureLoader>
 			</div>
 		        </div> 
 		    </div>
 		</div>		
-			<div class="form-actions">
-			<shiro:hasPermission name="cr:siteCheckRecord:edit">
-				<input id="btnSubmit" class="btn btn-primary" type="button" value="保 存"/>&nbsp;
-				<input id="btnExportPdf" class="btn btn-primary" type="button" value="导出PDF " />
-			</shiro:hasPermission>
-			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
-		</div>
 	</form:form>
 </body>
 </html>
