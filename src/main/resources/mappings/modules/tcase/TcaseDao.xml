@@ -8,6 +8,7 @@
 		a.accepter AS "accepter",
 		a.accept_date AS "acceptDate",
 		a.initial_date AS "initialDate",
+		a.initial_handler AS "initialHandler",
 		a.settle_date AS "settleDate",
 		a.case_source AS "caseSource",
 		a.party_type AS "partyType",
@@ -100,10 +101,10 @@
 			<if test="projectName != null and projectName != ''">
 				AND a.project_name like concat('%',#{projectName},'%')
 			</if>
-			<if test="caseDecision.year != null and caseDecision.year != ''">
+			<if test="caseDecision!= null and caseDecision.year != null and caseDecision.year != ''">
 				AND decision.year =#{caseDecision.year}
 			</if>
-			<if test="caseDecision.seq != null and caseDecision.seq != ''">
+			<if test="caseDecision!= null and caseDecision.seq != null and caseDecision.seq != ''">
 				AND decision.seq =#{caseDecision.seq}
 			</if>			
 			<if test="projectName != null and projectName != ''">
@@ -112,7 +113,7 @@
 			<if test="caseCause != null and caseCause != ''">
 				AND a.case_cause like concat('%',#{caseCause},'%') 
 			</if>
-			<if test="status != null and status != ''">
+			<if test="status != null and status != '' and status != 'all'">
 				AND a.status like concat(#{status},'%') 
 			</if>			
 			<choose>
@@ -271,7 +272,20 @@
 		UPDATE tcase SET 	
 			status = #{status}
 		WHERE id = #{id}
-	</update>		
+	</update>
+	
+	<update id="finishInitial">
+		UPDATE tcase SET 	
+		  initial_date = #{initialDate},
+		  initial_handler = #{initialHandler}
+		WHERE id = #{id}
+	</update>	
+	
+	<update id="finishSettle">
+		UPDATE tcase SET
+		  settle_date = #{settleDate}
+		WHERE id = #{id}
+	</update>			
 	
 	<update id="delete">
 		UPDATE tcase SET 
