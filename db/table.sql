@@ -19,6 +19,7 @@ CREATE TABLE `tcase` (
   `accepter` varchar(32) NULL COMMENT '受理人',
   `accept_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '受理时间',
   `initial_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '立案日期',
+  `initial_handler` varchar(32) NULL COMMENT '立案经办人',
   `settle_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '结案日期',
   `case_source` varchar(100) NULL COMMENT '案件来源',
   `party_type` varchar(32) NOT NULL COMMENT '当事人类型',
