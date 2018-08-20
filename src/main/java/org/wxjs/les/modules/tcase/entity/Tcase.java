@@ -36,6 +36,7 @@ public class Tcase extends DataEntity<Tcase> {
 	private String accepter;		// 受理人
 	private Date acceptDate;		// 受理时间
 	private Date initialDate;		// 立案日期
+	private String initialHandler;		// 立案经办人
 	private Date settleDate;		// 结案日期
 	private String caseSource;		// 案件来源
 	private String partyType;		// 当事人类型
@@ -76,8 +77,6 @@ public class Tcase extends DataEntity<Tcase> {
 	
 	//-- 临时属性 --//
 	private CaseDecision caseDecision; //
-	
-	private String partyName;
 	
 	// 流程任务
 	private Task task;
@@ -143,6 +142,14 @@ public class Tcase extends DataEntity<Tcase> {
 
 	public void setInitialDate(Date initialDate) {
 		this.initialDate = initialDate;
+	}
+
+	public String getInitialHandler() {
+		return initialHandler;
+	}
+
+	public void setInitialHandler(String initialHandler) {
+		this.initialHandler = initialHandler;
 	}
 
 	public Date getSettleDate() {
@@ -601,11 +608,22 @@ public class Tcase extends DataEntity<Tcase> {
 	}
 
 	public String getPartyName() {
-		return partyName;
+		String rst = "";
+		if("单位".equals(this.partyType)){
+			rst = this.orgName;
+		}else {
+			rst = this.psnName;
+		}
+		return rst;
 	}
 
 	public void setPartyName(String partyName) {
-		this.partyName = partyName;
+		if("单位".equals(this.partyType)){
+			this.orgName = partyName;
+		}else {
+			this.psnName = partyName;
+		}
+		
 	}
 
 	private boolean getTabVisibleByPreviousStage(String previousStage){

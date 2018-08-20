@@ -19,7 +19,7 @@
 <body>
     <h3>案件列表</h3>
 	
-	<form:form id="searchForm" modelAttribute="tcase" action="${ctx}/case/tcase/query" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="tcase" action="${ctx}/case/tcase/query" method="post" class="form-horizontal">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		
@@ -28,15 +28,14 @@
 				<div class="span6">		
 			<label class="control-label">案卷年度：</label>
 			<div class="controls controls-tight">
-			<!--  
-			    <form:input path="tcase.caseSource" htmlEscape="false" maxlength="100" class="input-xlarge"/>
-			-->
 			</div>
 		        </div>
 				<div class="span6">		
 			<label class="control-label">当事人类型：</label>
 			<div class="controls controls-tight">
-				<form:radiobuttons path="partyType" items="${fns:getDictList('party_type')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required"/>
+				<form:select path="partyType" class="input-xlarge ">
+					<form:options items="${fns:getDictList('party_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>				
 			</div>
 		        </div>
 		    </div>
@@ -68,7 +67,7 @@
 				<div class="span6">		
 			<label class="control-label">处罚决定书编号：</label>
 			<div class="controls controls-tight">
-				<form:input path="caseDecision.year" htmlEscape="false" maxlength="100" class="input-xlarge"/>年<form:input path="caseDecision.seq" htmlEscape="false" maxlength="100" class="input-xlarge"/>号
+				<form:input path="caseDecision.year" htmlEscape="false" maxlength="100" class="input-small"/>年<form:input path="caseDecision.seq" htmlEscape="false" maxlength="100" class="input-small"/>号
 			</div>
 		        </div>
 		    </div>
@@ -80,7 +79,7 @@
 			<div class="controls controls-tight">
 				<input name="initialDateFrom" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
 					value="<fmt:formatDate value="${tcase.initialDateFrom}" pattern="yyyy-MM-dd"/>"
-					onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+					onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>到
 				<input name="initialDateTo" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
 					value="<fmt:formatDate value="${tcase.initialDateTo}" pattern="yyyy-MM-dd"/>"
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>			
@@ -91,7 +90,7 @@
 			<div class="controls controls-tight">
 				<input name="settleDateFrom" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
 					value="<fmt:formatDate value="${tcase.settleDateFrom}" pattern="yyyy-MM-dd"/>"
-					onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+					onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>到
 				<input name="settleDateTo" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
 					value="<fmt:formatDate value="${tcase.settleDateTo}" pattern="yyyy-MM-dd"/>"
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
@@ -104,7 +103,10 @@
 				<div class="span6">		
 			<label class="control-label">案件状态：</label>
 			<div class="controls controls-tight">
-                <form:radiobuttons path="status" items="${fns:getDictList('case_status')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required"/>			
+				<form:select path="status" class="input-xlarge ">
+					<form:option value="all" label="全部"/>
+					<form:options items="${fns:getDictList('case_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>                			
 			</div>
 		        </div>
 				<div class="span6">		
@@ -139,11 +141,17 @@
 		<tbody>
 		<c:forEach items="${page.list}" var="tcase" varStatus="status">
 			<tr>
-			    <td>${status。index+1}</td>
+			    <td>${status.index+1}</td>
+				<td></td>
 				<td></td>
 				<td>${tcase.projectName}</td>
 				<td>${tcase.caseCause}</td>
-				<td>${tcase.caseSource}</td>								
+				<td>${tcase.caseDecision.fullDecisionNumber}</td>								
+				<td><fmt:formatDate value="${tcase.initialDate}" pattern="yyyy-MM-dd"/></td>
+				<td><fmt:formatDate value="${tcase.settleDate}" pattern="yyyy-MM-dd"/></td>
+				<td></td>
+				<td>${fns:getDictLabel(tcase.status, 'case_status', '')}</td>
+				<td></td>
 				<td></td>
 			</tr>
 		</c:forEach>

@@ -165,6 +165,21 @@ public class TcaseController extends BaseController {
 		Page<Tcase> page = tcaseService.findPage(new Page<Tcase>(request, response), tcase); 
 		model.addAttribute("page", page);
 		return "modules/tcase/tcaseList";
+	}	
+	
+	@RequiresPermissions("case:tcase:view")
+	@RequestMapping(value = {"query"})
+	public String query(Tcase tcase, HttpServletRequest request, HttpServletResponse response, Model model) {
+		
+		if(StringUtils.isEmpty(tcase.getStatus())){
+			tcase.setStatus(Global.CASE_STATUS_FINISHED);
+		}
+		
+		
+		
+		Page<Tcase> page = tcaseService.findPage(new Page<Tcase>(request, response), tcase); 
+		model.addAttribute("page", page);
+		return "modules/tcase/queryCaseList";
 	}
 
 	@RequiresPermissions("case:tcase:view")

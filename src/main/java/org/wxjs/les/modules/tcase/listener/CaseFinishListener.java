@@ -1,5 +1,7 @@
 package org.wxjs.les.modules.tcase.listener;
 
+import java.util.Calendar;
+
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.ExecutionListener;
 import org.slf4j.Logger;
@@ -47,6 +49,12 @@ public class CaseFinishListener implements ExecutionListener {
 				if(Global.CASE_STAGE_ACCEPTANCE.equals(caseStage)){
 					//no doc to 
 				}else if(Global.CASE_STAGE_INITIAL.equals(caseStage)){
+					//finish initial
+					Tcase tcase = new Tcase();
+					tcase.setId(caseId);
+					tcase.setInitialDate(Calendar.getInstance().getTime());
+					tcase.setInitialHandler(caseProcess.getCaseHandler());
+					caseDao.finishInitial(tcase);
 					//export 立案审批表
 					
 				}else if(Global.CASE_STAGE_HANDLE.equals(caseStage)){
@@ -62,6 +70,11 @@ public class CaseFinishListener implements ExecutionListener {
 					//export 处罚决定书
 					
 				}else if(Global.CASE_STAGE_SETTLE.equals(caseStage)){
+					//finish settle
+					Tcase tcase = new Tcase();
+					tcase.setId(caseId);
+					tcase.setSettleDate(Calendar.getInstance().getTime());
+					caseDao.finishSettle(tcase);					
 					//export 结案审批表
 					
 				}else if(Global.CASE_STAGE_FINISH.equals(caseStage)){

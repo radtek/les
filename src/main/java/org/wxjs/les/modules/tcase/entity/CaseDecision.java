@@ -14,6 +14,7 @@ import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.DataEntity;
 import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.Util;
+import org.wxjs.les.modules.sys.utils.DictUtils;
 
 /**
  * 案件决定书Entity
@@ -166,6 +167,16 @@ public class CaseDecision extends DataEntity<CaseDecision> {
 
 	public void setLaunchDate(Date launchDate) {
 		this.launchDate = launchDate;
+	}
+	
+	public String getFullDecisionNumber(){
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(DictUtils.getDictLabel(this.decisionType, "decision_type", ""));
+		buffer.append("-");
+		buffer.append(this.year);
+		buffer.append("-");
+		buffer.append(this.seq);
+		return buffer.toString();
 	}
 
 	public String getParamUri() {
