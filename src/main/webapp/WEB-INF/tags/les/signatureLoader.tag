@@ -19,12 +19,10 @@
 	<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#sigModal" onclick="loadModal('${sig.id}')">
 	签名
     </button>&nbsp;&nbsp;&nbsp;&nbsp;
-    <c:if test="${hideLoadButton ne 'hide'}">
-    <c:if test="${not empty fns:getCache('CurrentUserSignatureTitle', '')}">
+    <c:if test="${hideLoadButton ne 'hide' and not empty fns:getCache('CurrentUserSignatureTitle', '')}">
     <button type="button" class="btn btn-primary" onclick="loadSignature('${sig.id}')">读取上次签名</button> 
     
-    </c:if>
-	</c:if>   
+    </c:if>  
 	
 </div>
 
