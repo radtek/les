@@ -8,6 +8,7 @@ import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.tools.ant.util.DateUtils;
 import org.hibernate.validator.constraints.Length;
 
 import java.util.Date;
@@ -19,7 +20,9 @@ import com.google.common.collect.Lists;
 
 import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.DataEntity;
+import org.wxjs.les.common.utils.excel.annotation.ExcelField;
 import org.wxjs.les.modules.sys.entity.User;
+import org.wxjs.les.modules.sys.utils.DictUtils;
 
 /**
  * 案件Entity
@@ -66,6 +69,10 @@ public class Tcase extends DataEntity<Tcase> {
 	
 	private String status;
 	
+	private String uploadStatus;
+	private String attachUploadProgress;
+	private String attachUploadDetail;
+	
 	private CaseProcess caseProcess; //
 	
 	private CaseAttach caseAttach; //
@@ -77,6 +84,12 @@ public class Tcase extends DataEntity<Tcase> {
 	
 	//-- 临时属性 --//
 	private CaseDecision caseDecision; //
+	
+	private String party;
+	
+	private String docYear;
+	
+	private String caseIds;
 	
 	// 流程任务
 	private Task task;
@@ -136,6 +149,11 @@ public class Tcase extends DataEntity<Tcase> {
 		this.acceptDate = acceptDate;
 	}
 	
+	@ExcelField(title="立案日期", type=1, align=2, sort=80)
+	public String getInitialDateDisplay() {
+		return this.parseDate(initialDate);
+	}
+	
 	public Date getInitialDate() {
 		return initialDate;
 	}
@@ -144,6 +162,7 @@ public class Tcase extends DataEntity<Tcase> {
 		this.initialDate = initialDate;
 	}
 
+	@ExcelField(title="经办人", type=1, align=2, sort=100)
 	public String getInitialHandler() {
 		return initialHandler;
 	}
@@ -152,6 +171,11 @@ public class Tcase extends DataEntity<Tcase> {
 		this.initialHandler = initialHandler;
 	}
 
+	@ExcelField(title="结案日期", type=1, align=2, sort=90)
+	public String getSettleDateDisplay() {
+		return this.parseDate(settleDate);
+	}
+	
 	public Date getSettleDate() {
 		return settleDate;
 	}
@@ -338,6 +362,7 @@ public class Tcase extends DataEntity<Tcase> {
 	}
 	
 	@Length(min=1, max=100, message="案件所涉项目名称长度必须介于 1 和 100 之间")
+	@ExcelField(title="项目名称", type=1, align=2, sort=40)
 	public String getProjectName() {
 		return projectName;
 	}
@@ -347,6 +372,7 @@ public class Tcase extends DataEntity<Tcase> {
 	}
 	
 	@Length(min=1, max=200, message="案由长度必须介于 1 和 200 之间")
+	@ExcelField(title="案由", type=1, align=2, sort=50)
 	public String getCaseCause() {
 		return caseCause;
 	}
@@ -377,6 +403,39 @@ public class Tcase extends DataEntity<Tcase> {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	
+	public String getUploadStatus() {
+		return uploadStatus;
+	}
+
+	public void setUploadStatus(String uploadStatus) {
+		this.uploadStatus = uploadStatus;
+	}
+
+	public String getAttachUploadProgress() {
+		return attachUploadProgress;
+	}
+
+	public void setAttachUploadProgress(String attachUploadProgress) {
+		this.attachUploadProgress = attachUploadProgress;
+	}
+
+	public String getAttachUploadDetail() {
+		return attachUploadDetail;
+	}
+
+	public void setAttachUploadDetail(String attachUploadDetail) {
+		this.attachUploadDetail = attachUploadDetail;
+	}
+
+	@ExcelField(title="案件状态", type=1, align=2, sort=110)
+	public String getStatusLabel(){
+		String statusStr = this.status;
+		if(this.status.startsWith("1:")){
+			statusStr = "1";
+		}
+		return DictUtils.getDictLabel(statusStr, "case_status", "");
 	}
 
 	public CaseProcess getCaseProcess() {
@@ -534,8 +593,33 @@ public class Tcase extends DataEntity<Tcase> {
 		return rst;
 	}
 	
-	public String getParty(){
+	@ExcelField(title="当事人", type=1, align=2, sort=30)
+	public String getPartyDisplay(){
 		return "单位".equals(this.partyType)? this.orgName:this.psnName;
+	}
+	
+	public String getParty(){
+		return this.party;
+	}
+	
+	public void setParty(String party) {
+		this.party = party;
+	}
+
+	public String getDocYear() {
+		return docYear;
+	}
+
+	public void setDocYear(String docYear) {
+		this.docYear = docYear;
+	}
+
+	public String getCaseIds() {
+		return caseIds;
+	}
+
+	public void setCaseIds(String caseIds) {
+		this.caseIds = caseIds;
 	}
 
 	public String getOldCaseId() {
@@ -607,25 +691,6 @@ public class Tcase extends DataEntity<Tcase> {
 		this.caseDecision = caseDecision;
 	}
 
-	public String getPartyName() {
-		String rst = "";
-		if("单位".equals(this.partyType)){
-			rst = this.orgName;
-		}else {
-			rst = this.psnName;
-		}
-		return rst;
-	}
-
-	public void setPartyName(String partyName) {
-		if("单位".equals(this.partyType)){
-			this.orgName = partyName;
-		}else {
-			this.psnName = partyName;
-		}
-		
-	}
-
 	private boolean getTabVisibleByPreviousStage(String previousStage){
 		boolean flag = false;
 		String statusPre = this.getCaseProcessStatus(previousStage);
@@ -633,6 +698,29 @@ public class Tcase extends DataEntity<Tcase> {
 			flag = true;
 		}
 		return flag;		
+	}
+	
+	@ExcelField(title="案卷编号", type=1, align=2, sort=20)
+	public String getDocNumber(){
+		String rst = "";
+		if(this.caseDecision!=null){
+			rst = this.caseDecision.getDocNumber();
+		}
+		return rst;
+	}
+	
+	@ExcelField(title="处罚决定书编号", type=1, align=2, sort=60)
+	public String getFullDecisionNumber(){
+		String rst = "";
+		if(this.caseDecision!=null){
+			rst = this.caseDecision.getFullDecisionNumber();
+		}
+		return rst;
+	}
+	
+	private String parseDate(Date date){
+		return DateUtils.format(date, "yyyy/MM/dd");
+		
 	}
 	
 }

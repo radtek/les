@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wxjs.upload.modules.upload.dao.InfPunishProcessDao">
+    
+	<sql id="infPunishProcessColumns">
+		a.no AS "no",
+		a.no_ord AS "noOrd",
+		a.org_id AS "orgId",
+		a.internal_no AS "internalNo",
+		a.item_id AS "itemId",
+		a.tache_code AS "tacheCode",
+		a.tache_name AS "tacheName",
+		a.department AS "department",
+		a.user_staff_code AS "userStaffCode",
+		a.user_name AS "userName",
+		a.status AS "status",
+		a.promise AS "promise",
+		a.promise_type AS "promiseType",
+		a.promise_start_sign AS "promiseStartSign",
+		a.isrisk AS "isrisk",
+		a.risktype AS "risktype",
+		a.riskdescription AS "riskdescription",
+		a.riskresult AS "riskresult",
+		a.note AS "note",
+		a.attachment AS "attachment",
+		a.evidence AS "evidence",
+		a.create_date AS "createDate",
+		a.update_date AS "updateDate",
+		a.read_date AS "readDate",
+		a.sync_sign AS "syncSign",
+		a.sync_error_desc AS "syncErrorDesc",
+		a.process_start_time AS "processStartTime",
+		a.process_end_time AS "processEndTime"
+	</sql>
+	
+	<sql id="infPunishProcessJoins">
+	</sql>
+    
+	<select id="get" resultType="InfPunishProcess">
+		SELECT 
+			<include refid="infPunishProcessColumns"/>
+		FROM inf_punish_process a
+		<include refid="infPunishProcessJoins"/>
+		WHERE internal_no = #{internalNo}
+	</select>
+	
+	<select id="findList" resultType="InfPunishProcess">
+		SELECT 
+			<include refid="infPunishProcessColumns"/>
+		FROM inf_punish_process a
+		<include refid="infPunishProcessJoins"/>
+		<where>
+			
+			<if test="internalNo != null and internalNo != ''">
+				AND a.internal_no = #{internalNo}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="InfPunishProcess">
+		SELECT 
+			<include refid="infPunishProcessColumns"/>
+		FROM inf_punish_process a
+		<include refid="infPunishProcessJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO inf_punish_process(
+			no,
+			no_ord,
+			org_id,
+			internal_no,
+			item_id,
+			tache_code,
+			tache_name,
+			department,
+			user_staff_code,
+			user_name,
+			status,
+			promise,
+			promise_type,
+			promise_start_sign,
+			isrisk,
+			risktype,
+			riskdescription,
+			riskresult,
+			note,
+			attachment,
+			evidence,
+			create_date,
+			update_date,
+			read_date,
+			sync_sign,
+			sync_error_desc,
+			process_start_time,
+			process_end_time
+		) VALUES (
+			#{no},
+			#{noOrd},
+			#{orgId},
+			#{internalNo},
+			#{itemId},
+			#{tacheCode},
+			#{tacheName},
+			#{department},
+			#{userStaffCode},
+			#{userName},
+			#{status},
+			#{promise},
+			#{promiseType},
+			#{promiseStartSign},
+			#{isrisk},
+			#{risktype},
+			#{riskdescription},
+			#{riskresult},
+			#{note},
+			#{attachment},
+			#{evidence},
+			#{createDate},
+			#{updateDate},
+			#{readDate},
+			#{syncSign},
+			#{syncErrorDesc},
+			#{processStartTime},
+			#{processEndTime}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE inf_punish_process SET 	
+			no = #{no},
+			no_ord = #{noOrd},
+			org_id = #{orgId},
+			internal_no = #{internalNo},
+			item_id = #{itemId},
+			tache_code = #{tacheCode},
+			tache_name = #{tacheName},
+			department = #{department},
+			user_staff_code = #{userStaffCode},
+			user_name = #{userName},
+			status = #{status},
+			promise = #{promise},
+			promise_type = #{promiseType},
+			promise_start_sign = #{promiseStartSign},
+			isrisk = #{isrisk},
+			risktype = #{risktype},
+			riskdescription = #{riskdescription},
+			riskresult = #{riskresult},
+			note = #{note},
+			attachment = #{attachment},
+			evidence = #{evidence},
+			update_date = #{updateDate},
+			read_date = #{readDate},
+			sync_sign = #{syncSign},
+			sync_error_desc = #{syncErrorDesc},
+			process_start_time = #{processStartTime},
+			process_end_time = #{processEndTime}
+		WHERE internal_no = #{internalNo}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM inf_punish_process
+		WHERE internal_no = #{internalNo}
+	</update>
+	
+</mapper>

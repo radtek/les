@@ -11,12 +11,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.tools.zip.ZipEntry;
 import org.apache.tools.zip.ZipFile;
 import org.apache.tools.zip.ZipOutputStream;
@@ -965,4 +968,19 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 		}
 		return fileName.substring(0, fileName.lastIndexOf("."));
 	}
+	
+	public static String encryptToBase64(String filePath) {
+		if (filePath == null) {
+			return null;
+		}
+		try {
+			byte[] b = Files.readAllBytes(Paths.get(filePath));
+			return Base64.encodeBase64String(b);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+ 
+		return null;
+	}
+
 }

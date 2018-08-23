@@ -5,7 +5,7 @@
 
 	<groupId>org.wxjs.les</groupId>
 	<artifactId>les</artifactId>
-	<version>1.0.0</version>
+	<version>3.0</version>
 	<packaging>war</packaging>
 
 	<name>Law Enforcement System</name>

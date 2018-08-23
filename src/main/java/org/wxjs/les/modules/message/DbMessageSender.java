@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.wxjs.les.modules.base.jdbc.SmsDAOHelper;
+import org.wxjs.les.modules.base.jdbc.UploadDAOHelper;
 import org.wxjs.les.modules.base.utils.KeyValue;
 
 
@@ -31,7 +31,7 @@ public class DbMessageSender implements MessageSender {
 			
 		}
 		
-		int effects = SmsDAOHelper.executeSQL(sqls);
+		int effects = UploadDAOHelper.executeSQL(sqls);
 		
 		KeyValue kv = new KeyValue();
 		kv.setKey("0");

@@ -41,6 +41,9 @@
 			<if test="caseId != null and caseId != ''">
 			    AND a.case_id = #{caseId}
 			</if>
+			<if test="mandatory != null and mandatory != ''">
+			    AND a.mandatory = #{mandatory}
+			</if>			
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

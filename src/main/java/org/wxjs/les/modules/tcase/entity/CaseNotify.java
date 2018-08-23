@@ -45,7 +45,7 @@ public class CaseNotify extends DataEntity<CaseNotify> {
 		
 		if(tcase!=null){
 			entity.setCaseId(tcase.getId());
-			entity.setPartyName(tcase.getParty());
+			entity.setPartyName(tcase.getPartyDisplay());
 			entity.setLaunchDept(Global.getConfig("defaultLaunchDept"));
 			entity.setLaunchDate(Calendar.getInstance().getTime());
 			entity.setYear(DateUtils.getYear());

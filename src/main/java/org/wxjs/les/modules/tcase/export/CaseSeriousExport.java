@@ -115,7 +115,7 @@ public class CaseSeriousExport extends ExportBase<CaseSeriousExport> {
             		new float[]{0.1f, 0.4f, 0.1f, 0.4f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);
             document.add(table);
             
-            items = new String[]{"被处罚当事人", this.tcase.getParty(), "被调查人", "", "职务", ""};
+            items = new String[]{"被处罚当事人", this.tcase.getPartyDisplay(), "被调查人", "", "职务", ""};
             table = PdfUtil.generateTableRow(items, fontContent, 
             		new float[]{0.1f, 0.4f, 0.1f, 0.15f, 0.1f, 0.15f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);
             document.add(table);

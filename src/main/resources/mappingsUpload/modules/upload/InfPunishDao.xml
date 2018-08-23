@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wxjs.upload.modules.upload.dao.InfPunishDao">
+    
+	<sql id="infPunishColumns">
+		a.no AS "no",
+		a.org_id AS "orgId",
+		a.internal_no AS "internalNo",
+		a.item_id AS "itemId",
+		a.department AS "department",
+		a.aj_addr AS "ajAddr",
+		a.aj_occur_date AS "ajOccurDate",
+		a.source AS "source",
+		a.fact AS "fact",
+		a.target_type AS "targetType",
+		a.punish_target AS "punishTarget",
+		a.target_code AS "targetCode",
+		a.target_paper_type AS "targetPaperType",
+		a.target_paper_number AS "targetPaperNumber",
+		a.target_phone AS "targetPhone",
+		a.target_mobile AS "targetMobile",
+		a.target_address AS "targetAddress",
+		a.target_zipcode AS "targetZipcode",
+		a.target_email AS "targetEmail",
+		a.reporter AS "reporter",
+		a.reporter_date AS "reporterDate",
+		a.reporter_paper_type AS "reporterPaperType",
+		a.reporter_paper_number AS "reporterPaperNumber",
+		a.reporter_phone AS "reporterPhone",
+		a.reporter_mobile AS "reporterMobile",
+		a.reporter_address AS "reporterAddress",
+		a.reporter_zipcode AS "reporterZipcode",
+		a.reporter_email AS "reporterEmail",
+		a.content AS "content",
+		a.form AS "form",
+		a.promise AS "promise",
+		a.promise_type AS "promiseType",
+		a.isrisk AS "isrisk",
+		a.risktype AS "risktype",
+		a.riskdescription AS "riskdescription",
+		a.riskresult AS "riskresult",
+		a.create_date AS "createDate",
+		a.update_date AS "updateDate",
+		a.sync_sign AS "syncSign",
+		a.sync_error_desc AS "syncErrorDesc",
+		a.read_date AS "readDate",
+		a.item_version AS "itemVersion"
+	</sql>
+	
+	<sql id="infPunishJoins">
+	</sql>
+    
+	<select id="get" resultType="InfPunish">
+		SELECT 
+			<include refid="infPunishColumns"/>
+		FROM inf_punish a
+		<include refid="infPunishJoins"/>
+		WHERE internal_no = #{internalNo}
+	</select>
+	
+	<select id="findList" resultType="InfPunish">
+		SELECT 
+			<include refid="infPunishColumns"/>
+		FROM inf_punish a
+		<include refid="infPunishJoins"/>
+		<where>
+			
+			<if test="internalNo != null and internalNo != ''">
+				AND a.internal_no = #{internalNo}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="InfPunish">
+		SELECT 
+			<include refid="infPunishColumns"/>
+		FROM inf_punish a
+		<include refid="infPunishJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO inf_punish(
+			no,
+			org_id,
+			internal_no,
+			item_id,
+			department,
+			aj_addr,
+			aj_occur_date,
+			source,
+			fact,
+			target_type,
+			punish_target,
+			target_code,
+			target_paper_type,
+			target_paper_number,
+			target_phone,
+			target_mobile,
+			target_address,
+			target_zipcode,
+			target_email,
+			reporter,
+			reporter_date,
+			reporter_paper_type,
+			reporter_paper_number,
+			reporter_phone,
+			reporter_mobile,
+			reporter_address,
+			reporter_zipcode,
+			reporter_email,
+			content,
+			form,
+			promise,
+			promise_type,
+			isrisk,
+			risktype,
+			riskdescription,
+			riskresult,
+			create_date,
+			update_date,
+			sync_sign,
+			sync_error_desc,
+			read_date,
+			item_version
+		) VALUES (
+			#{no},
+			#{orgId},
+			#{internalNo},
+			#{itemId},
+			#{department},
+			#{ajAddr},
+			#{ajOccurDate},
+			#{source},
+			#{fact},
+			#{targetType},
+			#{punishTarget},
+			#{targetCode},
+			#{targetPaperType},
+			#{targetPaperNumber},
+			#{targetPhone},
+			#{targetMobile},
+			#{targetAddress},
+			#{targetZipcode},
+			#{targetEmail},
+			#{reporter},
+			#{reporterDate},
+			#{reporterPaperType},
+			#{reporterPaperNumber},
+			#{reporterPhone},
+			#{reporterMobile},
+			#{reporterAddress},
+			#{reporterZipcode},
+			#{reporterEmail},
+			#{content},
+			#{form},
+			#{promise},
+			#{promiseType},
+			#{isrisk},
+			#{risktype},
+			#{riskdescription},
+			#{riskresult},
+			#{createDate},
+			#{updateDate},
+			#{syncSign},
+			#{syncErrorDesc},
+			#{readDate},
+			#{itemVersion}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE inf_punish SET 	
+			no = #{no},
+			org_id = #{orgId},
+			internal_no = #{internalNo},
+			item_id = #{itemId},
+			department = #{department},
+			aj_addr = #{ajAddr},
+			aj_occur_date = #{ajOccurDate},
+			source = #{source},
+			fact = #{fact},
+			target_type = #{targetType},
+			punish_target = #{punishTarget},
+			target_code = #{targetCode},
+			target_paper_type = #{targetPaperType},
+			target_paper_number = #{targetPaperNumber},
+			target_phone = #{targetPhone},
+			target_mobile = #{targetMobile},
+			target_address = #{targetAddress},
+			target_zipcode = #{targetZipcode},
+			target_email = #{targetEmail},
+			reporter = #{reporter},
+			reporter_date = #{reporterDate},
+			reporter_paper_type = #{reporterPaperType},
+			reporter_paper_number = #{reporterPaperNumber},
+			reporter_phone = #{reporterPhone},
+			reporter_mobile = #{reporterMobile},
+			reporter_address = #{reporterAddress},
+			reporter_zipcode = #{reporterZipcode},
+			reporter_email = #{reporterEmail},
+			content = #{content},
+			form = #{form},
+			promise = #{promise},
+			promise_type = #{promiseType},
+			isrisk = #{isrisk},
+			risktype = #{risktype},
+			riskdescription = #{riskdescription},
+			riskresult = #{riskresult},
+			update_date = #{updateDate},
+			sync_sign = #{syncSign},
+			sync_error_desc = #{syncErrorDesc},
+			read_date = #{readDate},
+			item_version = #{itemVersion}
+		WHERE internal_no = #{internalNo}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM inf_punish
+		WHERE internal_no = #{internalNo}
+	</update>
+	
+</mapper>

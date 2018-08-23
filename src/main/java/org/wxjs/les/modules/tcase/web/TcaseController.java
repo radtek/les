@@ -34,6 +34,8 @@ import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.web.BaseController;
 import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.StringUtils;
+import org.wxjs.les.common.utils.excel.ExportExcel;
+import org.wxjs.les.modules.sys.entity.Dict;
 import org.wxjs.les.modules.sys.entity.Role;
 import org.wxjs.les.modules.sys.entity.User;
 import org.wxjs.les.modules.sys.service.SystemService;
@@ -175,6 +177,17 @@ public class TcaseController extends BaseController {
 			tcase.setStatus(Global.CASE_STATUS_FINISHED);
 		}
 		
+		List<Dict> yearList = Lists.newArrayList();
+		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+		
+		for(int i=currentYear;i>2017;i--){
+			Dict dict = new Dict();
+			dict.setValue(i+"");
+			dict.setLabel(i+"");
+			yearList.add(dict);
+		}
+		
+		model.addAttribute("yearList", yearList);
 		
 		
 		Page<Tcase> page = tcaseService.findPage(new Page<Tcase>(request, response), tcase); 
@@ -950,5 +963,29 @@ public class TcaseController extends BaseController {
 
 		return "redirect:"+Global.getAdminPath()+"/case/tcase/infoTab?"+caseAct.getParamUri();
 	}
+	
+	@RequestMapping(value = "exportExcel")
+	public void exportExcel(Tcase tcase,  HttpServletRequest request, HttpServletResponse response,  Model model, RedirectAttributes redirectAttributes) {
+		
+		try {
+            String fileName = "案件统计汇总表"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
+            Page<Tcase> page = tcaseService.findPage(new Page<Tcase>(request, response, -1), tcase);
+    		new ExportExcel("案件统计汇总表", Tcase.class).setDataList(page.getList()).write(response, fileName).dispose();
+		} catch (Exception e) {
+			addMessage(redirectAttributes, "导出失败！失败信息："+e.getMessage());
+		}
+	}
+	
+	
+	public String upload(Tcase tcase, HttpServletRequest request, HttpServletResponse response, Model model){
+		
+		
+		
+		
+		model.addAttribute("tcase", tcase);
+		return "redirect:"+Global.getAdminPath()+"/case/tcase/query?repage";
+	}
+	
+	
 
 }

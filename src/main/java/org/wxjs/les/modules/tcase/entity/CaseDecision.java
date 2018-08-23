@@ -53,7 +53,7 @@ public class CaseDecision extends DataEntity<CaseDecision> {
 		
 		if(tcase!=null){
 			entity.setCaseId(tcase.getId());
-			entity.setPartyName(tcase.getParty());
+			entity.setPartyName(tcase.getPartyDisplay());
 			entity.setLaunchDept(Global.getConfig("defaultLaunchDept"));
 			entity.setRecordOrg(Global.getConfig("defaultRecordOrg"));
 			entity.setLaunchDate(Calendar.getInstance().getTime());
@@ -171,11 +171,22 @@ public class CaseDecision extends DataEntity<CaseDecision> {
 	
 	public String getFullDecisionNumber(){
 		StringBuffer buffer = new StringBuffer();
-		buffer.append(DictUtils.getDictLabel(this.decisionType, "decision_type", ""));
-		buffer.append("-");
+		buffer.append(DictUtils.getDictLabel(this.decisionType, "case_decision_type", ""));
+		buffer.append("[");
 		buffer.append(this.year);
-		buffer.append("-");
+		buffer.append("]年第(");
 		buffer.append(this.seq);
+		buffer.append(")号");
+		return buffer.toString();
+	}
+	
+	public String getDocNumber(){
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("[");
+		buffer.append(this.year);
+		buffer.append("](");
+		buffer.append(this.seq);
+		buffer.append(")号");
 		return buffer.toString();
 	}
 

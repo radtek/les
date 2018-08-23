@@ -80,6 +80,12 @@ VALUES
 ('case_status_3', '2', '已办结', 'case_status', 'case_status', 30, '0','1',now(),'1',now()),
 ('case_status_4', '9', '已终止', 'case_status', 'case_status', 40, '0','1',now(),'1',now());
 
+delete from sys_dict where `type`= 'upload_status';
+INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `parent_id`, `create_by`,`create_date`,`update_by`,`update_date`) 
+VALUES 
+('upload_status_1', '0', '未上传', 'upload_status', 'upload_status', 10, '0','1',now(),'1',now()),
+('upload_status_2', '1', '已上传', 'upload_status', 'upload_status', 20, '0','1',now(),'1',now());
+
 
 
 

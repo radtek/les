@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wxjs.upload.modules.upload.dao.InfPunishResultDao">
+    
+	<sql id="infPunishResultColumns">
+		a.no AS "no",
+		a.org_id AS "orgId",
+		a.internal_no AS "internalNo",
+		a.item_id AS "itemId",
+		a.program AS "program",
+		a.punish_sort AS "punishSort",
+		a.standard AS "standard",
+		a.accordance AS "accordance",
+		a.punish_deside AS "punishDeside",
+		a.punish_class AS "punishClass",
+		a.punish_result AS "punishResult",
+		a.punish_result_fine AS "punishResultFine",
+		a.punish_result_fine_people AS "punishResultFinePeople",
+		a.punish_result_expropriation AS "punishResultExpropriation",
+		a.punish_result_expropriation_v AS "punishResultExpropriationV",
+		a.punish_result_business AS "punishResultBusiness",
+		a.punish_result_people AS "punishResultPeople",
+		a.punish_result_detain AS "punishResultDetain",
+		a.finish_time AS "finishTime",
+		a.attachment AS "attachment",
+		a.update_date AS "updateDate",
+		a.create_date AS "createDate",
+		a.sync_error_desc AS "syncErrorDesc",
+		a.sync_sign AS "syncSign",
+		a.read_date AS "readDate"
+	</sql>
+	
+	<sql id="infPunishResultJoins">
+	</sql>
+    
+	<select id="get" resultType="InfPunishResult">
+		SELECT 
+			<include refid="infPunishResultColumns"/>
+		FROM inf_punish_result a
+		<include refid="infPunishResultJoins"/>
+		WHERE internal_no = #{internalNo}
+	</select>
+	
+	<select id="findList" resultType="InfPunishResult">
+		SELECT 
+			<include refid="infPunishResultColumns"/>
+		FROM inf_punish_result a
+		<include refid="infPunishResultJoins"/>
+		<where>
+			
+			<if test="internalNo != null and internalNo != ''">
+				AND a.internal_no = #{internalNo}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="InfPunishResult">
+		SELECT 
+			<include refid="infPunishResultColumns"/>
+		FROM inf_punish_result a
+		<include refid="infPunishResultJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO inf_punish_result(
+			no,
+			org_id,
+			internal_no,
+			item_id,
+			program,
+			punish_sort,
+			standard,
+			accordance,
+			punish_deside,
+			punish_class,
+			punish_result,
+			punish_result_fine,
+			punish_result_fine_people,
+			punish_result_expropriation,
+			punish_result_expropriation_v,
+			punish_result_business,
+			punish_result_people,
+			punish_result_detain,
+			finish_time,
+			attachment,
+			update_date,
+			create_date,
+			sync_error_desc,
+			sync_sign,
+			read_date
+		) VALUES (
+			#{no},
+			#{orgId},
+			#{internalNo},
+			#{itemId},
+			#{program},
+			#{punishSort},
+			#{standard},
+			#{accordance},
+			#{punishDeside},
+			#{punishClass},
+			#{punishResult},
+			#{punishResultFine},
+			#{punishResultFinePeople},
+			#{punishResultExpropriation},
+			#{punishResultExpropriationV},
+			#{punishResultBusiness},
+			#{punishResultPeople},
+			#{punishResultDetain},
+			#{finishTime},
+			#{attachment},
+			#{updateDate},
+			#{createDate},
+			#{syncErrorDesc},
+			#{syncSign},
+			#{readDate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE inf_punish_result SET 	
+			no = #{no},
+			org_id = #{orgId},
+			internal_no = #{internalNo},
+			item_id = #{itemId},
+			program = #{program},
+			punish_sort = #{punishSort},
+			standard = #{standard},
+			accordance = #{accordance},
+			punish_deside = #{punishDeside},
+			punish_class = #{punishClass},
+			punish_result = #{punishResult},
+			punish_result_fine = #{punishResultFine},
+			punish_result_fine_people = #{punishResultFinePeople},
+			punish_result_expropriation = #{punishResultExpropriation},
+			punish_result_expropriation_v = #{punishResultExpropriationV},
+			punish_result_business = #{punishResultBusiness},
+			punish_result_people = #{punishResultPeople},
+			punish_result_detain = #{punishResultDetain},
+			finish_time = #{finishTime},
+			attachment = #{attachment},
+			update_date = #{updateDate},
+			sync_error_desc = #{syncErrorDesc},
+			sync_sign = #{syncSign},
+			read_date = #{readDate}
+		WHERE internal_no = #{internalNo}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM inf_punish_result
+		WHERE internal_no = #{internalNo}
+	</update>
+	
+</mapper>

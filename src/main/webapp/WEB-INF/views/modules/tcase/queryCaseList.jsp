@@ -7,6 +7,46 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			
+			$("#btnExport").click(function(){
+				top.$.jBox.confirm("确认要导出数据吗？","系统提示",function(v,h,f){
+					if(v=="ok"){
+						$("#searchForm").attr("action","${ctx}/case/tcase/exportExcel");
+						$("#searchForm").submit();
+					}
+				},{buttonsFocus:1});
+				top.$('.jbox-body .jbox-icon').css('top','55px');
+			});	
+			
+			$("#btnSubmit").click(function(){
+				$("#searchForm").attr("action","${ctx}/case/tcase/query");
+				$("#searchForm").submit();
+			});	
+			
+			$("#btnUpload").click(function(){
+				
+				var caseId = $("input[name='case_id']");
+			    var flag = false;
+			    var temp = "";
+			    for(var i=0;i<caseId.length;i++)
+			    {
+			        if(caseId[i].checked)
+			        {
+			        	temp += ","+caseId[i].value;
+			        	flag =true;
+			        }
+			    }
+				
+				if(!flag){
+					alert("至少勾选一个项目。");
+					return;
+				}	
+				
+				$("#caseIds").val(temp.substring(1));
+				
+				$("#searchForm").attr("action","${ctx}/case/tcase/upload?caseIds="+caseIds);
+				$("#searchForm").submit();
+			});
+			
 		});
 		function page(n,s){
 			$("#pageNo").val(n);
@@ -23,17 +63,24 @@
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		
+		<input id="caseIds" name="caseIds" type="hidden" value=""/>
+		
 		<div class="control-group container-fluid nopadding">
 			<div class="row-fluid">
 				<div class="span6">		
 			<label class="control-label">案卷年度：</label>
 			<div class="controls controls-tight">
+				<form:select path="docYear" class="input-xlarge ">
+				    <form:option value="" label="全部"/>
+					<form:options items="${yearList}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>			    
 			</div>
 		        </div>
 				<div class="span6">		
 			<label class="control-label">当事人类型：</label>
 			<div class="controls controls-tight">
 				<form:select path="partyType" class="input-xlarge ">
+				    <form:option value="" label="全部"/>
 					<form:options items="${fns:getDictList('party_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>				
 			</div>
@@ -45,7 +92,7 @@
 				<div class="span6">		
 			<label class="control-label">当事人名称：</label>
 			<div class="controls controls-tight">
-			    <form:input path="partyName" htmlEscape="false" maxlength="100" class="input-xlarge"/>
+			    <form:input path="party" htmlEscape="false" maxlength="100" class="input-xlarge"/>
 			</div>
 		        </div>
 				<div class="span6">		
@@ -112,7 +159,9 @@
 				<div class="span6">		
 			<label class="control-label"></label>
 			<div class="controls controls-tight">
-				<input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
+				<input id="btnSubmit" class="btn btn-primary" type="button" value="查询"/>&nbsp;&nbsp;&nbsp;
+				<input id="btnExport" class="btn btn-primary" type="button" value="导出"/>&nbsp;&nbsp;&nbsp;
+				<input id="btnUpload" class="btn btn-primary" type="button" value="数据申报"/>
 			</div>
 		        </div>
 		    </div>
@@ -122,6 +171,7 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
+			    <th></th>
 			    <th>编号</th>
 				<th>案卷编号</th>
 				<th>当事人</th>
@@ -135,24 +185,29 @@
 				<th>上报状态</th>
 				<th>上报附件缺失</th>
 				<th>前置机附件缺失</th>
-				<shiro:hasPermission name="case:tcase:edit"><th>操作</th></shiro:hasPermission>
+				<th>操作</th>
 			</tr>
 		</thead>
 		<tbody>
 		<c:forEach items="${page.list}" var="tcase" varStatus="status">
 			<tr>
+			    <td>
+			    <input type="checkbox" name="case_id" value="${tcase.id}" />
+			    </td>
 			    <td>${status.index+1}</td>
-				<td></td>
-				<td></td>
+				<td>${tcase.caseDecision.docNumber}</td>
+				<td>${tcase.partyDisplay}</td>
 				<td>${tcase.projectName}</td>
 				<td>${tcase.caseCause}</td>
 				<td>${tcase.caseDecision.fullDecisionNumber}</td>								
 				<td><fmt:formatDate value="${tcase.initialDate}" pattern="yyyy-MM-dd"/></td>
 				<td><fmt:formatDate value="${tcase.settleDate}" pattern="yyyy-MM-dd"/></td>
+				<td>${tcase.initialHandler}</td>
+				<td>${tcase.statusLabel}</td>
 				<td></td>
-				<td>${fns:getDictLabel(tcase.status, 'case_status', '')}</td>
 				<td></td>
 				<td></td>
+				<td></td>				
 			</tr>
 		</c:forEach>
 		</tbody>
