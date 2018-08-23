@@ -3,6 +3,9 @@
  */
 package org.wxjs.les.modules.cr.web;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -62,9 +65,10 @@ public class SiteCheckRecordController extends BaseController {
 	@RequestMapping(value = "form")
 	public String form(SiteCheckRecord siteCheckRecord, Model model) {
 		if(siteCheckRecord.getIsNewRecord()){
-			//tcase.setCaseStage("10");
-			//tcase.setCaseStageStatus("0");
-			siteCheckRecord.setSitePictureMemo("时间："+"2018年7月25日"+"\n"
+			Date date=new Date();
+			SimpleDateFormat sdft=new SimpleDateFormat("yyyy年MM月dd日");
+			String str=sdft.format(date);
+			siteCheckRecord.setSitePictureMemo("时间："+str+"\n"
 			+"方位："+"\n"+"绘制人姓名："+"\n"+"身份：");
 		}
 		model.addAttribute("siteCheckRecord", siteCheckRecord);
@@ -80,6 +84,20 @@ public class SiteCheckRecordController extends BaseController {
 		siteCheckRecordService.save(siteCheckRecord);
 		addMessage(redirectAttributes, "保存现场检查笔录成功");
 		return "redirect:"+Global.getAdminPath()+"/cr/siteCheckRecord/?repage";
+	}
+	
+	@RequiresPermissions("cr:siteCheckRecord:edit")
+	@RequestMapping(value = "saveInfo")
+	public String saveInfo(SiteCheckRecord siteCheckRecord, Model model, RedirectAttributes redirectAttributes) {
+		if (!beanValidator(model, siteCheckRecord)){
+			return form(siteCheckRecord, model);
+		}
+		siteCheckRecordService.saveInfo(siteCheckRecord);
+		addMessage(redirectAttributes, "保存成功");
+		model.addAttribute("siteCheckRecord", siteCheckRecord);
+		return "modules/cr/siteCheckRecordForm";
+//		addMessage(redirectAttributes, "保存成功");
+//		return "redirect:"+Global.getAdminPath()+"/cr/siteCheckRecord/form?id="+siteCheckRecord.getId();
 	}
 	
 	@RequiresPermissions("cr:siteCheckRecord:edit")

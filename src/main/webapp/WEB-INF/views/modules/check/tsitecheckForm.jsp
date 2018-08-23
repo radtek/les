@@ -24,7 +24,7 @@
 				}
 			});
 			$('#btnSubmit').click(function() {
-				$("#inputForm").attr("action","${ctx}/check/tsitecheck/save");
+				$("#inputForm").attr("action","${ctx}/check/tsitecheck/saveInfo");
 				$("#inputForm").submit();		    	
 		    });	
 			 
@@ -43,7 +43,7 @@
 	
 	<sys:message content="${message}"/>
 	
-	<form:form id="inputForm" modelAttribute="tsitecheck" action="${ctx}/check/tsitecheck/save" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="tsitecheck" action="${ctx}/check/tsitecheck/saveInfo" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group container-fluid nopadding">
@@ -176,7 +176,7 @@
 		<div class="form-actions">
 			<shiro:hasPermission name="check:tsitecheck:edit">
 				<input id="btnSubmit" class="btn btn-primary" type="button" value="保 存"/>&nbsp;
-				<input id="btnExportPdf" class="btn btn-primary" type="button" value="导出PDF " />
+				<input id="btnExportPdf" class="btn btn-primary" type="button" value="导出PDF" />
 			</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
@@ -187,7 +187,7 @@
 				<div class="span6">		
 			<label class="control-label">勘查人签名：</label>
 			<div class="controls controls-tight">
-				<les:signatureLoader sig="${tsitecheck.checkerSig}" path="checkerSig.id"></les:signatureLoader>
+				<les:signatureLoader sig="${tsitecheck.checkerSig}" path="checkerSig.id" hideLoadButton="hide"></les:signatureLoader>
 				<les:signatureModal></les:signatureModal>
 			</div>
 		        </div> 
@@ -195,7 +195,7 @@
 				<div class="span6">		
 			<label class="control-label">当事人签名：</label>
 			<div class="controls controls-tight">
-			    <les:signatureLoader sig="${tsitecheck.partySig}" path="partySig.id"></les:signatureLoader>
+			    <les:signatureLoader sig="${tsitecheck.partySig}" path="partySig.id" hideLoadButton="hide" ></les:signatureLoader>
 			</div>
 		        </div>
 		    </div>

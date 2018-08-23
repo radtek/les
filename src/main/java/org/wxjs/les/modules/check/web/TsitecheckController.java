@@ -21,6 +21,7 @@ import org.wxjs.les.common.web.BaseController;
 import org.wxjs.les.modules.check.entity.Tsitecheck;
 import org.wxjs.les.modules.check.export.TsitecheckExport;
 import org.wxjs.les.modules.check.service.TsitecheckService;
+
 /**
  * 现场踏勘Controller
  * @author 千里目
@@ -32,8 +33,6 @@ public class TsitecheckController extends BaseController {
 
 	@Autowired
 	private TsitecheckService tsitecheckService;
-	
-	
 	
 	@ModelAttribute
 	public Tsitecheck get(@RequestParam(required=false) String id) {
@@ -82,8 +81,10 @@ public class TsitecheckController extends BaseController {
 		return form(tsitecheck, model);
 		}
 		tsitecheckService.saveInfo(tsitecheck);
-		addMessage(redirectAttributes, "保存成功");
-		return "redirect:"+Global.getAdminPath()+"/check/tsitecheck/form?id="+tsitecheck.getId();
+		model.addAttribute("tsitecheck", tsitecheck);
+		return "modules/check/tsitecheckForm";
+//		addMessage(redirectAttributes, "保存成功");
+//		return "redirect:"+Global.getAdminPath()+"/check/tsitecheck/form?id="+tsitecheck.getId();
 	}
 										
 	@RequiresPermissions("check:tsitecheck:edit")
