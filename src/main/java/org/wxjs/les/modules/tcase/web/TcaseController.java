@@ -199,7 +199,7 @@ public class TcaseController extends BaseController {
 	@RequestMapping(value = "form")
 	public String form(Tcase tcase, Model model) {
 		if(tcase.getIsNewRecord()){
-			tcase.setPartyType("单位");
+			tcase.setPartyType(Global.PartyTypeOrg);
 			tcase.setAcceptDate(Calendar.getInstance().getTime());
 			tcase.setPsnSex("男");
 			//tcase.setCaseStage("10");
@@ -571,7 +571,7 @@ public class TcaseController extends BaseController {
 		Tcase tcase = new Tcase();
 		
 		tcase.setIsNewRecord(true);
-		tcase.setPartyType("单位");
+		tcase.setPartyType(Global.PartyTypeOrg);
 		tcase.setAcceptDate(Calendar.getInstance().getTime());
 		tcase.setPsnSex("男");
 		

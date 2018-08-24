@@ -78,7 +78,7 @@ public class CaseTransferController extends TcaseController {
 		Tcase tcase = new Tcase();
 		
 		tcase.setIsNewRecord(true);
-		tcase.setPartyType("单位");
+		tcase.setPartyType(Global.PartyTypeOrg);
 		tcase.setAcceptDate(Calendar.getInstance().getTime());
 		tcase.setPsnSex("男");
 		

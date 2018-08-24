@@ -19,10 +19,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.service.CrudService;
+import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.FileUtils;
 import org.wxjs.les.common.utils.Util;
 import org.wxjs.les.modules.base.utils.PathUtils;
 import org.wxjs.les.modules.sys.entity.User;
+import org.wxjs.les.modules.sys.utils.DictUtils;
 import org.wxjs.les.modules.sys.utils.SequenceUtils;
 import org.wxjs.les.modules.sys.utils.UserUtils;
 import org.wxjs.les.modules.tcase.entity.CaseAttach;
@@ -423,7 +425,7 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 		infPunish.setInternalNo(internalNo);
 		this.infPunishDao.delete(infPunish);
 		//fill data
-		
+		this.fillInfPunish(infPunish, tcase, caseHandle, libsStr);
 		
 		//save
 		this.infPunishDao.insert(infPunish);
@@ -465,19 +467,38 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 	
 	private void fillInfPunish(InfPunish infPunish, Tcase tcase, CaseHandle caseHandle, String libsStr){
 		int no = 1000 + Util.getInteger(tcase.getId());
-		infPunish.setNo("JS020000JS" + no);
-		infPunish.setOrgId("JS020000JS");
-		infPunish.setInternalNo(tcase.getCaseSeq());
+		infPunish.setNo(Global.UploadOrgId + no);
+		infPunish.setOrgId(Global.UploadOrgId);
+		//infPunish.setInternalNo(tcase.getCaseSeq());
 		infPunish.setItemId(libsStr);
-		infPunish.s
+		infPunish.setDepartment(Global.getConfig("CBBM"));
+		infPunish.setAjAddr(tcase.getCaseHappenAddress());
+		infPunish.setAjOccurDate(DateUtils.parseDate(tcase.getCaseHappenDate()));
+		infPunish.setSource("0");
+		infPunish.setFact(caseHandle.getFact());
+		infPunish.setTargetType(DictUtils.getDictLabel(tcase.getPartyType(), "party_type", ""));
+		infPunish.setPunishTarget(tcase.getPartyDisplay());
+		infPunish.setTargetCode(tcase.getPartyCode());
+		infPunish.setTargetPaperType("8");
+		infPunish.setTargetPhone(tcase.getPartyPhone());
+		infPunish.setTargetAddress(tcase.getPartyAddress());
+		infPunish.setPromise("90");
+		infPunish.setPromiseType("1");
+		infPunish.setIsrisk("0");
 	}
 	
-	private void fillInfPunishResult(InfPunishProcess infPunishProcess, Tcase tcase){
+	private void fillInfPunishProcess(InfPunishProcess infPunishProcess, Tcase tcase, CaseProcess caseProcess, String libsStr, String stage){
+		String no = (1000 + Util.getInteger(tcase.getId())) + "-" + stage;
+		infPunishProcess.setNo(Global.UploadOrgId + no);
+		infPunishProcess.setNoOrd(""); //TODO
+		infPunishProcess.setOrgId(Global.UploadOrgId);
+		infPunishProcess.setItemId(libsStr);
 		
+		infPunishProcess.setDepartment(Global.getConfig("CBBM"));
 	}
 	
 	private void fillInfPunishResult(InfPunishResult infPunishResult, Tcase tcase){
-		
+		InfPunishResult
 	}
 	
 	private String loadAttach2Str(List<CaseAttach> attaches){

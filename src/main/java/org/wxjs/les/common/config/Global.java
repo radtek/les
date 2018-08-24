@@ -248,5 +248,11 @@ public class Global {
     public static final String SignatureTag = "#SiG#";
     
     public static final String DecimalFormat = "#.##";
+    
+    public static final String PartyTypeOrg = "1";
+    
+    public static final String PartyTypePersonal = "0";
+    
+    public static final String UploadOrgId = "JS020000JS";
 	
 }

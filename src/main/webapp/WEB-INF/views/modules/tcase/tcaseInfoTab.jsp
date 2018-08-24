@@ -121,8 +121,8 @@
 		</div>	
         <!-- org begin -->
         
-        <c:if test="${caseAct.tcase.partyType ne '单位'}"><div id="info4Org" class="partyBox" style="display:none"></c:if>
-        <c:if test="${caseAct.tcase.partyType eq '单位'}"><div id="info4Org" class="partyBox"></c:if>
+        <c:if test="${caseAct.tcase.partyType ne '1'}"><div id="info4Org" class="partyBox" style="display:none"></c:if>
+        <c:if test="${caseAct.tcase.partyType eq '1'}"><div id="info4Org" class="partyBox"></c:if>
 		
 		<div class="control-group container-fluid nopadding">
 			<div class="row-fluid">
@@ -189,8 +189,8 @@
 		</div><!-- org end -->
 		<!-- individual begin -->
 		
-        <c:if test="${caseAct.tcase.partyType ne '个人'}"><div id="info4Individual" class="partyBox" style="display:none"></c:if>
-        <c:if test="${caseAct.tcase.partyType eq '个人'}"><div id="info4Individual" class="partyBox"></c:if>		
+        <c:if test="${caseAct.tcase.partyType ne '0'}"><div id="info4Individual" class="partyBox" style="display:none"></c:if>
+        <c:if test="${caseAct.tcase.partyType eq '0'}"><div id="info4Individual" class="partyBox"></c:if>		
 		
 		<div class="control-group container-fluid nopadding">
 			<div class="row-fluid">

@@ -1,8 +1,8 @@
 delete from sys_dict where `type`= 'party_type';
 INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `parent_id`, `create_by`,`create_date`,`update_by`,`update_date`) 
 VALUES 
-('party_type_1', '单位', '单位', 'party_type', 'party_type', 10, '0','1',now(),'1',now()),
-('party_type_2', '个人', '个人', 'party_type', 'party_type', 20, '0','1',now(),'1',now());
+('party_type_1', '1', '单位', 'party_type', 'party_type', 10, '0','1',now(),'1',now()),
+('party_type_2', '0', '个人', 'party_type', 'party_type', 20, '0','1',now(),'1',now());
 
 delete from sys_dict where `type`= 'case_stage';
 INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `parent_id`, `create_by`,`create_date`,`update_by`,`update_date`) 

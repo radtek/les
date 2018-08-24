@@ -595,11 +595,23 @@ public class Tcase extends DataEntity<Tcase> {
 	
 	@ExcelField(title="当事人", type=1, align=2, sort=30)
 	public String getPartyDisplay(){
-		return "单位".equals(this.partyType)? this.orgName:this.psnName;
+		return Global.PartyTypeOrg.equals(this.partyType)? this.orgName:this.psnName;
 	}
 	
 	public String getParty(){
 		return this.party;
+	}
+	
+	public String getPartyCode(){
+		return Global.PartyTypeOrg.equals(this.partyType)? this.orgCode:this.psnCode;
+	}
+	
+	public String getPartyPhone(){
+		return Global.PartyTypeOrg.equals(this.partyType)? this.orgPhone:this.psnPhone;
+	}
+	
+	public String getPartyAddress(){
+		return Global.PartyTypeOrg.equals(this.partyType)? this.orgAddress:this.psnAddress;
 	}
 	
 	public void setParty(String party) {

@@ -107,7 +107,7 @@ public abstract class ExportBase<T> {
     
     protected PdfPTable getPartyInfo(Tcase tcase){
     	PdfPTable table = null;
-    	if("单位".equals(tcase.getPartyType())){
+    	if(Global.PartyTypeOrg.equals(tcase.getPartyType())){
     		try {
 				table = this.getPartyInfo4Org(tcase);
 			} catch (DocumentException e) {
