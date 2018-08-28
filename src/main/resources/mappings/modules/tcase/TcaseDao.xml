@@ -298,7 +298,19 @@
 		UPDATE tcase SET
 		  settle_date = #{settleDate}
 		WHERE id = #{id}
-	</update>			
+	</update>
+	
+	<update id="updateInitialDate">
+		UPDATE tcase SET 	
+		  initial_date = #{initialDate}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="updateSettleDate">
+		UPDATE tcase SET
+		  settle_date = #{settleDate}
+		WHERE id = #{id}
+	</update>				
 	
 	<update id="delete">
 		UPDATE tcase SET 

@@ -6,6 +6,7 @@
 		a.id AS "id",
 		a.case_id AS "caseId",
 		a.punish_lib_id AS "punishLib.id",
+		p.seq AS "punishLib.seq",
 		a.punish_lib_range_id AS "punishLibRange.id",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
@@ -16,7 +17,7 @@
 	</sql>
 	
 	<sql id="caseHandlePunishLibJoins">
-
+	    LEFT JOIN tpunish_lib p on p.id=a.punish_lib_id
 	</sql>
     
 	<select id="get" resultType="CaseHandlePunishLib">

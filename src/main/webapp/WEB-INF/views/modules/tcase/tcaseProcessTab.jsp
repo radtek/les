@@ -85,7 +85,7 @@
 
 				</c:if>
 				<c:if test="${process.caseStageStatus eq '2'}">
-				  <a href="">修改办理时间</a>
+				  <a target="_blank" href="${ctx}/tcase/caseProcess/toUpdateSignatureTime?id=${process.id}">修改办理时间</a>
 				</c:if>
 				</td>
 			</tr>

@@ -68,7 +68,7 @@
 				<c:set var="status" value="${act.status}" />
 				<tr>
 				    <td>${tcase.caseSeq}</td>
-				    <td>${tcase.party}</td>
+				    <td>${tcase.partyDisplay}</td>
 				    <td>${tcase.projectNameShort}</td>
 				    <td>${tcase.caseCauseShort}</td>
 					<td>

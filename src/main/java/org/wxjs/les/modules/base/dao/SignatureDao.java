@@ -17,4 +17,6 @@ public interface SignatureDao extends CrudDao<Signature> {
 	
 	public void updateOpinion(Signature signature);
 	
+	public void updateSignatureTime(Signature signature);
+
 }

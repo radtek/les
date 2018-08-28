@@ -3,6 +3,8 @@
  */
 package org.wxjs.les.modules.tcase.web;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,7 +21,11 @@ import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.web.BaseController;
 import org.wxjs.les.common.utils.StringUtils;
+import org.wxjs.les.modules.base.dao.SignatureDao;
+import org.wxjs.les.modules.base.entity.Signature;
+import org.wxjs.les.modules.tcase.dao.TcaseDao;
 import org.wxjs.les.modules.tcase.entity.CaseProcess;
+import org.wxjs.les.modules.tcase.entity.Tcase;
 import org.wxjs.les.modules.tcase.service.CaseProcessService;
 
 /**
@@ -33,6 +39,12 @@ public class CaseProcessController extends BaseController {
 
 	@Autowired
 	private CaseProcessService caseProcessService;
+	
+	@Autowired
+	private TcaseDao tcaseDao;
+	
+	@Autowired
+	private SignatureDao signatureDao;
 	
 	@ModelAttribute
 	public CaseProcess get(@RequestParam(required=false) String id) {
@@ -70,6 +82,33 @@ public class CaseProcessController extends BaseController {
 		caseProcessService.save(caseProcess);
 		addMessage(redirectAttributes, "保存案件流程成功");
 		return "redirect:"+Global.getAdminPath()+"/tcase/caseProcess/?repage";
+	}
+
+	@RequestMapping(value = "toUpdateSignatureTime")
+	public String toUpdateSignatureTime(CaseProcess caseProcess, Model model, RedirectAttributes redirectAttributes) {
+		
+		Tcase tcase = tcaseDao.get(caseProcess.getCaseId());
+		model.addAttribute("tcase", tcase);
+		
+		//logger.debug("caseProcess.toString():{}", caseProcess.toString());
+		
+		Signature signature = new Signature(false);
+		signature.setProcInstId(caseProcess.getProcInsId());
+		List<Signature> signatures = signatureDao.findList(signature);
+		caseProcess.setSignatures(signatures);
+		
+		logger.debug("signatures.size():{}", signatures.size());
+		
+		model.addAttribute("caseProcess", caseProcess);
+		
+		return "modules/tcase/signatureTimeUpdate";
+	}
+	
+	@RequestMapping(value = "updateSignatureTime")
+	public String updateSignatureTime(CaseProcess caseProcess, Model model, RedirectAttributes redirectAttributes) {
+		caseProcessService.updateSignatureTime(caseProcess);
+		addMessage(redirectAttributes, "修改签名时间成功");
+		return "redirect:"+Global.getAdminPath()+"/tcase/caseProcess/toUpdateSignatureTime?id="+caseProcess.getId();
 	}
 	
 	@RequiresPermissions("tcase:caseProcess:edit")

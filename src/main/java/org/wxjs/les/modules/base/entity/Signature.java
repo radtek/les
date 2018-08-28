@@ -6,6 +6,7 @@ package org.wxjs.les.modules.base.entity;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
 import org.wxjs.les.common.persistence.DataEntity;
+import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.IdGen;
 
 /**
@@ -93,6 +94,10 @@ public class Signature extends DataEntity<Signature> {
 		if(StringUtils.isBlank(this.id)){
 			this.id = IdGen.uuid();
 		}
+	}
+	
+	public String getCreateDateDisplay(){
+		return DateUtils.formatDate(this.createDate, "yyyy-MM-dd HH:mm");
 	}
 	
 }

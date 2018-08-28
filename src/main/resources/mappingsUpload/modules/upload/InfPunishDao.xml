@@ -109,8 +109,10 @@
 			source,
 			fact,
 			target_type,
+			 
 			punish_target,
 			target_code,
+			
 			target_paper_type,
 			target_paper_number,
 			target_phone,
@@ -118,6 +120,7 @@
 			target_address,
 			target_zipcode,
 			target_email,
+
 			reporter,
 			reporter_date,
 			reporter_paper_type,
@@ -127,6 +130,7 @@
 			reporter_address,
 			reporter_zipcode,
 			reporter_email,
+			
 			content,
 			form,
 			promise,
@@ -140,6 +144,7 @@
 			sync_sign,
 			sync_error_desc,
 			read_date,
+			<!---->
 			item_version
 		) VALUES (
 			#{no},
@@ -152,8 +157,10 @@
 			#{source},
 			#{fact},
 			#{targetType},
+			
 			#{punishTarget},
 			#{targetCode},
+			
 			#{targetPaperType},
 			#{targetPaperNumber},
 			#{targetPhone},
@@ -161,6 +168,7 @@
 			#{targetAddress},
 			#{targetZipcode},
 			#{targetEmail},
+			
 			#{reporter},
 			#{reporterDate},
 			#{reporterPaperType},
@@ -170,6 +178,7 @@
 			#{reporterAddress},
 			#{reporterZipcode},
 			#{reporterEmail},
+			
 			#{content},
 			#{form},
 			#{promise},
@@ -183,6 +192,7 @@
 			#{syncSign},
 			#{syncErrorDesc},
 			#{readDate},
+			<!---->
 			#{itemVersion}
 		)
 	</insert>

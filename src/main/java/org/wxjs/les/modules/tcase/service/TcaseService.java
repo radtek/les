@@ -22,18 +22,22 @@ import org.wxjs.les.common.service.CrudService;
 import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.FileUtils;
 import org.wxjs.les.common.utils.Util;
+import org.wxjs.les.modules.base.dao.SignatureDao;
+import org.wxjs.les.modules.base.entity.Signature;
 import org.wxjs.les.modules.base.utils.PathUtils;
 import org.wxjs.les.modules.sys.entity.User;
 import org.wxjs.les.modules.sys.utils.DictUtils;
 import org.wxjs.les.modules.sys.utils.SequenceUtils;
 import org.wxjs.les.modules.sys.utils.UserUtils;
 import org.wxjs.les.modules.tcase.entity.CaseAttach;
+import org.wxjs.les.modules.tcase.entity.CaseDecision;
 import org.wxjs.les.modules.tcase.entity.CaseHandle;
 import org.wxjs.les.modules.tcase.entity.CaseHandlePunishLib;
 import org.wxjs.les.modules.tcase.entity.CaseProcess;
 import org.wxjs.les.modules.tcase.entity.Tcase;
 import org.wxjs.les.modules.tcase.utils.ProcessCommonUtils;
 import org.wxjs.les.modules.tcase.dao.CaseAttachDao;
+import org.wxjs.les.modules.tcase.dao.CaseDecisionDao;
 import org.wxjs.les.modules.tcase.dao.CaseHandleDao;
 import org.wxjs.les.modules.tcase.dao.CaseHandlePunishLibDao;
 import org.wxjs.les.modules.tcase.dao.CaseProcessDao;
@@ -63,6 +67,12 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 	
 	@Autowired
 	protected	CaseHandleDao caseHandleDao;
+	
+	@Autowired
+	protected	CaseDecisionDao caseDecisionDao;
+	
+	@Autowired
+	protected	SignatureDao signatureDao;
 	
 	@Autowired
 	protected	CaseHandlePunishLibDao caseHandlePunishLibDao;
@@ -348,21 +358,36 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 		super.delete(tcase);
 	}
 	
+	@Transactional(readOnly = false)
 	public void upload(String caseIds){
 		String[] strs = caseIds.split(",");
+		
+		logger.debug("caseIds:{}", caseIds);
+		
 		for(String str:strs){
+			
+			if(StringUtils.isEmpty(str)){
+				continue;
+			}
 			//upload data
 			Tcase tcase = this.uploadOne(str);
 			
 			//update upload status
-			dao.updateUploadStatus(tcase);
+			this.updateUploadStatus(tcase);
 		}
+	}
+	
+	@Transactional(readOnly = false)
+	private void updateUploadStatus(Tcase tcase){
+		dao.updateUploadStatus(tcase);
 	}
 	
 	@Transactional(readOnly = false)
 	private Tcase uploadOne(String caseId){
 		
 		final String punishLibSeparator = "||";
+		
+		logger.debug("caseId:{}", caseId);
 		//get case
 		Tcase tcase = super.get(caseId);
 		
@@ -381,6 +406,8 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 			}	
 			libsStr = buffer.substring(2);
 		}
+		
+		logger.debug("libsStr:{}, libs.size:{}", libsStr, libs.size());
 
 		int attachNeeded = 0;
 		int attachuploaded = 0;
@@ -401,11 +428,12 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 		StringBuffer attachUploadDetail = new StringBuffer();
 		//✔✖
 		for(CaseAttach attach:attaches){
+			attachUploadDetail.append(",");
 			if(StringUtils.isEmpty(attach.getFilepath())){
-				attachUploadDetail.append(",").append(attach.getAttachType()).append("(✖)");
+				attachUploadDetail.append(attach.getAttachType()).append(Global.AttachInexistsFlag);
 				continue;
 			}else{
-				attachUploadDetail.append(",").append(attach.getAttachType()).append("(✔)");
+				attachUploadDetail.append(attach.getAttachType()).append(Global.AttachExistsFlag);
 			}
 			if(Global.CASE_STAGE_INITIAL.equals(attach.getFlowNode())){
 				attaches20.add(attach);
@@ -423,9 +451,17 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 		//upload inf_punish
 		InfPunish infPunish = new InfPunish();
 		infPunish.setInternalNo(internalNo);
+		
+		InfPunish infPunishOld = this.infPunishDao.get(infPunish);
+		String itemVersion = "1";
+		if(infPunishOld != null){
+			itemVersion = (Util.getInteger(infPunishOld.getItemVersion(), 1) + 1) + "";
+		}
+		
 		this.infPunishDao.delete(infPunish);
 		//fill data
 		this.fillInfPunish(infPunish, tcase, caseHandle, libsStr);
+		infPunish.setItemVersion(itemVersion);
 		
 		//save
 		this.infPunishDao.insert(infPunish);
@@ -434,19 +470,50 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 		InfPunishProcess infPunishProcess = new InfPunishProcess();
 		infPunishProcess.setInternalNo(internalNo);
 		this.infPunishProcessDao.delete(infPunishProcess);
+		
 		//stage 20
+		infPunishProcess = new InfPunishProcess();
+		infPunishProcess.setInternalNo(internalNo);
+		this.fillInfPunishProcess(infPunishProcess, tcase, libsStr, Global.CASE_STAGE_INITIAL, attaches20);
+		
+		attachuploaded += attaches20.size();
 		
 		this.infPunishProcessDao.insert(infPunishProcess);
+		
 		//stage 30
+		infPunishProcess = new InfPunishProcess();
+		infPunishProcess.setInternalNo(internalNo);
+		this.fillInfPunishProcess(infPunishProcess, tcase, libsStr, Global.CASE_STAGE_HANDLE, attaches30);
+		
+		attachuploaded += attaches30.size();
 		
 		this.infPunishProcessDao.insert(infPunishProcess);
+		
 		//stage 40
+		infPunishProcess = new InfPunishProcess();
+		infPunishProcess.setInternalNo(internalNo);
+		this.fillInfPunishProcess(infPunishProcess, tcase, libsStr, Global.CASE_STAGE_NOTIFY, attaches40);
+		
+		attachuploaded += attaches40.size();
 		
 		this.infPunishProcessDao.insert(infPunishProcess);
+		
 		//stage 50
+		infPunishProcess = new InfPunishProcess();
+		infPunishProcess.setInternalNo(internalNo);
+		this.fillInfPunishProcess(infPunishProcess, tcase, libsStr, Global.CASE_STAGE_DECISION, attaches50);
+		
+		attachuploaded += attaches50.size();
 		
 		this.infPunishProcessDao.insert(infPunishProcess);
+		
 		//stage 60
+		infPunishProcess = new InfPunishProcess();
+		infPunishProcess.setInternalNo(internalNo);
+		this.fillInfPunishProcess(infPunishProcess, tcase, libsStr, Global.CASE_STAGE_SETTLE, attaches60);
+		
+		attachuploaded += attaches60.size();
+		
 		this.infPunishProcessDao.insert(infPunishProcess);
 		
 		//upload inf_PunishResult_result
@@ -455,11 +522,16 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 		this.infPunishResultDao.delete(infPunishResult);
 		
 		//fill data
+		CaseDecision caseDecision = this.caseDecisionDao.get(caseId);
+		this.fillInfPunishResult(infPunishResult, tcase, caseHandle, caseDecision, libsStr);
 		
 		//save
 		this.infPunishResultDao.insert(infPunishResult);
 		
 		tcase.setUploadStatus("1");
+		if(attachuploaded == attachNeeded){
+			tcase.setUploadStatus("2");
+		}
 		tcase.setAttachUploadProgress(attachuploaded + "/" +attachNeeded);
 		tcase.setAttachUploadDetail(attachUploadDetail.substring(1));
 		return tcase;
@@ -473,10 +545,15 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 		infPunish.setItemId(libsStr);
 		infPunish.setDepartment(Global.getConfig("CBBM"));
 		infPunish.setAjAddr(tcase.getCaseHappenAddress());
-		infPunish.setAjOccurDate(DateUtils.parseDate(tcase.getCaseHappenDate()));
+		
+		logger.debug("tcase.getCaseHappenDate():{}", tcase.getCaseHappenDate());
+		
+		//infPunish.setAjOccurDate(DateUtils.parseDate(tcase.getCaseHappenDate()));
+		infPunish.setAjOccurDate(tcase.getInitialDate());
+		
 		infPunish.setSource("0");
 		infPunish.setFact(caseHandle.getFact());
-		infPunish.setTargetType(DictUtils.getDictLabel(tcase.getPartyType(), "party_type", ""));
+		infPunish.setTargetType(tcase.getPartyType());
 		infPunish.setPunishTarget(tcase.getPartyDisplay());
 		infPunish.setTargetCode(tcase.getPartyCode());
 		infPunish.setTargetPaperType("8");
@@ -485,23 +562,139 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 		infPunish.setPromise("90");
 		infPunish.setPromiseType("1");
 		infPunish.setIsrisk("0");
+		
+		Calendar cal = Calendar.getInstance();
+		infPunish.setCreateDate(cal.getTime());
+		infPunish.setUpdateDate(cal.getTime());
 	}
 	
-	private void fillInfPunishProcess(InfPunishProcess infPunishProcess, Tcase tcase, CaseProcess caseProcess, String libsStr, String stage){
+	private void fillInfPunishProcess(InfPunishProcess infPunishProcess, Tcase tcase, String libsStr, String stage, List<CaseAttach> attaches){
 		String no = (1000 + Util.getInteger(tcase.getId())) + "-" + stage;
 		infPunishProcess.setNo(Global.UploadOrgId + no);
-		infPunishProcess.setNoOrd(""); //TODO
+		infPunishProcess.setNoOrd(this.getTacheCode(stage));
 		infPunishProcess.setOrgId(Global.UploadOrgId);
 		infPunishProcess.setItemId(libsStr);
-		
+		infPunishProcess.setTacheCode(this.getTacheCode(stage));
+		infPunishProcess.setTacheName(this.getTacheName(stage));
 		infPunishProcess.setDepartment(Global.getConfig("CBBM"));
+		infPunishProcess.setUserStaffCode("99");
+		
+		CaseProcess caseProcess = this.getProcess(tcase.getId(), stage);
+		
+		String procInsId = caseProcess.getProcInsId();
+		Signature signature = new Signature(false);
+		signature.setProcInstId(procInsId);
+		List<Signature> sigList = signatureDao.findList(signature);
+		
+		logger.debug("procInsId:{}, sigList.size():{}", procInsId, sigList.size());
+		
+		String userName = "";
+		Signature sigFirst = null;
+		Signature sigLast = null;
+		if(sigList.size()>0){
+			sigFirst = sigList.get(0);
+			userName = sigFirst.getCreateBy().getName();
+			infPunishProcess.setUserName(userName);
+			
+			infPunishProcess.setNote(sigFirst.getApproveOpinion());
+			
+			sigLast = sigList.get(sigList.size()-1);
+			
+			infPunishProcess.setProcessStartTime(sigFirst.getCreateDate());
+			infPunishProcess.setProcessEndTime(sigLast.getCreateDate());
+		}
+		
+		infPunishProcess.setStatus("4");
+		infPunishProcess.setPromise("15");
+		infPunishProcess.setPromiseType("3");
+		infPunishProcess.setPromiseStartSign("1");
+		
+		String attachesContent = this.loadAttach2Str(attaches);
+		infPunishProcess.setAttachment(attachesContent);
+		
+		//logger.debug("stage:{}, attachesContent:{}", stage, attachesContent);
+		
+		Calendar cal = Calendar.getInstance();
+		infPunishProcess.setCreateDate(cal.getTime());
+		infPunishProcess.setUpdateDate(cal.getTime());
+		
 	}
 	
-	private void fillInfPunishResult(InfPunishResult infPunishResult, Tcase tcase){
-		InfPunishResult
+	private String getTacheCode(String stage){
+		String tacheCode = "";
+		if(Global.CASE_STAGE_INITIAL.equals(stage)){
+			tacheCode = "1";
+		}else if(Global.CASE_STAGE_HANDLE.equals(stage)){
+			tacheCode = "2";
+		}else if(Global.CASE_STAGE_NOTIFY.equals(stage)){
+			tacheCode = "4";
+		}else if(Global.CASE_STAGE_DECISION.equals(stage)){
+			tacheCode = "7";
+		}else if(Global.CASE_STAGE_SETTLE.equals(stage)){
+			tacheCode = "8";
+		}
+		return tacheCode;
+	}
+	
+	private String getTacheName(String stage){
+		String tacheName = "";
+		if(Global.CASE_STAGE_INITIAL.equals(stage)){
+			tacheName = "立案";
+		}else if(Global.CASE_STAGE_HANDLE.equals(stage)){
+			tacheName = "案件审理";
+		}else if(Global.CASE_STAGE_NOTIFY.equals(stage)){
+			tacheName = "发告知书";
+		}else if(Global.CASE_STAGE_DECISION.equals(stage)){
+			tacheName = "发决定书";
+		}else if(Global.CASE_STAGE_SETTLE.equals(stage)){
+			tacheName = "结案书";
+		}		
+		return tacheName;
+	}
+	
+	private void fillInfPunishResult(InfPunishResult infPunishResult, Tcase tcase, CaseHandle caseHandle, CaseDecision caseDecision, String libsStr){
+		String no = (1000 + Util.getInteger(tcase.getId())) +"";
+		infPunishResult.setNo(Global.UploadOrgId + no);
+		infPunishResult.setOrgId(Global.UploadOrgId);
+		infPunishResult.setItemId(libsStr);
+		infPunishResult.setProgram("1");
+		infPunishResult.setStandard(caseDecision.getContent());
+		infPunishResult.setAccordance(caseDecision.getContent());
+		infPunishResult.setPunishResult(caseDecision.getContent());
+		infPunishResult.setPunishDeside("1");
+		infPunishResult.setPunishClass("2");
+		infPunishResult.setPunishSort(" ");
+		infPunishResult.setPunishResultFine(caseHandle.getPunishMoney());
+		infPunishResult.setPunishResultFinePeople("1");
+		
+		infPunishResult.setFinishTime(tcase.getSettleDate());
+		
+		//get settle process finish time
+		/*
+		CaseProcess caseProcess = this.getProcess(tcase.getId(), Global.CASE_STAGE_SETTLE);
+		
+		String procInsId = caseProcess.getProcInsId();
+		Signature signature = new Signature();
+		signature.setProcInstId(procInsId);
+		List<Signature> sigList = signatureDao.findList(signature);
+		Signature sigLast = null;
+		if(sigList.size()>0){
+			sigLast = sigList.get(sigList.size()-1);
+			infPunishResult.setFinishTime(sigLast.getCreateDate());
+		}
+		*/
+
+		Calendar cal = Calendar.getInstance();
+		infPunishResult.setCreateDate(cal.getTime());
+		infPunishResult.setUpdateDate(cal.getTime());
+		
+		
 	}
 	
 	private String loadAttach2Str(List<CaseAttach> attaches){
+		if(attaches.size()==0){
+			return "";
+		}
         StringBuilder sb = new StringBuilder();
         sb.append("<?xml version=\"1.0\" encoding=\"gbk\"?>");
         sb.append("<DOCUMENTDATA>");
@@ -529,6 +722,18 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
         }
         sb.append("</DOCUMENTDATA>");	
         return sb.toString();
+	}
+	
+	private CaseProcess getProcess(String caseId, String caseStage) {
+		CaseProcess caseProcess = new CaseProcess();
+		caseProcess.setCaseId(caseId);
+		caseProcess.setCaseStage(caseStage);
+		List<CaseProcess> list = this.caseProcessDao.findList(caseProcess);
+		CaseProcess rst = null;
+		if(list!=null && list.size()>0){
+			rst = list.get(0);
+		}
+		return rst;
 	}
 	
 }

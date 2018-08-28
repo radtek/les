@@ -65,7 +65,7 @@ DROP TABLE IF EXISTS `tcase_process`;
 CREATE TABLE `tcase_process` (
   `id` int(11) NOT NULL auto_increment  COMMENT '编号',
   `case_id` varchar(32) NOT NULL COMMENT '案件编号',
-  `case_summary` varchar(500) NULL COMMENT '案情摘要',
+  `case_summary` text NULL COMMENT '案情摘要',
   `case_handler` varchar(100) NULL COMMENT '办案人',
   `case_stage` varchar(8) NULL COMMENT '事项类型',
   `case_stage_status` varchar(8) NULL COMMENT '事项类型状态',

@@ -43,7 +43,7 @@
 				
 				$("#caseIds").val(temp.substring(1));
 				
-				$("#searchForm").attr("action","${ctx}/case/tcase/upload?caseIds="+caseIds);
+				$("#searchForm").attr("action","${ctx}/case/tcase/upload");
 				$("#searchForm").submit();
 			});
 			
@@ -182,10 +182,11 @@
 				<th>结案日期</th>
 				<th>经办人</th>
 				<th>案件状态</th>
+				<th>生成附件进度</th>
+				<th width="15%">本系统附件详情</th>
 				<th>上报状态</th>
-				<th>上报附件缺失</th>
-				<th>前置机附件缺失</th>
-				<th>操作</th>
+				<th>上报附件进度</th>
+				<th width="15%">前置机附件详情</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -204,10 +205,11 @@
 				<td><fmt:formatDate value="${tcase.settleDate}" pattern="yyyy-MM-dd"/></td>
 				<td>${tcase.initialHandler}</td>
 				<td>${tcase.statusLabel}</td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>				
+				<td>${tcase.attachLocalProgress}</td>
+				<td>${tcase.attachLocalDetail}</td>
+				<td>${fns:getDictLabel(tcase.uploadStatus, 'upload_status', '未上传')}</td>
+				<td>${tcase.attachUploadProgress}</td>
+				<td>${tcase.attachUploadDetail}</td>
 			</tr>
 		</c:forEach>
 		</tbody>

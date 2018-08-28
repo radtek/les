@@ -67,7 +67,7 @@
 					<label class="control-label">案情摘要：</label>
 					<div class="controls controls-tight">
 		
-						<form:textarea path="tcase.caseProcess.caseSummary" htmlEscape="false"  style="width:800px;height:300px;" class="required"/>
+						<form:textarea path="tcase.caseProcess.caseSummary" htmlEscape="false"  style="width:800px;height:300px;" maxlength="1000" class="required"/>
 						<span class="help-inline"><font color="red">*</font> </span>
 					</div>
 				        </div>

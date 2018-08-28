@@ -63,7 +63,7 @@ public class CaseProcess extends DataEntity<CaseProcess> {
 		this.caseId = caseId;
 	}
 	
-	@Length(min=1, max=500, message="案情摘要长度必须介于 1 和 500 之间")
+	@Length(min=1, max=1000, message="案情摘要长度必须介于 1 和 1000 之间")
 	public String getCaseSummary() {
 		return caseSummary;
 	}

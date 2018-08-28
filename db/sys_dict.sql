@@ -84,7 +84,8 @@ delete from sys_dict where `type`= 'upload_status';
 INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `parent_id`, `create_by`,`create_date`,`update_by`,`update_date`) 
 VALUES 
 ('upload_status_1', '0', '未上传', 'upload_status', 'upload_status', 10, '0','1',now(),'1',now()),
-('upload_status_2', '1', '已上传', 'upload_status', 'upload_status', 20, '0','1',now(),'1',now());
+('upload_status_2', '1', '部分上传', 'upload_status', 'upload_status', 20, '0','1',now(),'1',now()),
+('upload_status_3', '2', '全部上传', 'upload_status', 'upload_status', 30, '0','1',now(),'1',now());
 
 
 

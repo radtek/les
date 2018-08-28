@@ -69,6 +69,8 @@ public class Tcase extends DataEntity<Tcase> {
 	
 	private String status;
 	
+	private String attachLocalProgress;
+	private String attachLocalDetail;
 	private String uploadStatus;
 	private String attachUploadProgress;
 	private String attachUploadDetail;
@@ -405,6 +407,22 @@ public class Tcase extends DataEntity<Tcase> {
 		this.status = status;
 	}
 	
+	public String getAttachLocalProgress() {
+		return attachLocalProgress;
+	}
+
+	public void setAttachLocalProgress(String attachLocalProgress) {
+		this.attachLocalProgress = attachLocalProgress;
+	}
+
+	public String getAttachLocalDetail() {
+		return attachLocalDetail;
+	}
+
+	public void setAttachLocalDetail(String attachLocalDetail) {
+		this.attachLocalDetail = attachLocalDetail;
+	}
+
 	public String getUploadStatus() {
 		return uploadStatus;
 	}

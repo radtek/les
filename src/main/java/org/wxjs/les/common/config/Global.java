@@ -254,5 +254,8 @@ public class Global {
     public static final String PartyTypePersonal = "0";
     
     public static final String UploadOrgId = "JS020000JS";
+    
+    public static final String AttachExistsFlag = "(✔)";
+    public static final String AttachInexistsFlag = "(✖)";
 	
 }

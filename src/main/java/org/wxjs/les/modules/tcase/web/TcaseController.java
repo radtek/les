@@ -188,9 +188,32 @@ public class TcaseController extends BaseController {
 		}
 		
 		model.addAttribute("yearList", yearList);
-		
-		
+
 		Page<Tcase> page = tcaseService.findPage(new Page<Tcase>(request, response), tcase); 
+		
+		for(Tcase entity : page.getList()){
+			CaseAttach caseAttach = new CaseAttach();
+			caseAttach.setCaseId(entity.getId());
+			caseAttach.setMandatory("1");
+			List<CaseAttach> attaches = this.caseAttachService.findList(caseAttach);
+			int total = attaches.size();
+			int generated = 0;
+			StringBuffer detailBuffer = new StringBuffer();
+			for(CaseAttach attach: attaches){
+				detailBuffer.append(",");
+				if(StringUtils.isEmpty(attach.getFilepath())){
+					detailBuffer.append(attach.getAttachType()).append(Global.AttachInexistsFlag);
+				}else{
+					detailBuffer.append(attach.getAttachType()).append(Global.AttachExistsFlag);
+					generated++;
+				}
+			}
+			entity.setAttachLocalProgress(generated + "/" + total);
+			if(detailBuffer.length()>0){
+				entity.setAttachLocalDetail(detailBuffer.substring(1));
+			}
+		}
+		
 		model.addAttribute("page", page);
 		return "modules/tcase/queryCaseList";
 	}
@@ -976,13 +999,13 @@ public class TcaseController extends BaseController {
 		}
 	}
 	
-	
+	@RequestMapping(value = "upload")
 	public String upload(Tcase tcase, HttpServletRequest request, HttpServletResponse response, Model model){
 		
-		
-		
+		tcaseService.upload(tcase.getCaseIds());
 		
 		model.addAttribute("tcase", tcase);
+		
 		return "redirect:"+Global.getAdminPath()+"/case/tcase/query?repage";
 	}
 	

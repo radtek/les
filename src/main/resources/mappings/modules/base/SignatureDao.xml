@@ -14,10 +14,13 @@
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
-		a.del_flag AS "delFlag"
+		a.del_flag AS "delFlag",
+		u.login_name AS "createBy.loginName",
+		u.name AS "createBy.name"
 	</sql>
 	
 	<sql id="signatureJoins">
+	    LEFT JOIN sys_user u on u.id = a.create_by
 	</sql>
     
 	<select id="get" resultType="Signature">
@@ -104,6 +107,13 @@
 			remarks = #{remarks}
 		WHERE id = #{id}
 	</update>
+	
+	<update id="updateSignatureTime">
+		UPDATE tsignature SET
+			create_date = #{createDate},
+			update_date = #{updateDate}
+		WHERE id = #{id}
+	</update>	
 	
 	<update id="updateOpinion">
 		UPDATE tsignature SET 	
