@@ -409,6 +409,7 @@ public class Tcase extends DataEntity<Tcase> {
 		this.status = status;
 	}
 	
+	@ExcelField(title="生成附件进度", type=1, align=2, sort=200)
 	public String getAttachLocalProgress() {
 		return attachLocalProgress;
 	}
@@ -417,6 +418,7 @@ public class Tcase extends DataEntity<Tcase> {
 		this.attachLocalProgress = attachLocalProgress;
 	}
 
+	@ExcelField(title="本系统附件详情", type=1, align=2, sort=210)
 	public String getAttachLocalDetail() {
 		return attachLocalDetail;
 	}
@@ -425,6 +427,7 @@ public class Tcase extends DataEntity<Tcase> {
 		this.attachLocalDetail = attachLocalDetail;
 	}
 
+	@ExcelField(title="上报状态", type=1, align=2, sort=220, dictType="upload_status")
 	public String getUploadStatus() {
 		return uploadStatus;
 	}
@@ -433,6 +436,7 @@ public class Tcase extends DataEntity<Tcase> {
 		this.uploadStatus = uploadStatus;
 	}
 
+	@ExcelField(title="上报附件进度", type=1, align=2, sort=230)
 	public String getAttachUploadProgress() {
 		return attachUploadProgress;
 	}
@@ -441,6 +445,7 @@ public class Tcase extends DataEntity<Tcase> {
 		this.attachUploadProgress = attachUploadProgress;
 	}
 
+	@ExcelField(title="前置机附件详情", type=1, align=2, sort=240)
 	public String getAttachUploadDetail() {
 		return attachUploadDetail;
 	}
@@ -449,6 +454,7 @@ public class Tcase extends DataEntity<Tcase> {
 		this.attachUploadDetail = attachUploadDetail;
 	}
 
+	@ExcelField(title="上报四库状态", type=1, align=2, sort=250, dictType="yes_no")
 	public String getUploadStatusLib4() {
 		return uploadStatusLib4;
 	}
