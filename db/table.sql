@@ -49,6 +49,7 @@ CREATE TABLE `tcase` (
   `upload_status` varchar(32) default '0' COMMENT '上报状态',
   `attach_upload_progress` varchar(32) default '0' COMMENT '附件上传进度',
   `attach_upload_detail` varchar(200) NULL COMMENT '附件上传详情',
+  `upload_status_lib4`  varchar(32) default '0' COMMENT '上报四库状态',
   `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
   `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_by` varchar(32) DEFAULT NULL COMMENT '更新者',

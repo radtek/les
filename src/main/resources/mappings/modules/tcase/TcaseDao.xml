@@ -38,6 +38,7 @@
 		a.upload_status AS "uploadStatus",
 		a.attach_upload_progress AS "attachUploadProgress",
 		a.attach_upload_detail AS "attachUploadDetail",
+		a.upload_status_lib4 AS "uploadStatusLib4",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -284,6 +285,12 @@
 			upload_status = #{uploadStatus},
 			attach_upload_progress = #{attachUploadProgress},
 			attach_upload_detail = #{attachUploadDetail}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="updateUploadStatusLib4">
+		UPDATE tcase SET 	
+			upload_status_lib4 = #{uploadStatusLib4}
 		WHERE id = #{id}
 	</update>	
 	

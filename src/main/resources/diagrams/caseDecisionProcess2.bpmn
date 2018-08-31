@@ -20,6 +20,9 @@
     <sequenceFlow id="sid-E0252BE5-CF9B-4E86-9A96-8346C9B9BAD7" sourceRef="sid-E2AF9AE3-1D2C-42A8-A85F-9EE0317DB275" targetRef="sid-C47DC249-F311-4B69-A5E0-CF054BA1472F"></sequenceFlow>
     <endEvent id="sid-619AB5A8-D242-4294-AC3D-8211F3FCA239" name="End"></endEvent>
     <sequenceFlow id="sid-7C0ACA4E-17A1-4D47-9CE0-74C10096919C" name="通过" sourceRef="exclusivegateway1" targetRef="usertask7">
+      <extensionElements>
+        <activiti:executionListener event="take" class="org.wxjs.les.modules.tcase.listener.CaseDecisionListener"></activiti:executionListener>
+      </extensionElements>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${jldOp=='pass'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="sid-275A8280-138C-4875-8068-BDFA8CA94F7C" name="通过" sourceRef="sid-60F5DD1C-C7B6-4E45-980F-9B6467D64C46" targetRef="sid-E2AF9AE3-1D2C-42A8-A85F-9EE0317DB275">
@@ -147,7 +150,7 @@
         <omgdi:waypoint x="1195.0" y="193.0"></omgdi:waypoint>
         <omgdi:waypoint x="1240.0" y="194.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="24.0" x="1197.0" y="201.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="1197.0" y="201.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sid-275A8280-138C-4875-8068-BDFA8CA94F7C" id="BPMNEdge_sid-275A8280-138C-4875-8068-BDFA8CA94F7C">

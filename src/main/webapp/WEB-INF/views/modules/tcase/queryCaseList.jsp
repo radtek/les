@@ -187,6 +187,7 @@
 				<th>上报状态</th>
 				<th>上报附件进度</th>
 				<th width="15%">前置机附件详情</th>
+				<th>上报四库状态</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -210,6 +211,7 @@
 				<td>${fns:getDictLabel(tcase.uploadStatus, 'upload_status', '未上传')}</td>
 				<td>${tcase.attachUploadProgress}</td>
 				<td>${tcase.attachUploadDetail}</td>
+				<td>${fns:getDictLabel(tcase.uploadStatusLib4, 'yes_no', '否')}</td>
 			</tr>
 		</c:forEach>
 		</tbody>

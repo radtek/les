@@ -58,7 +58,7 @@
 		<!-- 数据范围过滤 -->
 		${sqlMap.dsf}
 		OR a.id = #{currentUser.office.id}
-		ORDER BY a.code
+		ORDER BY a.code,a.sort
 	</select>
 			
 	<select id="findAllList" resultType="Office">
@@ -67,7 +67,7 @@
 		FROM sys_office a
 		<include refid="officeJoins"/>
 		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
-		ORDER BY a.code
+		ORDER BY a.code,a.sort
 	</select>
 	
 	<select id="findByParentIdsLike" resultType="Office">
@@ -76,7 +76,7 @@
 		FROM sys_office a
 		<include refid="officeJoins"/>
 		WHERE a.del_flag = #{DEL_FLAG_NORMAL} AND a.parent_ids LIKE #{parentIds}
-		ORDER BY a.code
+		ORDER BY a.code,a.sort
 	</select>
 	
 	<insert id="insert">

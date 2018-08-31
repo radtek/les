@@ -75,6 +75,8 @@ public class Tcase extends DataEntity<Tcase> {
 	private String attachUploadProgress;
 	private String attachUploadDetail;
 	
+	private String uploadStatusLib4;
+	
 	private CaseProcess caseProcess; //
 	
 	private CaseAttach caseAttach; //
@@ -445,6 +447,14 @@ public class Tcase extends DataEntity<Tcase> {
 
 	public void setAttachUploadDetail(String attachUploadDetail) {
 		this.attachUploadDetail = attachUploadDetail;
+	}
+
+	public String getUploadStatusLib4() {
+		return uploadStatusLib4;
+	}
+
+	public void setUploadStatusLib4(String uploadStatusLib4) {
+		this.uploadStatusLib4 = uploadStatusLib4;
 	}
 
 	@ExcelField(title="案件状态", type=1, align=2, sort=110)

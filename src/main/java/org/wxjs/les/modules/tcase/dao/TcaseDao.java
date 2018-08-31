@@ -23,6 +23,8 @@ public interface TcaseDao extends CrudDao<Tcase> {
 	
 	public void updateUploadStatus(Tcase entity);
 	
+	public void updateUploadStatusLib4(Tcase entity);
+	
 	public void finishInitial(Tcase entity);
 	
 	public void finishSettle(Tcase entity);
