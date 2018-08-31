@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 
 import java.util.List;
 import org.apache.commons.httpclient.util.DateUtil;
+import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.PdfUtil;
 import org.wxjs.les.common.utils.StringUtils;
 import org.wxjs.les.modules.base.entity.Signature;
@@ -82,15 +83,15 @@ public class CaseSettleExport extends ExportBase<CaseSettleExport> {
             table = this.getPartyInfo(tcase);
         	document.add(table); 
         	//受案、立案、结案日期
-        	SimpleDateFormat sdft=new SimpleDateFormat("yyyy年MM月dd日");
-        	String sa=sdft.format(this.tcase.getAcceptDate());
-        	//String la=sdft.format(this.caseDecision.getLaunchDate());
-        	//String ja=sdft.format(this.caseFinish.getFinishDate());
-        	String la = "";
-        	String ja = "";
+        	String dateFormat = "yyyy年MM月dd日";
+        	String sa = DateUtils.formatDate(this.tcase.getAcceptDate(), dateFormat);
+        	
+        	String la = DateUtils.formatDate(this.tcase.getInitialDate(), dateFormat);
+        	String ja = DateUtils.formatDate(this.tcase.getSettleDate(), dateFormat);
+
         	items=new String[] {"受案\n日期",sa,"立案\n日期",la,"结案\n日期",ja};
-        	 table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.1f, 0.25f, 0.1f, 0.2f, 0.15f, 0.2f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 30);
-        	 document.add(table); 
+        	table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.1f, 0.25f, 0.1f, 0.2f, 0.15f, 0.2f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 30);
+        	document.add(table); 
         	
         	
         	  

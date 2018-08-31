@@ -80,7 +80,10 @@
 			</div>
 		</div>
 		<div class="form-actions">
-			<shiro:hasPermission name="case:tcase:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保 存"/>&nbsp;
+			<shiro:hasPermission name="case:tcase:edit">
+			<c:if test="${caseAct.tcase.caseProcess.editable}">
+			<input id="btnSubmit" class="btn btn-primary" type="button" value="保 存"/>&nbsp;
+			</c:if>
 			<input id="btnSettle" class="btn btn-primary" type="button" value="案件结案审批表"/>
 			</shiro:hasPermission>
 		</div>
