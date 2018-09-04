@@ -121,7 +121,9 @@ public class PunishLibService extends CrudService<PunishLibDao, PunishLib> {
 						if (cells.size() == 2) {
 							String title = cells.get(0).getText();
 							if (title.contains("编号")) {
-								lib.setSeq(cells.get(1).getText());
+								String seq = cells.get(1).getText();
+								seq = seq.replace("(不常用)", "").replace("（不常用）", "").replace(" ", "");
+								lib.setSeq(seq);
 							}else							
 							if (title.equals("权力名称") || title.equals("行为名称")) {
 								lib.setBehavior(cells.get(1).getText());

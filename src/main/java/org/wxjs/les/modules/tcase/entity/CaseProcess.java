@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.DataEntity;
 import org.wxjs.les.modules.base.entity.Signature;
+import org.wxjs.les.modules.sys.entity.Role;
 import org.wxjs.les.modules.sys.entity.User;
 import org.wxjs.les.modules.sys.utils.UserUtils;
 
@@ -195,6 +196,27 @@ public class CaseProcess extends DataEntity<CaseProcess> {
 	
 	public boolean getEditable(){
 		return StringUtils.isEmpty(this.caseStageStatus) || "0".equals(this.caseStageStatus) || "1".equals(this.caseStageStatus);
+	}
+	
+	/**
+	 * 重大行政处罚中文本框是否可编辑
+	 * @return
+	 */
+	public boolean getSeriousTextsEditable(){
+		boolean specialRole = false;
+		User user = UserUtils.getUser();
+		List<Role> roles = user.getRoleList();
+		//List<Role> roles = UserUtils.getRoleList();
+		if(roles==null){
+			return specialRole;
+		}
+		for(Role role : roles){
+			if("#slkky#slkfzr#fgcblr#fgcfzr#".contains("#"+role.getEnname()+"#")){
+				specialRole = true;
+				break;
+			}
+		}
+		return specialRole || this.getEditable();
 	}
 	
 	public boolean getStartable(){

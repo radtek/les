@@ -21,8 +21,7 @@
     <les:caseSummary caseAttr="${caseAct.tcase}"></les:caseSummary>	
     
     <les:caseTab tab="process" caseActAttr="${caseAct}"></les:caseTab>  
-    
-    <c:if test="${caseAct.tcase.caseProcess.caseStage eq ''}"></c:if>
+
     <c:choose>
        <c:when test="${caseAct.tcase.caseProcess.caseStage eq '110'}">
           <c:set var="handleAction" value="${ctx}/tcase/caseSerious/handletask"></c:set>

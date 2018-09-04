@@ -19,6 +19,7 @@ import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.web.BaseController;
 import org.wxjs.les.common.utils.StringUtils;
 import org.wxjs.les.common.utils.Util;
+import org.wxjs.les.modules.base.utils.PathUtils;
 import org.wxjs.les.modules.task.entity.CaseAct;
 import org.wxjs.les.modules.tcase.entity.CaseAttach;
 import org.wxjs.les.modules.tcase.entity.Tcase;
@@ -91,7 +92,7 @@ public class CaseAttachController extends BaseController {
 		if(!StringUtils.isEmpty(filepath)){
 			filename = filepath.substring(filepath.lastIndexOf("/")+1);
 		}
-		caseAttach.setFilename(filename);
+		caseAttach.setFilename(PathUtils.decodeUri(filename));
 		
 		caseAttachService.save(caseAttach);
 		addMessage(redirectAttributes, "保存案件资料成功");

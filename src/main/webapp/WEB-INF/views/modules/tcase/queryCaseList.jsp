@@ -176,7 +176,7 @@
 				<th>案卷编号</th>
 				<th>当事人</th>
 				<th>项目名称</th>
-				<th>案由</th>
+				<th width="15%">案由</th>
 				<th>处罚决定书编号</th>
 				<th>立案日期</th>
 				<th>结案日期</th>
@@ -188,6 +188,7 @@
 				<th>上报附件进度</th>
 				<th width="15%">前置机附件详情</th>
 				<th>上报四库状态</th>
+				<th>&nbsp;</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -212,6 +213,7 @@
 				<td>${tcase.attachUploadProgress}</td>
 				<td>${tcase.attachUploadDetail}</td>
 				<td>${fns:getDictLabel(tcase.uploadStatusLib4, 'yes_no', '否')}</td>
+				<td><a href="${ctx}/case/tcase/infoTab?businesskey=${tcase.id}" target="_blank">详情</a></td>
 			</tr>
 		</c:forEach>
 		</tbody>

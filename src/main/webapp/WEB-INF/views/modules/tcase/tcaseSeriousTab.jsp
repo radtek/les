@@ -67,6 +67,8 @@
 		<form:hidden path="paramUri" value="${caseAct.paramUri}"/>
 		<sys:message content="${message}"/>		
 		<h4>重大行政处罚</h4>
+	    <c:choose>
+	       <c:when test="${caseAct.tcase.caseProcess.editable}">
 		<div class="control-group">
 			<label class="control-label">时间：</label>
 			<div class="controls">
@@ -123,7 +125,69 @@
 			    <sys:treeselect id="recorder" name="recorder.loginName" value="${caseSerious.recorder.loginName}" labelName="recorder.name" labelValue="${caseSerious.recorder.name}" 
 				title="记录人员" url="/sys/user/treeDataWithLoginName?officeId=" checked="true" cssClass="input-xxlarge" allowClear="true" notAllowSelectParent="true"/>					
 			</div>
+		</div>	       
+	       </c:when>       
+	       <c:otherwise>
+		<div class="control-group">
+			<label class="control-label">时间：</label>
+			<div class="controls">
+				<input name="meetingDateFrom" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate "
+					value="<fmt:formatDate value="${caseSerious.meetingDateFrom}" pattern="yyyy-MM-dd HH:mm"/>"
+					onclick=""/>到
+				<input name="meetingDateTo" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate "
+					value="<fmt:formatDate value="${caseSerious.meetingDateTo}" pattern="yyyy-MM-dd HH:mm"/>"
+					onclick=""/>
+			</div>
 		</div>
+		<div class="control-group">
+			<label class="control-label">地点：</label>
+			<div class="controls">
+				<form:input path="meetingAddress" htmlEscape="false" maxlength="64" class="input-xxlarge " readonly="true"/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">主持人：</label>
+			<div class="controls">
+			    <sys:treeselect id="master" name="master.loginName" value="${caseSerious.master.loginName}" labelName="master.name" labelValue="${caseSerious.master.name}" 
+				title="主持人" url="/sys/user/treeDataWithLoginName?officeId=" checked="true" cssClass="input-xxlarge" allowClear="true" notAllowSelectParent="true" disabled="disabled"/>				
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">参会人员：</label>
+			<div class="controls">
+			    <sys:treeselect id="voter" name="voter.loginName" value="${caseSerious.voter.loginName}" labelName="voter.name" labelValue="${caseSerious.voter.name}" 
+				title="参会人员" url="/sys/user/treeDataWithLoginName?officeId=" checked="true" cssClass="input-xxlarge" allowClear="true" notAllowSelectParent="true" disabled="disabled"/>				
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">参会人员补充：</label>
+			<div class="controls">
+				<form:input path="voterAdd" htmlEscape="false" maxlength="128" class="input-xxlarge " readonly="true"/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">列席人员：</label>
+			<div class="controls">
+			    <sys:treeselect id="attendee" name="attendee.loginName" value="${caseSerious.attendee.loginName}" labelName="attendee.name" labelValue="${caseSerious.attendee.name}" 
+				title="列席人员" url="/sys/user/treeDataWithLoginName?officeId=" checked="true" cssClass="input-xxlarge" allowClear="true" notAllowSelectParent="true" disabled="disabled"/>				
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">列席人员补充：</label>
+			<div class="controls">
+				<form:input path="attendeeAdd" htmlEscape="false" maxlength="128" class="input-xxlarge " readonly="true"/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">记录人员：</label>
+			<div class="controls">
+			    <sys:treeselect id="recorder" name="recorder.loginName" value="${caseSerious.recorder.loginName}" labelName="recorder.name" labelValue="${caseSerious.recorder.name}" 
+				title="记录人员" url="/sys/user/treeDataWithLoginName?officeId=" checked="true" cssClass="input-xxlarge" allowClear="true" notAllowSelectParent="true" disabled="disabled"/>					
+			</div>
+		</div>	       
+	       </c:otherwise>
+	    </c:choose>		
+
 		<div class="control-group">
 			<label class="control-label">执法机构汇报案情：</label>
 			<div class="controls">
@@ -149,11 +213,15 @@
 			</div>
 		</div>		
 		<div class="form-actions">
-			<shiro:hasPermission name="case:tcase:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保 存"/>&nbsp;
+			<shiro:hasPermission name="case:tcase:edit">
+			<c:if test="${caseAct.tcase.caseProcess.seriousTextsEditable}">
+			<input id="btnSubmit" class="btn btn-primary" type="button" value="保 存"/>&nbsp;
+			</c:if>
 			<input id="btnExport" class="btn btn-primary" type="button" value="无锡市建设局重大行政处罚审查表"/>&nbsp;
 			<input id="btnRecordExport" class="btn btn-primary" type="button" value="会议记录"/>&nbsp;
 			</shiro:hasPermission>
 		</div>
 	</form:form>
+		
 </body>
 </html>
