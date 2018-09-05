@@ -26,6 +26,10 @@ public class SignatureService extends CrudService<SignatureDao, Signature> {
 		return super.get(id);
 	}
 	
+	public Signature getLatestSignatureByLoginName(String loginName){
+		return dao.getLatestSignatureByLoginName(loginName);
+	}
+	
 	public List<Signature> findList(Signature signature) {
 		return super.findList(signature);
 	}

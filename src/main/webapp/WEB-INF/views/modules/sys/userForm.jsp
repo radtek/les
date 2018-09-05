@@ -124,7 +124,16 @@
 				<span class="help-inline"><font color="red">*</font> “是”代表此账号允许登录，“否”则表示此账号不允许登录</span>
 			</div>
 		</div>
- 
+		<div class="control-group">
+			<label class="control-label">是否允许从历史库读取签名:</label>
+			<div class="controls">
+				<form:select path="allowLoadHistorySignature">
+				    <form:option value="0" label="否"/>
+				    <form:option value="1" label="是"/>
+				</form:select>
+				<span class="help-inline"><font color="red">*</font> “是”代表此账号允许从历史库读取签名，“否”则表示此账号不允许</span>
+			</div>
+		</div> 
 		<div class="control-group">
 			<label class="control-label">用户类型:</label>
 			<div class="controls">

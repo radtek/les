@@ -68,6 +68,12 @@ public class SignatureController extends BaseController {
 		return new MSG("ok");  
 	}
 	
+	@RequestMapping(value = "getLatestSignatureByLoginName")
+	@ResponseBody
+	public Signature getLatestSignatureByLoginName(String loginName){
+		return signatureService.getLatestSignatureByLoginName(loginName);
+	}
+	
 	@RequiresPermissions("base:signature:edit")
 	@RequestMapping(value = "delete")
 	public String delete(Signature signature, RedirectAttributes redirectAttributes) {

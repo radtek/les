@@ -24,11 +24,11 @@
 			});
 			
 		    $("input[type=radio][name='tcase.partyType']").change(function() {
-		        if (this.value == '单位') {
+		        if (this.value == '1') {
 		        	$("#info4Org").show();
 		        	$("#info4Individual").hide();
 		        }
-		        else if (this.value == '个人') {
+		        else if (this.value == '0') {
 		        	$("#info4Org").hide();
 		        	$("#info4Individual").show();
 		        }

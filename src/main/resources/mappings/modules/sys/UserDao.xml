@@ -80,6 +80,7 @@
 		a.update_by AS "updateBy.id",
 		a.update_date,
 		a.del_flag,
+		a.allow_load_history_signature AS "allowLoadHistorySignature",
     	c.name AS "company.name",
     	c.parent_id AS "company.parent.id",
     	c.parent_ids AS "company.parentIds",
@@ -274,7 +275,8 @@
 			remarks, 
 			login_flag, 
 			photo, 
-			del_flag
+			del_flag,
+			allow_load_history_signature
 		) VALUES (
 			#{id}, 
 			#{company.id}, 
@@ -294,7 +296,8 @@
 			#{remarks}, 
 			#{loginFlag}, 
 			#{photo}, 
-			#{delFlag}
+			#{delFlag},
+			#{allowLoadHistorySignature}
 		)
 	</insert>
 	
@@ -315,7 +318,8 @@
 			update_date = #{updateDate}, 
 			remarks = #{remarks},
 			login_flag = #{loginFlag},
-			photo = #{photo}
+			photo = #{photo},
+			allow_load_history_signature = #{allowLoadHistorySignature}
 		WHERE id = #{id}
 	</update>
 	

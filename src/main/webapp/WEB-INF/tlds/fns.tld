@@ -57,6 +57,22 @@
   </function>
   
   <function>
+    <description>获取当前用户登录名</description>
+    <name>getUserLoginName</name>
+    <function-class>org.wxjs.les.modules.sys.utils.UserUtils</function-class>
+    <function-signature>java.lang.String getUserLoginName()</function-signature>
+    <example>${fns:getUserLoginName()}</example>  
+  </function>  
+  
+  <function>
+    <description>获取当前用户是否允许从历史库读取签名</description>
+    <name>getAllowLoadHistorySignature</name>
+    <function-class>org.wxjs.les.modules.sys.utils.UserUtils</function-class>
+    <function-signature>java.lang.String getAllowLoadHistorySignature()</function-signature>
+    <example>${fns:getAllowLoadHistorySignature()}</example>  
+  </function>   
+  
+  <function>
     <description>获取当前用户是否管理员</description>
     <name>getUserIsAdmin</name>
     <function-class>org.wxjs.les.modules.sys.utils.UserUtils</function-class>

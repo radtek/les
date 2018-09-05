@@ -24,11 +24,12 @@
 			});
 			
 		    $("input[type=radio][name='tcase.partyType']").change(function() {
-		        if (this.value == '单位') {
+
+		        if (this.value == '1') {
 		        	$("#info4Org").show();
 		        	$("#info4Individual").hide();
 		        }
-		        else if (this.value == '个人') {
+		        else if (this.value == '0') {
 		        	$("#info4Org").hide();
 		        	$("#info4Individual").show();
 		        }
@@ -126,14 +127,14 @@
 		
 		<div class="control-group container-fluid nopadding">
 			<div class="row-fluid">
-				<div class="span7">		
+				<div class="span6">		
 			<label class="control-label">名称：</label>
 			<div class="controls controls-tight">
 				<form:input path="tcase.orgName" htmlEscape="false" maxlength="100" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		        </div>			
-				<div class="span5">		
+				<div class="span6">		
 			<label class="control-label">统一社会信用代码：</label>
 			<div class="controls controls-tight">
 				<form:input path="tcase.orgCode" htmlEscape="false" maxlength="32" class="input-xlarge required"/>
@@ -148,21 +149,21 @@
 				<div class="span4">		
 			<label class="control-label">法定代表人：</label>
 			<div class="controls controls-tight">
-				<form:input path="tcase.orgAgent" htmlEscape="false" maxlength="32" class="input-large required"/>
+				<form:input path="tcase.orgAgent" htmlEscape="false" maxlength="32" class="input-medium required"/>
 				<span class="help-inline"><font color="red">*</font> </span>			
 			</div>
 		        </div>
 				<div class="span4">		
 			<label class="control-label">负责人：</label>
 			<div class="controls controls-tight">
-				<form:input path="tcase.orgResponsiblePerson" htmlEscape="false" maxlength="100" class="input-large required"/>
+				<form:input path="tcase.orgResponsiblePerson" htmlEscape="false" maxlength="100" class="input-medium required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		        </div>
 				<div class="span4">		
 			<label class="control-label">负责人职务：</label>
 			<div class="controls controls-tight">
-				<form:input path="tcase.orgResponsiblePersonPost" htmlEscape="false" maxlength="32" class="input-large required"/>
+				<form:input path="tcase.orgResponsiblePersonPost" htmlEscape="false" maxlength="32" class="input-medium required"/>
 				<span class="help-inline"><font color="red">*</font> </span>			
 			</div>
 		        </div>		        

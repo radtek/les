@@ -20,12 +20,16 @@ import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.activiti.image.impl.DefaultProcessDiagramGenerator;
 import org.activiti.spring.ProcessEngineFactoryBean;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.wxjs.les.common.config.Global;
+import org.wxjs.les.modules.act.entity.Act;
+import org.wxjs.les.modules.act.service.ActTaskService;
 
 
 @Controller
@@ -46,6 +50,9 @@ public class ActivitiController extends BaseController {
     HistoryService historyService;
     @Autowired
     TaskService taskService;
+    
+	@Autowired
+	private ActTaskService actTaskService;
 
     /** 
      * 流程是否已经结束 
@@ -64,6 +71,24 @@ public class ActivitiController extends BaseController {
     	model.addAttribute("procDefId", procDefId);
     	model.addAttribute("executionId", executionId);
     	model.addAttribute("procInsId", procInsId);
+    	
+		if (StringUtils.isNotBlank(procInsId)){
+			List<Act> histoicFlowList = actTaskService.histoicFlowList(procInsId, null, null);
+			
+			//filter signature info
+			for(Act entity : histoicFlowList){
+				String comment = entity.getComment();
+				if(comment==null){
+					continue;
+				}
+				int sigTagIndex = comment.indexOf(Global.SignatureTag);
+				if(sigTagIndex>-1){
+					comment = comment.substring(0, sigTagIndex);
+					entity.setComment(comment);
+				}
+			}
+			model.addAttribute("histoicFlowList", histoicFlowList);
+		}
     	
     	return "modules/act/actProcessFlow";
     }

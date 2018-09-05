@@ -54,6 +54,8 @@ public class User extends DataEntity<User> {
 	
 	private Role role;	// 根据角色查询用户条件
 	
+	private String allowLoadHistorySignature;
+	
 	private List<Role> roleList = Lists.newArrayList(); // 拥有角色列表
 	
 
@@ -352,6 +354,12 @@ public class User extends DataEntity<User> {
 
 		return list;
 	}
-	
-	
+
+	public String getAllowLoadHistorySignature() {
+		return allowLoadHistorySignature;
+	}
+
+	public void setAllowLoadHistorySignature(String allowLoadHistorySignature) {
+		this.allowLoadHistorySignature = allowLoadHistorySignature;
+	}
 }

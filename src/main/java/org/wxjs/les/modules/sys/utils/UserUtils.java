@@ -143,6 +143,15 @@ public class UserUtils {
 		return rst;
 	}
 	
+	public static String getAllowLoadHistorySignature(){
+		String rst = "0";
+		User user = getUser();
+		if(user!=null){
+			rst = user.getAllowLoadHistorySignature();
+		}
+		return rst;
+	}	
+	
 	public static String getUserIsAdmin(){
 		String rst = "0";
 		User user = getUser();

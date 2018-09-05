@@ -58,6 +58,22 @@
     	var title = "${fns:getCache('CurrentUserSignatureTitle', '')}";
     	$("#imageSig"+sigId).attr("src","data:" + title + "," + signature);
     }
+    
+    function loadHistorySignature(sigId, loginName){
+
+    	var json = {};
+    	json["loginName"] = loginName;
+    	
+    	$.get("${ctx}//base/signature/getLatestSignatureByLoginName",
+    		json,
+    		function(a){
+        	var signature = a["signature"];
+        	var title = a["title"];
+        	$("#imageSig"+sigId).attr("src","data:" + title + "," + signature);    		
+    	    }
+    	); 
+   
+    }
 
 </script>
 

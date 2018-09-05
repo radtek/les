@@ -55,7 +55,7 @@ input.btn:hover {*color:#333333}
 .form-search .ul-form li.btns .btn{margin-right:5px;}
 
 .form-horizontal {margin:0 10px;} .form-horizontal .control-group {margin-bottom:8px;}
-.form-horizontal .control-label {padding-top:3px;width:150px;} .form-horizontal .controls {text-align:left;overflow-x:auto;overflow-y:hidden;}
+.form-horizontal .control-label {padding-top:3px;width:120px;} .form-horizontal .controls {text-align:left;overflow-x:auto;overflow-y:hidden;}
 .form-horizontal .control-tight {width:90px;font-weight:bold;} .form-horizontal .controls-tight {margin-left: 110px;}
 .form-horizontal .controls label.error {background-position:0 2px;}
 

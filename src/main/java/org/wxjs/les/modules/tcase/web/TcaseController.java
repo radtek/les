@@ -727,6 +727,9 @@ public class TcaseController extends BaseController {
 			}
 			
 			Task task = taskService.createTaskQuery().taskId(caseAct.getTaskId()).singleResult();
+			
+			logger.debug("task.getExecutionId():{}", task.getExecutionId());
+			
 			caseAct.setTask(task);			
 		}
 		

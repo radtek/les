@@ -6,6 +6,8 @@
 <%@ attribute name="availableHandlers" type="java.util.List" required="true" description="下一环节处理人"%>
 <%@ attribute name="multiple" type="java.lang.Boolean" required="false" description="是否会签"%>
 
+<%@ attribute name="caseStageName" type="java.lang.String" required="true" description="case stage name"%>
+
 <%@ attribute name="actTaskAttr" type="org.wxjs.les.modules.base.entity.ActTask" required="true" description="ActTask"%>
 
     <script type="text/javascript">
@@ -88,7 +90,7 @@
 
 	</script>
 <div class="borderedBox" style="width:90%; text-align:left; align:left;">
-    <h5>任务名称：${actTaskAttr.taskName}</h5>
+          事项类型：<label style="font-weight:bold;color:red">${caseStageName}</label>&nbsp;&nbsp;&nbsp;任务名称：<label style="font-weight:bold;color:red">${actTaskAttr.taskName}</label>
 	<form:form id="approveForm" modelAttribute="actTask" action="${handleAction}" method="post" class="form-horizontal">
 
 	    <input id="taskId" name="taskId" type="hidden" value="${actTaskAttr.taskId}"/>
@@ -103,7 +105,7 @@
 				<div class="span6">		
 			<label class="control-label" style="width: 15px; font-size: 15px; word-wrap: break-word;">处理意见：</label>
 			<div class="controls" style="margin-left:30px">
-				<form:textarea path="approveOpinion" htmlEscape="false"  style="width:500px;height:150px;" class="required"/>
+				<form:textarea path="approveOpinion" htmlEscape="false"  style="width:420px;height:150px;" class="required"/>
 			</div>
 		        </div>			
 				<div class="span3">		

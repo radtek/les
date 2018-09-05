@@ -31,6 +31,12 @@
 		WHERE a.id = #{id}
 	</select>
 	
+    <select id="getLatestSignatureByLoginName" resultType="Signature">	
+		SELECT a.* FROM v_signature a
+		WHERE a.login_name=#{loginName}
+		AND a.create_date = (SELECT max(create_date) FROM v_signature WHERE login_name=#{loginName})    
+    </select>
+
 	<select id="findList" resultType="Signature">
 		SELECT 
 			<include refid="signatureColumns"/>
