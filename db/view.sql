@@ -16,3 +16,8 @@ SELECT c.*
 FROM tcase_process c
 WHERE c.case_stage_status>'0'
 AND c.case_stage in ('110','120','210');
+
+CREATE or REPLACE VIEW v_signature
+AS
+SELECT a.*, u.login_name FROM tsignature a
+LEFT JOIN sys_user u on u.id=a.create_by;

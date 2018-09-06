@@ -529,3 +529,5 @@ CREATE TABLE `tcase_doc_type` (
   `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文档类型';
+
+alter table sys_user add `allow_load_history_signature` char(1) DEFAULT '0' COMMENT '是否允许从历史库读取签名';
