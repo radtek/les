@@ -45,19 +45,7 @@
 
     <les:caseSummary caseAttr="${caseAct.tcase}"></les:caseSummary>	
     
-    <les:caseTab tab="serious" caseActAttr="${caseAct}"></les:caseTab> 
-    
-    <c:choose>
-       <c:when test="${caseAct.tcase.caseProcess.caseStageStatus eq '1' and not empty caseAct.task}">
-         <h5>&nbsp;流程处理</h5>
-         <les:processHandleTag handleAction="${ctx}/tcase/caseSerious/handletask"
-         availableHandlers="${caseAct.tcase.caseProcess.availableHandlers}" 
-         actTaskAttr="${actTask}" >
-         </les:processHandleTag>
-       </c:when>       
-       <c:otherwise>
-       </c:otherwise>
-    </c:choose>    
+    <les:caseTab tab="serious" caseActAttr="${caseAct}"></les:caseTab>   
 
     <les:caseProcessTag4Serious hideCaseSummary="hide"></les:caseProcessTag4Serious>
     
