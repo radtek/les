@@ -63,7 +63,9 @@ public class CaseDecisionListener implements ExecutionListener {
 					PunishInfo4Xml punishInfo4Xml =new PunishInfo4Xml();
 					
 					punishInfo4Xml.setAjNo(caseDecision.getFullDecisionNumber());
-					punishInfo4Xml.setJasj(DateUtils.formatDate(tcase.getSettleDate(), "yyyy-MM-dd HH:mm:ss"));
+					//punishInfo4Xml.setJasj(DateUtils.formatDate(tcase.getSettleDate(), "yyyy-MM-dd HH:mm:ss"));
+					//决定书签发时间
+					punishInfo4Xml.setJasj(DateUtils.getDate("yyyy-MM-dd HH:mm:ss"));
 					punishInfo4Xml.setLasj(DateUtils.formatDate(tcase.getInitialDate(), "yyyy-MM-dd HH:mm:ss"));
 					punishInfo4Xml.setPrjNum(tcase.getProjectCode());
 					punishInfo4Xml.setWfwgxm(tcase.getProjectName());

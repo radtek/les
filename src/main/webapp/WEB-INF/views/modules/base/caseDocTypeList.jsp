@@ -37,11 +37,11 @@
 		<thead>
 			<tr>
 				<th>阶段</th>
+				<th>文档阶段</th>
 				<th>文档类型</th>
 				<th>是否必须</th>
 				<th>上传方式</th>
 				<th>更新时间</th>
-				<th>备注信息</th>
 				<shiro:hasPermission name="base:caseDocType:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
