@@ -19,6 +19,7 @@ import org.activiti.engine.HistoryService;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.impl.task.TaskDefinition;
 import org.activiti.engine.task.Task;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -767,14 +768,23 @@ public class TcaseController extends BaseController {
 		caseProcess.setCaseId(tcase.getId());
 		List<CaseProcess> processlist = caseProcessService.findList(caseProcess);
 		
-		
-		//fill task
-		
 		List<CaseProcess> punishProcesslist = Lists.newArrayList();
 		List<CaseProcess> independentProcesslist = Lists.newArrayList();
 		List<CaseProcess> transferProcesslist = Lists.newArrayList();
 		
 		for(CaseProcess process : processlist){
+			//fill task
+			if(StringUtils.isNotEmpty(process.getProcInsId())){
+				//Task task = taskService.createTaskQuery().processInstanceId(process.getProcInsId()).active().singleResult();
+				Task task = taskService.createTaskQuery().processInstanceId(process.getProcInsId()).singleResult();
+
+				String executionId = process.getProcInsId();
+				if(task!=null){
+					executionId = task.getExecutionId();
+				}
+				process.setExecutionId(executionId);
+			}
+			
 			if(Global.CASE_STAGE_SERIOUS.equals(process.getCaseStage()) 
 			|| Global.CASE_STAGE_CANCEL.equals(process.getCaseStage())){
 				independentProcesslist.add(process);

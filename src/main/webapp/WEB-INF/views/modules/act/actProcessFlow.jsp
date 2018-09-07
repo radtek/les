@@ -16,9 +16,19 @@
 		<div class="row-fluid">
 			<div class="span12">
 			<h5>流程图</h5>
+			<c:choose>
+			  <c:when test="${not empty executionId}">
 				<iframe id="flowchart" name="flowchart" src="${ctx}/common/activiti/processTracking?processDefId=${procDefId}&executionId=${executionId}" 
 				style="overflow: visible; height: 400px;" scrolling="yes" frameborder="no" width="100%" height="400px">
-				</iframe>
+				</iframe>			  
+			  </c:when>
+			  <c:otherwise>
+				<iframe id="flowchart" name="flowchart" src="${ctx}/act/diagram-viewer?processDefinitionId=${procDefId}&processInstanceId=${procInsId}" 
+				style="overflow: visible; height: 400px;" scrolling="yes" frameborder="no" width="100%" height="400px">
+				</iframe>			  
+			  </c:otherwise>
+			</c:choose>
+		
 			</div>
 		</div>
 		<div class="row-fluid">

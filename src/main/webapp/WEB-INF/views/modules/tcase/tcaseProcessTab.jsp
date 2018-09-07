@@ -80,8 +80,8 @@
 				<c:if test="${not empty process.procInsId}">
 				  <!-- 		 
 				  <a target="_blank" href="${pageContext.request.contextPath}/act/diagram-viewer?processDefinitionId=${process.procDefId}&processInstanceId=${process.procInsId}">跟踪</a>&nbsp;
-				  -->executionId:${caseAct.task.executionId}
-				  <a target="_blank" href="${ctx}/common/activiti/toProcTrack?procDefId=${process.procDefId}&procInsId=${process.procInsId}&executionId=${caseAct.task.executionId}">跟踪</a>&nbsp;
+				  -->
+				  <a target="_blank" href="${ctx}/common/activiti/toProcTrack?procDefId=${process.procDefId}&procInsId=${process.procInsId}&executionId=${process.executionId}">跟踪</a>&nbsp;
 
 				</c:if>
 				<c:if test="${process.caseStageStatus eq '2'}">
@@ -123,7 +123,7 @@
  <!--
 				  <a target="_blank" href="${pageContext.request.contextPath}/act/diagram-viewer?processDefinitionId=${process.procDefId}&processInstanceId=${process.procInsId}">跟踪</a>&nbsp;
 	  -->			  
-				  <a target="_blank" href="${ctx}/common/activiti/toProcTrack?procDefId=${process.procDefId}&procInsId=${process.procInsId}&executionId=${caseAct.task.executionId}">跟踪</a>&nbsp;
+				  <a target="_blank" href="${ctx}/common/activiti/toProcTrack?procDefId=${process.procDefId}&procInsId=${process.procInsId}&executionId=${process.executionId}">跟踪</a>&nbsp;
 				
 				</c:if>
 				<c:if test="${process.caseStageStatus eq '2'}">
@@ -161,7 +161,7 @@
  <!--
 				  <a target="_blank" href="${pageContext.request.contextPath}/act/diagram-viewer?processDefinitionId=${process.procDefId}&processInstanceId=${process.procInsId}">跟踪</a>&nbsp;
 	  -->			  
-				  <a target="_blank" href="${ctx}/common/activiti/toProcTrack?procDefId=${process.procDefId}&procInsId=${process.procInsId}&executionId=${caseAct.task.executionId}">跟踪</a>&nbsp;
+				  <a target="_blank" href="${ctx}/common/activiti/toProcTrack?procDefId=${process.procDefId}&procInsId=${process.procInsId}&executionId=${process.executionId}">跟踪</a>&nbsp;
 				</c:if>			
 				</td>
 			</tr>
