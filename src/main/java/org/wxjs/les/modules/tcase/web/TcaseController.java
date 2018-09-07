@@ -776,12 +776,14 @@ public class TcaseController extends BaseController {
 			//fill task
 			if(StringUtils.isNotEmpty(process.getProcInsId())){
 				//Task task = taskService.createTaskQuery().processInstanceId(process.getProcInsId()).active().singleResult();
-				Task task = taskService.createTaskQuery().processInstanceId(process.getProcInsId()).singleResult();
-
+				//Task task = taskService.createTaskQuery().processInstanceId(process.getProcInsId()).singleResult();
+				/*
 				String executionId = process.getProcInsId();
 				if(task!=null){
 					executionId = task.getExecutionId();
 				}
+				*/
+				String executionId = process.getProcInsId();
 				process.setExecutionId(executionId);
 			}
 			
