@@ -6,25 +6,66 @@
 <!-- 本标签和signatureLoader同时使用，本标签在一个页面上只要放一个。 -->
 
 <script type="text/javascript">
+
+	var dHeight = 450;
+	var dWidth = 800 ; 
+
+    var bodyWidth = dWidth -30;
+    var bodyHeight = dHeight *2/3;
+    var boxWidth = bodyWidth - 10;
+    var boxHeight = bodyHeight - 10; 
+
+    $(document).ready(function() {
+    	$('#sigModal').on('shown.bs.modal', function (e) {
+            // 关键代码，如没将modal设置为 block，则$modala_dialog.height() 为零
+            $(this).css('display', 'block');
+            var modalTop = ($(window).height() - dHeight) / 2;
+            var modalLeft = ($(window).width() - dWidth) / 2;
+            if(modalTop<0){
+            	modalTop = 0;
+            	dHeight = $(window).height();
+            };
+            if(modalLeft<0){
+            	modalLeft = 0;
+            	dWidth = $(window).width();
+            };
+            alert("modalTop:"+modalTop+", modalLeft:"+modalLeft+",dHeight:"+dHeight+",dWidth:"+dWidth);
+            //$(this).find('.modal-dialog').css({'margin-top': modalTop,'margin-left': modalLeft});
+            $(this).css({'margin-top': modalTop,'margin-left': modalLeft, 'top': '0%', "left": '0%', 'width': dWidth,'height': dHeight});
+            bodyWidth = dWidth -30;
+            bodyHeight = dHeight *2/3;
+            boxWidth = bodyWidth - 10;
+            boxHeight = bodyHeight - 10;    
+            
+            alert("bodyWidth:"+bodyWidth+", bodyHeight:"+bodyHeight+", boxWidth:"+boxWidth+", boxHeight:"+boxHeight);
+            
+            $(this).find('.modal-body').css({'width': bodyWidth,'height': bodyHeight});
+            $(this).find('#signatureBox').css({'width': boxWidth,'height': boxHeight});
+            
+            initial();
+            
+        });    	
+    	
+    });
 	
 	function initial(){
 		
 		//alert("initial...");
 	    //初始化
-	    var dHeight = "320px";
-		var dWidth = "810px" ; 
+	    var heightPx = (boxHeight-20) + "px";
+		var widthPx = boxWidth + "px" ; 
 		
 		var $sigdiv = $("#signatureBox");
 		
 		//alert($sigdiv);
 		//alert($sigdiv==null);
 		
-		$sigdiv.jSignature({height:dHeight, width:dWidth, signatureLine:false});//初始化调整手写屏大小
+		$sigdiv.jSignature({height:heightPx, width:widthPx, signatureLine:false});//初始化调整手写屏大小
 		$sigdiv.jSignature("reset");
     }
 	
 	function loadModal(sigId){
-		initial();
+		
 		$("#sigId").val(sigId);
 		resetSignature();
 	}
@@ -80,7 +121,7 @@
 <input type="hidden" id="sigId" value=""/>
 
 <!-- 模态框（Modal） -->
-<div class="modal fade" id="sigModal" style="width:850px;height:450px;display:none;">
+<div class="modal fade" id="sigModal" style="display:none;">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -91,8 +132,8 @@
 					签名框
 				</h4>
 			</div>
-			<div class="modal-body" style="width: 820px;height: 340px;">
-				<div id="signatureBox" style="width: 810px;height: 320px;border: 1px solid #ccc;margin: 10px 0px;"></div>
+			<div class="modal-body" >
+				<div id="signatureBox" style="border: 1px solid #ccc;margin: 10px 0px;"></div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary" onclick="saveSignature()" data-dismiss="modal">保存签名</button>
