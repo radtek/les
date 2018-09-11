@@ -29,7 +29,7 @@
             	modalLeft = 0;
             	dWidth = $(window).width();
             };
-            alert("modalTop:"+modalTop+", modalLeft:"+modalLeft+",dHeight:"+dHeight+",dWidth:"+dWidth);
+            //alert("modalTop:"+modalTop+", modalLeft:"+modalLeft+",dHeight:"+dHeight+",dWidth:"+dWidth);
             //$(this).find('.modal-dialog').css({'margin-top': modalTop,'margin-left': modalLeft});
             $(this).css({'margin-top': modalTop,'margin-left': modalLeft, 'top': '0%', "left": '0%', 'width': dWidth,'height': dHeight});
             bodyWidth = dWidth -30;
@@ -37,7 +37,7 @@
             boxWidth = bodyWidth - 10;
             boxHeight = bodyHeight - 10;    
             
-            alert("bodyWidth:"+bodyWidth+", bodyHeight:"+bodyHeight+", boxWidth:"+boxWidth+", boxHeight:"+boxHeight);
+            //alert("bodyWidth:"+bodyWidth+", bodyHeight:"+bodyHeight+", boxWidth:"+boxWidth+", boxHeight:"+boxHeight);
             
             $(this).find('.modal-body').css({'width': bodyWidth,'height': bodyHeight});
             $(this).find('#signatureBox').css({'width': boxWidth,'height': boxHeight});

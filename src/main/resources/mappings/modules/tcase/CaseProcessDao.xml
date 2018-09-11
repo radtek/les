@@ -163,7 +163,6 @@
 			case_handler = #{caseHandler},
 			case_stage = #{caseStage},
 			case_stage_status = #{caseStageStatus},
-			proc_inst_id = #{procInsId},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks}
