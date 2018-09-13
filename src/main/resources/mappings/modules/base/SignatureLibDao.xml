@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wxjs.les.modules.base.dao.SignatureLibDao">
+    
+	<sql id="signatureLibColumns">
+		a.id AS "id",
+		a.login_name AS "user.loginName",
+		a.title AS "title",
+		a.signature AS "signature",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		u.name AS "user.name"
+	</sql>
+	
+	<sql id="signatureLibJoins">
+	    LEFT JOIN sys_user u on u.login_name = a.login_name
+	</sql>
+    
+	<select id="get" resultType="SignatureLib">
+		SELECT 
+			<include refid="signatureLibColumns"/>
+		FROM tsignature_lib a
+		<include refid="signatureLibJoins"/>
+		WHERE u.login_name = #{user.loginName}
+	</select>
+	
+	<select id="findList" resultType="SignatureLib">
+		SELECT u.login_name AS "user.loginName", 
+		       u.name AS "user.name",
+			   a.title AS "title",
+			   a.signature AS "signature"		        
+		FROM sys_user u
+		LEFT JOIN tsignature_lib a on a.login_name=u.login_name
+		<where>
+			u.del_flag = #{DEL_FLAG_NORMAL}
+			AND u.user_type='1'
+			<if test="user != null and user.loginName != null and user.loginName != ''">
+				AND u.login_name = #{user.loginName}
+			</if>
+			<if test="user != null and user.name != null and user.name != ''">
+				AND u.name like concat('%',#{user.name},'%')
+			</if>			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY u.login_name
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="SignatureLib">
+		SELECT 
+			<include refid="signatureLibColumns"/>
+		FROM tsignature_lib a
+		<include refid="signatureLibJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO tsignature_lib(
+			id,
+			login_name,
+			title,
+			signature,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{user.loginName},
+			#{title},
+			#{signature},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE tsignature_lib SET 	
+			title = #{title},
+			signature = #{signature},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE login_name = #{user.loginName}
+	</update>
+	
+	<update id="delete">
+		UPDATE tsignature_lib SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE login_name = #{user.loginName}
+	</update>
+	
+</mapper>
