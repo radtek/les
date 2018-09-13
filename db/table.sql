@@ -20,6 +20,7 @@ CREATE TABLE `tcase` (
   `accept_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '受理时间',
   `initial_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '立案日期',
   `initial_handler` varchar(32) NULL COMMENT '立案经办人',
+  `decision_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '处罚决定日期',
   `settle_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '结案日期',
   `case_source` varchar(100) NULL COMMENT '案件来源',
   `party_type` varchar(32) NOT NULL COMMENT '当事人类型',
@@ -447,6 +448,24 @@ CREATE TABLE `tsignature` (
   `proc_inst_id` varchar(64) NULL COMMENT '受理流程号',
   `task_name` varchar(64) DEFAULT NULL COMMENT '任务名称',
   `approve_opinion` varchar(500) DEFAULT NULL COMMENT '审核意见',  
+  `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_by` varchar(32) DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  `remarks` varchar(64) DEFAULT NULL COMMENT '备注信息',
+  `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='签名记录';
+
+-- ----------------------------
+-- Table structure for tsignature_lib
+-- ----------------------------
+DROP TABLE IF EXISTS `tsignature_lib`;
+CREATE TABLE `tsignature_lib` (
+  `id` varchar(64) NOT NULL COMMENT 'uuid',
+  `login_name` varchar(32) NOT NULL COMMENT '拥有者',
+  `title` varchar(100) NOT NULL COMMENT '头',
+  `signature` text NOT NULL COMMENT '签名', 
   `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
   `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_by` varchar(32) DEFAULT NULL COMMENT '更新者',
