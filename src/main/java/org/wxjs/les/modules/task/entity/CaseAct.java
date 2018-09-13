@@ -363,6 +363,15 @@ public class CaseAct extends BaseEntity<CaseAct> {
 	public void setBusinesskey(String businesskey) {
 		this.businesskey = businesskey;
 	}
+	
+	public String getProcessId() {
+		String processId = "";
+		String[] strs = businesskey.split(":");
+		if(strs.length>1){
+			processId = strs[1];
+		}
+		return processId;
+	}
 
 	/**
 	 * 获取过去的任务历时

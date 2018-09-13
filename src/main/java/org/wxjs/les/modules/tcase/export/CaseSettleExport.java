@@ -84,12 +84,14 @@ public class CaseSettleExport extends ExportBase<CaseSettleExport> {
         	document.add(table); 
         	//受案、立案、结案日期
         	String dateFormat = "yyyy年MM月dd日";
-        	String sa = DateUtils.formatDate(this.tcase.getAcceptDate(), dateFormat);
+        	//String sa = DateUtils.formatDate(this.tcase.getAcceptDate(), dateFormat);
         	
-        	String la = DateUtils.formatDate(this.tcase.getInitialDate(), dateFormat);
-        	String ja = DateUtils.formatDate(this.tcase.getSettleDate(), dateFormat);
+        	String initialDate = DateUtils.formatDate(this.tcase.getInitialDate(), dateFormat);
+        	String decisionDate = DateUtils.formatDate(this.tcase.getDecisionDate(), dateFormat);
+        	String settleDate = DateUtils.formatDate(this.tcase.getSettleDate(), dateFormat);
 
-        	items=new String[] {"受案\n日期",sa,"立案\n日期",la,"结案\n日期",ja};
+        	//items=new String[] {"受案\n日期",sa,"立案\n日期",la,"结案\n日期",ja};
+        	items=new String[] {"立案\n日期",initialDate,"处罚决定\n日期",decisionDate, "结案\n日期",settleDate};
         	table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.1f, 0.25f, 0.1f, 0.2f, 0.15f, 0.2f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 30);
         	document.add(table); 
         	

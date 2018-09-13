@@ -153,5 +153,6 @@
 			<input id="btnReach" class="btn btn-primary" type="button" value="送达回证"/>&nbsp;		
 		</div>
 	</form:form>
+	<les:toApprove caseActAttr="${caseAct}" caseStageAttr="50"></les:toApprove>
 </body>
 </html>

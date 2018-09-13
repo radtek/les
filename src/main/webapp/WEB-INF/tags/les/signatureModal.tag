@@ -95,17 +95,10 @@
     }
     
     function loadSignature(sigId){
-    	var signature = "${fns:getCache('CurrentUserSignatureContent', '')}";
-    	var title = "${fns:getCache('CurrentUserSignatureTitle', '')}";
-    	$("#imageSig"+sigId).attr("src","data:" + title + "," + signature);
-    }
-    
-    function loadHistorySignature(sigId, loginName){
 
     	var json = {};
-    	json["loginName"] = loginName;
     	
-    	$.get("${ctx}//base/signature/getLatestSignatureByLoginName",
+    	$.get("${ctx}/base/signatureLib/getSignatureByLoginName",
     		json,
     		function(a){
         	var signature = a["signature"];

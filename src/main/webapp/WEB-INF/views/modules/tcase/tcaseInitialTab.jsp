@@ -53,5 +53,7 @@
 	-->
     	
     <les:caseProcessTag4Initial></les:caseProcessTag4Initial>
+    
+    <les:toApprove caseActAttr="${caseAct}" caseStageAttr="20"></les:toApprove>
 </body>
 </html>

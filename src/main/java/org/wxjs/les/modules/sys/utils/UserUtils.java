@@ -52,6 +52,8 @@ public class UserUtils {
 	public static final String CACHE_OFFICE_LIST = "officeList";
 	public static final String CACHE_OFFICE_ALL_LIST = "officeAllList";
 	
+	public static final String commonUserRoleId = "99";
+	
 	/**
 	 * 根据ID获取用户
 	 * @param id
@@ -83,7 +85,12 @@ public class UserUtils {
 			if (user == null){
 				return null;
 			}
-			user.setRoleList(roleDao.findList(new Role(user)));
+			List<Role> roleList = roleDao.findList(new Role(user));
+			//add roles for common user
+			Role roleCommonUser = roleDao.get(commonUserRoleId);
+			roleList.add(roleCommonUser);
+			
+			user.setRoleList(roleList);
 			CacheUtils.put(USER_CACHE, USER_CACHE_ID_ + user.getId(), user);
 			CacheUtils.put(USER_CACHE, USER_CACHE_LOGIN_NAME_ + user.getLoginName(), user);
 		}
@@ -174,6 +181,7 @@ public class UserUtils {
 				Role role = new Role();
 				role.getSqlMap().put("dsf", BaseService.dataScopeFilter(user.getCurrentUser(), "o", "u"));
 				roleList = roleDao.findList(role);
+	
 			}
 			putCache(CACHE_ROLE_LIST, roleList);
 		}
@@ -196,6 +204,7 @@ public class UserUtils {
 				role.getSqlMap().put("dsf", BaseService.dataScopeFilter(user.getCurrentUser(), "o", "u"));
 				//roleList = roleDao.findList(role);
 				roleList = roleDao.findRolesExSuper(role);
+
 			}
 			putCache(CACHE_ROLE_LIST, roleList);
 		}

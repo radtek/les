@@ -1,6 +1,7 @@
 package org.wxjs.les.modules.tcase.listener;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.ExecutionListener;
@@ -65,7 +66,11 @@ public class CaseDecisionListener implements ExecutionListener {
 					punishInfo4Xml.setAjNo(caseDecision.getFullDecisionNumber());
 					//punishInfo4Xml.setJasj(DateUtils.formatDate(tcase.getSettleDate(), "yyyy-MM-dd HH:mm:ss"));
 					//决定书签发时间
-					punishInfo4Xml.setJasj(DateUtils.getDate("yyyy-MM-dd HH:mm:ss"));
+					Date decisionDate = Calendar.getInstance().getTime();
+					tcase.setDecisionDate(decisionDate);
+					this.caseDao.updateDecisionDate(tcase);
+					
+					punishInfo4Xml.setJasj(DateUtils.formatDate(decisionDate, "yyyy-MM-dd HH:mm:ss"));
 					punishInfo4Xml.setLasj(DateUtils.formatDate(tcase.getInitialDate(), "yyyy-MM-dd HH:mm:ss"));
 					punishInfo4Xml.setPrjNum(tcase.getProjectCode());
 					punishInfo4Xml.setWfwgxm(tcase.getProjectName());

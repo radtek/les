@@ -82,5 +82,6 @@
 		    <input id="btnFinish" class="btn btn-primary" type="button" value="备考表"/>
 		</div>
 	</form:form>
+	<les:toApprove caseActAttr="${caseAct}" caseStageAttr="70"></les:toApprove>
 </body>
 </html>

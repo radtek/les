@@ -16,20 +16,12 @@
 	时间：<fmt:formatDate value="${sig.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/><BR>
 	</c:if>
 	<form:hidden path="${path}"/>
-	<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#sigModal" onclick="loadModal('${sig.id}')">
-	签名
-    </button>&nbsp;&nbsp;
-    
-  <c:choose>
-	<c:when test="${fns:getAllowLoadHistorySignature() eq '1'}">
-           <button type="button" class="btn btn-primary" onclick="loadHistorySignature('${sig.id}','${fns:getUserLoginName()}')">历史签名</button> 		
-	</c:when>
-	<c:otherwise>
-	    <c:if test="${hideLoadButton ne 'hide' and not empty fns:getCache('CurrentUserSignatureTitle', '')}">
-	    <button type="button" class="btn btn-primary" onclick="loadSignature('${sig.id}')">上次签名</button>&nbsp;&nbsp;
-	    </c:if>		
-	</c:otherwise>
-  </c:choose>    
 	
+	<c:if test="${hideLoadButton ne 'hide'}">
+	<button type="button" class="btn btn-primary" onclick="loadSignature('${sig.id}')">读取签名</button> &nbsp;&nbsp;
+	</c:if>
+	
+	<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#sigModal" onclick="loadModal('${sig.id}')">签名</button>
+
 </div>
 

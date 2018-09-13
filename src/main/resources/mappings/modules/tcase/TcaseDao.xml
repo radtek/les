@@ -9,6 +9,7 @@
 		a.accept_date AS "acceptDate",
 		a.initial_date AS "initialDate",
 		a.initial_handler AS "initialHandler",
+		a.decision_date AS "decisionDate",
 		a.settle_date AS "settleDate",
 		a.case_source AS "caseSource",
 		a.party_type AS "partyType",
@@ -312,7 +313,13 @@
 		  initial_date = #{initialDate}
 		WHERE id = #{id}
 	</update>
-	
+
+	<update id="updateDecisionDate">
+		UPDATE tcase SET 	
+		  decision_date = #{decisionDate}
+		WHERE id = #{id}
+	</update>
+		
 	<update id="updateSettleDate">
 		UPDATE tcase SET
 		  settle_date = #{settleDate}

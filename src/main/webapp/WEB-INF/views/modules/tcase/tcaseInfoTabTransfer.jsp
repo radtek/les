@@ -298,8 +298,9 @@
 				<div class="span12">		
 			<label class="control-label">办案人：</label>
 			<div class="controls controls-tight">
-			    
-		       <form:checkboxes path="tcase.caseProcess.caseHandlerList" items="${caseAct.tcase.caseProcess.availableHandlers}" itemLabel="name" itemValue="loginName" htmlEscape="false" class="required"/>
+			   <sys:treeselect id="caseHandlerList" name="tcase.caseProcess.caseHandlerList" value="${caseAct.tcase.caseProcess.caseHandler}" labelName="" labelValue="${caseAct.tcase.caseProcess.caseHandlerName}" 
+				title="办案人" url="/sys/user/treeDataWithLoginName?officeId=" checked="true" cssClass="input-xxlarge" allowClear="true" notAllowSelectParent="true"/>
+						       
 		       <span class="help-inline"><font color="red">*</font> </span>			              			
 				
 			</div>
@@ -317,5 +318,6 @@
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>
+	<les:toApprove caseActAttr="${caseAct}" caseStageAttr="210"></les:toApprove>
 </body>
 </html>

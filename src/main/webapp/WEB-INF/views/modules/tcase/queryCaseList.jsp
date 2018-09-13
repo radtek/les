@@ -179,6 +179,7 @@
 				<th width="15%">案由</th>
 				<th>处罚决定书编号</th>
 				<th>立案日期</th>
+				<th>处罚日期</th>
 				<th>结案日期</th>
 				<th>经办人</th>
 				<th>案件状态</th>
@@ -204,6 +205,7 @@
 				<td>${tcase.caseCause}</td>
 				<td>${tcase.caseDecision.fullDecisionNumber}</td>								
 				<td><fmt:formatDate value="${tcase.initialDate}" pattern="yyyy-MM-dd"/></td>
+				<td><fmt:formatDate value="${tcase.decisionDate}" pattern="yyyy-MM-dd"/></td>
 				<td><fmt:formatDate value="${tcase.settleDate}" pattern="yyyy-MM-dd"/></td>
 				<td>${tcase.initialHandler}</td>
 				<td>${tcase.statusLabel}</td>

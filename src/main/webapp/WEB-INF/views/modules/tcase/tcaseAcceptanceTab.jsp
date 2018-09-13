@@ -35,5 +35,8 @@
     <les:caseTab tab="acceptance" caseActAttr="${caseAct}"></les:caseTab>
     	
     <les:caseProcessTag></les:caseProcessTag>
+    
+    <les:toApprove caseActAttr="${caseAct}" caseStageAttr="10"></les:toApprove>
+   
 </body>
 </html>

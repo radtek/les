@@ -31,5 +31,8 @@ public interface TcaseDao extends CrudDao<Tcase> {
 	
 	public void updateInitialDate(Tcase entity);
 	
+	public void updateDecisionDate(Tcase entity);
+	
 	public void updateSettleDate(Tcase entity);
+	
 }

@@ -210,6 +210,6 @@
 			</shiro:hasPermission>
 		</div>
 	</form:form>
-		
+	<les:toApprove caseActAttr="${caseAct}" caseStageAttr="110"></les:toApprove>	
 </body>
 </html>
