@@ -40,11 +40,15 @@ public class SignatureService extends CrudService<SignatureDao, Signature> {
 	
 	@Transactional(readOnly = false)
 	public void save(Signature signature) {
+		
+		logger.debug("1 signature.getId():{}", signature.getId());
+		
 		signature.preUpdate();
 		int effects = dao.update(signature);
 		if(effects == 0){
 			signature.setIsNewRecord(true);
 			signature.preInsert();
+			logger.debug("2 signature.getId():{}", signature.getId());
 			dao.insert(signature);
 		}
 	}

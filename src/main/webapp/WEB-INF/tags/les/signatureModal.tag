@@ -98,11 +98,13 @@
 
     	var json = {};
     	
-    	$.get("${ctx}/base/signatureLib/getSignatureByLoginName",
+    	$.get("${ctx}/base/signature/loadSignatureByLoginName?id="+sigId,
     		json,
     		function(a){
         	var signature = a["signature"];
         	var title = a["title"];
+
+        	$("#sigId").val(sigId);
         	$("#imageSig"+sigId).attr("src","data:" + title + "," + signature);    		
     	    }
     	); 

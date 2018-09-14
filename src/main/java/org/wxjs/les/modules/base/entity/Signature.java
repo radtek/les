@@ -59,10 +59,12 @@ public class Signature extends DataEntity<Signature> {
 	
 	public String getData(){
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("data:")
-		.append(this.title)
-		.append(",")
-		.append(this.signature);
+		if(StringUtils.isNotEmpty(this.signature)){
+			buffer.append("data:")
+			.append(this.title)
+			.append(",")
+			.append(this.signature);
+		}
 		return buffer.toString();
 	}
 	
@@ -97,7 +99,7 @@ public class Signature extends DataEntity<Signature> {
 	}
 	
 	public String getCreateDateDisplay(){
-		return DateUtils.formatDate(this.createDate, "yyyy-MM-dd HH:mm");
+		return (this.createDate==null)?"":DateUtils.formatDate(this.createDate, "yyyy-MM-dd HH:mm");
 	}
 	
 }

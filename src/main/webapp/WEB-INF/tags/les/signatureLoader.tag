@@ -11,10 +11,11 @@
 <!-- 本标签和signatureModal同时使用，本标签在一个页面上可以有多个，signatureModal只要放一个。 -->
 
 <div style="margin:20px">
-	<c:if test="${not empty sig.data}">
+
 	<img id="imageSig${sig.id}"  style="height:100px; width:180px" src="${sig.data}"/><BR>
-	时间：<fmt:formatDate value="${sig.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/><BR>
-	</c:if>
+	<!--  
+	时间：<div id="sigDate${sig.id}">${sig.createDateDisplay}</div><BR>
+	-->
 	<form:hidden path="${path}"/>
 	
 	<c:if test="${hideLoadButton ne 'hide'}">

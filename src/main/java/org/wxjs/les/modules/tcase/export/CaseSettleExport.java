@@ -92,7 +92,7 @@ public class CaseSettleExport extends ExportBase<CaseSettleExport> {
 
         	//items=new String[] {"受案\n日期",sa,"立案\n日期",la,"结案\n日期",ja};
         	items=new String[] {"立案\n日期",initialDate,"处罚决定\n日期",decisionDate, "结案\n日期",settleDate};
-        	table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.1f, 0.25f, 0.1f, 0.2f, 0.15f, 0.2f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 30);
+        	table = PdfUtil.generateTableRow(items, fontContent,  new float[]{0.1f, 0.25f, 0.12f, 0.18f, 0.15f, 0.2f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 30);
         	document.add(table); 
         	
         	

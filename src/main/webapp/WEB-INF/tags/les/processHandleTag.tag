@@ -130,7 +130,7 @@
 		</div>	    
 		<div class="control-group container-fluid nopadding">
 			<div class="row-fluid">
-				<div class="span8">		
+				<div class="span7">		
 			<c:if test="${not empty availableHandlers}">
 			<label class="control-label">下一环节处理人：</label>
 			<div class="controls controls-tight">
@@ -148,7 +148,7 @@
 			</c:if>
 			<input id="availableHandlersEmptyFlag" type="hidden" value="${empty availableHandlers}">
 		        </div>			
-				<div class="span4">		
+				<div class="span5">		
 			<label class="control-label"></label>
 			<div class="controls controls-tight">
 			    <c:if test="${actTask.needPassButton}">

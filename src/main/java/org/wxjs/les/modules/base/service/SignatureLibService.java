@@ -36,7 +36,14 @@ public class SignatureLibService extends CrudService<SignatureLibDao, SignatureL
 	
 	@Transactional(readOnly = false)
 	public void save(SignatureLib signatureLib) {
-		super.save(signatureLib);
+		//super.save(signatureLib);
+		signatureLib.preUpdate();
+		int effects = dao.update(signatureLib);
+		
+		if (effects == 0){
+			signatureLib.preInsert();
+			dao.insert(signatureLib);
+		}
 	}
 	
 	@Transactional(readOnly = false)

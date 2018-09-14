@@ -472,7 +472,8 @@ CREATE TABLE `tsignature_lib` (
   `update_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   `remarks` varchar(64) DEFAULT NULL COMMENT '备注信息',
   `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE(login_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='签名库';
 
 -- ----------------------------
