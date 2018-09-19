@@ -94,7 +94,7 @@ public class CaseDecisionExport extends ExportBase<CaseDecisionExport> {
             pragraph.setAlignment(Paragraph.ALIGN_LEFT);
             document.add(pragraph);
             
-            pragraph = new Paragraph("法律代表人："+this.tcase.getOrgAgent(), fontContent);
+            pragraph = new Paragraph("法定代表人："+this.tcase.getOrgAgent(), fontContent);
             pragraph.setAlignment(Paragraph.ALIGN_LEFT);
             document.add(pragraph);
             
