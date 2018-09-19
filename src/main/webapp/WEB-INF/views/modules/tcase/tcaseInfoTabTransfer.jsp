@@ -315,7 +315,6 @@
 			</c:if>
 			</shiro:hasPermission>
 			<input id="btnExport" class="btn btn-primary" type="button" value="案件移送单"/>&nbsp;
-			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>
 	<les:toApprove caseActAttr="${caseAct}" caseStageAttr="210"></les:toApprove>

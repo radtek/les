@@ -366,9 +366,13 @@ public class CaseAct extends BaseEntity<CaseAct> {
 	
 	public String getProcessId() {
 		String processId = "";
-		String[] strs = businesskey.split(":");
-		if(strs.length>1){
-			processId = strs[1];
+		if(StringUtils.isNotEmpty(businesskey)){
+
+			String[] strs = businesskey.split(":");
+			if(strs.length>1){
+				processId = strs[1];
+			}
+
 		}
 		return processId;
 	}
