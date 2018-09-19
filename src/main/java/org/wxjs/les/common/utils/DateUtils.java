@@ -39,6 +39,9 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 	 */
 	public static String formatDate(Date date, Object... pattern) {
 		String formatDate = null;
+		if(date==null){
+			return "";
+		}
 		if (pattern != null && pattern.length > 0) {
 			formatDate = DateFormatUtils.format(date, pattern[0].toString());
 		} else {
