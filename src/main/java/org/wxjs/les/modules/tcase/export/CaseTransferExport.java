@@ -81,6 +81,14 @@ public class CaseTransferExport extends ExportBase<CaseTransferExport> {
 					30);
 			document.add(table);
 
+			
+			items = new String[] { "移送单位", this.tcase.getTransferUnit() };
+			table = PdfUtil.generateTableRow(items, fontContent, new float[] {
+					0.1f, 0.9f }, tableWidth, Element.ALIGN_LEFT, borderWidth,
+					30);
+			document.add(table);
+
+			
 			// 案由
 			items = new String[] { "案由", this.tcase.getCaseCause() };
 			table = PdfUtil.generateTableRow(items, fontContent, new float[] {

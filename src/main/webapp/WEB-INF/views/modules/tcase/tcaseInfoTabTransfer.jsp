@@ -256,13 +256,22 @@
 		</div>		
 		<div class="control-group container-fluid nopadding">
 			<div class="row-fluid">
-				<div class="span12">		
+				<div class="span6">		
 			<label class="control-label">案件所涉项目名称：</label>
 			<div class="controls controls-tight">
 				<form:input path="tcase.projectName" htmlEscape="false" maxlength="100" class="input-xxlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		        </div>
+		        
+		        <div class="span6">		
+			<label class="control-label">移送单位：</label>
+			<div class="controls controls-tight">
+				<form:input path="tcase.transferUnit" htmlEscape="false" maxlength="100" class="input-xxlarge required"/>
+				<span class="help-inline"><font color="red">*</font> </span>
+			</div>
+		        </div>
+		        
 		    </div>
 		</div>
 		<div class="control-group container-fluid nopadding">
