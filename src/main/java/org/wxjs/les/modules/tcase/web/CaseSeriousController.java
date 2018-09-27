@@ -28,7 +28,10 @@ import org.wxjs.les.common.web.BaseController;
 import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.StringUtils;
 import org.wxjs.les.modules.act.utils.ProcessUtils;
+import org.wxjs.les.modules.base.dao.SignatureLibDao;
 import org.wxjs.les.modules.base.entity.ActTask;
+import org.wxjs.les.modules.base.entity.Signature;
+import org.wxjs.les.modules.base.entity.SignatureLib;
 import org.wxjs.les.modules.base.service.SignatureService;
 import org.wxjs.les.modules.sys.utils.UserUtils;
 import org.wxjs.les.modules.task.entity.CaseAct;
@@ -76,6 +79,9 @@ public class CaseSeriousController extends BaseController {
 	
 	@Autowired
 	private SignatureService signatureService;
+	
+	@Autowired
+	private SignatureLibDao signatureLibDao;
 	
 	@ModelAttribute
 	public CaseSerious get(@RequestParam(required=false) String id) {
@@ -184,7 +190,7 @@ public class CaseSeriousController extends BaseController {
 	
 	@RequiresPermissions("case:tcase:edit")
 	@RequestMapping(value = "handletask")	
-	public String handletask(ActTask actTask, Model model) {
+	public String handletask(ActTask actTask, Model model, RedirectAttributes redirectAttributes) {
 		
 		String userid = UserUtils.getUser().getLoginName();
 		
@@ -234,8 +240,8 @@ public class CaseSeriousController extends BaseController {
 		}
 		comment.append(actTask.getApproveOpinion());
 		//add signature
-		comment.append(Global.SignatureTag);
-		comment.append(actTask.getSignature().getId());
+		//comment.append(Global.SignatureTag);
+		//comment.append(actTask.getSignature().getId());
 		
 		taskService.addComment(actTask.getTaskId(), actTask.getProcInsId(), comment.toString());
 		
@@ -248,10 +254,28 @@ public class CaseSeriousController extends BaseController {
 		if("pass".equals(actTask.getApprove())){
 			
 			//update opinion to signature
-			actTask.getSignature().setProcInstId(actTask.getProcInsId());
-			actTask.getSignature().setTaskName(actTask.getTaskName());
-			actTask.getSignature().setApproveOpinion(actTask.getApproveOpinion());
-			signatureService.updateOpinion(actTask.getSignature());
+			
+			Signature signature = new Signature(true);
+			signature.setTitle(Signature.DefaultTitle);
+			
+			SignatureLib signatureLibParam = new SignatureLib();
+			signatureLibParam.setUser(UserUtils.getUser());
+			SignatureLib signatureLib = signatureLibDao.get(signatureLibParam);
+			String signatureStr = "";
+			
+			if(signatureLib!=null && StringUtils.isNotEmpty(signatureLib.getSignature())){
+				signatureStr = signatureLib.getSignature();
+			}else{
+				addMessage(redirectAttributes, "请先设置您的签名！");
+				return null;
+			}
+			signature.setSignature(signatureStr);
+			signatureService.save(signature);
+			
+			signature.setProcInstId(actTask.getProcInsId());
+			signature.setTaskName(actTask.getTaskName());
+			signature.setApproveOpinion(actTask.getApproveOpinion());
+			signatureService.updateOpinion(signature);
 			
 			logger.debug("nextTaskDef==null:{}",(taskDef==null));
 			if("signTask".equals(taskDefKey)){ //if nextTaskDef is null, it is the last userTask 

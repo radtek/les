@@ -62,11 +62,11 @@
 				</c:if>
 				</td>
 				<shiro:hasPermission name="base:signatureLib:edit"><td>
-    				<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#sigModal" onclick="loadModal('${signatureLib.user.loginName}')">签名</button>
+    				<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#sigModal" onclick="loadModal('${signatureLib.user.loginName}')">上传签名</button>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>
-		<les:signatureModal4Lib></les:signatureModal4Lib>
+		<les:signatureImagePicker></les:signatureImagePicker>
 		</tbody>
 	</table>
 	<div class="pagination">${page}</div>

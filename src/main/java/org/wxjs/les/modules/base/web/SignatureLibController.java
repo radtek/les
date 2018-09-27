@@ -21,12 +21,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.web.BaseController;
+import org.wxjs.les.common.utils.Base64Utils;
+import org.wxjs.les.common.utils.FileUtils;
 import org.wxjs.les.common.utils.StringUtils;
 import org.wxjs.les.common.utils.Util;
 import org.wxjs.les.modules.base.entity.MSG;
 import org.wxjs.les.modules.base.entity.Signature;
 import org.wxjs.les.modules.base.entity.SignatureLib;
 import org.wxjs.les.modules.base.service.SignatureLibService;
+import org.wxjs.les.modules.base.utils.PathUtils;
 import org.wxjs.les.modules.sys.entity.User;
 import org.wxjs.les.modules.sys.utils.UserUtils;
 
@@ -96,6 +99,26 @@ public class SignatureLibController extends BaseController {
 		signatureLibService.save(signatureLib);
 		
 		return new MSG("ok");  
+	}
+	
+	
+	@RequiresPermissions("base:signatureLib:edit")
+	@RequestMapping(value = "saveImage")
+	public String saveImage(SignatureLib signatureLib, HttpServletRequest req, RedirectAttributes redirectAttributes) {
+		
+		logger.debug(signatureLib.getUser().getLoginName());
+		
+		signatureLib.setTitle(Signature.DefaultTitle);
+		String realPath = PathUtils.getRealPath(signatureLib.getFilepath());
+		
+		signatureLib.setSignature(Base64Utils.ImageToBase64(realPath));
+		
+		signatureLibService.save(signatureLib);
+		
+		FileUtils.deleteFile(realPath);
+		
+		addMessage(redirectAttributes, "上传签名成功");
+		return "redirect:"+Global.getAdminPath()+"/base/signatureLib/?repage";
 	}
 	
 	@RequiresPermissions("base:signatureLib:edit")

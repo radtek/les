@@ -21,6 +21,8 @@ public class SignatureLib extends DataEntity<SignatureLib> {
 	private String title;		// 头
 	private String signature;		// 签名
 	
+	private String filepath;
+	
 	public SignatureLib() {
 		super();
 	}
@@ -54,6 +56,14 @@ public class SignatureLib extends DataEntity<SignatureLib> {
 		this.signature = signature;
 	}
 	
+	public String getFilepath() {
+		return filepath;
+	}
+
+	public void setFilepath(String filepath) {
+		this.filepath = filepath;
+	}
+
 	public String getData(){
 		StringBuffer buffer = new StringBuffer();
 		if(StringUtils.isNotEmpty(this.signature)){

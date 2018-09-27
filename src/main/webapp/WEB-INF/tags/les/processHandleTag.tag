@@ -17,13 +17,6 @@
     		if(!check()){
     			return;
     		}
-    		//check signature
-    		var sigImageId = "#imageSig${actTask.signature.id}";
-    		var sigData = $(sigImageId).attr('src');
-    		if(sigData.length<100){
-    			alert("请签名！");
-    			return;
-    		}
     		
     		//check nextHandlers
     		var availableHandlersEmptyFlag = $("#availableHandlersEmptyFlag").val();
@@ -102,13 +95,13 @@
 	              
 		<div class="control-group container-fluid nopadding">
 			<div class="row-fluid">
-				<div class="span6">		
+				<div class="span7">		
 			<label class="control-label" style="width: 15px; font-size: 15px; word-wrap: break-word;">处理意见：</label>
 			<div class="controls" style="margin-left:30px">
-				<form:textarea path="approveOpinion" htmlEscape="false"  style="width:420px;height:150px;" class="required"/>
+				<form:textarea path="approveOpinion" htmlEscape="false"  style="width:520px;height:150px;" class="required"/>
 			</div>
 		        </div>			
-				<div class="span3">		
+				<div class="span5">		
 			<label class="control-label" style="width: 15px; font-size: 15px; word-wrap: break-word;"><a href="${ctx}/base/opinionTemplate/list">常用批语：</a></label>
 			<div class="controls" style="margin-left:30px">
 			    
@@ -117,13 +110,6 @@
 				       <li style="cursor: pointer;margin: 3px 0px 3px 0px">${temp.opinion}</li>
 				    </c:forEach>
 				</ul>
-			</div>
-		        </div>
-				<div class="span3">		
-			<label class="control-label" style="width: 15px; font-size: 15px; word-wrap: break-word;">签名：</label>
-			<div class="controls" style="margin-left:30px">
-				<les:signatureLoader sig="${actTaskAttr.signature}" path="signature.id"></les:signatureLoader>
-				<les:signatureModal></les:signatureModal>
 			</div>
 		        </div>
 		    </div>

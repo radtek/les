@@ -17,6 +17,9 @@ import org.wxjs.les.common.utils.IdGen;
 public class Signature extends DataEntity<Signature> {
 	
 	private static final long serialVersionUID = 1L;
+	
+	public static final String DefaultTitle = "image/png;base64";
+	
 	private String title;		// 头
 	private String signature;		// 签名
 	
