@@ -46,6 +46,7 @@ CREATE TABLE `tcase` (
   `case_cause` varchar(200) NOT NULL COMMENT '案由',
   `case_transfer` char(1) DEFAULT '0' COMMENT '是否案源, 1：表示为案源',
   `transfer_case_id` varchar(32) NULL COMMENT '移交后的case_id',
+  `case_transferUnit` varchar(32) NULL COMMENT '移送单位',
   `status` varchar(32) default '0' COMMENT '状态',
   `upload_status` varchar(32) default '0' COMMENT '上报状态',
   `attach_upload_progress` varchar(32) default '0' COMMENT '附件上传进度',

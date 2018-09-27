@@ -67,6 +67,7 @@ public class Tcase extends DataEntity<Tcase> {
 	
 	private String caseTransfer;    //是否案源移交， 1：是案源移交
 	private String transferCaseId;  //移交后的case id
+	private String transferUnit;    //移送单位
 	
 	private String status;
 	
@@ -782,5 +783,14 @@ public class Tcase extends DataEntity<Tcase> {
 		return DateUtils.format(date, "yyyy/MM/dd");
 		
 	}
+
+	public String getTransferUnit() {
+		return transferUnit;
+	}
+
+	public void setTransferUnit(String transferUnit) {
+		this.transferUnit = transferUnit;
+	}
+	
 	
 }
