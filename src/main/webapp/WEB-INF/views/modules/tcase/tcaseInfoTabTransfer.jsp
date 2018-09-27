@@ -318,10 +318,14 @@
 		</div>
 		
 		<div class="form-actions">
-			<shiro:hasPermission name="case:tcase:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保 存"/>&nbsp;
-			<c:if test="${caseAct.operateType eq 'start' || caseAct.tcase.caseProcess.caseStageStatus eq '0'}">
-			   <input id="btnStart" class="btn btn-primary" type="button" value="启动事件"/>&nbsp;
-			</c:if>
+		
+			<shiro:hasPermission name="case:tcase:edit">
+				<c:if test="${caseAct.tcase.caseProcess.editable}">
+					<input id="btnSubmit" class="btn btn-primary" type="button" value="保 存"/>&nbsp;
+				</c:if>
+				<c:if test="${caseAct.operateType eq 'start' || caseAct.tcase.caseProcess.caseStageStatus eq '0'}">
+			  	 <input id="btnStart" class="btn btn-primary" type="button" value="启动事件"/>&nbsp;
+				</c:if>
 			</shiro:hasPermission>
 			<input id="btnExport" class="btn btn-primary" type="button" value="案件移送单"/>&nbsp;
 		</div>

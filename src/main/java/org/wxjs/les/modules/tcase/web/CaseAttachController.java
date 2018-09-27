@@ -64,22 +64,19 @@ public class CaseAttachController extends BaseController {
 	@RequiresPermissions("case:tcase:view")
 	@RequestMapping(value = "form")
 	public String form(CaseAct caseAct, HttpServletRequest request, Model model) {
-		
 		String businesskey = caseAct.getBusinesskey();
-		
 		Tcase tcase = caseService.getCaseAndProcess(businesskey);
-		
 		caseAct.setTcase(tcase);
 		
 		String attachId = Util.getString(request.getParameter("attachId"));
 		CaseAttach caseAttach = new CaseAttach();
-		
+		if(tcase.getCaseTransfer().equals("1")) {
+			caseAttach.setFlowNode("案源移交流程");
+		}
 		if(StringUtils.isNotEmpty(attachId)){
 			caseAttach = caseAttachService.get(attachId);
 		}
-
 		model.addAttribute("caseAttach", caseAttach);
-		
 		return "modules/tcase/caseAttachForm";
 	}
 
