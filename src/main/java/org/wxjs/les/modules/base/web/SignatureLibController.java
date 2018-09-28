@@ -3,6 +3,7 @@
  */
 package org.wxjs.les.modules.base.web;
 
+import java.io.File;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,6 +42,8 @@ import org.wxjs.les.modules.sys.utils.UserUtils;
 @Controller
 @RequestMapping(value = "${adminPath}/base/signatureLib")
 public class SignatureLibController extends BaseController {
+	
+	private static final long MaxFileSize = 50000;
 
 	@Autowired
 	private SignatureLibService signatureLibService;
@@ -104,20 +107,31 @@ public class SignatureLibController extends BaseController {
 	
 	@RequiresPermissions("base:signatureLib:edit")
 	@RequestMapping(value = "saveImage")
-	public String saveImage(SignatureLib signatureLib, HttpServletRequest req, RedirectAttributes redirectAttributes) {
+	public String saveImage(SignatureLib signatureLib, HttpServletRequest req, Model model, RedirectAttributes redirectAttributes) {
 		
 		logger.debug(signatureLib.getUser().getLoginName());
 		
 		signatureLib.setTitle(Signature.DefaultTitle);
 		String realPath = PathUtils.getRealPath(signatureLib.getFilepath());
 		
-		signatureLib.setSignature(Base64Utils.ImageToBase64(realPath));
+		File f = new File(realPath);
 		
-		signatureLibService.save(signatureLib);
+		long fileSize = f.length();
+		logger.debug("fileSize:{}", fileSize);
+		if(fileSize > MaxFileSize){
+			addMessage(redirectAttributes, "上传失败！签名图片大小应小于50KB！");
+			//model.addAttribute("message", "上传失败！签名图片大小应小于50KB！");
+			logger.debug("文件太大");
+		}else{
+			signatureLib.setSignature(Base64Utils.ImageToBase64(realPath));
+			
+			signatureLibService.save(signatureLib);	
+			
+			FileUtils.deleteFile(realPath);
+			
+			addMessage(redirectAttributes, "上传签名成功！");
+		}
 		
-		FileUtils.deleteFile(realPath);
-		
-		addMessage(redirectAttributes, "上传签名成功");
 		return "redirect:"+Global.getAdminPath()+"/base/signatureLib/?repage";
 	}
 	

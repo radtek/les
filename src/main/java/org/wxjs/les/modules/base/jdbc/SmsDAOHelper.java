@@ -24,13 +24,11 @@ public class SmsDAOHelper{
 	 */
 	public static int executeSQL(String sql) throws SQLException {
 		int rst = 0;
-	    ApplicationContext ctx = new ClassPathXmlApplicationContext("spring-context.xml");  
-	    DataSource dataSource = ctx.getBean("dataSourceSms",DataSource.class); 
 	    
 		Connection conn = null;
 		Statement st = null;
 		try{
-			conn = dataSource.getConnection();
+			conn = getConnection();
 			st = conn.createStatement();
 			rst = st.executeUpdate(sql);
 		}catch(SQLException ex){

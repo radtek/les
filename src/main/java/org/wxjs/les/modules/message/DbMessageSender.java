@@ -1,43 +1,33 @@
 package org.wxjs.les.modules.message;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
-import org.wxjs.les.modules.base.jdbc.UploadDAOHelper;
-import org.wxjs.les.modules.base.utils.KeyValue;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.wxjs.les.modules.base.jdbc.SmsDAOHelper;
+import org.wxjs.les.modules.sys.entity.User;
 
 public class DbMessageSender implements MessageSender {
+	
+	protected Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Override
-	public KeyValue send(String mobiles, String message) throws SQLException {
-		List<String> sqls = new ArrayList<String>();
-		String[] items = mobiles.split(",");
-		int index = 1;
-		for(String item: items){
-			if(!item.equals("")){
-				StringBuffer buffer = new StringBuffer();
-				//String id = "AFC-"+System.currentTimeMillis()+"-"+index;
-				
-				buffer.append(" insert into sms_outbox ( extcode, destaddr, messagecontent,"); 
-				buffer.append(" reqdeliveryreport,msgfmt,sendmethod,requesttime,applicationid)");
-				buffer.append(" VALUES ('55', '"+item+"',"); 
-				buffer.append(" '"+message+"', 1, 15, 0, now(), 'matchfee')");
-				
-				sqls.add(buffer.toString());
-				index++;
-			}
-			
-		}
+	public boolean send(User user, String message) throws SQLException {
 		
-		int effects = UploadDAOHelper.executeSQL(sqls);
+		StringBuffer buffer = new StringBuffer();
 		
-		KeyValue kv = new KeyValue();
-		kv.setKey("0");
-		kv.setValue("Post "+effects+" items to SMS database");
+		buffer.append(" insert into smsMessage (sendUserName,receiveUserName,sendTime,saveTime,"); 
+		buffer.append(" content,receiveMobilePhone,isSend)");
+		buffer.append(" VALUES ('"+user.getName()+"', '"+user.getName()+"',SYSDATETIME(),SYSDATETIME(),"); 
+		buffer.append(" '"+message+"', '"+user.getMobile()+"', 'false')");
 		
-		return kv;
+		logger.debug(buffer.toString());
+		
+		int effects = SmsDAOHelper.executeSQL(buffer.toString());
+		
+		logger.info("Post "+effects+" items to SMS database");
+		
+		return true;
 		
 	}
 

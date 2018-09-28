@@ -46,7 +46,8 @@
 			    <form:hidden id="loginName" path="user.loginName"/>
 			   
 			    <form:hidden id="filepath" path="filepath" htmlEscape="false" maxlength="256" class="input-xlarge"/>
-				<sys:ckfinder input="filepath" type="images" uploadPath="/signatureLib" selectMultiple="false"/>
+				<sys:ckfinder input="filepath" type="sigs" uploadPath="/signatureLib" selectMultiple="false" maxWidth="200" maxHeight="100"/>
+				<strong>签名图片应小于50KB。</strong>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary" onclick="saveSignature()" data-dismiss="modal">保存</button>

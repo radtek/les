@@ -1,10 +1,9 @@
 package org.wxjs.les.modules.message;
 
-import org.wxjs.les.modules.base.utils.KeyValue;
-
+import org.wxjs.les.modules.sys.entity.User;
 
 public interface MessageSender {
 	
-	public KeyValue send(String mobiles, String message) throws Exception;
+	public boolean send(User user, String message) throws Exception;
 
 }

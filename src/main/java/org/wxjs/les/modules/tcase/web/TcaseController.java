@@ -725,7 +725,7 @@ public class TcaseController extends BaseController {
 			}
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);	
 			
-			if(availableHandlers.size() > 0){
+			if(availableHandlers.size() == 1 ){
 				//set default value
 				tcase.getCaseProcess().setCaseHandler(availableHandlers.get(0).getLoginName());
 				

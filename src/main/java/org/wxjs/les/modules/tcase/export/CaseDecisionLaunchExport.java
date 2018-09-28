@@ -129,7 +129,7 @@ public class CaseDecisionLaunchExport extends
 
 			// 承办部门
 			items = new String[] { "承办\n部门",
-					"       "+this.caseDecision.getDestinationAddress() };
+					"       "+Global.getConfig("CBBM") };
 			table = generateTableRows(items, fontContent, new float[] {
 					0.1f, 0.9f }, tableWidth, Element.ALIGN_LEFT,Element.ALIGN_MIDDLE, borderWidth,
 					50, true);

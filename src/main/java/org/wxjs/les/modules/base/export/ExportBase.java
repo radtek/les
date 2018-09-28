@@ -382,8 +382,12 @@ public abstract class ExportBase<T> {
     	for(Signature sig : sigsOthers){
     		
     		logger.debug("sig.getTaskName():{}", sig.getTaskName());
-    		
-        	cell = PdfUtil.getContentCell(PdfUtil.transferVertical(sig.getTaskName()), Element.ALIGN_LEFT, borderWidth, fontContent, 1, 1, 0);
+    		int lineLen = 1;
+    		if(sig.getTaskName().length()>5){
+    			lineLen = 2;
+    		}
+    		cell = PdfUtil.getContentCell(PdfUtil.transferVertical(sig.getTaskName(), lineLen), Element.ALIGN_LEFT, borderWidth, fontContent, 1, 1, 0);
+        	
         	cell.setHorizontalAlignment(Element.ALIGN_CENTER); //水平居中
         	cell.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直居中
         	table.addCell(cell);

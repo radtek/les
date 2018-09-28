@@ -40,6 +40,9 @@ public class Tcase extends DataEntity<Tcase> {
 	private Date acceptDate;		// 受理时间
 	private Date initialDate;		// 立案日期
 	private String initialHandler;		// 立案经办人
+	
+	private String initialHandlerName;		// 临时属性，立案经办人
+	
 	private Date decisionDate;       // 处罚决定日期
 	private Date settleDate;		// 结案日期
 	private String caseSource;		// 案件来源
@@ -168,7 +171,7 @@ public class Tcase extends DataEntity<Tcase> {
 		this.initialDate = initialDate;
 	}
 
-	@ExcelField(title="经办人", type=1, align=2, sort=100)
+	
 	public String getInitialHandler() {
 		return initialHandler;
 	}
@@ -177,6 +180,15 @@ public class Tcase extends DataEntity<Tcase> {
 		this.initialHandler = initialHandler;
 	}
 	
+	@ExcelField(title="经办人", type=1, align=2, sort=100)
+	public String getInitialHandlerName() {
+		return initialHandlerName;
+	}
+
+	public void setInitialHandlerName(String initialHandlerName) {
+		this.initialHandlerName = initialHandlerName;
+	}
+
 	@ExcelField(title="处罚日期", type=1, align=2, sort=85)
 	public String getDecisionDateDisplay() {
 		return this.parseDate(decisionDate);

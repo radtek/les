@@ -25,6 +25,7 @@ import org.wxjs.les.common.utils.Util;
 import org.wxjs.les.modules.base.dao.SignatureDao;
 import org.wxjs.les.modules.base.entity.Signature;
 import org.wxjs.les.modules.base.utils.PathUtils;
+import org.wxjs.les.modules.sys.dao.UserDao;
 import org.wxjs.les.modules.sys.entity.User;
 import org.wxjs.les.modules.sys.utils.DictUtils;
 import org.wxjs.les.modules.sys.utils.SequenceUtils;
@@ -73,6 +74,9 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 	
 	@Autowired
 	protected	SignatureDao signatureDao;
+	
+	@Autowired
+	protected	UserDao userDao;
 	
 	@Autowired
 	protected	CaseHandlePunishLibDao caseHandlePunishLibDao;
@@ -251,7 +255,31 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 	
 	public Page<Tcase> findPage(Page<Tcase> page, Tcase tcase) {
 		tcase.setPage(page);
-		page.setList(this.findList(tcase));
+		List<Tcase> list = this.findList(tcase);
+		
+		//fill names
+		List<User> userList = userDao.findList(new User());
+		Map<String, String> userMap = new HashMap<String, String>();
+		for(User user : userList){
+			userMap.put(user.getLoginName(), user.getName());
+		}
+		
+		for(Tcase entity : list){
+			String handler = entity.getInitialHandler();
+			if(StringUtils.isEmpty(handler)){
+				continue;
+			}
+			String[] strs = handler.split(",");
+			StringBuffer buffer = new StringBuffer();
+			for(String str: strs){
+				if(str.length()>0){
+					buffer.append(userMap.get(str)).append(",");
+				}
+			}
+			entity.setInitialHandlerName(buffer.toString());
+		}
+		
+		page.setList(list);
 		return page;		
 	}
 	

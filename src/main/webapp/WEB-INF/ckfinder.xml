@@ -45,6 +45,13 @@
 			<allowedExtensions>bmp,gif,jpeg,jpg,png</allowedExtensions>
 			<deniedExtensions></deniedExtensions>
 		</type>
+		<type name="sigs">
+			<url>%BASE_URL%sigs/</url>
+			<directory>%BASE_DIR%sigs</directory>
+			<maxSize>50K</maxSize>
+			<allowedExtensions>bmp,gif,jpeg,jpg,png</allowedExtensions>
+			<deniedExtensions></deniedExtensions>		
+		</type>		
 		<type name="flash">
 			<url>%BASE_URL%flash/</url>
 			<directory>%BASE_DIR%flash</directory>

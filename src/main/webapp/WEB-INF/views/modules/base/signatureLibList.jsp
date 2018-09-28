@@ -34,7 +34,8 @@
 			<li class="clearfix"></li>
 		</ul>
 	</form:form>
-	<sys:message content="${message}"/>
+	<sys:myMessage content="${message}"/>
+	
 	<table id="contentTable" class="table table-striped table-bordered table-condensed" style="width:70%">
 		<thead>
 			<tr>

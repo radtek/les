@@ -207,7 +207,7 @@
 				<td><fmt:formatDate value="${tcase.initialDate}" pattern="yyyy-MM-dd"/></td>
 				<td><fmt:formatDate value="${tcase.decisionDate}" pattern="yyyy-MM-dd"/></td>
 				<td><fmt:formatDate value="${tcase.settleDate}" pattern="yyyy-MM-dd"/></td>
-				<td>${tcase.initialHandler}</td>
+				<td>${tcase.initialHandlerName}</td>
 				<td>${tcase.statusLabel}</td>
 				<td>${tcase.attachLocalProgress}</td>
 				<td>${tcase.attachLocalDetail}</td>

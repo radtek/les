@@ -85,7 +85,9 @@
 
 				</c:if>
 				<c:if test="${process.caseStageStatus eq '2'}">
+				<shiro:hasPermission name="case:tcase:handleTimeEdit">
 				  <a target="_blank" href="${ctx}/tcase/caseProcess/toUpdateSignatureTime?id=${process.id}">修改办理时间</a>
+				</shiro:hasPermission>
 				</c:if>
 				</td>
 			</tr>

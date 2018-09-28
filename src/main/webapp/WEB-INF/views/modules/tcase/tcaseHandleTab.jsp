@@ -119,6 +119,7 @@
 				<form:textarea path="fact" htmlEscape="false"  style="width:800px;height:300px;" class="required"/>
 			</div>
 		</div>
+		<!--  
 		<div class="control-group">
 			<label class="control-label">调查人：</label>
 			<div class="controls">
@@ -126,6 +127,7 @@
 				title="记录人员" url="/sys/user/treeDataWithLoginName?officeId=" checked="true" cssClass="input-xxlarge" allowClear="true" notAllowSelectParent="true"/>				
 			</div>
 		</div>
+		-->
 		<div class="form-actions">
 			<shiro:hasPermission name="case:tcase:edit">
 			<c:if test="${caseAct.tcase.caseProcess.editable}">
