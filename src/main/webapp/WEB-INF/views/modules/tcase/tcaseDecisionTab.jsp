@@ -42,6 +42,18 @@
 				$("#inputForm").attr("action","${ctx}/tcase/caseDecision/exportReachPDF");
 				$("#inputForm").submit();		    	
 		    });	
+		    
+			$("#btnRecall").click(function(){
+				
+				top.$.jBox.confirm("确认要收回决定书编号吗？本操作无法撤销。","系统提示",function(v,h,f){
+					if(v=="ok"){
+						$("#inputForm").attr("action","${ctx}/tcase/caseDecision/recallNumber");
+						$("#inputForm").submit();
+					}
+				},{buttonsFocus:1});				
+
+				top.$('.jbox-body .jbox-icon').css('top','55px');
+			});			    
 		    		    
 		});
 	</script>
@@ -94,9 +106,15 @@
 				<span class="help-inline"><font color="red">*</font> </span>]年第(
 			    <form:hidden path="seq"/>
 			    <c:if test="${empty caseDecision.seq}">
-			    <input value="自动生成" readonly="readonly" class="input-mini">
+			    <input value="自动生成" readonly="readonly" class="input-mini">)号
 			    </c:if>
-			    <c:if test="${not empty caseDecision.seq}">${caseDecision.seq}</c:if>)号
+			    <c:if test="${not empty caseDecision.seq}">${caseDecision.seq})号
+			    <c:if test="${caseDecision.seq ne '已收回'}">
+			    <shiro:hasPermission name="case:tcase:seqRecall">
+			    <input id="btnRecall" class="btn btn-primary" type="button" value="收回编号"/>
+			    </shiro:hasPermission>
+			    </c:if>
+			    </c:if>
 			</div>
 		</div>
 		<div class="control-group">

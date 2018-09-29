@@ -19,7 +19,7 @@
     <exclusiveGateway id="sid-C47DC249-F311-4B69-A5E0-CF054BA1472F"></exclusiveGateway>
     <sequenceFlow id="sid-E0252BE5-CF9B-4E86-9A96-8346C9B9BAD7" sourceRef="sid-E2AF9AE3-1D2C-42A8-A85F-9EE0317DB275" targetRef="sid-C47DC249-F311-4B69-A5E0-CF054BA1472F"></sequenceFlow>
     <endEvent id="sid-619AB5A8-D242-4294-AC3D-8211F3FCA239" name="End"></endEvent>
-    <sequenceFlow id="sid-7C0ACA4E-17A1-4D47-9CE0-74C10096919C" name="通过" sourceRef="exclusivegateway1" targetRef="usertask7">
+    <sequenceFlow id="sid-7C0ACA4E-17A1-4D47-9CE0-74C10096919C" name="通过" sourceRef="exclusivegateway1" targetRef="usertask8">
       <extensionElements>
         <activiti:executionListener event="take" class="org.wxjs.les.modules.tcase.listener.CaseDecisionListener"></activiti:executionListener>
       </extensionElements>
@@ -52,7 +52,7 @@
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <sequenceFlow id="flow6" name="取消" sourceRef="exclusivegateway1" targetRef="sid-619AB5A8-D242-4294-AC3D-8211F3FCA239">
+    <sequenceFlow id="flow6" name="取消" sourceRef="exclusivegateway1" targetRef="endevent5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${jldOp=='cancel'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow7" name="退回" sourceRef="exclusivegateway1" targetRef="usertask6">
@@ -76,6 +76,9 @@
     <endEvent id="endevent2" name="结束"></endEvent>
     <endEvent id="endevent3" name="结束"></endEvent>
     <endEvent id="endevent4" name="结束"></endEvent>
+    <userTask id="usertask8" name="分配送达人" activiti:assignee="${slkkyAssignee}" activiti:candidateGroups="slkky"></userTask>
+    <sequenceFlow id="flow16" sourceRef="usertask8" targetRef="usertask7"></sequenceFlow>
+    <endEvent id="endevent5" name="结束"></endEvent>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_caseDecisionProcess">
     <bpmndi:BPMNPlane bpmnElement="caseDecisionProcess" id="BPMNPlane_caseDecisionProcess">
@@ -101,7 +104,7 @@
         <omgdc:Bounds height="40.0" width="40.0" x="715.0" y="170.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="sid-619AB5A8-D242-4294-AC3D-8211F3FCA239" id="BPMNShape_sid-619AB5A8-D242-4294-AC3D-8211F3FCA239">
-        <omgdc:Bounds height="35.0" width="35.0" x="1390.0" y="176.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="1490.0" y="172.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="80.0" width="105.0" x="1015.0" y="153.0"></omgdc:Bounds>
@@ -116,7 +119,7 @@
         <omgdc:Bounds height="40.0" width="40.0" x="940.0" y="172.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask7" id="BPMNShape_usertask7">
-        <omgdc:Bounds height="80.0" width="105.0" x="1240.0" y="154.0"></omgdc:Bounds>
+        <omgdc:Bounds height="80.0" width="105.0" x="1360.0" y="150.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="256.0" y="80.0"></omgdc:Bounds>
@@ -129,6 +132,12 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
         <omgdc:Bounds height="35.0" width="35.0" x="943.0" y="80.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask8" id="BPMNShape_usertask8">
+        <omgdc:Bounds height="80.0" width="105.0" x="1230.0" y="151.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent5" id="BPMNShape_endevent5">
+        <omgdc:Bounds height="35.0" width="35.0" x="1158.0" y="80.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="sid-60689434-EF4F-4210-A888-9C047100FA6C" id="BPMNEdge_sid-60689434-EF4F-4210-A888-9C047100FA6C">
         <omgdi:waypoint x="63.0" y="190.0"></omgdi:waypoint>
@@ -148,9 +157,9 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sid-7C0ACA4E-17A1-4D47-9CE0-74C10096919C" id="BPMNEdge_sid-7C0ACA4E-17A1-4D47-9CE0-74C10096919C">
         <omgdi:waypoint x="1195.0" y="193.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1240.0" y="194.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1230.0" y="191.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="1197.0" y="201.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="24.0" x="1197.0" y="201.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sid-275A8280-138C-4875-8068-BDFA8CA94F7C" id="BPMNEdge_sid-275A8280-138C-4875-8068-BDFA8CA94F7C">
@@ -219,9 +228,7 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="1175.0" y="173.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1174.0" y="124.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1357.0" y="124.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1407.0" y="176.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1175.0" y="115.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="14.0" width="24.0" x="1186.0" y="161.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
@@ -263,8 +270,12 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
-        <omgdi:waypoint x="1345.0" y="194.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1390.0" y="193.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1465.0" y="190.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1490.0" y="189.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
+        <omgdi:waypoint x="1335.0" y="191.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1360.0" y="190.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

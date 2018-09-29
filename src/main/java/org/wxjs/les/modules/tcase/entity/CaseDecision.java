@@ -198,4 +198,8 @@ public class CaseDecision extends DataEntity<CaseDecision> {
 		this.paramUri = paramUri;
 	}
 	
+	public String getSeqKey(){
+		return "DecisionSeq_"+this.getDecisionType()+"_"+this.getYear();
+	}
+	
 }

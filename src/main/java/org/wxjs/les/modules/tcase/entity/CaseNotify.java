@@ -149,6 +149,10 @@ public class CaseNotify extends DataEntity<CaseNotify> {
 		return buffer.toString();
 	}
 	
+	public String getSeqKey(){
+		return "NotifySeq_"+this.getNotifyType()+"_"+this.getYear();
+	}
+	
 	
 	
 }

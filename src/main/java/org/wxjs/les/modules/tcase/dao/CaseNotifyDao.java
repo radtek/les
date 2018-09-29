@@ -14,5 +14,5 @@ import org.wxjs.les.modules.tcase.entity.CaseNotify;
  */
 @MyBatisDao
 public interface CaseNotifyDao extends CrudDao<CaseNotify> {
-	
+	public void recallNumber(CaseNotify caseNotify);
 }

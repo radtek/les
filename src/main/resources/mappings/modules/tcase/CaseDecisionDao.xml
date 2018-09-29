@@ -141,4 +141,10 @@
 		WHERE id = #{id}
 	</update>
 	
+	<update id="recallNumber">
+		UPDATE tcase_decision SET
+			seq = '已收回'
+		WHERE case_id = #{caseId}
+	</update>	
+	
 </mapper>

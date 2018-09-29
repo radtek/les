@@ -1,53 +1,44 @@
-package org.wxjs.les.modules.act.utils;
+package org.wxjs.les.modules.act.service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-import org.activiti.engine.FormService;
-import org.activiti.engine.HistoryService;
-import org.activiti.engine.IdentityService;
-import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.impl.RepositoryServiceImpl;
-import org.activiti.engine.impl.bpmn.behavior.ParallelMultiInstanceBehavior;
 import org.activiti.engine.impl.bpmn.behavior.UserTaskActivityBehavior;
-import org.activiti.engine.impl.javax.el.ExpressionFactory;
-import org.activiti.engine.impl.javax.el.ValueExpression;
-import org.activiti.engine.impl.juel.ExpressionFactoryImpl;
-import org.activiti.engine.impl.juel.SimpleContext;
+
 import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.activiti.engine.impl.pvm.PvmActivity;
 import org.activiti.engine.impl.pvm.PvmTransition;
 import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.activiti.engine.impl.task.TaskDefinition;
-import org.activiti.engine.repository.ProcessDefinition;
-import org.activiti.engine.runtime.Execution;
-import org.activiti.engine.runtime.ExecutionQuery;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
-import org.activiti.engine.task.TaskQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wxjs.les.common.utils.SpringContextHolder;
-import org.wxjs.les.common.utils.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.wxjs.les.common.service.BaseService;
 
-public class ProcessUtils {
+@Service
+@Transactional(readOnly = true)
+public class ProcessService extends BaseService {
 
 	protected Logger logger = LoggerFactory.getLogger(getClass());
 
-	private RuntimeService runtimeService = SpringContextHolder
-			.getBean(RuntimeService.class);
+	@Autowired
+	private RuntimeService runtimeService;
+	
+	@Autowired
+	private TaskService taskService;
 
-	private TaskService taskService = SpringContextHolder
-			.getBean(TaskService.class);
-
-	private RepositoryService repositoryService = SpringContextHolder
-			.getBean(RepositoryService.class);
+	@Autowired
+	private RepositoryService repositoryService;
 
 	/**
 	 * 获取用户任务定义

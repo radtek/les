@@ -29,15 +29,8 @@ import org.activiti.engine.impl.bpmn.behavior.UserTaskActivityBehavior;
 import org.activiti.engine.impl.context.Context;
 import org.activiti.engine.impl.identity.Authentication;
 import org.activiti.engine.impl.interceptor.CommandExecutor;
-import org.activiti.engine.impl.javax.el.ExpressionFactory;
-import org.activiti.engine.impl.javax.el.ValueExpression;
-import org.activiti.engine.impl.juel.ExpressionFactoryImpl;
-import org.activiti.engine.impl.juel.SimpleContext;
-import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.activiti.engine.impl.persistence.entity.TaskEntity;
-import org.activiti.engine.impl.pvm.PvmActivity;
-import org.activiti.engine.impl.pvm.PvmTransition;
 import org.activiti.engine.impl.pvm.delegate.ActivityBehavior;
 import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.activiti.engine.impl.task.TaskDefinition;
@@ -72,7 +65,6 @@ import org.wxjs.les.modules.act.service.creator.SimpleRuntimeActivityDefinitionE
 import org.wxjs.les.modules.act.utils.ActUtils;
 import org.wxjs.les.modules.act.utils.ProcessDefCache;
 import org.wxjs.les.modules.act.utils.ProcessDefUtils;
-import org.wxjs.les.modules.act.utils.ProcessUtils;
 import org.wxjs.les.modules.sys.entity.User;
 import org.wxjs.les.modules.sys.utils.UserUtils;
 import org.wxjs.les.modules.task.dao.CaseActDao;
@@ -106,7 +98,7 @@ public class CaseTaskService extends BaseService {
 	@Autowired
 	private HistoryService historyService;
 	@Autowired
-	private RepositoryService repositoryService;
+	private RepositoryService repositoryService; 
 	@Autowired
 	private IdentityService identityService;
 	

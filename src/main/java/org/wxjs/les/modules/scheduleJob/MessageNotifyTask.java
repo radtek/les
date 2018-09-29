@@ -1,6 +1,5 @@
 package org.wxjs.les.modules.scheduleJob;
 
-import java.util.Calendar;
 import java.util.List;
 
 import org.activiti.engine.TaskService;
@@ -21,7 +20,7 @@ public class MessageNotifyTask {
 	
 	@Autowired
 	private TaskService taskService;
-	
+
 	@Autowired
 	private UserDao userDao;
 

@@ -3,6 +3,7 @@
  */
 package org.wxjs.les.modules.tcase.web;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -27,12 +28,15 @@ import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.web.BaseController;
 import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.StringUtils;
-import org.wxjs.les.modules.act.utils.ProcessUtils;
+import org.wxjs.les.modules.act.service.ProcessService;
 import org.wxjs.les.modules.base.dao.SignatureLibDao;
 import org.wxjs.les.modules.base.entity.ActTask;
 import org.wxjs.les.modules.base.entity.Signature;
 import org.wxjs.les.modules.base.entity.SignatureLib;
 import org.wxjs.les.modules.base.service.SignatureService;
+import org.wxjs.les.modules.message.DbMessageSender;
+import org.wxjs.les.modules.message.MessageSender;
+import org.wxjs.les.modules.sys.utils.DictUtils;
 import org.wxjs.les.modules.sys.utils.UserUtils;
 import org.wxjs.les.modules.task.entity.CaseAct;
 import org.wxjs.les.modules.task.service.CaseTaskService;
@@ -82,6 +86,9 @@ public class CaseSeriousController extends BaseController {
 	
 	@Autowired
 	private SignatureLibDao signatureLibDao;
+	
+	@Autowired
+	ProcessService processService;
 	
 	@ModelAttribute
 	public CaseSerious get(@RequestParam(required=false) String id) {
@@ -197,8 +204,7 @@ public class CaseSeriousController extends BaseController {
 		Map<String,Object> variables = actTask.getVariables();
 		
 		//设置处理结果
-		ProcessUtils pu = new ProcessUtils();
-		String variable = pu.getConditionVariable(actTask.getTaskId());
+		String variable = processService.getConditionVariable(actTask.getTaskId());
 		
 		logger.debug("handletask variable:{}", variable);
 		
@@ -210,7 +216,7 @@ public class CaseSeriousController extends BaseController {
 		TaskDefinition taskDef = null;
 		String taskDefKey = "";
 		try {
-			taskDef = pu.getTaskDefinition(actTask.getTaskId());
+			taskDef = processService.getTaskDefinition(actTask.getTaskId());
 			taskDefKey = taskDef.getKey();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -219,10 +225,12 @@ public class CaseSeriousController extends BaseController {
 		
 		logger.debug("taskDefKey:{}", taskDefKey);
 		
+		String caseId =  actTask.getCaseIdFromBusinesskey();
+		CaseSerious caseSerious = caseSeriousService.get(caseId);
+		
 		if("writeTask".equals(taskDefKey)){
 			//设置参会人员会签
-			String caseId =  actTask.getCaseIdFromBusinesskey();
-			CaseSerious caseSerious = caseSeriousService.get(caseId);
+
 			List<String> voters = caseSerious.getVoter().getLoginNames();
 			variables.put("assigneeList", voters);			
 			logger.debug("voters:{}", voters.toString());
@@ -230,9 +238,23 @@ public class CaseSeriousController extends BaseController {
 		
 		logger.debug("actTask.getApprove():{}", actTask.getApprove());
 		
+		String signatureStr = "";
+		
 		StringBuffer comment = new StringBuffer();
 		if("pass".equals(actTask.getApprove())){
 			comment.append("[通过]");
+			
+			//check whether signature exists
+			SignatureLib signatureLibParam = new SignatureLib();
+			signatureLibParam.setUser(UserUtils.getUser());
+			SignatureLib signatureLib = signatureLibDao.get(signatureLibParam);
+
+			if(signatureLib!=null && StringUtils.isNotEmpty(signatureLib.getSignature())){
+				signatureStr = signatureLib.getSignature();
+			}else{
+				addMessage(redirectAttributes, "请先设置您的签名！");
+				return null;
+			}
 		}else if("return".equals(actTask.getApprove())){
 			comment.append("[退回]");
 		}else if("cancel".equals(actTask.getApprove())){
@@ -257,18 +279,7 @@ public class CaseSeriousController extends BaseController {
 			
 			Signature signature = new Signature(true);
 			signature.setTitle(Signature.DefaultTitle);
-			
-			SignatureLib signatureLibParam = new SignatureLib();
-			signatureLibParam.setUser(UserUtils.getUser());
-			SignatureLib signatureLib = signatureLibDao.get(signatureLibParam);
-			String signatureStr = "";
-			
-			if(signatureLib!=null && StringUtils.isNotEmpty(signatureLib.getSignature())){
-				signatureStr = signatureLib.getSignature();
-			}else{
-				addMessage(redirectAttributes, "请先设置您的签名！");
-				return null;
-			}
+
 			signature.setSignature(signatureStr);
 			signatureService.save(signature);
 			
@@ -285,6 +296,17 @@ public class CaseSeriousController extends BaseController {
 				if(activeCount == 0){
 					caseProcess.setCaseStageStatus(Global.CASE_STAGE_STATUS_FINISHED);
 					this.caseProcessService.updateStageStatus(caseProcess);					
+				}
+			}else{
+				//send message
+				MessageSender sender = new DbMessageSender();
+				Tcase tcase = tcaseService.getCaseAndProcess(actTask.getBusinesskey());
+				try {
+					sender.send(caseSerious.getVoter().getLoginName(), "综合行政执法系统中您有1个待办事项。项目名称："+tcase.getCaseCause()
+					+", 事项："+DictUtils.getDictLabel(tcase.getCaseProcess().getCaseStage(), "case_stage", "")+"。");
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		}else if("cancel".equals(actTask.getApprove())){

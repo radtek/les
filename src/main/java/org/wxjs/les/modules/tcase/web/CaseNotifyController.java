@@ -126,5 +126,15 @@ public class CaseNotifyController extends BaseController {
 
 		return "redirect:"+Global.getAdminPath()+"/case/tcase/notifyTab?"+entity.getParamUri();
 	}
+	
+	@RequestMapping(value = "recallNumber")
+	public String recallNumber(CaseNotify caseNotify, HttpServletResponse response,  Model model, RedirectAttributes redirectAttributes) {
+		
+		//CaseNotify caseNotify = caseNotifyService.get(entity.getCaseId());
+		
+		caseNotifyService.recallNumber(caseNotify);
+				
+		return "redirect:"+Global.getAdminPath()+"/case/tcase/notifyTab?"+caseNotify.getParamUri();
+	}
 
 }

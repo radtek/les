@@ -2,10 +2,13 @@ package org.wxjs.les.modules.message;
 
 import java.sql.SQLException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.wxjs.les.modules.base.jdbc.SmsDAOHelper;
 import org.wxjs.les.modules.sys.entity.User;
+import org.wxjs.les.modules.sys.utils.UserUtils;
 
 public class DbMessageSender implements MessageSender {
 	
@@ -29,6 +32,25 @@ public class DbMessageSender implements MessageSender {
 		
 		return true;
 		
+	}
+
+	@Override
+	public boolean send(String loginName, String message) throws SQLException {
+		boolean flag = false;
+		if(StringUtils.isEmpty(loginName)){
+			return flag;
+		}
+		String[] strs = loginName.split(",");
+		for(String str: strs){
+			if(StringUtils.isEmpty(str)){
+				continue;
+			}
+			
+			User user = UserUtils.getByLoginName(str);
+			
+			flag = this.send(user, message);		
+		}
+		return flag;
 	}
 
 }

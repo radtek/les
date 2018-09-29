@@ -119,6 +119,12 @@
 		WHERE case_id = #{caseId}
 	</update>
 	
+	<update id="recallNumber">
+		UPDATE tcase_notify SET
+			seq = '已收回'
+		WHERE case_id = #{caseId}
+	</update>	
+	
 	<update id="delete">
 		UPDATE tcase_notify SET 
 			del_flag = #{DEL_FLAG_DELETE}

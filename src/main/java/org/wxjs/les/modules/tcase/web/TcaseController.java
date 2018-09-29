@@ -3,6 +3,7 @@
  */
 package org.wxjs.les.modules.tcase.web;
 
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -10,12 +11,15 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.wxjs.les.modules.act.utils.ProcessUtils;
+import org.wxjs.les.modules.act.service.ProcessService;
 import org.wxjs.les.modules.base.dao.SignatureLibDao;
 import org.wxjs.les.modules.base.entity.ActTask; 
 import org.wxjs.les.modules.base.entity.Signature;
 import org.wxjs.les.modules.base.entity.SignatureLib;
 import org.wxjs.les.modules.base.service.SignatureService;
+import org.wxjs.les.modules.message.DbMessageSender;
+import org.wxjs.les.modules.message.MessageSender;
+import org.wxjs.les.modules.sys.utils.DictUtils;
 import org.wxjs.les.modules.sys.utils.UserUtils;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.IdentityService;
@@ -140,6 +144,9 @@ public class TcaseController extends BaseController {
 	
 	@Autowired
 	private SignatureLibDao signatureLibDao;
+	
+	@Autowired
+	ProcessService processService;
 	
 	@ModelAttribute
 	public Tcase get(@RequestParam(required=false) String id) {
@@ -668,9 +675,8 @@ public class TcaseController extends BaseController {
 	protected List<User> getCaseHandler4Handle(String taskId){
 		
 		List<User> list = Lists.newArrayList();
-		
-		ProcessUtils pu = new ProcessUtils();
-		String group = pu.getNextTaskGroupText(taskId);
+
+		String group = processService.getNextTaskGroupText(taskId);
 		
 		logger.debug("group:{}", group);
 		
@@ -761,8 +767,7 @@ public class TcaseController extends BaseController {
 			actTask.setNextHandlers(tcase.getCaseProcess().getCaseHandler());
 			
 			//set NextConditionTexts to control the button display
-			ProcessUtils pu = new ProcessUtils();
-			actTask.setNextConditionTexts(pu.getConditionTexts(caseAct.getTaskId()));
+			actTask.setNextConditionTexts(processService.getConditionTexts(caseAct.getTaskId()));
 			
 			logger.debug("actTask.getNextHandlers():{}", actTask.getNextHandlers());
 			model.addAttribute("actTask", actTask);			
@@ -885,8 +890,7 @@ public class TcaseController extends BaseController {
 		Map<String,Object> variables = actTask.getVariables();
 		
 		//设置处理结果
-		ProcessUtils pu = new ProcessUtils();
-		String variable = pu.getConditionVariable(actTask.getTaskId());
+		String variable = processService.getConditionVariable(actTask.getTaskId());
 		
 		logger.debug("handletask variable:{}", variable);
 		
@@ -895,12 +899,12 @@ public class TcaseController extends BaseController {
 		logger.debug("handletask actTask.getTaskid():{}", actTask.getTaskId());
 		
 		//设置下一关
-		TaskDefinition nextTaskDef = pu.getNextTaskDefinition(actTask.getTaskId());
+		TaskDefinition nextTaskDef = processService.getNextTaskDefinition(actTask.getTaskId());
 		String nextHandlersStr = actTask.getNextHandlers();
 		if(!StringUtils.isEmpty(nextHandlersStr)){
 			String[] strs = nextHandlersStr.split(",");
 			if(strs.length==1){
-				String group = pu.getNextTaskGroupText(actTask.getTaskId());
+				String group = processService.getNextTaskGroupText(actTask.getTaskId());
 				variables.put(group+"Assignee", strs[0]);				
 			}else if(strs.length>1){
 				List<String> assigneeList = Lists.newArrayList();
@@ -914,9 +918,27 @@ public class TcaseController extends BaseController {
 		
 		logger.debug("actTask.getApprove():{}", actTask.getApprove());
 		
+		String signatureStr = "";
+		
 		StringBuffer comment = new StringBuffer();
 		if("pass".equals(actTask.getApprove())){
 			comment.append("[通过]");
+			
+			//check whether signature exists
+			SignatureLib signatureLibParam = new SignatureLib();
+			signatureLibParam.setUser(UserUtils.getUser());
+			SignatureLib signatureLib = signatureLibDao.get(signatureLibParam);
+
+			if(signatureLib!=null && StringUtils.isNotEmpty(signatureLib.getSignature())){
+				signatureStr = signatureLib.getSignature();
+			}else{
+				addMessage(redirectAttributes, "操作失败！请先设置您的签名！");
+				
+				logger.debug("signature not found, loginName:{}", userid);
+				
+				return "redirect:"+Global.getAdminPath()+"/task/todo";
+			}
+			
 		}else if("return".equals(actTask.getApprove())){
 			comment.append("[退回]");
 		}else if("cancel".equals(actTask.getApprove())){
@@ -941,17 +963,6 @@ public class TcaseController extends BaseController {
 			Signature signature = new Signature(true);
 			signature.setTitle(Signature.DefaultTitle);
 			
-			SignatureLib signatureLibParam = new SignatureLib();
-			signatureLibParam.setUser(UserUtils.getUser());
-			SignatureLib signatureLib = signatureLibDao.get(signatureLibParam);
-			String signatureStr = "";
-			
-			if(signatureLib!=null && StringUtils.isNotEmpty(signatureLib.getSignature())){
-				signatureStr = signatureLib.getSignature();
-			}else{
-				addMessage(redirectAttributes, "请先设置您的签名！");
-				return null;
-			}
 			signature.setSignature(signatureStr);
 			signatureService.save(signature);
 			
@@ -972,6 +983,17 @@ public class TcaseController extends BaseController {
 					logger.debug("tcase.getCaseProcess().getCaseStage():{}",(tcase.getCaseProcess().getCaseStage()));
 					caseTransferService.doTransfer(tcase);
 				}
+			}
+			
+			//send message
+			MessageSender sender = new DbMessageSender();
+			Tcase tcase = tcaseService.getCaseAndProcess(actTask.getBusinesskey());
+			try {
+				sender.send(nextHandlersStr, "综合行政执法系统中您有1个待办事项。项目名称："+tcase.getCaseCause()
+				+", 事项："+DictUtils.getDictLabel(tcase.getCaseProcess().getCaseStage(), "case_stage", "")+"。");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}else if("cancel".equals(actTask.getApprove())){
 			//update case process status

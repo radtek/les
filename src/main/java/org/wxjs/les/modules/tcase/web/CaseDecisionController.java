@@ -20,6 +20,7 @@ import org.wxjs.les.common.web.BaseController;
 import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.StringUtils;
 import org.wxjs.les.modules.tcase.entity.CaseDecision;
+import org.wxjs.les.modules.tcase.entity.CaseNotify;
 import org.wxjs.les.modules.tcase.entity.CaseSerious;
 import org.wxjs.les.modules.tcase.entity.Tcase;
 import org.wxjs.les.modules.tcase.export.CaseDecisionExport;
@@ -148,6 +149,16 @@ public class CaseDecisionController extends BaseController {
 		}		
 
 		return "redirect:"+Global.getAdminPath()+"/case/tcase/decisionTab?"+entity.getParamUri();
+	}
+	
+	@RequestMapping(value = "recallNumber")
+	public String recallNumber(CaseDecision caseDecision, HttpServletResponse response,  Model model, RedirectAttributes redirectAttributes) {
+		
+		//CaseDecision caseDecision = caseDecisionService.get(entity.getCaseId());
+		
+		caseDecisionService.recallNumber(caseDecision);
+				
+		return "redirect:"+Global.getAdminPath()+"/case/tcase/decisionTab?"+caseDecision.getParamUri();
 	}
 
 }

@@ -3,6 +3,7 @@ package org.wxjs.les.modules.base.jdbc;
 import java.util.Iterator;
 import java.util.List;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -11,6 +12,7 @@ import javax.sql.DataSource;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.wxjs.les.common.config.Global;
 
 public class SmsDAOHelper{
 	
@@ -116,12 +118,20 @@ public class SmsDAOHelper{
 	}
 	
 	private static Connection getConnection() throws SQLException{
-
-	    ApplicationContext ctx = new ClassPathXmlApplicationContext("spring-context.xml");  
 	    
-	    DataSource dataSource = ctx.getBean("dataSourceSms",DataSource.class);  
-	  
-	    return dataSource.getConnection(); 
+	    try {
+			Class.forName(Global.getConfig("sms.jdbc.driver")).newInstance();
+		} catch (InstantiationException e) {
+			throw new SQLException(e);
+		} catch (IllegalAccessException e) {
+			throw new SQLException(e);
+		} catch (ClassNotFoundException e) {
+			throw new SQLException(e);
+		}
+	    String url = Global.getConfig("sms.jdbc.url");
+	    String user = Global.getConfig("sms.jdbc.username");
+	    String password = Global.getConfig("sms.jdbc.password");
+	    return DriverManager.getConnection(url, user, password);
 		
 	}
 
