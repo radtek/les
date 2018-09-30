@@ -10,6 +10,20 @@ CREATE TABLE tsequence
 );
 
 -- ----------------------------
+-- Table structure for tsequence_pool
+-- ----------------------------
+
+DROP TABLE IF EXISTS tsequence_pool;
+CREATE TABLE tsequence_pool
+(
+  id int(11) NOT NULL auto_increment  COMMENT '编号',
+  name    varchar(100) COMMENT '关键字',
+  reuseid  int(11) default 1 COMMENT '编号',
+  PRIMARY KEY (`id`),
+  UNIQUE(name, reuseid)
+);
+
+-- ----------------------------
 -- Table structure for tcase
 -- ----------------------------
 DROP TABLE IF EXISTS `tcase`;
