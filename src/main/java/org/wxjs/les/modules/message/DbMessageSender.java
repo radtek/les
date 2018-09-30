@@ -19,10 +19,14 @@ public class DbMessageSender implements MessageSender {
 		
 		StringBuffer buffer = new StringBuffer();
 		
-		buffer.append(" insert into smsMessage (sendUserName,receiveUserName,sendTime,saveTime,"); 
-		buffer.append(" content,receiveMobilePhone,isSend)");
-		buffer.append(" VALUES ('"+user.getName()+"', '"+user.getName()+"',SYSDATETIME(),SYSDATETIME(),"); 
-		buffer.append(" '"+message+"', '"+user.getMobile()+"', 'false')");
+		buffer.append(" INSERT INTO T_SendTask(DestNumber,Content,SignName,SendPriority,SendTime"); 
+		buffer.append(" ,StatusReport,EnglishFlag,MsgType,PushUrl,RecAction,ValidMinute "); 
+		buffer.append(" ,SendFlag,CommPort,SplitCount,batchId ,RingFlag,zt)"); 
+		buffer.append(" VALUES"); 
+		buffer.append(" ('"+user.getMobile()+"','"+message+"',NULL,16,SYSDATETIME()"); 
+		buffer.append(" ,0,0,0,NULL,0,0"); 
+		buffer.append(" ,0,0,1,NULL,0,NULL)"); 		
+
 		
 		logger.debug(buffer.toString());
 		
