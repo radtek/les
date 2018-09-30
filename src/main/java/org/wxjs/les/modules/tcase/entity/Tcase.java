@@ -100,6 +100,8 @@ public class Tcase extends DataEntity<Tcase> {
 	
 	private String caseIds;
 	
+	private String unfinishedFlag;
+	
 	// 流程任务
 	private Task task;
 	private Map<String, Object> variables;
@@ -693,6 +695,14 @@ public class Tcase extends DataEntity<Tcase> {
 
 	public void setCaseIds(String caseIds) {
 		this.caseIds = caseIds;
+	}
+
+	public String getUnfinishedFlag() {
+		return unfinishedFlag;
+	}
+
+	public void setUnfinishedFlag(String unfinishedFlag) {
+		this.unfinishedFlag = unfinishedFlag;
 	}
 
 	public String getOldCaseId() {

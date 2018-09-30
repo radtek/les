@@ -123,7 +123,10 @@
 			</if>
 			<if test="status != null and status != '' and status != 'all'">
 				AND a.status like concat(#{status},'%') 
-			</if>			
+			</if>	
+			<if test="unfinishedFlag != null and unfinishedFlag = '1'">
+				AND a.status != '2' 
+			</if>					
 			<choose>
 				<when test="caseTransfer != null and caseTransfer != ''">
 					AND a.case_transfer=#{caseTransfer}

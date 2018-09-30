@@ -17,11 +17,12 @@
 	</script>
 </head>
 <body>
-    <h3>案件列表</h3>
+    <h3>案件列表<c:if test="${tcase.unfinishedFlag eq '1'}">（未办结）</c:if></h3>
 	
 	<form:form id="searchForm" modelAttribute="tcase" action="${ctx}/case/tcase/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
+		<form:hidden path="unfinishedFlag"/>
 		<ul class="ul-form">
 			<li><label>案由：</label>
 				<form:input path="caseCause" htmlEscape="false" maxlength="100" class="input-xxlarge"/>
@@ -41,7 +42,9 @@
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>					
 			</li>					
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
+			<c:if test="${tcase.unfinishedFlag ne '1'}">
 			<input class="btn btn-primary" type="button" value="启动新案件 " onclick="window.location.href='${ctx}/case/tcase/toStartAcceptance'"/>
+			</c:if>
 			</li>
 			<li class="clearfix"></li>
 		</ul>

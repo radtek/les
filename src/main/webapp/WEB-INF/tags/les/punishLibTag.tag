@@ -15,8 +15,8 @@
     $(document).ready(function() {
     	
 	    $("input[type=radio][name='punishLib${punishLibAttr.punishLib.id}']").click(function() {
-	    	saveRange("${punishLibAttr.id}", this.value)
-	    	
+	    	//saveRange("${punishLibAttr.id}", this.value)
+	    	this.attr('checked','checked');
 	    });
 	    
 	    function saveRange(itemId, rangeId){
@@ -39,7 +39,7 @@
 
 <form:form class="form-horizontal">
 	<fieldset>
-	    <font bold="true">编号：${punishLibAttr.punishLib.seq}</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <c:if test="${editable }"> <a href="${ctx}/tcase/caseHandlePunishLib/delete?id=${punishLibAttr.id}&${paramUri}"><font color="red">删除</font></a></c:if>
+	    <font bold="true">编号：${punishLibAttr.punishLib.seq}</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <c:if test="${editable }"> <a href="${ctx}/tcase/caseHandlePunishLib/delete?id=${punishLibAttr.id}&${paramUri}" onclick="return confirmx('确认要删除吗？', this.href)"><font color="red">删除</font></a></c:if>
 		<table class="table-form" style="width:90%">
 			<tr>
 				<td class="tit" width="20%">行为名称</td><td width="80%" colspan="3">${punishLibAttr.punishLib.behavior}</td>

@@ -17,4 +17,7 @@ public interface CaseHandlePunishLibDao extends CrudDao<CaseHandlePunishLib> {
 	
 	public void updateRange(CaseHandlePunishLib entity);
 	
+	public void deleteByCaseId(CaseHandlePunishLib entity);
+	
+	
 }

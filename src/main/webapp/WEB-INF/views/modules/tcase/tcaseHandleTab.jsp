@@ -31,6 +31,17 @@
 				$("#inputReportForm").attr("action","${ctx}/tcase/caseHandle/exportApprovePDF");
 				$("#inputReportForm").submit();		    	
 		    });	
+		    
+		    $('#btnSaveUploadInfo').click(function() {
+		    	var ids = "";
+		    	//$("#punishLibForm").find("input[type='radio']:checked").each(function(){
+		    	$("input[type='radio']:checked").each(function(){
+		    	    ids = ids + this.value + ",";
+		    	});
+		    	$("#lib_range_checked_ids").val(ids);
+				$("#inputUploadInfoForm").attr("action","${ctx}/tcase/caseHandle/saveUploadInfo");
+				$("#inputUploadInfoForm").submit();		    	
+		    });		    
 	    
 		});
 	</script>
@@ -90,6 +101,7 @@
 		<form:hidden path="id"/>
 		<form:hidden path="caseId"/>
 		<form:hidden path="paramUri" value="${caseAct.paramUri}"/>
+		<input type="hidden" id="lib_range_checked_ids" name="rangeIds" value="${caseHandle.rangeIds}">
 		<div class="control-group">
 			<label class="control-label">建议处罚金额（元）：</label>
 			<div class="controls">
@@ -97,8 +109,10 @@
 			</div>
 		</div>
 		<div class="form-actions">
-			<shiro:hasPermission name="case:tcase:edit"><input id="btnSaveUploadInfo" class="btn btn-primary" type="submit" value="保 存上报资料"/>&nbsp;
+		<c:if test="${editable }">
+			<shiro:hasPermission name="case:tcase:edit"><input id="btnSaveUploadInfo" class="btn btn-primary" type="button" value="保 存上报资料"/>&nbsp;
 			</shiro:hasPermission>
+		</c:if>
 		</div>		
 	</form:form>	
 	

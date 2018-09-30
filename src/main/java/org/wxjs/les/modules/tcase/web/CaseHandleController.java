@@ -95,7 +95,7 @@ public class CaseHandleController extends BaseController {
 		}
 		caseHandleService.saveUploadInfo(caseHandle);
 		
-		addMessage(redirectAttributes, "保存案件审理成功");
+		addMessage(redirectAttributes, "保存成功");
 		return "redirect:"+Global.getAdminPath()+"/case/tcase/handleTab?"+caseHandle.getParamUri();
 	}
 	

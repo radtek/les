@@ -24,6 +24,8 @@ public class CaseHandle extends DataEntity<CaseHandle> {
 	//临时属性
 	private String paramUri;		// uri
 	
+	private String rangeIds;
+	
 	public CaseHandle() {
 		super();
 	}
@@ -90,7 +92,13 @@ public class CaseHandle extends DataEntity<CaseHandle> {
 	public void setParamUri(String paramUri) {
 		this.paramUri = paramUri;
 	}
-	
-	
+
+	public String getRangeIds() {
+		return rangeIds;
+	}
+
+	public void setRangeIds(String rangeIds) {
+		this.rangeIds = rangeIds;
+	}
 	
 }

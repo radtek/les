@@ -71,6 +71,7 @@
 		INSERT INTO tcase_handle_punish_lib(
 			case_id,
 			punish_lib_id,
+			punish_lib_range_id,
 			create_by,
 			create_date,
 			update_by,
@@ -80,6 +81,7 @@
 		) VALUES (
 			#{caseId},
 			#{punishLib.id},
+			#{punishLibRange.id},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -102,5 +104,10 @@
 		DELETE FROM tcase_handle_punish_lib
 		WHERE id = #{id}
 	</update>
+	
+	<update id="deleteByCaseId">
+		DELETE FROM tcase_handle_punish_lib
+		WHERE case_id = #{caseId}
+	</update>	
 	
 </mapper>
