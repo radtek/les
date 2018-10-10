@@ -64,6 +64,25 @@ public abstract class ExportBase<T> {
 	protected SignatureDao signatureDao = SpringContextHolder.getBean(SignatureDao.class);
 	
 	public abstract void generate(OutputStream os) throws DocumentException;
+	
+	public void generate(String filePath) throws DocumentException{
+		File file = new File(filePath);
+		OutputStream os = null;
+		try {
+			os = new FileOutputStream(file);
+			this.generate(os);
+		} catch (FileNotFoundException e) {
+			logger.error("file not found, path: "+filePath, e);
+		} finally{
+			if(os!=null){
+				try {
+					os.close();
+				} catch (IOException e) {
+					logger.error("", e);
+				}
+			}
+		}
+	}
 
 	
 	/**
