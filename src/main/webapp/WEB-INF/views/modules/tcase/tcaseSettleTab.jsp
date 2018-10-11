@@ -64,19 +64,19 @@
 		<div class="control-group">
 			<label class="control-label">案件处理情况：</label>
 			<div class="controls">
-				<form:textarea path="handleSummary" htmlEscape="false"  style="width:800px;height:600px;" class="required"/>
+				<form:textarea path="handleSummary" htmlEscape="false"  style="width:800px;height:200px;" class="required"/>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">案件执行情况：</label>
 			<div class="controls">
-				<form:textarea path="executeSummary" htmlEscape="false"  style="width:800px;height:600px;" class="required"/>
+				<form:textarea path="executeSummary" htmlEscape="false"  style="width:800px;height:200px;" class="required"/>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">案件复议情况：</label>
 			<div class="controls">
-				<form:textarea path="reviewSummary" htmlEscape="false"  style="width:800px;height:600px;" class="required"/>
+				<form:textarea path="reviewSummary" htmlEscape="false"  style="width:800px;height:200px;" class="required"/>
 			</div>
 		</div>
 		<div class="form-actions">
