@@ -179,25 +179,25 @@
 		<div class="control-group">
 			<label class="control-label">执法机构汇报案情：</label>
 			<div class="controls">
-				<form:textarea path="caseSummary" htmlEscape="false"  style="width:800px;height:300px;" class="required"/>
+				<form:textarea path="caseSummary" htmlEscape="false"  style="width:800px;height:300px;" class=""/>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">执法机构处罚建议：</label>
 			<div class="controls">
-				<form:textarea path="punishProposal" htmlEscape="false"  style="width:800px;height:300px;" class="required"/>
+				<form:textarea path="punishProposal" htmlEscape="false"  style="width:800px;height:150px;" class=""/>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">审查小组审查意见：</label>
 			<div class="controls">
-				<form:textarea path="checkOpinion" htmlEscape="false"  style="width:800px;height:300px;" class="required"/>
+				<form:textarea path="checkOpinion" htmlEscape="false"  style="width:800px;height:150px;" class=""/>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">会议记录：</label>
 			<div class="controls">
-				<form:textarea path="meetingRecord" htmlEscape="false"  style="width:800px;height:300px;" class="required"/>
+				<form:textarea path="meetingRecord" htmlEscape="false"  style="width:800px;height:300px;" class=""/>
 			</div>
 		</div>		
 		<div class="form-actions">

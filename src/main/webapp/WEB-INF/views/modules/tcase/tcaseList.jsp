@@ -42,7 +42,7 @@
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>					
 			</li>					
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
-			<c:if test="${tcase.unfinishedFlag ne '1'}">
+			<c:if test="${tcase.unfinishedFlag ne '1'}">${tcase.unfinishedFlag}
 			<input class="btn btn-primary" type="button" value="启动新案件 " onclick="window.location.href='${ctx}/case/tcase/toStartAcceptance'"/>
 			</c:if>
 			</li>
@@ -55,8 +55,9 @@
 			<tr>
 			    <th>编号</th>
 				<th>当事人</th>
-				<th>项目名称</th>
+				<th>项目名称</th>	
 				<th>事项名称</th>
+				<th>经办人</th>
 				<th>案件来源</th>
 				<th>当前阶段</th>
 				<shiro:hasPermission name="case:tcase:edit"><th>操作</th></shiro:hasPermission>
@@ -66,12 +67,15 @@
 		<c:forEach items="${page.list}" var="tcase" varStatus="status">
 			<tr>
 			    <td>${tcase.caseSeq}</td>
-				<td>${tcase.orgName}</td>
+				<td>${tcase.partyDisplay}</td>
 				<td>
 					${tcase.projectName}
 				</td>
 				<td>
 					${tcase.caseCause}
+				</td>				
+				<td>
+					${tcase.initialHandlerName}
 				</td>
 				<td>
 					${tcase.caseSource}

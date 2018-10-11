@@ -100,7 +100,7 @@ public class Tcase extends DataEntity<Tcase> {
 	
 	private String caseIds;
 	
-	private String unfinishedFlag;
+	private String unfinishedFlag = "0";
 	
 	// 流程任务
 	private Task task;

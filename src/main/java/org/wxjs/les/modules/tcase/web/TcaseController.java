@@ -190,6 +190,8 @@ public class TcaseController extends BaseController {
 			tcase.setStatus(Global.CASE_STATUS_FINISHED);
 		}
 		
+		tcase.setUnfinishedFlag("0");
+		
 		List<Dict> yearList = Lists.newArrayList();
 		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 		

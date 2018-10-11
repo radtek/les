@@ -148,7 +148,13 @@ public class CaseSettleExport extends ExportBase<CaseSettleExport> {
     	PdfPCell cell=new PdfPCell();
     	
     	for(int i=1;i<signatures.size();i++) {
-        	cell = PdfUtil.getContentCell(PdfUtil.transferVertical(signatures.get(i).getTaskName()), Element.ALIGN_LEFT, borderWidth, fontContent, 1, 1, 0);
+    		Signature sig = signatures.get(i);
+    		//filter 办案人意见
+    		if("办案人意见".equals(sig.getTaskName())){
+    			continue;
+    		}
+    		
+        	cell = PdfUtil.getContentCell(PdfUtil.transferVertical(sig.getTaskName()), Element.ALIGN_LEFT, borderWidth, fontContent, 1, 1, 0);
         	cell.setMinimumHeight(borderHeight);
         	cell.setHorizontalAlignment(Element.ALIGN_CENTER); //水平居中
         	cell.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直居中
@@ -158,7 +164,7 @@ public class CaseSettleExport extends ExportBase<CaseSettleExport> {
         	PdfPTable	tableSub = new PdfPTable(3);
         	tableSub.setWidths(new float[]{0.2f, 0.4f, 0.4f});
         	//opinion
-        	cell = PdfUtil.getContentCell(signatures.get(i).getApproveOpinion(), Element.ALIGN_LEFT, 0, fontContentSmall, 1, 3, 0);
+        	cell = PdfUtil.getContentCell(sig.getApproveOpinion(), Element.ALIGN_LEFT, 0, fontContentSmall, 1, 3, 0);
         	cell.setMinimumHeight(30);
         	tableSub.addCell(cell);
         	//signature
@@ -171,12 +177,12 @@ public class CaseSettleExport extends ExportBase<CaseSettleExport> {
         	
         	cell = new PdfPCell();
         	cell.setBorderWidth(0);
-        	cell.addElement(PdfUtil.getSignatureImage(signatures.get(i).getSignature()));
+        	cell.addElement(PdfUtil.getSignatureImage(sig.getSignature()));
         	cell.setHorizontalAlignment(Element.ALIGN_LEFT); //水平
         	cell.setVerticalAlignment(Element.ALIGN_BOTTOM); //垂直    	
         	tableSub.addCell(cell); 
         	//date
-    		phrase = new Phrase(DateUtil.formatDate(signatures.get(i).getUpdateDate(), "yyyy年MM月dd日"), fontContentSmall);
+    		phrase = new Phrase(DateUtil.formatDate(sig.getUpdateDate(), "yyyy年MM月dd日"), fontContentSmall);
     		cell = new PdfPCell(phrase);
         	cell.setBorderWidth(0);
         	cell.setHorizontalAlignment(Element.ALIGN_RIGHT); //水平

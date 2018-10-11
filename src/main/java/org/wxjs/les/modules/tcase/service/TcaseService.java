@@ -237,9 +237,19 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 		List<Tcase> rst = Lists.newArrayList();
 		List<Tcase> list = super.findList(tcase);
 		
+		logger.debug("entity.getUnfinishedFlag():{}", tcase.getUnfinishedFlag());
+		
 		//get current process list
 		List<CaseProcess> currentProcesses = caseProcessDao.findCurrentProcesses(new CaseProcess());
 		for(Tcase entity : list){
+			
+			if("1".equals(tcase.getUnfinishedFlag())){
+				//filter finished items
+				if(Global.CASE_STATUS_FINISHED.equals(entity.getStatus())){
+					continue;
+				}
+			}
+			
 			logger.debug("entity.getCurrentCaseProcess().size():{}", entity.getCurrentCaseProcesses().size()+"");
 			for(CaseProcess process : currentProcesses){
 				if(process.getCaseId().equals(entity.getId())){
@@ -255,6 +265,7 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 	
 	public Page<Tcase> findPage(Page<Tcase> page, Tcase tcase) {
 		tcase.setPage(page);
+		
 		List<Tcase> list = this.findList(tcase);
 		
 		//fill names
@@ -269,6 +280,7 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 			if(StringUtils.isEmpty(handler)){
 				continue;
 			}
+			
 			String[] strs = handler.split(",");
 			StringBuffer buffer = new StringBuffer();
 			for(String str: strs){
@@ -277,6 +289,7 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 				}
 			}
 			entity.setInitialHandlerName(buffer.toString());
+
 		}
 		
 		page.setList(list);
