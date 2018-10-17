@@ -135,4 +135,9 @@
 		WHERE id = #{id}
 	</update>
 	
+	<update id="deleteByProcInsId">
+		DELETE FROM tsignature 
+		WHERE proc_inst_id = #{procInstId}
+	</update>	
+	
 </mapper>

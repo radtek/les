@@ -17,4 +17,6 @@ public interface CaseSeriousDao extends CrudDao<CaseSerious> {
 	
 	public void updateMeetingRecord(CaseSerious entity);
 	
+	public void deleteByCaseId(String caseId);
+	
 }

@@ -690,7 +690,29 @@ public class TcaseController extends BaseController {
 	}
 	
 	private List<User> getCaseHandlerByGroup(String group){
-		return systemService.findUserByRoleEname(group);	
+		List<User> rst = Lists.newArrayList();
+		
+		List<User> list = systemService.findUserByRoleEname(group);	
+		
+		//filter by office
+		if(!group.contains("syblr") && !group.contains("syfzr")){
+			rst.addAll(list);
+		}else{
+			User user = UserUtils.getUser();
+			String officeId = user.getOffice().getId();
+			if(officeId.startsWith("01") || officeId.startsWith("02")){
+				rst.addAll(list);
+			}else{
+				String deptId = officeId.substring(0, 2);
+				for(User e : list){
+					if(e.getOffice().getId().startsWith(deptId)){
+						rst.add(e);
+					}
+				}
+			}			
+		}
+		
+		return rst;
 	}
 	
 	@RequiresPermissions("case:tcase:view")
@@ -1070,6 +1092,20 @@ public class TcaseController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/case/tcase/query?repage";
 	}
 	
+	@RequestMapping(value = "deleteCase")
+	public String deleteCase(String caseId, HttpServletRequest request, HttpServletResponse response, Model model){
+		
+		tcaseService.deleteCase(caseId);
+		
+		return "redirect:"+Global.getAdminPath()+"/case/tcase/list?repage";
+	}
 	
+	@RequestMapping(value = "deleteCaseStage")
+	public String deleteCaseStage(String caseId, String caseStage, HttpServletRequest request, HttpServletResponse response, Model model){
+		
+		tcaseService.deleteCaseStage(caseId, caseStage);
+		
+		return "redirect:"+Global.getAdminPath()+"/case/tcase/list?repage";
+	}
 
 }

@@ -15,4 +15,6 @@ import org.wxjs.les.modules.tcase.entity.CaseFinish;
 @MyBatisDao
 public interface CaseFinishDao extends CrudDao<CaseFinish> {
 	
+	public void deleteByCaseId(String caseId);
+	
 }

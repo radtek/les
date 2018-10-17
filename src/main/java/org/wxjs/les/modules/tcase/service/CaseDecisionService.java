@@ -58,6 +58,7 @@ public class CaseDecisionService extends CrudService<CaseDecisionDao, CaseDecisi
 	
 	@Transactional(readOnly = false)
 	public void recallNumber(CaseDecision caseDecision) {
+		
 		dao.recallNumber(caseDecision);
 		
 		//put the recalled id to pool

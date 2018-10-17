@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.wxjs.les.common.config.Global;
+import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.service.CrudService;
 import org.wxjs.les.modules.sys.entity.User;
 import org.wxjs.les.modules.sys.utils.SequenceUtils;
@@ -26,6 +27,8 @@ import org.wxjs.les.modules.tcase.dao.TcaseDao;
 import org.wxjs.les.modules.tcase.entity.CaseProcess;
 import org.wxjs.les.modules.tcase.entity.Tcase;
 import org.wxjs.les.modules.tcase.utils.ProcessCommonUtils;
+
+import com.google.common.collect.Lists;
 
 
 /**
@@ -84,6 +87,10 @@ public class CaseTransferService extends CrudService<TcaseDao, Tcase>  {
 		
 		//start flow
 		this.startWorkflow(tcase);
+		
+		//update status
+		tcase.setStatus(Global.CASE_STATUS_STARTED);
+		tcaseService.updateStatus(tcase);
 		
 	}
 	
@@ -174,6 +181,44 @@ public class CaseTransferService extends CrudService<TcaseDao, Tcase>  {
 		caseAttachDao.attachTransfer(tcase);
 	
 		
+	}
+	
+	/**
+	 * 查询列表数据
+	 * @param entity
+	 * @return
+	 */
+	public List<Tcase> findList(Tcase entity) {
+		List<Tcase> rst = Lists.newArrayList();
+		List<Tcase> list = dao.findList(entity);
+		
+		//filter by office
+		User user = UserUtils.getUser();
+		String officeId = user.getOffice().getId();
+		if(officeId.startsWith("01") || officeId.startsWith("02")){
+			rst.addAll(list);
+		}else{
+			String deptId = officeId.substring(0, 2);
+			for(Tcase e : list){
+				if(e.getCreateBy().getOffice().getId().startsWith(deptId)){
+					rst.add(e);
+				}
+			}
+		}
+		
+		return rst;
+	}
+	
+	/**
+	 * 查询分页数据
+	 * @param page 分页对象
+	 * @param entity
+	 * @return
+	 */
+	public Page<Tcase> findPage(Page<Tcase> page, Tcase entity) {
+		entity.setPage(page);
+		page.setList(this.findList(entity));
+		return page;
 	}
 	
 }

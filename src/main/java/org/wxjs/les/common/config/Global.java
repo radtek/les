@@ -224,7 +224,7 @@ public class Global {
     public static final String PN_caseCancelProcess4 = "caseCancelProcess4";
     
     
-    public static final String GROUP_caseTransferProcess = "csblr";
+    public static final String GROUP_caseTransferProcess = "csblr,syblr";
     
     public static final String GROUP_caseAcceptanceProcess = "jcbar";
     public static final String GROUP_caseInitialProcess = "jcbar";

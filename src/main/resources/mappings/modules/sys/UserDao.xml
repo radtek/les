@@ -232,7 +232,18 @@
 		LEFT JOIN sys_role r on r.id=ur.role_id
 		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
 		<if test="role != null and role.enname != null and role.enname != ''">
-			AND r.enname=#{role.enname}
+			<choose>
+				<when test='role.isMultipleEnname == "0"'>
+				    AND r.enname=#{role.enname}
+				</when>
+				<otherwise>
+				    AND r.enname in (
+				    <foreach collection="role.ennames" item="tempStr" separator=",">
+		               '${tempStr}'
+		            </foreach>
+		            )						
+				</otherwise>
+			</choose>			
 		</if>		
 	</select>
 	

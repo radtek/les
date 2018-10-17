@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
 import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.DataEntity;
@@ -101,6 +102,36 @@ public class Role extends DataEntity<Role> {
 
 	public void setEnname(String enname) {
 		this.enname = enname;
+	}
+	
+	@JsonIgnore
+	public List<String> getEnnames(){
+		List<String> rst = Lists.newArrayList();
+		
+		if(!this.enname.equals("")){
+			String[] strs = this.enname.split(",");
+			for(String str: strs){
+				rst.add(str);
+			}
+		}
+		
+		return rst;
+	}
+	
+	@JsonIgnore
+	public String getIsMultipleEnname(){
+		return this.isMultiple(this.enname)?"1":"0";
+	}
+	
+	private boolean isMultiple(String str){
+		boolean rst = false;
+		if(str!=null && !str.equals("")){
+			String[] arr = str.split(",");
+			if(arr.length>1){
+				rst = true;
+			}
+		}
+		return rst;		
 	}
 	
 	@Length(min=1, max=100)

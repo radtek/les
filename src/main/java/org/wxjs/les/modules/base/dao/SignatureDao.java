@@ -20,5 +20,7 @@ public interface SignatureDao extends CrudDao<Signature> {
 	public void updateSignatureTime(Signature signature);
 	
 	public Signature getLatestSignatureByLoginName(String loginName);
+	
+	public void deleteByProcInsId(Signature signature);
 
 }

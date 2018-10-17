@@ -89,6 +89,9 @@
 				  <a target="_blank" href="${ctx}/tcase/caseProcess/toUpdateSignatureTime?id=${process.id}">修改办理时间</a>
 				</shiro:hasPermission>
 				</c:if>
+					<shiro:hasPermission name="case:tcase:caseDelete4Admin">
+					  <a href="${ctx}/case/tcase/deleteCaseStage?caseId=${tcase.id}&caseStage=${process.caseStage}" onclick="return confirmx('此操作不可恢复！确认要删除该流程吗？', this.href)">管理员删除</a>
+					</shiro:hasPermission>				
 				</td>
 			</tr>
 
@@ -130,7 +133,10 @@
 				</c:if>
 				<c:if test="${process.caseStageStatus eq '2'}">
 				  <a href="">修改办理时间</a>
-				</c:if>				
+				</c:if>		
+					<shiro:hasPermission name="case:tcase:caseDelete4Admin">
+					  <a href="${ctx}/case/tcase/deleteCaseStage?caseId=${tcase.id}&caseStage=${process.caseStage}" onclick="return confirmx('此操作不可恢复！确认要删除该流程吗？', this.href)">管理员删除</a>
+					</shiro:hasPermission>						
 				</td>
 			</tr>
 			</c:forEach>																	
@@ -163,8 +169,11 @@
  <!--
 				  <a target="_blank" href="${pageContext.request.contextPath}/act/diagram-viewer?processDefinitionId=${process.procDefId}&processInstanceId=${process.procInsId}">跟踪</a>&nbsp;
 	  -->			  
-				  <a target="_blank" href="${ctx}/common/activiti/toProcTrack?procDefId=${process.procDefId}&procInsId=${process.procInsId}&executionId=${process.executionId}">跟踪</a>&nbsp;
-				</c:if>			
+				  <a target="_blank" href="${ctx}/common/activiti/toProcTrack?procDefId=${process.procDefId}&procInsId=${process.procInsId}&executionId=${process.executionId}">跟踪</a>&nbsp; 
+				</c:if>	
+					<shiro:hasPermission name="case:tcase:caseDelete4Admin">
+					  <a href="${ctx}/case/tcase/deleteCaseStage?caseId=${tcase.id}&caseStage=${process.caseStage}" onclick="return confirmx('此操作不可恢复！确认要删除该流程吗？', this.href)">管理员删除</a>
+					</shiro:hasPermission>						
 				</td>
 			</tr>
 			</c:forEach>																	

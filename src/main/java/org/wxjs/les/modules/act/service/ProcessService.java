@@ -480,9 +480,13 @@ public class ProcessService extends BaseService {
 			
 			if(taskDef != null){
 				Set<Expression> groups = taskDef.getCandidateGroupIdExpressions();
+				StringBuffer buffer = new StringBuffer();
 				for (Expression exp : groups) {
-					rst = exp.getExpressionText();
-				}				
+					buffer.append(",").append(exp.getExpressionText());
+				}	
+				if(buffer.length()>0){
+					rst = buffer.substring(1);
+				}
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

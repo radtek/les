@@ -10,6 +10,8 @@ import org.apache.shiro.UnavailableSecurityManagerException;
 import org.apache.shiro.session.InvalidSessionException;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.wxjs.les.common.service.BaseService;
 import org.wxjs.les.common.utils.CacheUtils;
 import org.wxjs.les.common.utils.SpringContextHolder;
@@ -33,6 +35,8 @@ import com.google.common.collect.Lists;
  * @version 2013-12-05
  */
 public class UserUtils {
+	
+	protected static Logger logger = LoggerFactory.getLogger(UserUtils.class);
 
 	private static UserDao userDao = SpringContextHolder.getBean(UserDao.class);
 	private static RoleDao roleDao = SpringContextHolder.getBean(RoleDao.class);
@@ -69,6 +73,8 @@ public class UserUtils {
 			user.setRoleList(roleDao.findList(new Role(user)));
 			CacheUtils.put(USER_CACHE, USER_CACHE_ID_ + user.getId(), user);
 			CacheUtils.put(USER_CACHE, USER_CACHE_LOGIN_NAME_ + user.getLoginName(), user);
+			
+			logger.debug("CacheUtils.put ", user.getLoginName());
 		}
 		return user;
 	}

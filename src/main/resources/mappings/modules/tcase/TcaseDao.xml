@@ -8,7 +8,7 @@
 		a.accepter AS "accepter",
 		a.accept_date AS "acceptDate",
 		a.initial_date AS "initialDate",
-		a.initial_handler AS "initialHandler",
+		proc.case_handler AS "initialHandler",
 		a.decision_date AS "decisionDate",
 		a.settle_date AS "settleDate",
 		a.case_source AS "caseSource",
@@ -42,6 +42,7 @@
 		a.attach_upload_detail AS "attachUploadDetail",
 		a.upload_status_lib4 AS "uploadStatusLib4",
 		a.create_by AS "createBy.id",
+		u.office_id AS "createBy.office.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
@@ -54,6 +55,8 @@
 	
 	<sql id="tcaseJoins">
 	    LEFT JOIN tcase_decision decision ON decision.case_id=a.id
+	    LEFT JOIN tcase_process proc ON (a.id=proc.case_id AND proc.case_stage='20')
+	    LEFT JOIN sys_user u ON u.id=a.create_by
 	</sql>
     
 	<select id="get" resultType="Tcase">
@@ -141,7 +144,7 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC
+				ORDER BY a.status, a.update_date DESC
 			</otherwise>
 		</choose>
 	</select>

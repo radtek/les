@@ -121,14 +121,19 @@
 	
 	<update id="recallNumber">
 		UPDATE tcase_notify SET
-			seq = '已收回'
+			seq = ''
 		WHERE case_id = #{caseId}
 	</update>	
 	
 	<update id="delete">
 		UPDATE tcase_notify SET 
 			del_flag = #{DEL_FLAG_DELETE}
-		WHERE id = #{caseId}
+		WHERE id = #{id}
 	</update>
+	
+	<update id="deleteByCaseId">
+		DELETE FROM tcase_notify
+		WHERE case_id = #{caseId}
+	</update>	
 	
 </mapper>

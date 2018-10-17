@@ -15,4 +15,6 @@ import org.wxjs.les.modules.tcase.entity.CaseCancel;
 @MyBatisDao
 public interface CaseCancelDao extends CrudDao<CaseCancel> {
 	
+	public void deleteByCaseId(String caseId);
+	
 }

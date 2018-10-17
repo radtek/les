@@ -19,4 +19,6 @@ public interface CaseHandleDao extends CrudDao<CaseHandle> {
 	
 	public void updateReport(CaseHandle entity);
 	
+	public void deleteByCaseId(String caseId);
+	
 }

@@ -5,6 +5,7 @@ package org.wxjs.les.modules.tcase.dao;
 
 import org.wxjs.les.common.persistence.CrudDao;
 import org.wxjs.les.common.persistence.annotation.MyBatisDao;
+import org.wxjs.les.modules.base.entity.Signature;
 import org.wxjs.les.modules.tcase.entity.CaseAttach;
 import org.wxjs.les.modules.tcase.entity.Tcase;
 
@@ -19,5 +20,7 @@ public interface CaseAttachDao extends CrudDao<CaseAttach> {
 	public void attachTransfer(Tcase tcase);
 	
 	public void initialDefaultItems(Tcase tcase);
+	
+	public void deleteByCaseId(String caseId);
 	
 }

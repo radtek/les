@@ -15,4 +15,6 @@ import org.wxjs.les.modules.tcase.entity.CaseSettle;
 @MyBatisDao
 public interface CaseSettleDao extends CrudDao<CaseSettle> {
 	
+	public void deleteByCaseId(String caseId);
+	
 }

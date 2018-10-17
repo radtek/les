@@ -97,9 +97,13 @@
 	</update>
 	
 	<update id="delete">
-		UPDATE tcase_cancel SET 
-			del_flag = #{DEL_FLAG_DELETE}
+		DELETE FROM tcase_cancel
 		WHERE case_id = #{caseId}
 	</update>
+	
+	<update id="deleteByCaseId">
+		DELETE FROM tcase_cancel
+		WHERE case_id = #{caseId}
+	</update>	
 	
 </mapper>

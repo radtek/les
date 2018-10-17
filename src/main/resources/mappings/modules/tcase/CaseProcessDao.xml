@@ -166,17 +166,35 @@
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks}
-		WHERE 1=1
-		<if test="id != null and id != ''">
-		AND id = #{id}
-		</if>
-		<if test="caseId != null and caseId != ''">
-		AND case_id = #{caseId}
-		</if>
-		<if test="caseStage != null and caseStage != ''">
-		AND case_stage = #{caseStage}
-		</if>		
+			
+		<where>
+			1=1
+			<if test="id != null and id != ''">
+			AND id = #{id}
+			</if>
+			<if test="caseId != null and caseId != ''">
+			AND case_id = #{caseId}
+			</if>
+			<if test="caseStage != null and caseStage != ''">
+			AND case_stage = #{caseStage}
+			</if>
+		</where>			
+		
 	</update>
+	
+	<update id="clearProcess">
+		UPDATE tcase_process SET 	
+			case_summary = '',
+			case_handler = '',
+			case_stage_status = '0',
+			proc_inst_id = '',
+			proc_def_id = '',
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+		
+	</update>	
 	
 	<update id="updateProcInfo">
 		UPDATE tcase_process SET 
@@ -207,5 +225,10 @@
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>
+	
+	<update id="deleteByCaseId">
+		DELETE FROM tcase_process
+		WHERE case_id = #{caseId}
+	</update>	
 	
 </mapper>

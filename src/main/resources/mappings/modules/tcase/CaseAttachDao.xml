@@ -135,4 +135,9 @@
 		WHERE id = #{id}
 	</update>
 	
+	<update id="deleteByCaseId">
+		DELETE FROM tcase_attach
+		WHERE case_id = #{caseId}
+	</update>	
+	
 </mapper>

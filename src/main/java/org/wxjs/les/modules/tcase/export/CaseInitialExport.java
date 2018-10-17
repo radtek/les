@@ -93,12 +93,14 @@ public class CaseInitialExport extends ExportBase<CaseInitialExport> {
 
 
 		}finally{
+			
 			if(document!=null){
 				try{
 					document.close();
 				}catch(Exception ex){
 				}
 			}
+			
 		}
 	}
 

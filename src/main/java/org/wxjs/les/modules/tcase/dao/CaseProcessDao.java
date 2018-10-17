@@ -29,4 +29,8 @@ public interface CaseProcessDao extends CrudDao<CaseProcess> {
 	
 	public void updateStageStatus(CaseProcess caseProcess);
 	
+	public void clearProcess(CaseProcess caseProcess);
+	
+	public void deleteByCaseId(String caseId);
+	
 }

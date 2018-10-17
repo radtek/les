@@ -34,14 +34,20 @@ import org.wxjs.les.modules.tcase.entity.CaseAttach;
 import org.wxjs.les.modules.tcase.entity.CaseDecision;
 import org.wxjs.les.modules.tcase.entity.CaseHandle;
 import org.wxjs.les.modules.tcase.entity.CaseHandlePunishLib;
+import org.wxjs.les.modules.tcase.entity.CaseNotify;
 import org.wxjs.les.modules.tcase.entity.CaseProcess;
 import org.wxjs.les.modules.tcase.entity.Tcase;
 import org.wxjs.les.modules.tcase.utils.ProcessCommonUtils;
 import org.wxjs.les.modules.tcase.dao.CaseAttachDao;
+import org.wxjs.les.modules.tcase.dao.CaseCancelDao;
 import org.wxjs.les.modules.tcase.dao.CaseDecisionDao;
+import org.wxjs.les.modules.tcase.dao.CaseFinishDao;
 import org.wxjs.les.modules.tcase.dao.CaseHandleDao;
 import org.wxjs.les.modules.tcase.dao.CaseHandlePunishLibDao;
+import org.wxjs.les.modules.tcase.dao.CaseNotifyDao;
 import org.wxjs.les.modules.tcase.dao.CaseProcessDao;
+import org.wxjs.les.modules.tcase.dao.CaseSeriousDao;
+import org.wxjs.les.modules.tcase.dao.CaseSettleDao;
 import org.wxjs.les.modules.tcase.dao.TcaseDao;
 import org.wxjs.upload.modules.upload.dao.InfPunishDao;
 import org.wxjs.upload.modules.upload.dao.InfPunishProcessDao;
@@ -67,6 +73,21 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 	protected	CaseAttachDao caseAttachDao;	
 	
 	@Autowired
+	protected	CaseCancelDao caseCancelDao;
+	
+	@Autowired
+	protected	CaseFinishDao caseFinishDao;
+	
+	@Autowired
+	protected	CaseNotifyDao caseNotifyDao;
+	
+	@Autowired
+	protected	CaseSeriousDao caseSeriousDao;
+	
+	@Autowired
+	protected	CaseSettleDao caseSettleDao;
+	
+	@Autowired
 	protected	CaseHandleDao caseHandleDao;
 	
 	@Autowired
@@ -80,6 +101,12 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 	
 	@Autowired
 	protected	CaseHandlePunishLibDao caseHandlePunishLibDao;
+	
+	@Autowired
+	protected	CaseDecisionService caseDecisionService;
+	
+	@Autowired
+	protected	CaseNotifyService caseNotifyService;
 	
 	@Autowired
 	IdentityService identityService;
@@ -774,6 +801,174 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 		if(list!=null && list.size()>0){
 			rst = list.get(0);
 		}
+		return rst;
+	}
+	
+	/**
+	 * delete case
+	 * @param caseId
+	 * @return
+	 */
+	@Transactional(readOnly = false)
+	public boolean deleteCase(String caseId) {
+		boolean rst = true;
+		
+		Tcase tcase = new Tcase();
+		tcase.setId(caseId);
+		
+		//delete flow, signature
+		CaseProcess caseProcess = new CaseProcess();
+		caseProcess.setCaseId(caseId);
+		List<CaseProcess> caseProcesses = caseProcessDao.findList(caseProcess);
+		for(CaseProcess entity: caseProcesses){
+			if(StringUtils.isNotEmpty(entity.getProcInsId())){
+				
+				try{
+					String procId = entity.getProcInsId();
+					long count = runtimeService.createProcessInstanceQuery().processInstanceId(procId).count();
+					if(count>0){
+						runtimeService.deleteProcessInstance(procId, "管理员手动删除");
+					}
+				}catch(Exception ex){
+					logger.error("delete process error", ex);
+				}
+				
+				Signature signature = new Signature(false);
+				signature.setProcInstId(entity.getProcInsId());
+				signatureDao.deleteByProcInsId(signature);
+			}
+		}
+		
+		//delete case related
+		this.caseAttachDao.deleteByCaseId(caseId);
+		this.caseCancelDao.deleteByCaseId(caseId);
+		
+		//delete decision
+		//recall no
+		CaseDecision caseDecisionParam = new CaseDecision();
+		caseDecisionParam.setCaseId(caseId);
+		
+		CaseDecision caseDecision = caseDecisionService.get(caseId);
+		if(caseDecision != null && StringUtils.isNotEmpty(caseDecision.getSeq())){
+			this.caseDecisionService.recallNumber(caseDecision);
+		}
+		this.caseDecisionDao.deleteByCaseId(caseId);
+		
+		this.caseFinishDao.deleteByCaseId(caseId);
+		this.caseHandleDao.deleteByCaseId(caseId);
+		
+		CaseHandlePunishLib punishLib = new CaseHandlePunishLib();
+		punishLib.setCaseId(caseId);
+		this.caseHandlePunishLibDao.deleteByCaseId(punishLib);
+		
+		//delete notify
+		//recall no
+		CaseNotify caseNotifyParam = new CaseNotify();
+		caseNotifyParam.setCaseId(caseId);
+		CaseNotify caseNotify = caseNotifyService.get(caseId);
+		if(caseNotify != null && StringUtils.isNotEmpty(caseNotify.getSeq())){
+			this.caseNotifyService.recallNumber(caseNotify);
+		}
+		this.caseNotifyDao.deleteByCaseId(caseId);
+		
+		this.caseProcessDao.deleteByCaseId(caseId);
+		this.caseSeriousDao.deleteByCaseId(caseId);
+		this.caseSettleDao.deleteByCaseId(caseId);
+		
+		//delete case
+		this.delete(tcase);
+		
+		//log
+		User user = UserUtils.getUser();
+		logger.info("delete case {}, operator: {}", caseId, user.getLoginName());
+		
+		return rst;
+	}
+	
+	/**
+	 * delete case stage
+	 * @param caseId
+	 * @param caseStage
+	 * @return
+	 */
+	@Transactional(readOnly = false)
+	public boolean deleteCaseStage(String caseId, String caseStage) {
+		boolean rst = true;
+		
+		Tcase tcase = new Tcase();
+		tcase.setId(caseId);
+		
+		//delete flow, signature
+		CaseProcess caseProcess = new CaseProcess();
+		caseProcess.setCaseId(caseId);
+		List<CaseProcess> caseProcesses = caseProcessDao.findList(caseProcess);
+		for(CaseProcess entity: caseProcesses){
+			if(caseStage.equals(entity.getCaseStage())){
+				
+				this.caseProcessDao.clearProcess(entity);
+				
+				try{
+					String procId = entity.getProcInsId();
+					long count = runtimeService.createProcessInstanceQuery().processInstanceId(procId).count();
+					if(count>0){
+						runtimeService.deleteProcessInstance(procId, "管理员手动删除");
+					}
+				}catch(Exception ex){
+					logger.error("delete process error", ex);
+				}
+				
+				Signature signature = new Signature(false);
+				signature.setProcInstId(entity.getProcInsId());
+				signatureDao.deleteByProcInsId(signature);
+			}
+		}
+		
+		//delete case related
+		if(caseStage.equals(Global.CASE_STAGE_ACCEPTANCE)){
+			
+		}else if(caseStage.equals(Global.CASE_STAGE_CANCEL)){
+			this.caseCancelDao.deleteByCaseId(caseId);
+		}else if(caseStage.equals(Global.CASE_STAGE_DECISION)){
+			//recall no
+			CaseDecision caseDecisionParam = new CaseDecision();
+			caseDecisionParam.setCaseId(caseId);
+			
+			CaseDecision caseDecision = caseDecisionService.get(caseId);
+			if(caseDecision != null && StringUtils.isNotEmpty(caseDecision.getSeq())){
+				this.caseDecisionService.recallNumber(caseDecision);
+			}
+			this.caseDecisionDao.deleteByCaseId(caseId);
+		}else if(caseStage.equals(Global.CASE_STAGE_FINISH)){
+			this.caseFinishDao.deleteByCaseId(caseId);
+		}else if(caseStage.equals(Global.CASE_STAGE_HANDLE)){
+			this.caseHandleDao.deleteByCaseId(caseId);		
+			
+			CaseHandlePunishLib punishLib = new CaseHandlePunishLib();
+			punishLib.setCaseId(caseId);
+			this.caseHandlePunishLibDao.deleteByCaseId(punishLib);
+		}else if(caseStage.equals(Global.CASE_STAGE_INITIAL)){
+			this.caseSettleDao.deleteByCaseId(caseId);
+		}else if(caseStage.equals(Global.CASE_STAGE_NOTIFY)){
+			//delete notify
+			//recall no
+			CaseNotify caseNotifyParam = new CaseNotify();
+			caseNotifyParam.setCaseId(caseId);
+			CaseNotify caseNotify = caseNotifyService.get(caseId);
+			if(caseNotify != null && StringUtils.isNotEmpty(caseNotify.getSeq())){
+				this.caseNotifyService.recallNumber(caseNotify);
+			}
+			this.caseNotifyDao.deleteByCaseId(caseId);
+		}else if(caseStage.equals(Global.CASE_STAGE_SERIOUS)){
+			this.caseSeriousDao.deleteByCaseId(caseId);
+		}
+
+		//delete case
+		//this.updateStatus(tcase);
+		
+		//log
+		User user = UserUtils.getUser();
+		logger.info("delete case stage, caseId: {}, stage: {}, operator: {}", caseId, caseStage, user.getLoginName());
+		
 		return rst;
 	}
 	

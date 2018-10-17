@@ -141,9 +141,14 @@
 		WHERE id = #{id}
 	</update>
 	
+	<update id="deleteByCaseId">
+		DELETE FROM tcase_decision
+		WHERE case_id = #{caseId}
+	</update>	
+	
 	<update id="recallNumber">
 		UPDATE tcase_decision SET
-			seq = '已收回'
+			seq = ''
 		WHERE case_id = #{caseId}
 	</update>	
 	

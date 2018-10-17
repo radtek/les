@@ -40,9 +40,15 @@
 				<input name="acceptDateTo" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
 					value="<fmt:formatDate value="${tcase.acceptDateTo}" pattern="yyyy-MM-dd"/>"
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>					
-			</li>					
+			</li>	
+			<li><label class="control-label">案件状态：</label>
+				<form:select path="status" class="input-xlarge ">
+					<form:option value="all" label="全部"/>
+					<form:options items="${fns:getDictList('case_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+			</li>						
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
-			<c:if test="${tcase.unfinishedFlag ne '1'}">${tcase.unfinishedFlag}
+			<c:if test="${tcase.unfinishedFlag ne '1'}">
 			<input class="btn btn-primary" type="button" value="启动新案件 " onclick="window.location.href='${ctx}/case/tcase/toStartAcceptance'"/>
 			</c:if>
 			</li>
@@ -57,7 +63,7 @@
 				<th>当事人</th>
 				<th>项目名称</th>	
 				<th>事项名称</th>
-				<th>经办人</th>
+				<th>立案经办人</th>
 				<th>案件来源</th>
 				<th>当前阶段</th>
 				<shiro:hasPermission name="case:tcase:edit"><th>操作</th></shiro:hasPermission>
@@ -102,7 +108,9 @@
     				<c:if test="${empty tcase.currentCaseProcesses}">
     				  <a href="${ctx}/case/tcase/delete?id=${tcase.id}" onclick="return confirmx('确认要删除该案件吗？', this.href)">删除</a>
     				</c:if>
-					
+					<shiro:hasPermission name="case:tcase:caseDelete4Admin">
+					  <a href="${ctx}/case/tcase/deleteCase?caseId=${tcase.id}" onclick="return confirmx('此操作不可恢复！确认要删除该案件吗？', this.href)">管理员删除</a>
+					</shiro:hasPermission>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>
