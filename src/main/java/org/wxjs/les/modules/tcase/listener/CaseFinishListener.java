@@ -1,5 +1,6 @@
 package org.wxjs.les.modules.tcase.listener;
 
+import java.sql.SQLException;
 import java.util.Calendar;
 
 import org.activiti.engine.delegate.DelegateExecution;
@@ -9,6 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.utils.SpringContextHolder;
+import org.wxjs.les.modules.message.DbMessageSender;
+import org.wxjs.les.modules.message.MessageSender;
+import org.wxjs.les.modules.sys.utils.DictUtils;
 import org.wxjs.les.modules.tcase.dao.CaseProcessDao;
 import org.wxjs.les.modules.tcase.dao.TcaseDao;
 import org.wxjs.les.modules.tcase.entity.CaseProcess;
@@ -31,7 +35,6 @@ public class CaseFinishListener implements ExecutionListener {
 	@Override
 	public void notify(DelegateExecution execution) throws Exception {
 		
-		
 		String businesskey = execution.getProcessBusinessKey();
 		
 		String caseStage = "";
@@ -41,17 +44,21 @@ public class CaseFinishListener implements ExecutionListener {
 		String[] strs = businesskey.split(":");
 		if(strs.length>0){
 			caseId = strs[0];
+			Tcase tcase = caseDao.get(caseId);
+			
+			logger.debug("businesskey:{}", businesskey);
+			
 			if(strs.length>1){
 				caseProcessId = strs[1];
 				CaseProcess caseProcess = caseProcessDao.get(caseProcessId);
 				caseStage = caseProcess.getCaseStage();
 				
 				if(Global.CASE_STAGE_ACCEPTANCE.equals(caseStage)){
-					//no doc to 
+					//no doc to export
+					
 				}else if(Global.CASE_STAGE_INITIAL.equals(caseStage)){
 					//finish initial
-					Tcase tcase = new Tcase();
-					tcase.setId(caseId);
+
 					tcase.setInitialDate(Calendar.getInstance().getTime());
 					tcase.setInitialHandler(caseProcess.getCaseHandler());
 					caseDao.finishInitial(tcase);
@@ -71,8 +78,7 @@ public class CaseFinishListener implements ExecutionListener {
 					
 				}else if(Global.CASE_STAGE_SETTLE.equals(caseStage)){
 					//finish settle
-					Tcase tcase = new Tcase();
-					tcase.setId(caseId);
+
 					tcase.setSettleDate(Calendar.getInstance().getTime());
 					caseDao.finishSettle(tcase);					
 					//export 结案审批表
@@ -81,15 +87,29 @@ public class CaseFinishListener implements ExecutionListener {
 					//export 备考表
 					
 					//update status for case
-					Tcase tcase = new Tcase();
-					tcase.setId(caseId);
+
 					tcase.setStatus(Global.CASE_STATUS_FINISHED);
 					caseDao.updateStatus(tcase);					
 				}
+				
+				stageFinishNotify(tcase, caseProcess);
 			}
-			
 		}
-		
+	}
+	
+	private void stageFinishNotify(Tcase tcase, CaseProcess caseProcess){
+		MessageSender sender = new DbMessageSender();
+		try {
+			String handler = caseProcess.getCaseHandler();
+			String cause = tcase.getCaseCause();
+			String stage = caseProcess.getCaseStage();
+			sender.send(handler, 
+					"综合行政执法系统事项办结通知。项目名称："+ cause
+					+", 事项："+DictUtils.getDictLabel(stage, "case_stage", "")+"。");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

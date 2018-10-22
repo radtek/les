@@ -32,7 +32,11 @@
     <sequenceFlow id="flow2" name="取消" sourceRef="sid-60F5DD1C-C7B6-4E45-980F-9B6467D64C46" targetRef="endevent1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${jcksfzrOp=='cancel'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow3" sourceRef="sid-E2AF9AE3-1D2C-42A8-A85F-9EE0317DB275" targetRef="sid-619AB5A8-D242-4294-AC3D-8211F3FCA239"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="sid-E2AF9AE3-1D2C-42A8-A85F-9EE0317DB275" targetRef="sid-619AB5A8-D242-4294-AC3D-8211F3FCA239">
+      <extensionElements>
+        <activiti:executionListener event="take" class="org.wxjs.les.modules.tcase.listener.CaseFinishListener"></activiti:executionListener>
+      </extensionElements>
+    </sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <endEvent id="endevent2" name="End"></endEvent>
   </process>

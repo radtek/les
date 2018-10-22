@@ -23,6 +23,7 @@ import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.web.BaseController;
 import org.wxjs.les.common.utils.StringUtils;
+import org.wxjs.les.common.utils.Util;
 import org.wxjs.les.modules.base.entity.PunishLib;
 import org.wxjs.les.modules.base.service.PunishLibService;
 
@@ -113,10 +114,15 @@ public class PunishLibController extends BaseController {
 	@RequiresPermissions("user")
 	@ResponseBody
 	@RequestMapping(value = "treeData")
-	public List<Map<String, Object>> treeData(
+	public List<Map<String, Object>> treeData(HttpServletRequest request,
 			HttpServletResponse response) {
 
-		List<PunishLib> list = punishLibService.findList(new PunishLib());
+		String behavior = Util.getString(request.getParameter("value"));
+		PunishLib param = new PunishLib();
+		if(StringUtils.isNotEmpty(behavior)){
+			param.setBehavior(behavior);
+		}
+		List<PunishLib> list = punishLibService.findList(param);
 		
 		List<Map<String, Object>> mapList = Lists.newArrayList();
 		

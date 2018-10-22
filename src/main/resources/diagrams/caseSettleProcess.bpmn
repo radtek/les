@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef">
   <process id="caseSettleProcess" name="结案流程" isExecutable="true">
+    <extensionElements>
+      <activiti:executionListener event="start" class="org.wxjs.les.modules.tcase.listener.CaseFinishListener"></activiti:executionListener>
+    </extensionElements>
     <startEvent id="start" name="开始"></startEvent>
     <userTask id="sid-8A4472D0-CDFC-42C4-808D-76FE57E55826" name="办案人意见" activiti:assignee="${assignee}" activiti:candidateGroups="jcbar">
       <multiInstanceLoopCharacteristics isSequential="false" activiti:collection="assigneeList" activiti:elementVariable="assignee"></multiInstanceLoopCharacteristics>
@@ -101,7 +104,7 @@
         <omgdi:waypoint x="730.0" y="191.0"></omgdi:waypoint>
         <omgdi:waypoint x="770.0" y="190.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="732.0" y="199.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="24.0" x="732.0" y="199.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sid-5A2E2F10-C49E-4672-BC9D-18B330F265D8" id="BPMNEdge_sid-5A2E2F10-C49E-4672-BC9D-18B330F265D8">

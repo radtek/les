@@ -183,6 +183,19 @@ public class TcaseController extends BaseController {
 	}	
 	
 	@RequiresPermissions("case:tcase:view")
+	@RequestMapping(value = {"mylist"})
+	public String mylist(Tcase tcase, HttpServletRequest request, HttpServletResponse response, Model model) {
+		
+		tcase.setCaseTransfer("0");
+		
+		tcase.setMyCaseFlag(true);
+		
+		Page<Tcase> page = tcaseService.findPage(new Page<Tcase>(request, response), tcase); 
+		model.addAttribute("page", page);
+		return "modules/tcase/mycaseList";
+	}
+	
+	@RequiresPermissions("case:tcase:view")
 	@RequestMapping(value = {"query"})
 	public String query(Tcase tcase, HttpServletRequest request, HttpServletResponse response, Model model) {
 		

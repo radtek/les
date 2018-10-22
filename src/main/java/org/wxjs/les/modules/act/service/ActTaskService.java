@@ -218,6 +218,34 @@ public class ActTaskService extends BaseService {
 		return page;
 	}
 	
+	public List<String> myProcIds(){
+		
+		String userId = UserUtils.getUser().getLoginName();
+		
+		List<String> procInsIds = Lists.newArrayList();
+		//todo
+		TaskQuery todoTaskQuery = taskService.createTaskQuery().taskAssignee(userId).active()
+				.includeProcessVariables().orderByTaskCreateTime().desc();
+		List<Task> todoList = todoTaskQuery.list();
+		for (Task task : todoList) {
+			String procInsId = task.getProcessInstanceId();
+			procInsIds.add(procInsId);
+		}
+		
+		//historic
+		
+		HistoricTaskInstanceQuery histTaskQuery = historyService.createHistoricTaskInstanceQuery().taskAssignee(userId).finished()
+				.includeProcessVariables().orderByHistoricTaskInstanceEndTime().desc();
+		List<HistoricTaskInstance> histList = histTaskQuery.list();
+		
+		for (HistoricTaskInstance histTask : histList) {
+			String procInsId = histTask.getProcessInstanceId();
+			procInsIds.add(procInsId);
+		}
+		
+		return procInsIds;
+	}
+	
 	/**
 	 * 获取流转历史列表
 	 * @param procInsId 流程实例

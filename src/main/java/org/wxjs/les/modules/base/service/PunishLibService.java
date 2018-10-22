@@ -4,6 +4,7 @@
 package org.wxjs.les.modules.base.service;
 
 import java.io.FileInputStream;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -31,6 +32,8 @@ import org.wxjs.les.modules.base.entity.PunishLibRange;
 import org.wxjs.les.modules.base.dao.PunishLibRangeDao;
 import org.wxjs.les.modules.base.utils.PathUtils;
 
+import com.google.common.collect.Lists;
+
 /**
  * 处罚基准库Service
  * 
@@ -40,6 +43,9 @@ import org.wxjs.les.modules.base.utils.PathUtils;
 @Service
 @Transactional(readOnly = true)
 public class PunishLibService extends CrudService<PunishLibDao, PunishLib> {
+	
+	private final static String chineseSpace = " ";
+	private final static String englishSpace = " ";
 
 	@Autowired
 	private PunishLibRangeDao punishLibRangeDao;
@@ -52,7 +58,38 @@ public class PunishLibService extends CrudService<PunishLibDao, PunishLib> {
 	}
 
 	public List<PunishLib> findList(PunishLib punishLib) {
-		return super.findList(punishLib);
+		List<PunishLib> rst = Lists.newArrayList();
+		String behavior = punishLib.getBehavior();
+		if(StringUtils.isNotEmpty(behavior) && behavior.contains(englishSpace)){
+			behavior = behavior.replaceAll(chineseSpace, englishSpace);
+			String[] keys = behavior.split(englishSpace);
+			logger.debug("keys:{}", Arrays.toString(keys));
+			punishLib.setBehavior(keys[0]);
+			List<PunishLib> list = super.findList(punishLib);
+			for(PunishLib lib : list){
+				//debug
+				//logger.debug("behavior:{}, contains:{}", lib.getBehavior(), this.containKeys(lib, keys));
+				if(this.containKeys(lib, keys)){
+					rst.add(lib);
+				}
+			}
+		}else{
+			rst = super.findList(punishLib);
+		}
+		return rst;
+	}
+	
+	private boolean containKeys(PunishLib lib, String[] keys){
+		boolean flag = true;
+		for(String key : keys){
+			if(StringUtils.isNotEmpty(key)){
+				if(!lib.getBehavior().contains(key)){
+					flag = false;
+					break;
+				}
+			}
+		}
+		return flag;
 	}
 
 	public Page<PunishLib> findPage(Page<PunishLib> page, PunishLib punishLib) {

@@ -66,6 +66,17 @@
 		ORDER BY a.sort
 	</select>
 	
+	<select id="findByRoleId" resultType="Menu">
+		SELECT DISTINCT
+			<include refid="menuColumns"/>
+		FROM sys_menu a
+		LEFT JOIN sys_menu p ON p.id = a.parent_id
+		JOIN sys_role_menu rm ON rm.menu_id = a.id
+		JOIN sys_role r ON r.id = rm.role_id AND r.useable='1' AND r.id = #{id}
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL} AND r.del_flag = #{DEL_FLAG_NORMAL}
+		ORDER BY a.sort
+	</select>	
+	
 	<insert id="insert">
 		INSERT INTO sys_menu(
 			id, 

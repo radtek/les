@@ -179,6 +179,27 @@
 			$("#key").focus();
 		}
 		
+		function doSearch(){
+			var value = $.trim(key.get(0).value);
+			$.get("${ctx}${url}${fn:indexOf(url,'?')==-1?'?':'&'}&extId=${extId}&isAll=${isAll}&module=${module}&t="
+					+ new Date().getTime()+"&value="+value, function(zNodes){
+				// 初始化树结构
+				tree = $.fn.zTree.init($("#tree"), setting, zNodes);
+				
+				// 默认展开一级节点
+				var nodes = tree.getNodesByParam("level", 0);
+				for(var i=0; i<nodes.length; i++) {
+					tree.expandNode(nodes[i], true, false, false);
+				}
+				//异步加载子节点（加载用户）
+				var nodesOne = tree.getNodesByParam("isParent", true);
+				for(var j=0; j<nodesOne.length; j++) {
+					tree.reAsyncChildNodes(nodesOne[j],"!refresh",true);
+				}
+				selectCheckNode();
+			});
+		}
+		
 	</script>
 </head>
 <body>
@@ -186,9 +207,9 @@
 		<i class="icon-search"></i><label id="txt">搜索</label>
 	</div>
 	<div id="search" class="form-search hide" style="padding:10px 0 0 13px;">
-		<label for="key" class="control-label" style="padding:5px 5px 3px 0;">关键字：</label>
+		<label for="key" class="control-label" style="padding:5px 5px 3px 0;">关键字(多个关键字以空格分隔)：</label>
 		<input type="text" class="empty" id="key" name="key" maxlength="50" style="width:400px;">
-		<button class="btn" id="btn" onclick="searchNode()">搜索</button>
+		<button class="btn" id="btn" onclick="doSearch()">搜索</button>
 	</div>
 	<div id="tree" class="ztree" style="padding:15px 20px;"></div>
 </body>

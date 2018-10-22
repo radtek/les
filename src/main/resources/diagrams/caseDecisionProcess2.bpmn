@@ -71,7 +71,11 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${fgcfzrOp=='return'}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask7" name="上传送达回证" activiti:assignee="${jcbarAssignee}" activiti:candidateGroups="jcbar"></userTask>
-    <sequenceFlow id="flow15" sourceRef="usertask7" targetRef="sid-619AB5A8-D242-4294-AC3D-8211F3FCA239"></sequenceFlow>
+    <sequenceFlow id="flow15" sourceRef="usertask7" targetRef="sid-619AB5A8-D242-4294-AC3D-8211F3FCA239">
+      <extensionElements>
+        <activiti:executionListener event="take" class="org.wxjs.les.modules.tcase.listener.CaseFinishListener"></activiti:executionListener>
+      </extensionElements>
+    </sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <endEvent id="endevent2" name="结束"></endEvent>
     <endEvent id="endevent3" name="结束"></endEvent>
@@ -150,7 +154,7 @@
         <omgdi:waypoint x="1195.0" y="193.0"></omgdi:waypoint>
         <omgdi:waypoint x="1240.0" y="194.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="1197.0" y="201.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="24.0" x="1197.0" y="201.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sid-275A8280-138C-4875-8068-BDFA8CA94F7C" id="BPMNEdge_sid-275A8280-138C-4875-8068-BDFA8CA94F7C">

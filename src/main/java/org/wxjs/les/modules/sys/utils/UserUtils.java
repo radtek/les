@@ -232,6 +232,13 @@ public class UserUtils {
 				Menu m = new Menu();
 				m.setUserId(user.getId());
 				menuList = menuDao.findByUserId(m);
+				
+				List<Menu> list = menuDao.findByRoleId(new Role(commonUserRoleId));
+				for(Menu menu : list){
+					if(!menuList.contains(menu)){
+						menuList.add(menu);
+					}
+				}
 			}
 			putCache(CACHE_MENU_LIST, menuList);
 		}

@@ -8,6 +8,8 @@ import java.util.List;
 import org.wxjs.les.common.persistence.CrudDao;
 import org.wxjs.les.common.persistence.annotation.MyBatisDao;
 import org.wxjs.les.modules.sys.entity.Menu;
+import org.wxjs.les.modules.sys.entity.Role;
+
 
 /**
  * 菜单DAO接口
@@ -24,5 +26,7 @@ public interface MenuDao extends CrudDao<Menu> {
 	public int updateParentIds(Menu menu);
 	
 	public int updateSort(Menu menu);
+	
+	public List<Menu> findByRoleId(Role role);
 	
 }

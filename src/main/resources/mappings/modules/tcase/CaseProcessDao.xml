@@ -54,6 +54,19 @@
 		</choose>
 	</select>
 	
+	<select id="findListByProcInsIds" resultType="String">
+		SELECT 
+			DISTINCT case_id AS "caseId"
+		FROM tcase_process a
+		<where>
+		    a.proc_inst_id in (
+		    <foreach collection="procInsIds" item="tempStr" separator=",">
+               '${tempStr}'
+            </foreach>
+            )			
+		</where>
+	</select>	
+	
 	<select id="findAllList" resultType="CaseProcess">
 		SELECT 
 			<include refid="caseProcessColumns"/>

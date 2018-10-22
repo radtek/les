@@ -47,6 +47,9 @@ public class CaseProcess extends DataEntity<CaseProcess> {
 	//签名信息
 	private List<Signature> signatures = Lists.newArrayList();
 	
+	//临时属性
+	private List<String> procInsIds;
+	
 	public CaseProcess() {
 		super();
 	}
@@ -221,6 +224,14 @@ public class CaseProcess extends DataEntity<CaseProcess> {
 	
 	public boolean getStartable(){
 		return StringUtils.isEmpty(this.caseStageStatus) || "0".equals(this.caseStageStatus);
+	}
+
+	public List<String> getProcInsIds() {
+		return procInsIds;
+	}
+
+	public void setProcInsIds(List<String> procInsIds) {
+		this.procInsIds = procInsIds;
 	}
 	
 }

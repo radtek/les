@@ -22,6 +22,7 @@ import org.wxjs.les.common.service.CrudService;
 import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.FileUtils;
 import org.wxjs.les.common.utils.Util;
+import org.wxjs.les.modules.act.service.ActTaskService;
 import org.wxjs.les.modules.base.dao.SignatureDao;
 import org.wxjs.les.modules.base.entity.Signature;
 import org.wxjs.les.modules.base.utils.PathUtils;
@@ -115,6 +116,9 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 	
 	@Autowired
 	TaskService taskService;
+	
+	@Autowired
+	ActTaskService actTaskService;
 	
 	@Autowired
 	InfPunishDao infPunishDao;
@@ -264,6 +268,16 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 		List<Tcase> rst = Lists.newArrayList();
 		List<Tcase> list = super.findList(tcase);
 		
+		List<String> myCaseIds = Lists.newArrayList(); //我相关的案件
+		if(tcase.getMyCaseFlag()){
+			//prepare data to filter
+			List<String> myHistoryProcIds = actTaskService.myProcIds();
+			CaseProcess caseProcess = new CaseProcess();
+			caseProcess.setProcInsIds(myHistoryProcIds);
+			
+			myCaseIds = caseProcessDao.findListByProcInsIds(caseProcess);
+		}
+		
 		logger.debug("entity.getUnfinishedFlag():{}", tcase.getUnfinishedFlag());
 		
 		//get current process list
@@ -284,7 +298,16 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 				}
 			}
 			logger.debug("after handle, entity.getCurrentCaseProcess().size():{}", entity.getCurrentCaseProcesses().size()+"");
-			rst.add(entity);
+			if(tcase.getMyCaseFlag()){
+				//filter those not related
+				if(myCaseIds.contains(entity.getId())){
+					rst.add(entity);
+				}
+			}else{
+				//no filter
+				rst.add(entity);
+			}
+			
 		}
 		
 		return rst;

@@ -33,4 +33,6 @@ public interface CaseProcessDao extends CrudDao<CaseProcess> {
 	
 	public void deleteByCaseId(String caseId);
 	
+	public List<String> findListByProcInsIds(CaseProcess caseProcess);
+	
 }

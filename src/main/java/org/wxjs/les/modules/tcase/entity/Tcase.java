@@ -35,6 +35,8 @@ public class Tcase extends DataEntity<Tcase> {
 	
 	private static final int FieldShortLen = 12;
 	
+	public static final boolean MyCaseFlag = true;
+	
 	private String caseSeq;		// 事项编号
 	private String accepter;		// 受理人
 	private Date acceptDate;		// 受理时间
@@ -101,6 +103,8 @@ public class Tcase extends DataEntity<Tcase> {
 	private String caseIds;
 	
 	private String unfinishedFlag = "0";
+	
+	private boolean myCaseFlag = false; //true:我的案件， false：忽略此条件
 	
 	// 流程任务
 	private Task task;
@@ -703,6 +707,14 @@ public class Tcase extends DataEntity<Tcase> {
 
 	public void setUnfinishedFlag(String unfinishedFlag) {
 		this.unfinishedFlag = unfinishedFlag;
+	}
+
+	public boolean getMyCaseFlag() {
+		return myCaseFlag;
+	}
+
+	public void setMyCaseFlag(boolean myCaseFlag) {
+		this.myCaseFlag = myCaseFlag;
 	}
 
 	public String getOldCaseId() {
