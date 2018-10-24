@@ -3,7 +3,10 @@
  */
 package org.wxjs.les.modules.base.service;
 
+import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.service.CrudService;
 import org.wxjs.les.modules.base.entity.Signature;
+
+import com.google.common.collect.Lists;
+
 import org.wxjs.les.modules.base.dao.SignatureDao;
 
 /**
@@ -32,6 +38,24 @@ public class SignatureService extends CrudService<SignatureDao, Signature> {
 	
 	public List<Signature> findList(Signature signature) {
 		return super.findList(signature);
+	}
+	
+	public List<Signature> findList4Export(Signature signature) {
+		List<Signature> list = super.findList(signature);
+		//filter, for example, it was ever returned, previous signatures should be abandoned
+		Map<String, Signature> map = new LinkedHashMap<String, Signature>();
+		for(Signature entity : list){
+			map.put(this.getKeyOfTaskCreateBy(entity), entity);
+		}
+		Collection<Signature> col = map.values();
+		List<Signature> rst = Lists.newArrayList();
+		rst.addAll(col);
+		
+		return rst;
+	}
+	
+	private String getKeyOfTaskCreateBy(Signature entity){
+		return entity.getTaskName()+"_"+entity.getCreateBy().getId();
 	}
 	
 	public Page<Signature> findPage(Page<Signature> page, Signature signature) {

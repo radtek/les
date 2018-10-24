@@ -30,6 +30,7 @@ import org.wxjs.les.common.utils.PdfUtil;
 import org.wxjs.les.common.utils.SpringContextHolder;
 import org.wxjs.les.modules.base.dao.SignatureDao;
 import org.wxjs.les.modules.base.entity.Signature;
+import org.wxjs.les.modules.base.service.SignatureService;
 import org.wxjs.les.modules.sys.dao.UserDao;
 import org.wxjs.les.modules.sys.utils.DictUtils;
 import org.wxjs.les.modules.tcase.entity.Tcase;
@@ -62,6 +63,7 @@ public abstract class ExportBase<T> {
 	protected final static Font fontNumber = PdfUtil.getFont10(Font.NORMAL);
 	
 	protected SignatureDao signatureDao = SpringContextHolder.getBean(SignatureDao.class);
+	protected SignatureService signatureService = SpringContextHolder.getBean(SignatureService.class);
 	
 	public abstract void generate(OutputStream os) throws DocumentException;
 	
@@ -299,7 +301,9 @@ public abstract class ExportBase<T> {
 		if(!StringUtils.isEmpty(taskName)){
 			signatureParam.setTaskName(taskName);
 		}
-		List<Signature> signatures = signatureDao.findList(signatureParam);
+		//List<Signature> signatures = signatureDao.findList(signatureParam);
+		
+		List<Signature> signatures = signatureService.findList4Export(signatureParam);
     	
     	PdfPTable table = new PdfPTable(4);
     	table.setWidths(new float[]{0.1f, 0.4f, 0.1f, 0.4f});
