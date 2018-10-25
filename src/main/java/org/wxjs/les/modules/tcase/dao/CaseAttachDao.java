@@ -23,4 +23,6 @@ public interface CaseAttachDao extends CrudDao<CaseAttach> {
 	
 	public void deleteByCaseId(String caseId);
 	
+	
+	
 }

@@ -11,5 +11,4 @@
         <div id="messageBox" style="font-weight:bold;color:blue;">${content}</div> 
       </c:otherwise>
     </c:choose>
-	
 </c:if>

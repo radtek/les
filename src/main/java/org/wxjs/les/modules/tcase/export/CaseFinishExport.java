@@ -94,7 +94,7 @@ public class CaseFinishExport extends ExportBase<CaseFinishExport> {
 			// 签名
 			Signature signatureParam = new Signature(false);
 			signatureParam.setProcInstId(this.tcase.getCaseProcess().getProcInsId());
-			List<Signature> signatures = signatureDao.findList(signatureParam);
+			List<Signature> signatures = signatureService.findList4Export(signatureParam);
 
 			PdfPCell cell;
 			Image image;

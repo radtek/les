@@ -136,7 +136,7 @@ public class CaseTransferExport extends ExportBase<CaseTransferExport> {
 		//get signatures
 		Signature signatureParam = new Signature(false);
 		signatureParam.setProcInstId(procInsId);
-		List<Signature> signatures = signatureDao.findList(signatureParam);
+		List<Signature> signatures = signatureService.findList4Export(signatureParam);
 		
 		for(Signature sig : signatures){
     		

@@ -23,7 +23,7 @@
 
     <les:caseTab tab="attach" caseActAttr="${caseAct}"></les:caseTab>  
 
-	<sys:message content="${message}"/>
+	<sys:myMessage content="${message}"></sys:myMessage>
 	
 	<div style="margin:10px 60px 10px 0;text-align:right">
 	    <shiro:hasPermission name="case:tcase:edit">
@@ -58,12 +58,16 @@
 					<a href="${caseAttach.filepath}" target="_blank">${caseAttach.filename}</a>
 				</td>
 				<shiro:hasPermission name="case:tcase:edit"><td>
-				    <a href="${ctx}/case/caseAttach/form?attachId=${caseAttach.id}&paramUri=${caseAct.paramUri}">
+				    <a href="${ctx}/case/caseAttach/form?attachId=${caseAttach.id}&${caseAct.paramUri}">
 				    <c:if test="${empty caseAttach.filepath}">上传</c:if>
 				    <c:if test="${not empty caseAttach.filepath}">修改</c:if>
 				    </a>
+				    <c:if test="${caseAttach.isSupportUploadWithOneClick}">&nbsp;
+				    <a href="${ctx}/case/caseAttach/uploadWithOneClick?attachId=${caseAttach.id}&${caseAct.paramUri}">一键上传</a>				    
+				    </c:if>&nbsp;
+				    
 				<c:if test="${caseAttach.mandatory ne '1'}">
-				    <a href="${ctx}/case/caseAttach/delete?id=${caseAttach.id}&paramUri=${caseAct.paramUri}" onclick="return confirmx('确认要删除该案件资料吗？', this.href)">删除</a>
+				    <a href="${ctx}/case/caseAttach/delete?attachId=${caseAttach.id}&${caseAct.paramUri}" onclick="return confirmx('确认要删除该案件资料吗？', this.href)">删除</a>
 				</c:if>
 				</td></shiro:hasPermission>
 			</tr>

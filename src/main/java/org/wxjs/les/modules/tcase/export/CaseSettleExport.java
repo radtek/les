@@ -139,7 +139,7 @@ public class CaseSettleExport extends ExportBase<CaseSettleExport> {
 		if(!StringUtils.isEmpty(taskName)){
 			signatureParam.setTaskName(taskName);
 		}
-		List<Signature> signatures = signatureDao.findList(signatureParam);
+		List<Signature> signatures = signatureService.findList4Export(signatureParam);
     	
     	PdfPTable table = new PdfPTable(4);
     	table.setWidths(new float[]{0.1f, 0.4f, 0.1f, 0.4f});

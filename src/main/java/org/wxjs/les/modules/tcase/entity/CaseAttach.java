@@ -15,6 +15,9 @@ import org.wxjs.les.common.persistence.DataEntity;
 public class CaseAttach extends DataEntity<CaseAttach> {
 	
 	private static final long serialVersionUID = 1L;
+
+	public static enum reportTypes {立案审批表, 调查报告, 处理审批表, 发文稿, 结案审批表, 备考表};
+	
 	private String caseId;		// 案件编号
 	private String attachType;		// 资料类型
 	private String filename;		// 文件名称
@@ -92,6 +95,16 @@ public class CaseAttach extends DataEntity<CaseAttach> {
 
 	public void setParamUri(String paramUri) {
 		this.paramUri = paramUri;
+	}
+	
+	public boolean getIsSupportUploadWithOneClick(){
+		boolean flag = true;
+		try{
+			reportTypes.valueOf(this.attachType);
+		}catch(Exception ex){
+			flag = false;
+		}
+		return flag;
 	}
 	
 }

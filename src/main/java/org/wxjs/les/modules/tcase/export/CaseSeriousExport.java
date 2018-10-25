@@ -140,7 +140,7 @@ public class CaseSeriousExport extends ExportBase<CaseSeriousExport> {
     		signatureParam.setProcInstId(this.tcase.getCaseProcess().getProcInsId());
     		signatureParam.setTaskName("领导会签");
 
-    		List<Signature> signatures = signatureDao.findList(signatureParam);
+    		List<Signature> signatures = signatureService.findList4Export(signatureParam);
     		
             table = new PdfPTable(2);
             table.setWidths(new float[]{0.1f, 0.9f});

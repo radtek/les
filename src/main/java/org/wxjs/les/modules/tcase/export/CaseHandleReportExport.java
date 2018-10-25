@@ -89,7 +89,7 @@ public class CaseHandleReportExport extends ExportBase<CaseHandleReportExport> {
     		signatureParam.setProcInstId(this.tcase.getCaseProcess().getProcInsId());
     		signatureParam.setTaskName("办案人意见");
 
-    		List<Signature> signatures = signatureDao.findList(signatureParam);
+    		List<Signature> signatures = signatureService.findList4Export(signatureParam);
     		
             table = new PdfPTable(3);
             table.setWidths(new float[]{0.3f, 0.4f, 0.3f});

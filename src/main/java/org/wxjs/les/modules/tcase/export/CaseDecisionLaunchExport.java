@@ -139,7 +139,7 @@ public class CaseDecisionLaunchExport extends
 			Signature signatureParam = new Signature(false);
 			signatureParam.setProcInstId(this.tcase.getCaseProcess()
 					.getProcInsId());
-			List<Signature> signatures = signatureDao.findList(signatureParam);
+			List<Signature> signatures = signatureService.findList4Export(signatureParam);
 
 			table = new PdfPTable(4);
 			table.setWidths(new float[] { 0.1f, 0.4f, 0.1f, 0.4f });
