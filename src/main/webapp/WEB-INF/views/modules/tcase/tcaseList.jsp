@@ -85,7 +85,7 @@
 				</td>
 				<td>
 					${tcase.caseSource}
-				</td>								
+				</td>	
 				<td>
 				    <c:choose>
 				        <c:when test="${tcase.status eq '0'}">未开始</c:when>
@@ -102,7 +102,7 @@
 					    <c:otherwise>												    
 					    </c:otherwise>
 				    </c:choose>
-				</td>				
+				</td>							
 				<shiro:hasPermission name="case:tcase:edit"><td>
     				<a href="${ctx}/case/tcase/infoTab?businesskey=${tcase.id}">进入</a>
     				<c:if test="${empty tcase.currentCaseProcesses}">

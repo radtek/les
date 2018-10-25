@@ -273,7 +273,7 @@ public class TcaseController extends BaseController {
 		logger.debug("businesskey:{}", businesskey);
 		
 		if(tcase.getCaseProcess() != null){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase);
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
 		}
 		
@@ -296,11 +296,13 @@ public class TcaseController extends BaseController {
 		logger.debug("businesskey:{}", businesskey);
 		
 		if(tcase.getCaseProcess() != null){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase);
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
 		}
 		
 		caseAct.setTcase(tcase);
+		
+		this.prepare4Approve(caseAct, model);
 		
 		return "modules/tcase/tcaseAcceptanceTab";
 	}
@@ -328,11 +330,13 @@ public class TcaseController extends BaseController {
 		logger.debug("businesskey:{}", businesskey);
 		
 		if(tcase.getCaseProcess() != null){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase);
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
 		}
 		
 		caseAct.setTcase(tcase);
+		
+		this.prepare4Approve(caseAct, model);
 		
 		return "modules/tcase/tcaseInitialTab";
 	}
@@ -358,7 +362,7 @@ public class TcaseController extends BaseController {
 		logger.debug("businesskey:{}", businesskey);
 		
 		if(tcase.getCaseProcess() != null){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase);
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
 		}
 		
@@ -379,6 +383,8 @@ public class TcaseController extends BaseController {
 		
 		model.addAttribute("caseHandlePunishLib", caseHandlePunishLib);
 		model.addAttribute("libList", libList);
+		
+		this.prepare4Approve(caseAct, model);
 		
 		return "modules/tcase/tcaseHandleTab";
 	}
@@ -406,7 +412,7 @@ public class TcaseController extends BaseController {
 		logger.debug("businesskey:{}", businesskey);
 		
 		if(tcase.getCaseProcess() != null){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase);
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
 		}
 		
@@ -422,6 +428,8 @@ public class TcaseController extends BaseController {
 		}
 		
 		model.addAttribute("caseNotify", caseNotify );
+		
+		this.prepare4Approve(caseAct, model);
 		
 		return "modules/tcase/tcaseNotifyTab";
 	}
@@ -446,7 +454,7 @@ public class TcaseController extends BaseController {
 		logger.debug("businesskey:{}", businesskey);
 		
 		if(tcase.getCaseProcess() != null){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase);
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
 		}
 		
@@ -463,6 +471,8 @@ public class TcaseController extends BaseController {
 		}
 		
 		model.addAttribute("caseDecision", caseDecision);
+		
+		this.prepare4Approve(caseAct, model);
 		
 		return "modules/tcase/tcaseDecisionTab";
 	}
@@ -488,7 +498,7 @@ public class TcaseController extends BaseController {
 		logger.debug("businesskey:{}", businesskey);
 		
 		if(tcase.getCaseProcess() != null){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase);
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
 		}
 		
@@ -504,6 +514,8 @@ public class TcaseController extends BaseController {
 		}
 		
 		model.addAttribute("caseSettle", caseSettle);
+		
+		this.prepare4Approve(caseAct, model);
 		
 		return "modules/tcase/tcaseSettleTab";
 	}
@@ -529,7 +541,7 @@ public class TcaseController extends BaseController {
 		logger.debug("businesskey:{}", businesskey);
 		
 		if(tcase.getCaseProcess() != null){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase);
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
 		}
 		
@@ -542,6 +554,8 @@ public class TcaseController extends BaseController {
 		}
 		
 		model.addAttribute("caseFinish", caseFinish);
+		
+		this.prepare4Approve(caseAct, model);
 		
 		return "modules/tcase/tcaseFinishTab";
 	}
@@ -559,7 +573,7 @@ public class TcaseController extends BaseController {
 		Tcase tcase = tcaseService.getCaseAndProcess(caseId, Global.CASE_STAGE_SERIOUS);
 		
 		if(tcase.getCaseProcess() != null){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase);
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
 		}
 		
@@ -575,6 +589,8 @@ public class TcaseController extends BaseController {
 		}
 		
 		model.addAttribute("caseSerious", caseSerious);
+		
+		this.prepare4Approve(caseAct, model);
 		
 		return "modules/tcase/tcaseSeriousTab";
 	}
@@ -592,7 +608,7 @@ public class TcaseController extends BaseController {
 		Tcase tcase = tcaseService.getCaseAndProcess(caseId, Global.CASE_STAGE_CANCEL);
 		
 		if(tcase.getCaseProcess() != null){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase);
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
 		}
 		
@@ -608,6 +624,8 @@ public class TcaseController extends BaseController {
 		}
 		
 		model.addAttribute("caseCancel", caseCancel);
+		
+		this.prepare4Approve(caseAct, model);
 		
 		return "modules/tcase/tcaseCancelTab";
 	}
@@ -631,7 +649,7 @@ public class TcaseController extends BaseController {
 		tcase.setCaseProcess(caseProcess);
 		
 		if("start".equals(caseAct.getOperateType())){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase);
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);			
 		}
 		
@@ -672,9 +690,9 @@ public class TcaseController extends BaseController {
 		return "modules/tcase/tcaseInfoTab";
 	}
 	
-	protected List<User> getCaseHandler4Start(Tcase tcase){
+	protected List<User> getCaseHandler4Start(CaseProcess caseProcess){
 
-		String caseStage = tcase.getCaseProcess().getCaseStage();
+		String caseStage = caseProcess.getCaseStage();
 		
 		User user = UserUtils.getUser();
 		
@@ -760,7 +778,7 @@ public class TcaseController extends BaseController {
 		if(!StringUtils.isEmpty(caseAct.getTaskId())){
 			List<User> availableHandlers = Lists.newArrayList();
 			if("0".equals(tcase.getCaseProcess().getCaseStageStatus())){
-				availableHandlers = this.getCaseHandler4Start(tcase);
+				availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess());
 				tcase.getCaseProcess().setMultiple(true);			
 			}else{
 				availableHandlers = this.getCaseHandler4Handle(caseAct.getTaskId());	
@@ -849,6 +867,68 @@ public class TcaseController extends BaseController {
 		model.addAttribute("transferProcesslist", transferProcesslist);
 		
 		return "modules/tcase/tcaseProcessTab";
+	}
+	
+	protected void prepare4Approve(CaseAct caseAct, Model model){
+		String businesskey = caseAct.getBusinesskey();
+		String[] strs = businesskey.split(":");
+		CaseProcess process = null;
+		if(strs.length > 1){
+			String caseProcessId = strs[1];
+			process = caseProcessService.get(caseProcessId);
+		}else{
+			return;
+		}
+		
+		if(!StringUtils.isEmpty(caseAct.getTaskId())){
+			List<User> availableHandlers = Lists.newArrayList();
+			if("0".equals(process.getCaseStageStatus())){
+				availableHandlers = this.getCaseHandler4Start(process);
+				process.setMultiple(true);			
+			}else{
+				availableHandlers = this.getCaseHandler4Handle(caseAct.getTaskId());	
+				process.setMultiple(false);	
+			}
+			process.setAvailableHandlers(availableHandlers);	
+			
+			if(availableHandlers.size() == 1 ){
+				//set default value
+				process.setCaseHandler(availableHandlers.get(0).getLoginName());
+				
+				logger.debug("getCaseHandler():{}", process.getCaseHandler());
+			}
+			
+			Task task = taskService.createTaskQuery().taskId(caseAct.getTaskId()).singleResult();
+			
+			logger.debug("task.getExecutionId():{}", task!=null?task.getExecutionId():"");
+			
+			caseAct.setTask(task);	
+			//the process being handled
+			model.addAttribute("handlingProcess", process);
+		}
+		
+		if(Global.OperateType_Handle.equals(caseAct.getOperateType())){
+			ActTask actTask = new ActTask();
+			
+			actTask.setBusinesskey(businesskey);
+			
+			actTask.initialSignature();
+			
+			actTask.setTaskId(caseAct.getTaskId());
+			if(caseAct.getTask()!=null){
+				actTask.setTaskName(caseAct.getTask().getName());
+			}
+			
+			actTask.setProcInsId(process.getProcInsId());
+			
+			actTask.setNextHandlers(process.getCaseHandler());
+			
+			//set NextConditionTexts to control the button display
+			actTask.setNextConditionTexts(processService.getConditionTexts(caseAct.getTaskId()));
+			
+			logger.debug("actTask.getNextHandlers():{}", actTask.getNextHandlers());
+			model.addAttribute("actTask", actTask);			
+		}
 	}
 
 	@RequiresPermissions("case:tcase:edit")

@@ -23,6 +23,7 @@ import org.wxjs.les.common.web.BaseController;
 import org.wxjs.les.common.utils.StringUtils;
 import org.wxjs.les.modules.base.dao.SignatureDao;
 import org.wxjs.les.modules.base.entity.Signature;
+import org.wxjs.les.modules.base.service.SignatureService;
 import org.wxjs.les.modules.tcase.dao.TcaseDao;
 import org.wxjs.les.modules.tcase.entity.CaseProcess;
 import org.wxjs.les.modules.tcase.entity.Tcase;
@@ -44,7 +45,7 @@ public class CaseProcessController extends BaseController {
 	private TcaseDao tcaseDao;
 	
 	@Autowired
-	private SignatureDao signatureDao;
+	protected	SignatureService signatureService;
 	
 	@ModelAttribute
 	public CaseProcess get(@RequestParam(required=false) String id) {
@@ -94,7 +95,7 @@ public class CaseProcessController extends BaseController {
 		
 		Signature signature = new Signature(false);
 		signature.setProcInstId(caseProcess.getProcInsId());
-		List<Signature> signatures = signatureDao.findList(signature);
+		List<Signature> signatures = signatureService.findList(signature);
 		caseProcess.setSignatures(signatures);
 		
 		logger.debug("signatures.size():{}", signatures.size());

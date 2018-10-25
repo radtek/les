@@ -25,6 +25,7 @@ import org.wxjs.les.common.utils.Util;
 import org.wxjs.les.modules.act.service.ActTaskService;
 import org.wxjs.les.modules.base.dao.SignatureDao;
 import org.wxjs.les.modules.base.entity.Signature;
+import org.wxjs.les.modules.base.service.SignatureService;
 import org.wxjs.les.modules.base.utils.PathUtils;
 import org.wxjs.les.modules.sys.dao.UserDao;
 import org.wxjs.les.modules.sys.entity.User;
@@ -96,6 +97,9 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 	
 	@Autowired
 	protected	SignatureDao signatureDao;
+	
+	@Autowired
+	protected	SignatureService signatureService;
 	
 	@Autowired
 	protected	UserDao userDao;
@@ -675,7 +679,7 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 		String procInsId = caseProcess.getProcInsId();
 		Signature signature = new Signature(false);
 		signature.setProcInstId(procInsId);
-		List<Signature> sigList = signatureDao.findList(signature);
+		List<Signature> sigList = signatureService.findList4Export(signature);
 		
 		logger.debug("procInsId:{}, sigList.size():{}", procInsId, sigList.size());
 		

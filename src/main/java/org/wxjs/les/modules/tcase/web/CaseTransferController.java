@@ -88,7 +88,7 @@ public class CaseTransferController extends TcaseController {
 		tcase.setCaseProcess(caseProcess);
 		
 		if("start".equals(caseAct.getOperateType())){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase);
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);			
 		}
 		
@@ -110,11 +110,13 @@ public class CaseTransferController extends TcaseController {
 		logger.debug("businesskey:{}", businesskey);
 		
 		if(tcase.getCaseProcess() != null){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase);
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);			
 		}
 	
 		caseAct.setTcase(tcase);
+		
+		this.prepare4Approve(caseAct, model);
 		
 		return "modules/tcase/tcaseInfoTabTransfer";
 	}
