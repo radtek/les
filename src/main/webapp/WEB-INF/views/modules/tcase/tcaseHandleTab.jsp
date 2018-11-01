@@ -89,25 +89,19 @@
 			</div>
 		</div>			
 			
-		<BR><BR>
+		<BR>
 		<c:forEach items="${libList}" var="libEntity" varStatus="status">
 		   
 		   <les:punishLibTag punishLibAttr="${libEntity}" paramUri="${caseAct.paramUri}" editable="${editable }"></les:punishLibTag>
 		
 		</c:forEach>	
 	</form:form>
-	<BR>
 	<form:form id="inputUploadInfoForm" modelAttribute="caseHandle" action="${ctx}/tcase/caseHandle/saveUploadInfo" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<form:hidden path="caseId"/>
 		<form:hidden path="paramUri" value="${caseAct.paramUri}"/>
 		<input type="hidden" id="lib_range_checked_ids" name="rangeIds" value="${caseHandle.rangeIds}">
-		<div class="control-group">
-			<label class="control-label">建议处罚金额（元）：</label>
-			<div class="controls">
-				<form:input path="punishMoney" htmlEscape="false" class="input-xlarge "/>
-			</div>
-		</div>
+
 		<div class="form-actions">
 		<c:if test="${editable }">
 			<shiro:hasPermission name="case:tcase:edit"><input id="btnSaveUploadInfo" class="btn btn-primary" type="button" value="保 存上报资料"/>&nbsp;

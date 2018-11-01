@@ -5,7 +5,7 @@
    <select id="monthCountMoneyReport" resultType="org.wxjs.les.modules.report.entity.ReportEntity">
 		SELECT DATE_FORMAT(a.decision_date,'%Y-%m') 'period', count(*) 'count', sum(b.punish_money) 'money' 
 		FROM tcase a
-        LEFT JOIN tcase_handle b on b.case_id=a.id
+        LEFT JOIN tcase_decision b on b.case_id=a.id
 		WHERE a.del_flag='0'
 		AND DATE_FORMAT(a.decision_date,'%Y-%m') &gt;= DATE_FORMAT(#{dateFrom},'%Y-%m')
 		AND DATE_FORMAT(a.decision_date,'%Y-%m') &lt;= DATE_FORMAT(#{dateTo},'%Y-%m')
@@ -16,7 +16,7 @@
 	<select id="yearCountMoneyReport" resultType="org.wxjs.les.modules.report.entity.ReportEntity">
 		SELECT DATE_FORMAT(a.decision_date,'%Y') 'period', count(*) 'count', sum(b.punish_money) 'money' 
 		FROM tcase a
-        LEFT JOIN tcase_handle b on b.case_id=a.id
+        LEFT JOIN tcase_decision b on b.case_id=a.id
 		WHERE a.del_flag='0'
 		AND DATE_FORMAT(a.decision_date,'%Y') &gt;= DATE_FORMAT(#{dateFrom},'%Y')
 		AND DATE_FORMAT(a.decision_date,'%Y') &lt;= DATE_FORMAT(#{dateTo},'%Y')

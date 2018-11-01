@@ -147,6 +147,12 @@
 			</div>
 		</div>
 		<div class="control-group">
+			<label class="control-label">处罚金额（元）：</label>
+			<div class="controls">
+				<form:input path="punishMoney" htmlEscape="false" class="input-xlarge "/>
+			</div>
+		</div>		
+		<div class="control-group">
 			<label class="control-label">发证部门：</label>
 			<div class="controls">
 				<form:input path="launchDept" htmlEscape="false" maxlength="100" class="input-xlarge required"/>

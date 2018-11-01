@@ -759,7 +759,7 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 		infPunishResult.setPunishDeside("1");
 		infPunishResult.setPunishClass("2");
 		infPunishResult.setPunishSort(" ");
-		infPunishResult.setPunishResultFine(caseHandle.getPunishMoney());
+		infPunishResult.setPunishResultFine(caseDecision.getPunishMoney());
 		infPunishResult.setPunishResultFinePeople("1");
 		
 		infPunishResult.setFinishTime(tcase.getSettleDate());

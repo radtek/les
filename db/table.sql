@@ -170,6 +170,8 @@ CREATE TABLE `tcase_decision` (
   unique(case_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='案件决定书';
 
+alter table tcase_decision add `punish_money` decimal(15,2) NULL COMMENT '实际罚款金额（元）';
+
 -- ----------------------------
 -- Table structure for tcase_handle
 -- ----------------------------

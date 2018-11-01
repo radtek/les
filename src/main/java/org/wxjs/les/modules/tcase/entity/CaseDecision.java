@@ -34,6 +34,7 @@ public class CaseDecision extends DataEntity<CaseDecision> {
 	private String destinationAddress;		// 送达地点
 	private String partyName;		// 名称
 	private String content;		// 正文
+	private String punishMoney;		// 实际罚款金额（元）
 	private String launchDept;		// 发证部门
 	private Date launchDate;		// 发证时间
 	
@@ -151,6 +152,14 @@ public class CaseDecision extends DataEntity<CaseDecision> {
 		this.content = content;
 	}
 	
+	public String getPunishMoney() {
+		return punishMoney;
+	}
+
+	public void setPunishMoney(String punishMoney) {
+		this.punishMoney = punishMoney;
+	}
+
 	@Length(min=1, max=100, message="发证部门长度必须介于 1 和 100 之间")
 	public String getLaunchDept() {
 		return launchDept;
