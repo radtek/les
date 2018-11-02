@@ -227,7 +227,7 @@
 			<label class="control-label">出生年月：</label>
 			<div class="controls controls-tight">
 				<input name="tcase.psnBirthday" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate required"
-					value="<fmt:formatDate value="${tcase.psnBirthday}" pattern="yyyy-MM"/>"
+					value="<fmt:formatDate value="${caseAct.tcase.psnBirthday}" pattern="yyyy-MM"/>"
 					onclick="WdatePicker({dateFmt:'yyyy-MM',isShowClear:false});"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
