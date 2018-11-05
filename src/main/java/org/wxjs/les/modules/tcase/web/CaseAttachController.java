@@ -163,7 +163,7 @@ public class CaseAttachController extends BaseController {
 		
 		String caseId = caseAttach.getCaseId();
 		
-		Tcase tcase = caseService.get(caseId);
+		Tcase tcase = caseService.getCaseAndProcess(caseId, caseAttach.getFlowNode());
 		
 		ExportBase export = null;
 		
