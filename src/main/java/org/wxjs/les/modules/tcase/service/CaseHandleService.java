@@ -97,7 +97,9 @@ public class CaseHandleService extends CrudService<CaseHandleDao, CaseHandle> {
 		if(StringUtils.isNotEmpty(rangeIdsStr)){
 			String[] rangeIds = rangeIdsStr.split(",");
 			for(String rangeId : rangeIds){
+
 				PunishLibRange punishLibRange = punishLibRangeDao.get(rangeId);
+				logger.debug("rangeId:{}, punishLibRange==null:{}", rangeId, punishLibRange==null);
 				caseHandlePunishLib = new CaseHandlePunishLib();
 				caseHandlePunishLib.setCaseId(entity.getCaseId());
 				PunishLib punishLib = new PunishLib();

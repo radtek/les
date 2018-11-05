@@ -474,6 +474,8 @@ CREATE TABLE `tsignature` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='签名记录';
 
+alter table tsignature add `task_id` varchar(64) NULL COMMENT '任务号';
+
 -- ----------------------------
 -- Table structure for tsignature_lib
 -- ----------------------------

@@ -7,6 +7,7 @@
 		a.title AS "title",
 		a.signature AS "signature",	
 		a.proc_inst_id AS "procInstId",
+		a.task_id AS "taskId",
 		a.task_name AS "taskName",
 		a.approve_opinion AS "approveOpinion",		
 		a.create_by AS "createBy.id",
@@ -30,6 +31,14 @@
 		<include refid="signatureJoins"/>
 		WHERE a.id = #{id}
 	</select>
+	
+	<select id="getByTaskId" resultType="Signature">
+		SELECT 
+			<include refid="signatureColumns"/>
+		FROM tsignature a
+		<include refid="signatureJoins"/>
+		WHERE a.task_id = #{taskId}
+	</select>	
 	
     <select id="getLatestSignatureByLoginName" resultType="Signature">	
 		SELECT a.* FROM v_signature a
@@ -124,6 +133,7 @@
 	<update id="updateOpinion">
 		UPDATE tsignature SET 	
 			proc_inst_id = #{procInstId},
+			task_id = #{taskId},
 			task_name = #{taskName},
 			approve_opinion = #{approveOpinion}
 		WHERE id = #{id}

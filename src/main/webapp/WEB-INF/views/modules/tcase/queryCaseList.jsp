@@ -1,5 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
+
+<link href="${ctxStatic}/jquery-plugin/jquery.qtip.css" type="text/css" rel="stylesheet" />
+<script src="${ctxStatic}/jquery-plugin/jquery.qtip.js" type="text/javascript"></script>
+
 <html>
 <head>
 	<title>案件管理</title>
@@ -46,6 +50,8 @@
 				$("#searchForm").attr("action","${ctx}/case/tcase/upload");
 				$("#searchForm").submit();
 			});
+			
+			$('a[title]').qtip();
 			
 		});
 		function page(n,s){
@@ -173,21 +179,21 @@
 			<tr>
 			    <th></th>
 			    <th>编号</th>
-				<th>案卷编号</th>
+			    <th>决定书编号</th>
 				<th>当事人</th>
 				<th>项目名称</th>
-				<th width="15%">案由</th>
-				<th>处罚决定书编号</th>
+				<th>案由</th>
+				<th>罚款金额（元）</th>
 				<th>立案日期</th>
 				<th>处罚日期</th>
 				<th>结案日期</th>
 				<th>立案经办人</th>
 				<th>案件状态</th>
-				<th>生成附件进度</th>
-				<th width="15%">本系统附件详情</th>
+				<th>生成附件<BR>进度</th>
+				<th>本系统<BR>附件详情</th>
 				<th>上报状态</th>
-				<th>上报附件进度</th>
-				<th width="15%">前置机附件详情</th>
+				<th>上报附件<BR>进度</th>
+				<th>前置机<BR>附件详情</th>
 				<th>上报四库状态</th>
 				<th>&nbsp;</th>
 			</tr>
@@ -199,21 +205,24 @@
 			    <input type="checkbox" name="case_id" value="${tcase.id}" />
 			    </td>
 			    <td>${status.index+1}</td>
-				<td>${tcase.caseDecision.docNumber}</td>
+			    <td>${tcase.caseDecision.fullDecisionNumber}</td>
 				<td>${tcase.partyDisplay}</td>
-				<td>${tcase.projectName}</td>
-				<td>${tcase.caseCause}</td>
-				<td>${tcase.caseDecision.fullDecisionNumber}</td>								
+				<td>${tcase.projectNameDisplay}</td>
+				<td>${tcase.caseCauseDisplay}</td>
+				
+				<td style="text-align:right">
+					<fmt:formatNumber value="${tcase.caseDecision.punishMoney}" pattern="#,##0.00"/>
+				</td>						
 				<td><fmt:formatDate value="${tcase.initialDate}" pattern="yyyy-MM-dd"/></td>
 				<td><fmt:formatDate value="${tcase.decisionDate}" pattern="yyyy-MM-dd"/></td>
 				<td><fmt:formatDate value="${tcase.settleDate}" pattern="yyyy-MM-dd"/></td>
 				<td>${tcase.initialHandlerName}</td>
 				<td>${tcase.statusLabel}</td>
-				<td>${tcase.attachLocalProgress}</td>
-				<td>${tcase.attachLocalDetail}</td>
+				<td>${tcase.attachLocalProgress}"</td>
+				<td><a href="#" title="${tcase.attachLocalDetail}">查看</a></td>
 				<td>${fns:getDictLabel(tcase.uploadStatus, 'upload_status', '未上传')}</td>
 				<td>${tcase.attachUploadProgress}</td>
-				<td>${tcase.attachUploadDetail}</td>
+				<td><a href="#" title="${tcase.attachUploadDetail}">查看</a></td>
 				<td>${fns:getDictLabel(tcase.uploadStatusLib4, 'yes_no', '否')}</td>
 				<td><a href="${ctx}/case/tcase/infoTab?businesskey=${tcase.id}" target="_blank">详情</a></td>
 			</tr>

@@ -34,8 +34,7 @@
 		    
 		    $('#btnSaveUploadInfo').click(function() {
 		    	var ids = "";
-		    	//$("#punishLibForm").find("input[type='radio']:checked").each(function(){
-		    	$("input[type='radio']:checked").each(function(){
+		    	$("input[name^='punishLibRANGE']:checked").each(function(){
 		    	    ids = ids + this.value + ",";
 		    	});
 		    	$("#lib_range_checked_ids").val(ids);

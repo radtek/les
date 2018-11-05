@@ -60,7 +60,7 @@
 			    <td class="tit" width="20%" rowspan="${listSize}">情形描述</td>
 			   </c:if>
 			    <td width="30%">
-			    <input type="radio" id="range${entity.id}" name="punishLib${punishLibAttr.punishLib.id}" value="${entity.id}" 
+			    <input type="radio" id="range${entity.id}" name="punishLibRANGE${punishLibAttr.punishLib.id}" value="${entity.id}"
 			    <c:if test="${entity.id eq punishLibAttr.punishLibRange.id}" >checked</c:if> 
 			    <c:if test="${not editable }">readonly</c:if> style="width:20px; height:20px;"/>${entity.situation}
 			    </td>

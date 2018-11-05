@@ -358,5 +358,15 @@ public class Util {
 		}
 		return buffer.toString();
 	}
+	
+	public static String shortenString4Display(String str, int len){
+		String rst = str;
+		if(StringUtils.isNotEmpty(str)){
+			if(str.length()>len){
+				rst = str.substring(0, len) + "...";
+			}
+		}
+		return rst;
+	}
 }
 

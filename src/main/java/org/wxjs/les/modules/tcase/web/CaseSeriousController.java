@@ -284,6 +284,7 @@ public class CaseSeriousController extends BaseController {
 			signatureService.save(signature);
 			
 			signature.setProcInstId(actTask.getProcInsId());
+			signature.setTaskId(actTask.getTaskId());
 			signature.setTaskName(actTask.getTaskName());
 			signature.setApproveOpinion(actTask.getApproveOpinion());
 			signatureService.updateOpinion(signature);

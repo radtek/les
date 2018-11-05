@@ -24,6 +24,7 @@ public class Signature extends DataEntity<Signature> {
 	private String signature;		// 签名
 	
 	private String procInstId;     //流程号
+	private String taskId;         //任务号
 	private String taskName;       //任务名称
 	private String approveOpinion; //审核意见
 	
@@ -77,6 +78,14 @@ public class Signature extends DataEntity<Signature> {
 
 	public void setProcInstId(String procInstId) {
 		this.procInstId = procInstId;
+	}
+
+	public String getTaskId() {
+		return taskId;
+	}
+
+	public void setTaskId(String taskId) {
+		this.taskId = taskId;
 	}
 
 	public String getTaskName() {

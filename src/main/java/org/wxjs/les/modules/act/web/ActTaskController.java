@@ -25,6 +25,8 @@ import org.wxjs.les.common.web.BaseController;
 import org.wxjs.les.modules.act.entity.Act;
 import org.wxjs.les.modules.act.service.ActTaskService;
 import org.wxjs.les.modules.act.utils.ActUtils;
+import org.wxjs.les.modules.base.entity.Signature;
+import org.wxjs.les.modules.base.service.SignatureService;
 import org.wxjs.les.modules.sys.utils.UserUtils;
 
 import com.google.common.collect.Lists;
@@ -40,6 +42,9 @@ public class ActTaskController extends BaseController {
 
 	@Autowired
 	private ActTaskService actTaskService;
+	
+	@Autowired
+	private SignatureService signatureService;
 	
 	/**
 	 * 获取待办列表
@@ -88,15 +93,20 @@ public class ActTaskController extends BaseController {
 			List<Act> histoicFlowList = actTaskService.histoicFlowList(act.getProcInsId(), startAct, endAct);
 			
 			//filter signature info
+			//int signatureTagLen = Global.SignatureTag.length();
 			for(Act entity : histoicFlowList){
 				String comment = entity.getComment();
+				
 				if(comment==null){
 					continue;
 				}
-				int sigTagIndex = comment.indexOf(Global.SignatureTag);
-				if(sigTagIndex>-1){
-					comment = comment.substring(0, sigTagIndex);
-					entity.setComment(comment);
+				
+				String taskId = entity.getHistIns().getTaskId();
+				
+				if(StringUtils.isNotEmpty(taskId)){
+					Signature sig = signatureService.getByTaskId(taskId);
+					logger.debug("sig.getId():{}", sig==null?"":sig.getId());
+					entity.setEndDate(sig==null?null:sig.getCreateDate());
 				}
 			}
 			model.addAttribute("histoicFlowList", histoicFlowList);

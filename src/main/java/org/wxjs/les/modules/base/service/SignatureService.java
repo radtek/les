@@ -32,6 +32,10 @@ public class SignatureService extends CrudService<SignatureDao, Signature> {
 		return super.get(id);
 	}
 	
+	public Signature getByTaskId(String taskId) {
+		return dao.getByTaskId(taskId);
+	}
+	
 	public Signature getLatestSignatureByLoginName(String loginName){
 		return dao.getLatestSignatureByLoginName(loginName);
 	}

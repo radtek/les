@@ -2,6 +2,7 @@ package org.wxjs.les.modules.tcase.listener;
 
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.List;
 
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.ExecutionListener;
@@ -12,6 +13,9 @@ import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.utils.SpringContextHolder;
 import org.wxjs.les.modules.message.DbMessageSender;
 import org.wxjs.les.modules.message.MessageSender;
+import org.wxjs.les.modules.sys.dao.UserDao;
+import org.wxjs.les.modules.sys.entity.Role;
+import org.wxjs.les.modules.sys.entity.User;
 import org.wxjs.les.modules.sys.utils.DictUtils;
 import org.wxjs.les.modules.tcase.dao.CaseProcessDao;
 import org.wxjs.les.modules.tcase.dao.TcaseDao;
@@ -27,6 +31,7 @@ public class CaseFinishListener implements ExecutionListener {
 
 	protected Logger logger = LoggerFactory.getLogger(getClass());
 	
+	UserDao userDao = SpringContextHolder.getBean(UserDao.class);
 
 	TcaseDao caseDao = SpringContextHolder.getBean(TcaseDao.class);
 
@@ -103,6 +108,25 @@ public class CaseFinishListener implements ExecutionListener {
 			String handler = caseProcess.getCaseHandler();
 			String cause = tcase.getCaseCause();
 			String stage = caseProcess.getCaseStage();
+			
+			if(Global.CASE_STAGE_HANDLE.equals(stage)){
+				//因下一环节告知书的发起由审理科来做，需要通知审理科
+				String roleStr = "slkky,slkfzr";
+				User user = new User();
+				Role role = new Role();
+				role.setEnname(roleStr);
+				user.setRole(role);
+				List<User> users = userDao.findUserByRoleEnname(user);
+				StringBuffer buffer = new StringBuffer();
+				for(User e: users){
+					buffer.append(",");
+					buffer.append(e.getLoginName());
+				}
+				if(buffer.length()>0){
+					handler = handler + buffer.toString();
+				}
+			}
+			
 			sender.send(handler, 
 					"综合行政执法系统事项办结通知。项目名称："+ cause
 					+", 事项："+DictUtils.getDictLabel(stage, "case_stage", "")+"。");

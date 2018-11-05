@@ -30,6 +30,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.wxjs.les.common.config.Global;
 import org.wxjs.les.modules.act.entity.Act;
 import org.wxjs.les.modules.act.service.ActTaskService;
+import org.wxjs.les.modules.base.entity.Signature;
+import org.wxjs.les.modules.base.service.SignatureService;
 
 
 @Controller
@@ -53,6 +55,9 @@ public class ActivitiController extends BaseController {
     
 	@Autowired
 	private ActTaskService actTaskService;
+	
+	@Autowired
+	private SignatureService signatureService;
 
     /** 
      * 流程是否已经结束 
@@ -76,15 +81,20 @@ public class ActivitiController extends BaseController {
 			List<Act> histoicFlowList = actTaskService.histoicFlowList(procInsId, null, null);
 			
 			//filter signature info
+			//int signatureTagLen = Global.SignatureTag.length();
 			for(Act entity : histoicFlowList){
 				String comment = entity.getComment();
 				if(comment==null){
 					continue;
 				}
-				int sigTagIndex = comment.indexOf(Global.SignatureTag);
-				if(sigTagIndex>-1){
-					comment = comment.substring(0, sigTagIndex);
-					entity.setComment(comment);
+				
+				String taskId = entity.getHistIns().getTaskId();
+				
+				logger.debug("taskId:{}", taskId);
+				if(StringUtils.isNotEmpty(taskId)){
+					Signature sig = signatureService.getByTaskId(taskId);
+					logger.debug("sig.getId():{}", sig==null?"":sig.getId());
+					entity.setEndDate(sig==null?null:sig.getCreateDate());
 				}
 			}
 			model.addAttribute("histoicFlowList", histoicFlowList);

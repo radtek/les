@@ -20,6 +20,7 @@ import com.google.common.collect.Lists;
 
 import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.DataEntity;
+import org.wxjs.les.common.utils.Util;
 import org.wxjs.les.common.utils.excel.annotation.ExcelField;
 import org.wxjs.les.modules.sys.entity.User;
 import org.wxjs.les.modules.sys.utils.DictUtils;
@@ -408,6 +409,10 @@ public class Tcase extends DataEntity<Tcase> {
 		this.projectName = projectName;
 	}
 	
+	public String getProjectNameDisplay(){
+		return Util.shortenString4Display(this.projectName, 10);
+	}
+	
 	@Length(min=1, max=200, message="案由长度必须介于 1 和 200 之间")
 	@ExcelField(title="案由", type=1, align=2, sort=50)
 	public String getCaseCause() {
@@ -416,6 +421,10 @@ public class Tcase extends DataEntity<Tcase> {
 
 	public void setCaseCause(String caseCause) {
 		this.caseCause = caseCause;
+	}
+	
+	public String getCaseCauseDisplay(){
+		return Util.shortenString4Display(this.caseCause, 10);
 	}
 
 	public String getCaseTransfer() {
@@ -795,7 +804,6 @@ public class Tcase extends DataEntity<Tcase> {
 		return flag;		
 	}
 	
-	@ExcelField(title="案卷编号", type=1, align=2, sort=20)
 	public String getDocNumber(){
 		String rst = "";
 		if(this.caseDecision!=null){
@@ -804,7 +812,7 @@ public class Tcase extends DataEntity<Tcase> {
 		return rst;
 	}
 	
-	@ExcelField(title="处罚决定书编号", type=1, align=2, sort=60)
+	@ExcelField(title="决定书编号", type=1, align=2, sort=20)
 	public String getFullDecisionNumber(){
 		String rst = "";
 		if(this.caseDecision!=null){
@@ -824,6 +832,15 @@ public class Tcase extends DataEntity<Tcase> {
 
 	public void setTransferUnit(String transferUnit) {
 		this.transferUnit = transferUnit;
+	}
+	
+	@ExcelField(title="罚款金额", type=1, align=2, sort=60)
+	public String getPunishMoneyDisplay(){
+		String rst = "";
+		if(this.caseDecision!=null){
+			rst = Util.formatMoneyArea(this.caseDecision.getPunishMoney());
+		}
+		return rst;
 	}
 	
 	

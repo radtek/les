@@ -36,17 +36,15 @@
 <h5>流转信息</h5>
 <table class="table table-striped table-bordered table-condensed" style="width:70%;font-size:13px;margin-left:20px">
    <thead>
-	<tr><th>执行环节</th><th>执行人</th><th>开始时间</th><th>结束时间</th><th width="35%">提交意见</th><th>任务历时</th></tr>
+	<tr><th>执行环节</th><th>执行人</th><th>提交意见</th><th>签名时间</th></tr>
    </thead>
    <tbody>
 	<c:forEach items="${histoicFlowList}" var="act">
 		<tr>
 			<td>${act.histIns.activityName}</td>
 			<td>${act.assigneeName}</td>
-			<td><fmt:formatDate value="${act.histIns.startTime}" type="both"/></td>
-			<td><fmt:formatDate value="${act.histIns.endTime}" type="both"/></td>
 			<td style="word-wrap:break-word;word-break:break-all;">${act.comment}</td>
-			<td>${act.durationTime}</td>
+			<td><fmt:formatDate value="${act.endDate}" type="both"/></td>
 		</tr>
 	</c:forEach>
    </tbody>

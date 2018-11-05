@@ -50,7 +50,8 @@
 		a.del_flag AS "delFlag",
 		decision.decision_type AS "caseDecision.decisionType", 
 		decision.year AS "caseDecision.year", 
-		decision.seq AS "caseDecision.seq"
+		decision.seq AS "caseDecision.seq",
+		decision.punish_money AS "caseDecision.punishMoney"
 	</sql>
 	
 	<sql id="tcaseJoins">
