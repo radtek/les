@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.PdfUtil;
+import org.wxjs.les.common.utils.Util;
 import org.wxjs.les.modules.base.entity.Signature;
 import org.wxjs.les.modules.base.export.ExportBase;
 import org.wxjs.les.modules.tcase.entity.CaseSerious;
@@ -120,17 +121,17 @@ public class CaseSeriousExport extends ExportBase<CaseSeriousExport> {
             		new float[]{0.1f, 0.4f, 0.1f, 0.15f, 0.1f, 0.15f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 0);
             document.add(table);
             
-            items = new String[]{PdfUtil.transferVertical("执法机构汇报案情", 2), this.caseSerious.getCaseSummary()};
+            items = new String[]{PdfUtil.transferVertical("执法机构汇报案情", 2), Util.formatText(this.caseSerious.getCaseSummary())};
             table = PdfUtil.generateTableRow4LongText(items, fontContent, 
             		new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 180f);
             document.add(table);
             
-            items = new String[]{PdfUtil.transferVertical("执法机构处罚建议", 2), this.caseSerious.getPunishProposal()};
+            items = new String[]{PdfUtil.transferVertical("执法机构处罚建议", 2), Util.formatText(this.caseSerious.getPunishProposal())};
             table = PdfUtil.generateTableRow4LongText(items, fontContent, 
             		new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 100f);
             document.add(table);
             
-            items = new String[]{PdfUtil.transferVertical("审查小组审查意见", 2), this.caseSerious.getCheckOpinion()};
+            items = new String[]{PdfUtil.transferVertical("审查小组审查意见", 2), Util.formatText(this.caseSerious.getCheckOpinion())};
             table = PdfUtil.generateTableRow4LongText(items, fontContent, 
             		new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 180f);
             document.add(table);

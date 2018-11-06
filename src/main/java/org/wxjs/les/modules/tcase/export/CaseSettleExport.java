@@ -11,6 +11,7 @@ import org.apache.commons.httpclient.util.DateUtil;
 import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.PdfUtil;
 import org.wxjs.les.common.utils.StringUtils;
+import org.wxjs.les.common.utils.Util;
 import org.wxjs.les.modules.base.entity.Signature;
 import org.wxjs.les.modules.base.export.ExportBase;
 import org.wxjs.les.modules.tcase.entity.CaseSettle;
@@ -98,12 +99,12 @@ public class CaseSettleExport extends ExportBase<CaseSettleExport> {
         	
         	  
          //案情摘要
-        	  items = new String[]{"案\n情\n摘\n要", this.tcase.getCaseProcess().getCaseSummary()};
+        	  items = new String[]{"案\n情\n摘\n要", Util.formatText(this.tcase.getCaseProcess().getCaseSummary())};
               table = PdfUtil.generateTableRow4LongText(items, fontContent, 
               		new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 120);
               document.add(table);	 
         //处理情况
-              items = new String[]{"处\n理\n情\n况", this.caseSettle.getHandleSummary()};
+              items = new String[]{"处\n理\n情\n况", Util.formatText(this.caseSettle.getHandleSummary())};
               table = PdfUtil.generateTableRow4LongText(items, fontContent, 
               		new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 120);
               document.add(table);	

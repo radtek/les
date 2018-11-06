@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.PdfUtil;
+import org.wxjs.les.common.utils.Util;
 import org.wxjs.les.modules.base.export.ExportBase;
 import org.wxjs.les.modules.tcase.entity.CaseDecision;
 import org.wxjs.les.modules.tcase.entity.Tcase;
@@ -98,8 +99,9 @@ public class CaseDecisionExport extends ExportBase<CaseDecisionExport> {
             pragraph.setAlignment(Paragraph.ALIGN_LEFT);
             document.add(pragraph);
             
+            String content = this.caseDecision.getContent();
             
-            pragraph = new Paragraph(this.caseDecision.getContent(), fontContent);
+            pragraph = new Paragraph(Util.formatText(content), fontContent);
             pragraph.setAlignment(Paragraph.ALIGN_JUSTIFIED);
             document.add(pragraph); 
             

@@ -10,6 +10,7 @@ import org.apache.commons.httpclient.util.DateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.PdfUtil;
+import org.wxjs.les.common.utils.Util;
 import org.wxjs.les.modules.base.entity.Signature;
 import org.wxjs.les.modules.base.export.ExportBase;
 import org.wxjs.les.modules.tcase.entity.CaseHandle;
@@ -80,7 +81,7 @@ public class CaseHandleReportExport extends ExportBase<CaseHandleReportExport> {
         	document.add(table);  
         	
         	//内容
-            items = new String[]{"报\n告\n内\n容", this.caseHandle.getInvestReport()};
+            items = new String[]{"报\n告\n内\n容", Util.formatText(this.caseHandle.getInvestReport())};
             table = PdfUtil.generateTableRow4LongText(items, fontContent,  new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 550);
             document.add(table);
            

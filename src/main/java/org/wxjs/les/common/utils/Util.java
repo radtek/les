@@ -368,5 +368,10 @@ public class Util {
 		}
 		return rst;
 	}
+	
+	public static String formatText(String src){
+		String rst = src.replaceAll("  ", "		");
+		return rst;
+	}
 }
 

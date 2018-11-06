@@ -7,6 +7,7 @@ import java.io.OutputStream;
 
 import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.PdfUtil;
+import org.wxjs.les.common.utils.Util;
 import org.wxjs.les.modules.base.export.ExportBase;
 import org.wxjs.les.modules.tcase.entity.Tcase;
 
@@ -81,7 +82,7 @@ public class CaseInitialExport extends ExportBase<CaseInitialExport> {
             		new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 60);
             document.add(table);
             
-            items = new String[]{"案\n情\n摘\n要", this.tcase.getCaseProcess().getCaseSummary()};
+            items = new String[]{"案\n情\n摘\n要", Util.formatText(this.tcase.getCaseProcess().getCaseSummary())};
             table = PdfUtil.generateTableRow4LongText(items, fontContent, 
             		new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 250);
             document.add(table);

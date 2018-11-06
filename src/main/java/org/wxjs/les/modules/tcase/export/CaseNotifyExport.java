@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.PdfUtil;
+import org.wxjs.les.common.utils.Util;
 import org.wxjs.les.modules.base.export.ExportBase;
 import org.wxjs.les.modules.tcase.entity.CaseNotify;
 import org.wxjs.les.modules.tcase.entity.Tcase;
@@ -94,7 +95,7 @@ public class CaseNotifyExport extends ExportBase<CaseNotifyExport> {
             
             document.add(PdfUtil.generateTable4Padding());
             
-            pragraph = new Paragraph(this.caseNotify.getContent(), fontContent);
+            pragraph = new Paragraph(Util.formatText(this.caseNotify.getContent()), fontContent);
             pragraph.setAlignment(Paragraph.ALIGN_JUSTIFIED);
             document.add(pragraph); 
             

@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.PdfUtil;
+import org.wxjs.les.common.utils.Util;
 import org.wxjs.les.modules.base.export.ExportBase;
 import org.wxjs.les.modules.tcase.entity.CaseHandle;
 import org.wxjs.les.modules.tcase.entity.Tcase;
@@ -82,7 +83,7 @@ public class CaseHandleApproveExport extends ExportBase<CaseHandleApproveExport>
         	document.add(table);  
         	
         	//内容
-            items = new String[]{"案\n件\n事\n实\n经\n过\n及\n证\n据", this.caseHandle.getFact()};
+            items = new String[]{"案\n件\n事\n实\n经\n过\n及\n证\n据", Util.formatText(this.caseHandle.getFact())};
             
             Font font = fontContentSmall;
             
