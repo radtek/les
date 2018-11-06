@@ -34,9 +34,9 @@
 		<div class="row-fluid">
 			<div class="span12">
 <h5>流转信息</h5>
-<table class="table table-striped table-bordered table-condensed" style="width:70%;font-size:13px;margin-left:20px">
+<table class="table table-striped table-bordered table-condensed" style="width:80%;font-size:13px;margin-left:20px">
    <thead>
-	<tr><th>执行环节</th><th>执行人</th><th>提交意见</th><th>签名时间</th></tr>
+	<tr><th width="15%">执行环节</th><th>执行人</th><th>提交意见</th><th width="15%">签名时间</th></tr>
    </thead>
    <tbody>
 	<c:forEach items="${histoicFlowList}" var="act">
