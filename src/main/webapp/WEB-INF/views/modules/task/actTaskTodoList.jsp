@@ -72,7 +72,7 @@
 				    <td>${tcase.projectNameShort}</td>
 				    <td>${tcase.caseCauseShort}</td>
 					<td>
-						<a target="_blank" href="${pageContext.request.contextPath}/act/diagram-viewer?processDefinitionId=${task.processDefinitionId}&processInstanceId=${task.processInstanceId}">${task.name}</a>
+						${task.name}
 					</td><%--
 					<td>${task.description}</td> --%>
 					<td>${procDef.name}</td>
