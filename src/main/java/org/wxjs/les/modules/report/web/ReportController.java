@@ -86,7 +86,7 @@ public class ReportController extends BaseController {
 		
 		model.addAttribute("reportParam", reportParam);
 		
-		return "modules/report/report";
+		return "modules/report/reportWithDoubleYAxis";
 	}
 
 }

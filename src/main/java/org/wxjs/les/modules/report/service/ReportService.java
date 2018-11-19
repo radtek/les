@@ -23,6 +23,7 @@ import org.wxjs.les.modules.report.dataModel.PieData;
 import org.wxjs.les.modules.report.dataModel.ReportData;
 import org.wxjs.les.modules.report.dataModel.TableColModel;
 import org.wxjs.les.modules.report.dataModel.TableData;
+import org.wxjs.les.modules.report.dataModel.Tooltip;
 import org.wxjs.les.modules.report.entity.ReportEntity;
 import org.wxjs.les.modules.report.entity.ReportParam;
 
@@ -131,7 +132,12 @@ public class ReportService extends BaseService{
 	protected ColumnData getColumnData(List<ReportEntity> list, ReportParam param){
     	ColumnData chartData = new ColumnData();
 		
-    	chartData.setyTitle("金额");
+    	chartData.setyTitle1("案件数");
+    	chartData.setyTitle2("罚款金额");
+    	
+    	chartData.setyAxisUnit1("件");
+    	chartData.setyAxisUnit2("元");
+    	
     	chartData.setyAxisUnit(Global.getConfig(this.getyAxisUnit(param)));
 		
 		List<String> categories= new ArrayList<String>();
@@ -153,15 +159,27 @@ public class ReportService extends BaseService{
 			chartData.setTotal(chartData.getTotal() + value2);
 		}
 		
+		Tooltip tooltip;
+		
+		
 		ColumnSeries cs1 = new ColumnSeries();
 		cs1.setName("案件数");
+		cs1.setType("spline");
+		cs1.setyAxis(0);
 		cs1.setData(data1);
-		//series.add(cs1); //案件数不显示到图里
+		tooltip = new Tooltip();
+		tooltip.setValueSuffix("件");
+		cs1.setTooltip(tooltip);
+		series.add(cs1); 
 		
 		ColumnSeries cs2 = new ColumnSeries();
 		cs2.setName("罚款金额");
+		cs2.setType("column");
+		cs2.setyAxis(1);
 		cs2.setData(data2);
-		
+		tooltip = new Tooltip();
+		tooltip.setValueSuffix("元");
+		cs2.setTooltip(tooltip);
 		series.add(cs2);
 		
 		chartData.setCategories(categories);

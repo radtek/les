@@ -16,7 +16,13 @@ public class ColumnData extends ChartData{
 	private String subTitle = "";
 	private String yTitle;
 	
+	private String yTitle1;
+	private String yTitle2;
+	
 	private String yAxisUnit = "";
+	
+	private String yAxisUnit1 = "";
+	private String yAxisUnit2 = "";
 	
 	private List<String> categories;
 	
@@ -42,12 +48,44 @@ public class ColumnData extends ChartData{
 		this.yTitle = yTitle;
 	}
 
+	public String getyTitle1() {
+		return yTitle1;
+	}
+
+	public void setyTitle1(String yTitle1) {
+		this.yTitle1 = yTitle1;
+	}
+
+	public String getyTitle2() {
+		return yTitle2;
+	}
+
+	public void setyTitle2(String yTitle2) {
+		this.yTitle2 = yTitle2;
+	}
+
 	public String getyAxisUnit() {
 		return yAxisUnit;
 	}
 
 	public void setyAxisUnit(String yAxisUnit) {
 		this.yAxisUnit = yAxisUnit;
+	}
+
+	public String getyAxisUnit1() {
+		return yAxisUnit1;
+	}
+
+	public void setyAxisUnit1(String yAxisUnit1) {
+		this.yAxisUnit1 = yAxisUnit1;
+	}
+
+	public String getyAxisUnit2() {
+		return yAxisUnit2;
+	}
+
+	public void setyAxisUnit2(String yAxisUnit2) {
+		this.yAxisUnit2 = yAxisUnit2;
 	}
 
 	public List<String> getCategories() {
