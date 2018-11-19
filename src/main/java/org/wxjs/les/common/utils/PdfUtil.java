@@ -22,6 +22,7 @@ import javax.imageio.ImageIO;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.wxjs.les.common.config.Global;
 
 public class PdfUtil {
@@ -254,6 +255,10 @@ public class PdfUtil {
     } 
     
     public static PdfPTable generateTableRow4LongText(String[] strs, Font rowFont, float[] widths, int tableWidth, int textAlign, float borderWidth, float minimumHeight) throws DocumentException{
+    	return PdfUtil.generateTableRow4LongText(strs, rowFont, rowFont, widths, tableWidth, textAlign, borderWidth, minimumHeight);
+    }
+    
+    public static PdfPTable generateTableRow4LongText(String[] strs, Font rowFontTitle, Font rowFont, float[] widths, int tableWidth, int textAlign, float borderWidth, float minimumHeight) throws DocumentException{
     	int columns = widths.length;
     	//int rows = items.size()+1;
     	
@@ -269,18 +274,22 @@ public class PdfUtil {
 
         	int index = 0;
     		for(String str:strs){
-            	phrase = new Phrase(str, rowFont);
-            	cell = new PdfPCell(phrase);
-            	cell.setBorderWidth(borderWidth);
-            	cell.setHorizontalAlignment(textAlign);
             	
             	if(index%2==0){
+                	phrase = new Phrase(str, rowFontTitle);
+                	
+                	cell = new PdfPCell(phrase);
                 	cell.setHorizontalAlignment(Element.ALIGN_CENTER); //水平居中       	
                 	cell.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直居中
             	}else{
-                	cell.setHorizontalAlignment(Element.ALIGN_LEFT); //水平居中
+                	phrase = new Phrase(str, rowFont);
+                	cell = new PdfPCell(phrase);
+                	cell.setHorizontalAlignment(Element.ALIGN_LEFT); 
                 	                   		
             	}
+            	
+            	cell.setBorderWidth(borderWidth);
+            	
             	if(minimumHeight>0){
             		cell.setMinimumHeight(minimumHeight);
             	}

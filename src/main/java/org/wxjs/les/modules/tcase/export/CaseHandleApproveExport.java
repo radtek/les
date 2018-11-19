@@ -82,23 +82,27 @@ public class CaseHandleApproveExport extends ExportBase<CaseHandleApproveExport>
         	
         	document.add(table);  
         	
+        	logger.debug("party added...");
+        	
         	//内容
             items = new String[]{"案\n件\n事\n实\n经\n过\n及\n证\n据", Util.formatText(this.caseHandle.getFact())};
             
-            Font font = fontContentSmall;
+            Font font = fontContent;
             
             if(this.caseHandle.getFact().length()>400){
-            	font = fontContentTiny;
+            	font = fontContentSmall;
             }
-            
-            table = PdfUtil.generateTableRow4LongText(items, font,  new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 250);
+
+            table = PdfUtil.generateTableRow4LongText(items, PdfUtil.getFont12(Font.NORMAL), font,  new float[]{0.1f, 0.9f}, tableWidth, Element.ALIGN_LEFT, borderWidth, 250);
             document.add(table);
+            
+            logger.debug("content added...");
            
             //签字信息
             //办案人意见需扩展到整行
             table = this.getSignatureTable(this.tcase.getCaseProcess().getProcInsId(), true);
             document.add(table);            
-
+            logger.debug("signature added...");
 
 		}finally{
 			if(document!=null){
