@@ -183,7 +183,7 @@
 				<th>当事人</th>
 				<th>项目名称</th>
 				<th>案由</th>
-				<th>罚款金额（元）</th>
+				<th>罚款金额<BR>（元）</th>
 				<th>立案日期</th>
 				<th>处罚日期</th>
 				<th>结案日期</th>
@@ -194,7 +194,7 @@
 				<th>上报状态</th>
 				<th>上报附件<BR>进度</th>
 				<th>前置机<BR>附件详情</th>
-				<th>上报四库状态</th>
+				<th>上报四库<BR>状态</th>
 				<th>&nbsp;</th>
 			</tr>
 		</thead>
@@ -207,10 +207,10 @@
 			    <td>${status.index+1}</td>
 			    <td>${tcase.caseDecision.fullDecisionNumber}</td>
 				<td>${tcase.partyDisplay}</td>
-				<td>${tcase.projectNameDisplay}</td>
-				<td>${tcase.caseCauseDisplay}</td>
+				<td width="10%"><a href="${ctx}/case/tcase/infoTab?businesskey=${tcase.id}" target="_blank">${tcase.projectNameDisplay}</a></td>
+				<td width="10%">${tcase.caseCauseDisplay}</td>
 				
-				<td style="text-align:right">
+				<td style="text-align:right" width="5%">
 					<fmt:formatNumber value="${tcase.caseDecision.punishMoney}" pattern="#,##0.00"/>
 				</td>						
 				<td><fmt:formatDate value="${tcase.initialDate}" pattern="yyyy-MM-dd"/></td>
