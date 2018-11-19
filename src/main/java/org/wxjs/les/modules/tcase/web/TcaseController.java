@@ -200,7 +200,7 @@ public class TcaseController extends BaseController {
 	public String query(Tcase tcase, HttpServletRequest request, HttpServletResponse response, Model model) {
 		
 		if(StringUtils.isEmpty(tcase.getStatus())){
-			tcase.setStatus(Global.CASE_STATUS_FINISHED);
+			//tcase.setStatus(Global.CASE_STATUS_FINISHED);
 		}
 		
 		tcase.setUnfinishedFlag("0");

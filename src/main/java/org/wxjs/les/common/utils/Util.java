@@ -12,6 +12,10 @@ public class Util {
 	private static final int BasicCharSetLen = BasicCharSet.length();
 	
 	public static final String MoneyAreaPattern = "#,##0.00";
+	
+	public static final String Space4 = "    ";
+	public static final String Space3 = "   ";
+	public static final String Space2 = "  ";
 
 	public static String getRandomStr(int len){
 		StringBuffer buffer = new StringBuffer(len);
@@ -370,7 +374,7 @@ public class Util {
 	}
 	
 	public static String formatText(String src){
-		String rst = src.replaceAll("  ", "		");
+		String rst = src.replaceAll(Space4, Space2).replaceAll(Space3, Space2).replaceAll(Space2, "		");
 		return rst;
 	}
 }
