@@ -34,6 +34,7 @@ CREATE TABLE `tcase` (
   `accept_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '受理时间',
   `initial_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '立案日期',
   `initial_handler` varchar(32) NULL COMMENT '立案经办人',
+  `punish_type` varchar(32) NULL COMMENT '处罚类型',
   `decision_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '处罚决定日期',
   `settle_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '结案日期',
   `case_source` varchar(100) NULL COMMENT '案件来源',

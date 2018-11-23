@@ -90,13 +90,18 @@
 
 		<div class="control-group container-fluid nopadding">
 			<div class="row-fluid">
-				<div class="span6">		
+				<div class="span4">		
 			<label class="control-label">当事人类型：：</label>
 			<div class="controls controls-tight">
 				<form:radiobuttons path="tcase.partyType" items="${fns:getDictList('party_type')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		        </div>
+				<div class="span8">		
+			<div class="controls controls-tight">
+			    <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#projectModal">单位信息查询</button>
+			</div>
+		        </div>		        
 		    </div>
 		</div>	
         <!-- org begin -->
@@ -295,7 +300,19 @@
 		        </div>
 		    </div>
 		</div>
-
+		<div class="control-group container-fluid nopadding">
+			<div class="row-fluid">
+				<div class="span12">		
+			<label class="control-label">处罚类型：</label>
+			<div class="controls controls-tight">
+				<form:select path="tcase.punishType" class="input-medium">
+				  <form:options items="${fns:getDictList('punish_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+				<span class="help-inline"><font color="red">*</font> </span>
+			</div>
+		        </div>
+		    </div>
+		</div>
 		<div class="control-group container-fluid nopadding">
 			<div class="row-fluid">
 				<div class="span12">		
@@ -340,6 +357,7 @@
 			<input id="btnExport" class="btn btn-primary" type="button" value="案件移送单"/>&nbsp;
 		</div>
 	</form:form>
+	<les:projectSearchModal></les:projectSearchModal>
 	<les:toApprove caseActAttr="${caseAct}" caseStageAttr="210"></les:toApprove>
 </body>
 </html>

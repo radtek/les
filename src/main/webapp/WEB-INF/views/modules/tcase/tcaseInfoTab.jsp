@@ -103,7 +103,9 @@
 				<div class="span12">		
 			<label class="control-label">案件来源：</label>
 			<div class="controls controls-tight">
-				<form:input path="tcase.caseSource" htmlEscape="false" maxlength="100" class="input-xlarge required"/>
+                <sys:treeselectAllowInput id="tcasecaseSource" name="tcase.caseSource" value="${caseAct.tcase.caseSource}" labelName="tcase.caseSource" labelValue="${caseAct.tcase.caseSource}" 
+				title="案件来源" url="/sys/dict/treeData?type=case_source" cssClass="input-xlarge" allowClear="true" notAllowSelectParent="true"/>				
+				
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		        </div>
@@ -112,13 +114,18 @@
 
 		<div class="control-group container-fluid nopadding">
 			<div class="row-fluid">
-				<div class="span6">		
-			<label class="control-label">当事人类型：：</label>
+				<div class="span4">		
+			<label class="control-label">当事人类型：</label>
 			<div class="controls controls-tight">
 				<form:radiobuttons path="tcase.partyType" items="${fns:getDictList('party_type')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		        </div>
+				<div class="span8">		
+			<div class="controls controls-tight">
+			    <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#projectModal">单位信息查询</button>
+			</div>
+		        </div>		        
 		    </div>
 		</div>	
         <!-- org begin -->
@@ -320,6 +327,19 @@
 		        </div>
 		    </div>
 		</div>
+		<div class="control-group container-fluid nopadding">
+			<div class="row-fluid">
+				<div class="span12">		
+			<label class="control-label">处罚类型：</label>
+			<div class="controls controls-tight">
+				<form:select path="tcase.punishType" class="input-medium">
+				  <form:options items="${fns:getDictList('punish_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+				<span class="help-inline"><font color="red">*</font> </span>
+			</div>
+		        </div>
+		    </div>
+		</div>		
 		
 		<div class="form-actions">
 			<shiro:hasPermission name="case:tcase:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保 存"/>&nbsp;
@@ -327,5 +347,6 @@
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>
+	<les:projectSearchModal></les:projectSearchModal>
 </body>
 </html>

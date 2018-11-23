@@ -87,6 +87,33 @@ VALUES
 ('upload_status_2', '1', '部分上传', 'upload_status', 'upload_status', 20, '0','1',now(),'1',now()),
 ('upload_status_3', '2', '全部上传', 'upload_status', 'upload_status', 30, '0','1',now(),'1',now());
 
+delete from sys_dict where `type`= 'entity_type';
+INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `parent_id`, `create_by`,`create_date`,`update_by`,`update_date`) 
+VALUES 
+('entity_type_1', 'sg', '施工单位', 'entity_type', 'entity_type', 10, '0','1',now(),'1',now()),
+('entity_type_2', 'kc', '勘察、设计单位', 'entity_type', 'entity_type', 20, '0','1',now(),'1',now()),
+('entity_type_3', 'js', '建设单位', 'entity_type', 'entity_type', 30, '0','1',now(),'1',now()),
+('entity_type_4', 'jl', '监理单位', 'entity_type', 'entity_type', 40, '0','1',now(),'1',now());
+
+delete from sys_dict where `type`= 'case_source';
+INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `parent_id`, `create_by`,`create_date`,`update_by`,`update_date`) 
+VALUES 
+('case_source_1', '100', '检查', 'case_source', 'case_source', 10, '0','1',now(),'1',now()),
+('case_source_2', '200', '信用考评', 'case_source', 'case_source', 20, '0','1',now(),'1',now()),
+('case_source_3', '300', '转办', 'case_source', 'case_source', 30, '0','1',now(),'1',now()),
+('case_source_4', '400', '交办', 'case_source', 'case_source', 40, '0','1',now(),'1',now()),
+('case_source_5', '500', '投诉举报', 'case_source', 'case_source', 50, '0','1',now(),'1',now());
+
+delete from sys_dict where `type`= 'punish_type';
+INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `parent_id`, `create_by`,`create_date`,`update_by`,`update_date`) 
+VALUES 
+('punish_type_1', '100', '安全生产', 'punish_type', 'punish_type', 10, '0','1',now(),'1',now()),
+('punish_type_2', '200', '工程质量', 'punish_type', 'punish_type', 20, '0','1',now(),'1',now()),
+('punish_type_3', '300', '文明施工', 'punish_type', 'punish_type', 30, '0','1',now(),'1',now()),
+('punish_type_4', '400', '市场行为', 'punish_type', 'punish_type', 40, '0','1',now(),'1',now()),
+('punish_type_5', '500', '招投标活动', 'punish_type', 'punish_type', 50, '0','1',now(),'1',now()),
+('punish_type_7', '700', '其他', 'punish_type', 'punish_type', 70, '0','1',now(),'1',now());
+
 
 
 
