@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
  
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.StringUtils;
 
 
 public class Base64Utils {
@@ -57,6 +58,27 @@ public class Base64Utils {
 			}
 		}
 		return flag;
+	}
+	
+	
+	public static String decode(String src){
+		String rst = "";
+		if(!StringUtils.isBlank(src)){
+			byte[] bytes =  org.codehaus.xfire.util.Base64.decode(src);
+			
+			rst = new String(bytes);			
+		}
+		
+		return rst;
+	}
+	
+	public static String encode(String src){
+		String rst = "";
+		if(!StringUtils.isBlank(src)){
+			rst = org.codehaus.xfire.util.Base64.encode(src.getBytes());		
+		}
+		
+		return rst;
 	}
  
 	public static void main(String[] args) throws Exception {

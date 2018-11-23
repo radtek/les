@@ -1,0 +1,1 @@
+<script src="${ctxStatic}/jquery/jquery.base64.js" type="text/javascript"></script>

@@ -46,6 +46,8 @@ public class Tcase extends DataEntity<Tcase> {
 	
 	private String initialHandlerName;		// 临时属性，立案经办人
 	
+	private String punishType;
+	
 	private Date decisionDate;       // 处罚决定日期
 	private Date settleDate;		// 结案日期
 	private String caseSource;		// 案件来源
@@ -98,6 +100,8 @@ public class Tcase extends DataEntity<Tcase> {
 	private CaseDecision caseDecision; //
 	
 	private String party;
+	
+	private String tenderType;
 	
 	private String docYear;
 	
@@ -187,6 +191,14 @@ public class Tcase extends DataEntity<Tcase> {
 		this.initialHandler = initialHandler;
 	}
 	
+	public String getPunishType() {
+		return punishType;
+	}
+
+	public void setPunishType(String punishType) {
+		this.punishType = punishType;
+	}
+
 	@ExcelField(title="经办人", type=1, align=2, sort=100)
 	public String getInitialHandlerName() {
 		return initialHandlerName;
@@ -240,6 +252,14 @@ public class Tcase extends DataEntity<Tcase> {
 		this.partyType = partyType;
 	}
 	
+	public String getTenderType() {
+		return tenderType;
+	}
+
+	public void setTenderType(String tenderType) {
+		this.tenderType = tenderType;
+	}
+
 	@Length(min=0, max=100, message="名称长度必须介于 1 和 100 之间")
 	public String getOrgName() {
 		return orgName;
@@ -842,6 +862,5 @@ public class Tcase extends DataEntity<Tcase> {
 		}
 		return rst;
 	}
-	
 	
 }
