@@ -35,7 +35,22 @@
 			$("#inputForm").attr("action","${ctx}/cr/siteCheckRecord/exportPDF");
 			$("#inputForm").submit();		    	
 		 });
+		 
+		 $('#btnLoadMap').click(function() {
+			 var projectCode = $("#projectCode").val();
+			 
+			 if(projectCode == ""){
+				 alert("项目代码为空，无法查看位置。");
+				 return;
+			 }
+			 
+			 var linkTemp = "${siteCheckRecord.projectPositionLinkTemp}";
+			 
+			 var link = linkTemp.replace("{0}", projectCode);
+			 window.open(link);  		    	
+		 });
 	});
+	
 			function f1(value){	
 				if(value == "个人"){
 				   console.log(value);	
@@ -69,8 +84,6 @@
 	
 	<h3>现场检查笔录</h3>
     
-	
-	
 	<form:form id="inputForm" modelAttribute="siteCheckRecord" action="${ctx}/cr/siteCheckRecord/saveInfo" method="get" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>	
@@ -81,16 +94,22 @@
 		</div>
 		
 		<div class="control-group container-fluid nopadding">
-		<div class="control-group">
-			<label class="control-label ">当事人类型：</label>
+			<div class="row-fluid">
+				<div class="span4">		
 			<div class="controls ">
 				<input id="dw" type="radio" name="partyType"  value="单位" onclick="f1(this.value)" />单位
 				<input id="gr" type="radio" name="partyType"  value="个人" onclick="f1(this.value)"/>个人
 				<!--<form:radiobuttons path="psnSex" items="${fns:getDictList('party_Type')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required"/>-->
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
-		</div>
-		</div>
+		        </div>
+				<div class="span8">		
+			<div class="controls controls-tight">
+			    <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#projectModal">单位信息查询</button>
+			</div>
+		        </div>		        
+		    </div>
+		</div>		
 		
 		<div id="unit" >
 		<div class="control-group container-fluid nopadding">
@@ -237,6 +256,37 @@
 		</div>		
 		</div>
 		
+		<div class="control-group container-fluid nopadding">
+			<div class="row-fluid">
+					<div class="span4">		
+				<label class="control-label">项目编号：</label>
+				<div class="controls ">
+					<form:input path="projectCode" htmlEscape="false" maxlength="30" class="input-medium"/>
+				</div>
+		       	    </div>
+		       	    
+				<div class="span8">		
+			<label class="control-label ">项目名称：</label>
+			<div class="controls">
+				<form:input path="projectName" htmlEscape="false" maxlength="100" class="input-xxlarge"/>
+			</div>
+		        </div>
+		    </div>
+		</div>		
+		
+		<div class="control-group container-fluid nopadding">
+			<div class="row-fluid">
+		       	    
+				<div class="span12">		
+			<label class="control-label ">项目地址：</label>
+			<div class="controls">
+				<form:input path="projectAddress" htmlEscape="false" maxlength="100" class="input-xxlarge"/>
+				&nbsp;&nbsp;<input id="btnLoadMap" type="button" value="项目位置">
+			</div>
+		        </div>
+		    </div>
+		</div>		
+		
 		<div class="control-group container-fluid nopadding">					
 		<div class="control-group">
 			<label class="control-label ">现场检查记录情况：</label>
@@ -316,5 +366,6 @@
 		    </div>
 		</div>		
 	</form:form>
+	<les:projectSearchModal4SiteCheck></les:projectSearchModal4SiteCheck>
 </body>
 </html>
