@@ -5,6 +5,7 @@ package org.wxjs.les.modules.qa.export;
 
 import java.io.OutputStream;
 
+import org.apache.commons.lang3.StringUtils;
 import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.PdfUtil;
 import org.wxjs.les.modules.base.export.ExportPageEvent;
@@ -54,11 +55,18 @@ public class QuestionanswerExport  extends RecordExportBase<QuestionanswerExport
 
 			// 签名
 
-			Image qsig = PdfUtil.getSignatureImage(this.qa.getQsig()
-					.getSignature());
+			Image qsig = null;
+			if(this.qa.getQsig()!=null && !StringUtils.isEmpty(this.qa.getQsig().getSignature())){
+				qsig = PdfUtil.getSignatureImage(this.qa.getQsig()
+						.getSignature());				
+			}
 
-			Image asig = PdfUtil.getSignatureImage(this.qa.getAsig()
-					.getSignature());
+			Image asig = null;
+			if(this.qa.getAsig()!=null && !StringUtils.isEmpty(this.qa.getAsig().getSignature())){
+				asig = PdfUtil.getSignatureImage(this.qa.getAsig()
+						.getSignature());
+			}
+			
 
 			PdfPTable footerTable = new PdfPTable(4);
 			footerTable.setWidths(new float[] { 0.2f, 0.3f, 0.2f, 0.3f });

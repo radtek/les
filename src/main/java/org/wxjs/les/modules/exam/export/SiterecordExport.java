@@ -279,19 +279,4 @@ public class SiterecordExport {
         return this;
     }
     
-    public String base64StringToImage(String base64String) {
-    	String filename=Global.getConfig("userfiles.basedir")+"/"+IdGen.uuid()+".png";
-    	try {
-    		byte[] bytes1=Base64.decodeBase64(base64String);
-        	ByteArrayInputStream bais=new ByteArrayInputStream(bytes1);
-			BufferedImage bi=ImageIO.read(bais);
-			File f1=new File(filename);
-			ImageIO.write(bi, "png", f1);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return filename;
-    	
-    }
-    
 }

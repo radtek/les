@@ -221,27 +221,32 @@ public class MaterialExport {
 
             /* ============ 表格中的第三部分数据 ============ */
             Image getterSig=null;
-            try {
-         	   String filename=this.base64StringToImage(this.material.getGetterSig().getSignature());
-         	  getterSig=Image.getInstance(filename);
-         	   FileUtils.deleteFile(filename);
-            } catch (MalformedURLException e) {
-        	   logger.error("getterSig error",e);
-           } catch (IOException e) {
-         	   logger.error("getterSig error",e);
-           }
+            if(this.material.getGetterSig()!=null && !StringUtils.isEmpty(this.material.getGetterSig().getSignature())){
+                try {
+              	   String filename=PdfUtil.base64StringToImage(this.material.getGetterSig().getSignature());
+              	  getterSig=Image.getInstance(filename);
+              	   FileUtils.deleteFile(filename);
+                 } catch (MalformedURLException e) {
+             	   logger.error("getterSig error",e);
+                } catch (IOException e) {
+              	   logger.error("getterSig error",e);
+                }            	
+            }
          
-           Image partySig=null;
+            Image partySig=null;
             
-	           try {
-	     	   String filename=this.base64StringToImage(this.material.getPartySig().getSignature());
-	         	   partySig=Image.getInstance(filename);
-	         	   FileUtils.deleteFile(filename);
-	            } catch (MalformedURLException e) {
-	         	   logger.error("partySig error",e);
-	            } catch (IOException e) {
-	         	   logger.error("partySig error",e);
-	            }
+            if(this.material.getPartySig()!=null && !StringUtils.isEmpty(this.material.getPartySig().getSignature())){
+ 	           try {
+ 		     	   String filename=PdfUtil.base64StringToImage(this.material.getPartySig().getSignature());
+ 		         	   partySig=Image.getInstance(filename);
+ 		         	   FileUtils.deleteFile(filename);
+ 		            } catch (MalformedURLException e) {
+ 		         	   logger.error("partySig error",e);
+ 		            } catch (IOException e) {
+ 		         	   logger.error("partySig error",e);
+ 		            }            	
+            }
+
 	           widths = new float[]{8, 42,8,42};
 	           table = new PdfPTable(widths.length);
 	           table.setWidths(widths);
@@ -298,7 +303,11 @@ public class MaterialExport {
     	cell.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直    	
     	tableSub.addCell(cell); 
     	
-    	phrase = new Phrase(DateUtil.formatDate(date, "yyyy年MM月dd日"), PdfUtil.getFont10(Font.NORMAL));
+    	phrase = new Phrase("");
+    	if(sig != null){
+    		phrase = new Phrase(DateUtil.formatDate(date, "yyyy年MM月dd日"), PdfUtil.getFont10(Font.NORMAL));
+    	}
+    	
 		cell = new PdfPCell(phrase);
     	cell.setBorderWidth(0);
     	cell.setHorizontalAlignment(Element.ALIGN_RIGHT); //水平
@@ -334,21 +343,6 @@ public class MaterialExport {
         response.setHeader("Content-Disposition", "attachment;filename=" + Encodes.urlEncode(fileName));
         this.generate(response.getOutputStream());
         return this;
-    }
-    
-    public String base64StringToImage(String base64String) {
-    	String filename=Global.getConfig("userfiles.basedir")+"/"+IdGen.uuid()+".png";
-    	try {
-    		byte[] bytes1=Base64.decodeBase64(base64String);
-        	ByteArrayInputStream bais=new ByteArrayInputStream(bytes1);
-			BufferedImage bi=ImageIO.read(bais);
-			File f1=new File(filename);
-			ImageIO.write(bi, "png", f1);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return filename;
-    	
     }
     
 }

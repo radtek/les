@@ -15,6 +15,7 @@ import org.wxjs.les.common.utils.IdGen;
 import org.wxjs.les.common.utils.PdfUtil;
 import org.wxjs.les.modules.base.utils.PathUtils;
 import org.wxjs.les.modules.cr.entity.SiteCheckRecord;
+import org.wxjs.les.modules.sys.utils.DictUtils;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
@@ -242,6 +243,11 @@ public class SiteCheckRecordExport {
             	 table.addCell(createPDFCellToContent(siteCheckRecord.getPsnName(), fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
             	 
             	 String sex=siteCheckRecord.getPsnSex();
+
+        		 table.addCell(createPDFCellToTitle("性别", fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
+            	 table.addCell(createPDFCellToContent(DictUtils.getDictLabel(sex, "sex", ""), fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
+            	 
+            	 /*
             	 if(sex.equals("1")) {
             		 table.addCell(createPDFCellToTitle("性别", fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
                 	 table.addCell(createPDFCellToContent("男", fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
@@ -249,6 +255,7 @@ public class SiteCheckRecordExport {
             		 table.addCell(createPDFCellToTitle("性别", fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
                 	 table.addCell(createPDFCellToContent("女", fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
             	 }
+            	 */
             	 	
             	 
             	 table.addCell(createPDFCellToTitle("身份证", fontMap.get("textFont"), 0, 0, borderWidth, normalBorderHeight));
@@ -287,6 +294,7 @@ public class SiteCheckRecordExport {
             /* ============ 表格中的第五部分数据 ============ */
            Image partySig=null;
             
+           if(this.siteCheckRecord.getPartySig()!=null && !StringUtils.isEmpty(this.siteCheckRecord.getPartySig().getSignature())){
 	           try {
 	     	   String filename=this.base64StringToImage(this.siteCheckRecord.getPartySig().getSignature());
 	         	   partySig=Image.getInstance(filename);
@@ -295,9 +303,13 @@ public class SiteCheckRecordExport {
 	         	   logger.error("partySig error",e);
 	            } catch (IOException e) {
 	         	   logger.error("partySig error",e);
-	            }
+	            }        	   
+           }
+
 	   
-	     Image witnessSig=null;
+	       Image witnessSig=null;
+	       
+	       if(this.siteCheckRecord.getWitnessSig()!=null && !StringUtils.isEmpty(this.siteCheckRecord.getWitnessSig().getSignature())){
 	          try{
 	               String filename=this.base64StringToImage(this.siteCheckRecord.getWitnessSig().getSignature());
 	         	   witnessSig=Image.getInstance(filename);
@@ -307,29 +319,38 @@ public class SiteCheckRecordExport {
 	           } catch (IOException e) {
 	         	   logger.error("witnessSig error",e);
 	           }
+	       }
 	      
-	     Image checkerSig=null;
-	          try{
-	         	   String filename=this.base64StringToImage(this.siteCheckRecord.getCheckerSig().getSignature());
-	         	  checkerSig=Image.getInstance(filename);
-	         	   FileUtils.deleteFile(filename);
-	           } catch (MalformedURLException e) {
-	        	   logger.error("checkerSig error",e);
-	           } catch (IOException e) {
-	         	   logger.error("checkerSig error",e);
-	           }
+	       Image checkerSig=null;
+	       
+	       if(this.siteCheckRecord.getCheckerSig()!=null && !StringUtils.isEmpty(this.siteCheckRecord.getCheckerSig().getSignature())){
+		          try{
+		         	   String filename=this.base64StringToImage(this.siteCheckRecord.getCheckerSig().getSignature());
+		         	  checkerSig=Image.getInstance(filename);
+		         	   FileUtils.deleteFile(filename);
+		           } catch (MalformedURLException e) {
+		        	   logger.error("checkerSig error",e);
+		           } catch (IOException e) {
+		         	   logger.error("checkerSig error",e);
+		           }	    	   
+	       }
+
 	    
-	    Image recorderSig=null;
-	        try{
-	         	   String filename=this.base64StringToImage(this.siteCheckRecord.getRecorderSig().getSignature());
-	         	  recorderSig=Image.getInstance(filename);
-	         	   FileUtils.deleteFile(filename);
-	           } catch (MalformedURLException e) {
-	        	   logger.error("recorderSig error",e);
-	           } catch (IOException e) {
-	         	   logger.error("recorderSig error",e);
-	           }
-	          
+	      Image recorderSig=null;
+	      
+	      if(this.siteCheckRecord.getRecorderSig()!=null && !StringUtils.isEmpty(this.siteCheckRecord.getRecorderSig().getSignature())){
+		        try{
+		         	  String filename=this.base64StringToImage(this.siteCheckRecord.getRecorderSig().getSignature());
+		         	  recorderSig=Image.getInstance(filename);
+		         	   FileUtils.deleteFile(filename);
+		        } catch (MalformedURLException e) {
+		        	   logger.error("recorderSig error",e);
+		        } catch (IOException e) {
+		         	   logger.error("recorderSig error",e);
+		        }	    	  
+	      }
+	      
+
 	           widths = new float[]{8, 42,8,42};
 	           table = new PdfPTable(widths.length);
 	           table.setWidths(widths);
@@ -365,6 +386,7 @@ public class SiteCheckRecordExport {
         } finally {
             document.close();
         }
+        
     }
 
    
