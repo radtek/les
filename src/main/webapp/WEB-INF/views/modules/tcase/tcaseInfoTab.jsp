@@ -302,6 +302,16 @@
 		<div class="control-group container-fluid nopadding">
 			<div class="row-fluid">
 				<div class="span12">		
+			<label class="control-label">案件所涉项目代码：</label>
+			<div class="controls controls-tight">
+				<form:input path="tcase.projectCode" htmlEscape="false" maxlength="100" class="input-large"/>
+			</div>
+		        </div>
+		    </div>
+		</div>		
+		<div class="control-group container-fluid nopadding">
+			<div class="row-fluid">
+				<div class="span12">		
 			<label class="control-label">案件所涉项目名称：</label>
 			<div class="controls controls-tight">
 				<form:input path="tcase.projectName" htmlEscape="false" maxlength="100" class="input-xxlarge required"/>

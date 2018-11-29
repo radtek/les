@@ -96,6 +96,9 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 	protected	CaseDecisionDao caseDecisionDao;
 	
 	@Autowired
+	protected	TcaseDao tcaseDao;
+	
+	@Autowired
 	protected	SignatureDao signatureDao;
 	
 	@Autowired
@@ -270,7 +273,7 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 	public List<Tcase> findList(Tcase tcase) {
 
 		List<Tcase> rst = Lists.newArrayList();
-		List<Tcase> list = super.findList(tcase);
+		List<Tcase> list = dao.findList(tcase);
 		
 		List<String> myCaseIds = Lists.newArrayList(); //我相关的案件
 		if(tcase.getMyCaseFlag()){
@@ -320,7 +323,11 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 	public Page<Tcase> findPage(Page<Tcase> page, Tcase tcase) {
 		tcase.setPage(page);
 		
+		logger.debug("1>>count：{}， size：{}， no:{}, page.getTotalPage():{}", page.getCount(),page.getPageSize(),page.getPageNo(), page.getTotalPage());
+		
 		List<Tcase> list = this.findList(tcase);
+		
+		logger.debug("2>>list.size():{}, count：{}， size：{}， no:{}, page.getTotalPage():{}", list.size(), page.getCount(),page.getPageSize(),page.getPageNo(), page.getTotalPage());
 		
 		//fill names
 		List<User> userList = userDao.findList(new User());
@@ -347,6 +354,10 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 		}
 		
 		page.setList(list);
+		page.setCount(list.size());
+
+		logger.debug("3>>list.size():{}, count：{}， size：{}， no:{}, page.getTotalPage():{}", list.size(), page.getCount(),page.getPageSize(),page.getPageNo(), page.getTotalPage());
+		
 		return page;		
 	}
 	

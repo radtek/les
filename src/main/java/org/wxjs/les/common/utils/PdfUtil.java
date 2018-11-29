@@ -425,7 +425,7 @@ public class PdfUtil {
         return sig;
     }
     
-    private static String base64StringToImage(String base64String) {
+    public static String base64StringToImage(String base64String) {
     	String filename = Global.getConfig("userfiles.basedir") + "/" + IdGen.uuid()+".png";
         try {
         	

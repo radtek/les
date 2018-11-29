@@ -128,6 +128,7 @@
     		$("#tcase\\.orgResponsiblePerson").val(dataJson.orgResponsiblePerson);
     		$("#tcase\\.orgAddress").val(dataJson.orgAddress);
     		$("#tcase\\.orgPhone").val(dataJson.orgPhone);
+    		$("#tcase\\.projectCode").val(dataJson.prjNum);
     		$("#tcase\\.projectName").val(dataJson.prjName);
     		$("#tcase\\.caseHappenAddress").val(dataJson.prjAddress);
     	}

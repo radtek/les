@@ -384,6 +384,11 @@ CREATE TABLE `tsite_check_record` (
   `psn_address` varchar(100) NULL COMMENT '住址',
   `psn_phone` varchar(32) NULL COMMENT '联系电话', 
   `psn_sex` varchar(8) NULL COMMENT '性别', 
+
+  `project_code` varchar(32) NULL COMMENT '所涉项目代码',
+  `project_name` varchar(100) NOT NULL COMMENT '所涉项目名称',  
+  `project_address` varchar(100) NULL COMMENT '所涉项目地址',
+  
   `site_situation` text NOT NULL COMMENT '现场检查记录情况',
   `site_picture` varchar(500) NOT NULL COMMENT '现场勘察示意图',
   `site_picture_memo` varchar(500) NOT NULL COMMENT '示意图说明',

@@ -4,9 +4,12 @@
 package org.wxjs.les.modules.cr.entity;
 
 import org.hibernate.validator.constraints.Length;
+
+import java.text.MessageFormat;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.DataEntity;
 import org.wxjs.les.modules.base.entity.Signature;
 
@@ -34,6 +37,11 @@ public class SiteCheckRecord extends DataEntity<SiteCheckRecord> {
 	private String psnAddress;		// 住址
 	private String psnPhone;		// 联系电话
 	private String psnSex;		// 性别
+	
+	private String projectCode;		// 所涉项目代码
+	private String projectName;		// 所涉项目名称
+	private String projectAddress;		// 所涉项目地址
+	
 	private String siteSituation;		// 现场检查记录情况
 	private String sitePicture;		// 现场勘察示意图
 	private String sitePictureMemo;		// 示意图说明
@@ -196,6 +204,30 @@ public class SiteCheckRecord extends DataEntity<SiteCheckRecord> {
 		this.psnSex = psnSex;
 	}
 	
+	public String getProjectCode() {
+		return projectCode;
+	}
+
+	public void setProjectCode(String projectCode) {
+		this.projectCode = projectCode;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
+
+	public String getProjectAddress() {
+		return projectAddress;
+	}
+
+	public void setProjectAddress(String projectAddress) {
+		this.projectAddress = projectAddress;
+	}
+
 	public String getSiteSituation() {
 		return siteSituation;
 	}
@@ -252,5 +284,21 @@ public class SiteCheckRecord extends DataEntity<SiteCheckRecord> {
 
 	public void setRecorderSig(Signature recorderSig) {
 		this.recorderSig = recorderSig;
+	}
+	
+	public String getProjectPositionLink(){
+		String linkTemp = Global.getConfig("project_position_link");
+		
+		MessageFormat mf = new MessageFormat(linkTemp);
+		
+		String[] params = {
+				this.projectCode
+				};
+		return mf.format(params);
+	}
+	
+	public String getProjectPositionLinkTemp(){
+		return Global.getConfig("project_position_link");
+
 	}
 }

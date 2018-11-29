@@ -18,7 +18,12 @@
 </head>
 <body>
     <h3>我的案件列表</h3>
-
+	<form:form id="searchForm" modelAttribute="tcase" action="${ctx}/case/tcase/mylist" method="post" class="breadcrumb form-search">
+		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
+		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
+		<ul class="ul-form">
+		</ul>
+	</form:form>
 	<sys:message content="${message}"/>
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>

@@ -24,7 +24,7 @@
 				<td class="tit">名称：</td><td>${caseAttr.partyDisplay}</td>
 			</tr>
 			<tr>
-				<td class="tit">案件所涉项目名称：</td><td colspan="3">${caseAttr.projectName}</td>
+				<td class="tit">案件所涉项目名称：</td><td colspan="3">${caseAttr.projectName}&nbsp;&nbsp;<a href="${caseAttr.projectPositionLink}" target="_blank">项目位置</a></td>
 			</tr>
 			<tr>
 				<td class="tit">案由：</td><td colspan="3">${caseAttr.caseCause}</td>

@@ -17,6 +17,9 @@ public class PunishInfo4Xml{
 	
 	@XmlElement(name="prjNum") 
 	private String prjNum;
+	
+	@XmlElement(name="cflx") 
+	private String cflx;
 
 	@XmlElement(name="wfwgxm") 
 	private String wfwgxm;
@@ -66,6 +69,7 @@ public class PunishInfo4Xml{
 		buffer.append("<row>");
 		buffer.append("<ajNo>").append(this.encode(this.ajNo)).append("</ajNo>");
 		buffer.append("<prjNum>").append(this.encode(this.prjNum)).append("</prjNum>");
+		buffer.append("<cflx>").append(this.encode(this.cflx)).append("</cflx>");
 		buffer.append("<wfwgxm>").append(this.encode(this.wfwgxm)).append("</wfwgxm>");
 		buffer.append("<wfwgdwry>").append(this.encode(this.wfwgdwry)).append("</wfwgdwry>");
 		buffer.append("<zzjgdmSfzh>").append(this.encode(this.zzjgdmSfzh)).append("</zzjgdmSfzh>");
@@ -85,6 +89,10 @@ public class PunishInfo4Xml{
 
 	public void setPrjNum(String prjNum) {
 		this.prjNum = prjNum;
+	}
+
+	public void setCflx(String cflx) {
+		this.cflx = cflx;
 	}
 
 	public void setWfwgxm(String wfwgxm) {

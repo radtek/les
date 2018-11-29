@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.tools.ant.util.DateUtils;
 import org.hibernate.validator.constraints.Length;
 
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -861,6 +862,17 @@ public class Tcase extends DataEntity<Tcase> {
 			rst = Util.formatMoneyArea(this.caseDecision.getPunishMoney());
 		}
 		return rst;
+	}
+	
+	public String getProjectPositionLink(){
+		String linkTemp = Global.getConfig("project_position_link");
+		
+		MessageFormat mf = new MessageFormat(linkTemp);
+		
+		String[] params = {
+				this.projectCode
+				};
+		return mf.format(params);
 	}
 	
 }
