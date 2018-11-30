@@ -275,6 +275,38 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 		List<Tcase> rst = Lists.newArrayList();
 		List<Tcase> list = dao.findList(tcase);
 		
+		logger.debug("entity.getUnfinishedFlag():{}", tcase.getUnfinishedFlag());
+		
+		//get current process list
+		List<CaseProcess> currentProcesses = caseProcessDao.findCurrentProcesses(new CaseProcess());
+		for(Tcase entity : list){
+			
+			if("1".equals(tcase.getUnfinishedFlag())){
+				//filter finished items
+				if(Global.CASE_STATUS_FINISHED.equals(entity.getStatus())){
+					continue;
+				}
+			}
+			
+			logger.debug("entity.getCurrentCaseProcess().size():{}", entity.getCurrentCaseProcesses().size()+"");
+			for(CaseProcess process : currentProcesses){
+				if(process.getCaseId().equals(entity.getId())){
+					entity.getCurrentCaseProcesses().add(process);
+				}
+			}
+			logger.debug("after handle, entity.getCurrentCaseProcess().size():{}", entity.getCurrentCaseProcesses().size()+"");
+			
+			rst.add(entity);
+		}
+		
+		return rst;
+	}
+	
+	public List<Tcase> findList4My(Tcase tcase) {
+
+		List<Tcase> rst = Lists.newArrayList();
+		List<Tcase> list = dao.findList(tcase);
+		
 		List<String> myCaseIds = Lists.newArrayList(); //我相关的案件
 		if(tcase.getMyCaseFlag()){
 			//prepare data to filter
@@ -323,11 +355,7 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 	public Page<Tcase> findPage(Page<Tcase> page, Tcase tcase) {
 		tcase.setPage(page);
 		
-		logger.debug("1>>count：{}， size：{}， no:{}, page.getTotalPage():{}", page.getCount(),page.getPageSize(),page.getPageNo(), page.getTotalPage());
-		
 		List<Tcase> list = this.findList(tcase);
-		
-		logger.debug("2>>list.size():{}, count：{}， size：{}， no:{}, page.getTotalPage():{}", list.size(), page.getCount(),page.getPageSize(),page.getPageNo(), page.getTotalPage());
 		
 		//fill names
 		List<User> userList = userDao.findList(new User());
@@ -354,11 +382,73 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 		}
 		
 		page.setList(list);
-		page.setCount(list.size());
+
+		return page;		
+	}
+	
+	public Page<Tcase> findPage4My(Page<Tcase> page, Tcase tcase) {
+		//tcase.setPage(page);
+		
+		logger.debug("1>>count：{}， size：{}， no:{}, page.getTotalPage():{}", page.getCount(),page.getPageSize(),page.getPageNo(), page.getTotalPage());
+		
+		List<Tcase> list = this.findList4My(tcase);
+		
+		logger.debug("2>>list.size():{}, count：{}， size：{}， no:{}, page.getTotalPage():{}", list.size(), page.getCount(),page.getPageSize(),page.getPageNo(), page.getTotalPage());
+		
+		//fill names
+		List<User> userList = userDao.findList(new User());
+		Map<String, String> userMap = new HashMap<String, String>();
+		for(User user : userList){
+			userMap.put(user.getLoginName(), user.getName());
+		}
+		
+		for(Tcase entity : list){
+			String handler = entity.getInitialHandler();
+			if(StringUtils.isEmpty(handler)){
+				continue;
+			}
+			
+			String[] strs = handler.split(",");
+			StringBuffer buffer = new StringBuffer();
+			for(String str: strs){
+				if(str.length()>0){
+					buffer.append(userMap.get(str)).append(",");
+				}
+			}
+			entity.setInitialHandlerName(buffer.toString());
+
+		}
+		List<Tcase> sublist = this.getSubList(list, page);
+		
+		page = new Page<Tcase>(page.getPageNo(), page.getPageSize(), sublist.size(), sublist);
+		page.initialize();
 
 		logger.debug("3>>list.size():{}, count：{}， size：{}， no:{}, page.getTotalPage():{}", list.size(), page.getCount(),page.getPageSize(),page.getPageNo(), page.getTotalPage());
 		
 		return page;		
+	}
+	
+	private List<Tcase> getSubList(List<Tcase> list, Page<Tcase> page){
+		int pageNo = page.getPageNo();
+		int pageSize = page.getPageSize();
+		int total = list.size();
+		
+		List<Tcase> sublist = Lists.newArrayList();
+		
+		if(total<= pageSize){
+			sublist.addAll(list);
+		}else{
+			int fromIndex = pageNo * pageSize;
+			int toIndex =pageNo * pageSize + pageSize;
+			
+			if(total < toIndex){
+				toIndex = total;
+			}
+			
+			sublist = list.subList(fromIndex, toIndex);			
+		}
+		
+		return sublist;
 	}
 	
 	@Transactional(readOnly = false)

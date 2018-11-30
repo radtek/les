@@ -177,7 +177,12 @@ public class TcaseController extends BaseController {
 			tcase.setAcceptDateTo(cal.getTime());			
 		}
 		
-		Page<Tcase> page = tcaseService.findPage(new Page<Tcase>(request, response), tcase); 
+		Page<Tcase> page = null; 
+		if(tcase.getMyCaseFlag()){
+			page = tcaseService.findPage4My(new Page<Tcase>(request, response), tcase); 
+		}else{
+			page = tcaseService.findPage(new Page<Tcase>(request, response), tcase); 
+		}
 		model.addAttribute("page", page);
 		return "modules/tcase/tcaseList";
 	}	
@@ -190,7 +195,7 @@ public class TcaseController extends BaseController {
 		
 		tcase.setMyCaseFlag(true);
 		
-		Page<Tcase> page = tcaseService.findPage(new Page<Tcase>(request, response), tcase); 
+		Page<Tcase> page = tcaseService.findPage4My(new Page<Tcase>(request, response), tcase); 
 		model.addAttribute("page", page);
 		return "modules/tcase/mycaseList";
 	}
