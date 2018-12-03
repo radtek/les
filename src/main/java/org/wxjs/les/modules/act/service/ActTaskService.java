@@ -284,6 +284,15 @@ public class ActTaskService extends BaseService {
 				}
 				
 				Act e = new Act();
+
+				ProcessDefinitionEntity processDefinition = ProcessDefUtils.getProcessDefinition(processEngine, histIns.getProcessDefinitionId());
+				
+				if(processDefinition!=null){
+					String name = processDefinition.getName();
+					logger.debug("processDefinition name:{}",name);
+					e.setProcDef(processDefinition);
+				}
+				
 				e.setHistIns(histIns);
 				// 获取流程发起人名称
 				if ("startEvent".equals(histIns.getActivityType())){
