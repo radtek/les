@@ -218,7 +218,7 @@
 				<td><fmt:formatDate value="${tcase.settleDate}" pattern="yyyy-MM-dd"/></td>
 				<td>${tcase.initialHandlerName}</td>
 				<td>${tcase.statusLabel}</td>
-				<td>${tcase.attachLocalProgress}"</td>
+				<td>${tcase.attachLocalProgress}</td>
 				<td><a href="#" title="${tcase.attachLocalDetail}">查看</a></td>
 				<td>${fns:getDictLabel(tcase.uploadStatus, 'upload_status', '未上传')}</td>
 				<td>${tcase.attachUploadProgress}</td>
