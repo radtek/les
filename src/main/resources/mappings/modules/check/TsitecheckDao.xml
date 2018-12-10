@@ -126,7 +126,7 @@
 	</select>
 	
 	
-	<insert id="insert">
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="org.wxjs.les.modules.check.entity.Tsitecheck">
 		INSERT INTO tsitecheck(
 			develop_org,
 			develop_contact,

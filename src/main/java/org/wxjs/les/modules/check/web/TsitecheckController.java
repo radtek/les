@@ -57,6 +57,12 @@ public class TsitecheckController extends BaseController {
 	@RequiresPermissions("check:tsitecheck:view")
 	@RequestMapping(value = "form")
 	public String form(Tsitecheck tsitecheck, Model model) {
+		
+		if(tsitecheck.getIsNewRecord()){
+			String siteCheckResult = Global.getConfig("DEFAULT_SITE_SITUATION");
+			tsitecheck.setSiteCheckResult(siteCheckResult);
+		}
+		
 		model.addAttribute("tsitecheck", tsitecheck);
 		return "modules/check/tsitecheckForm";
 	}

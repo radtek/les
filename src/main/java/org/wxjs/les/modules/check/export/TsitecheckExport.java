@@ -1,5 +1,6 @@
 package org.wxjs.les.modules.check.export;
 
+import com.google.common.collect.Lists;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfPCell;
@@ -33,6 +34,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import java.util.List;
 
 public class TsitecheckExport {
 
@@ -116,20 +119,65 @@ public class TsitecheckExport {
     
     /**
      * 根据字符串解析图片
-     * @param images 图片字符串(多张)
+     * @param imagePaths 图片字符串(多张)
      * @param cutWidth 剪切后的图片宽度
      * @param cutHeight 剪切后的图片高度
      * @return
      */
-    private PdfPCell createPDFCellToImage(String[] images, int cutWidth, 
+    private PdfPCell createPDFCellToImage(String imagePaths, int cutWidth, 
     		int cutHeight, int rowSpan, int colSpan, float borderWidth, float borderHeight) {
+    	
+    	String[] images = imagePaths.split("\\|");
+    	List<String> imageList= Lists.newArrayList();
+    	for(String str : images){
+    		if(!StringUtils.isEmpty(str)){
+    			imageList.add(str);
+    		}
+    	}
+    	
+    	PdfPCell cell = null;
+    	
         try {
+        	/*
             PdfPCell cell = new PdfPCell();
             cell.setBorderWidth(borderWidth);
             cell.setMinimumHeight(borderHeight);
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
             cell.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
+            */
             if(!StringUtils.isEmpty(images)) {
+
+                
+                /*
+                Paragraph paragraph = new Paragraph();
+                for(String imageStr : imageList) {
+                	//数组的第一个元素是空，后面两个是路径，因为当不为空的时候，执行下面的内容
+                	if(!"".equals(imageStr)) {
+                    	String imagePath = PathUtils.getRealPath(imageStr);
+                        Image image = Image.getInstance(imagePath);
+                        image.scaleToFit(cutWidth, cutHeight);
+                        image.setAlignment(Element.ALIGN_CENTER);
+                        paragraph.add(new Chunk(image, 0, 0, true));     //使文字与图片处于同一行
+                	}
+                }
+                */
+                
+            	PdfPTable tableSubSig = new PdfPTable(imageList.size());
+            	for(String imageStr : imageList){
+            		PdfPCell cellTemp = new PdfPCell();
+            		cellTemp.setBorderWidth(0);
+            		cellTemp.setHorizontalAlignment(Element.ALIGN_CENTER); //水平居中
+            		cellTemp.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直居中 
+            		String imagePath = PathUtils.getRealPath(imageStr);
+                    Image image = Image.getInstance(imagePath);
+                    image.scaleToFit(cutWidth, cutHeight);
+                    image.setAlignment(Element.ALIGN_CENTER);
+            		cellTemp.addElement(image);   
+                	tableSubSig.addCell(cellTemp);
+            	}
+            	
+            	cell = new PdfPCell(tableSubSig);
+            	
                 // 合并行
                 if (rowSpan > 0) {
                     cell.setRowspan(rowSpan);
@@ -138,18 +186,12 @@ public class TsitecheckExport {
                 if (colSpan > 0) {
                     cell.setColspan(colSpan);
                 }
-                Paragraph paragraph = new Paragraph();
-                for(String imageStr : images) {
-                	//数组的第一个元素是空，后面两个是路径，因为当不为空的时候，执行下面的内容
-                	if(!"".equals(imageStr)) {
-                    	String imagePath = PathUtils.getRealPath(imageStr);
-                        Image image = Image.getInstance(imagePath);
-                        image.scaleToFit(cutWidth, cutHeight);
-                        image.setAlignment(Element.ALIGN_LEFT);
-                        paragraph.add(new Chunk(image, 0, 0, true));     //使文字与图片处于同一行
-                	}
-                }
-                cell.addElement(paragraph);
+                
+            	cell.setBorderWidth(borderWidth);
+            	cell.setHorizontalAlignment(Element.ALIGN_CENTER); //水平居中
+            	cell.setVerticalAlignment(Element.ALIGN_MIDDLE); //垂直居中    	
+                
+                //cell.addElement(paragraph);
             }
             return cell;
         } catch (Exception e) {
@@ -224,7 +266,7 @@ public class TsitecheckExport {
 
             /* ============ 表格中的第三部分数据 ============ */
             table.addCell(createPDFCellToTitle("现场踏勘示意图", fontMap.get("textFont"), 0, 0, borderWidth, contentBigTableHeight));
-            table.addCell(createPDFCellToImage(tsitecheck.getSitePicture().split("\\|"), defaultImageWidth, defaultImageHeight, 0, 4, borderWidth, contentBigTableHeight));
+            table.addCell(createPDFCellToImage(tsitecheck.getSitePicture(), defaultImageWidth, defaultImageHeight, 0, 4, borderWidth, contentBigTableHeight));
 
             /* ============ 表格中的第四部分数据 ============ */
             table.addCell(createPDFCellToTitle("现场踏勘情况", fontMap.get("textFont"), 0, 0, borderWidth, contentTableHeight));
@@ -280,8 +322,7 @@ public class TsitecheckExport {
 	            
 	       document.add(table);
         } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("生成PDF数据异常{}", e.getMessage());
+            logger.error("生成PDF数据异常", e);
         } finally {
             document.close();
         }
