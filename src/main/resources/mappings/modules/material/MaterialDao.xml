@@ -96,7 +96,7 @@
 		</choose>
 	</select>
 	
-	<insert id="insert">
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="org.wxjs.les.modules.material.entity.Material">
 		INSERT INTO tmaterial(
 			get_date,
 			material_type,
