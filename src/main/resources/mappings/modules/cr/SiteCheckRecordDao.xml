@@ -116,7 +116,7 @@
 		</choose>
 	</select>
 	
-	<insert id="insert">
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="org.wxjs.les.modules.cr.entity.SiteCheckRecord">
 		INSERT INTO tsite_check_record(
 			party_type,
 			org_name,
