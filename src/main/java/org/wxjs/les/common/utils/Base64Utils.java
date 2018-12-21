@@ -21,14 +21,17 @@ public class Base64Utils {
 			
 			data = new byte[in.available()];
 			in.read(data);
-			in.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally{
-			try {
-				in.close();
-			} catch (IOException e) {
-				e.printStackTrace();
+			
+			if(in!=null){
+				try {
+					in.close();
+					data = null;
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}	
  
