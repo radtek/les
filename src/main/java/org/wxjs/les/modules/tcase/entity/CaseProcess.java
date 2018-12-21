@@ -198,7 +198,8 @@ public class CaseProcess extends DataEntity<CaseProcess> {
 	}
 	
 	public boolean getEditable(){
-		return StringUtils.isEmpty(this.caseStageStatus) || "0".equals(this.caseStageStatus) || "1".equals(this.caseStageStatus);
+		User user = UserUtils.getUser();
+		return user.isManager() || StringUtils.isEmpty(this.caseStageStatus) || "0".equals(this.caseStageStatus) || "1".equals(this.caseStageStatus);
 	}
 	
 	/**

@@ -322,6 +322,10 @@ public class User extends DataEntity<User> {
 		return rst;
 	}
 	
+	public boolean isManager(){
+		return isAdmin() || "8".equals(this.userType);
+	}
+	
 	public boolean isAdmin(){
 		return isAdmin(this.id) || "9".equals(this.userType);
 	}
