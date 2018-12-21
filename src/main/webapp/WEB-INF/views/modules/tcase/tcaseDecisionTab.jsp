@@ -121,7 +121,7 @@
 			<label class="control-label">拟稿日期：</label>
 			<div class="controls">
 				<input name="compileDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate required"
-					value="<fmt:formatDate value="${caseAct.tcase.acceptDate}" pattern="yyyy-MM-dd"/>"
+					value="${caseDecision.compileDate}"
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>					
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
