@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5">
 
-	<display-name>无锡市城市基础设施配套费征收管理系统</display-name>
+	<display-name>无锡市住建综合行政执法管理系统</display-name>
 
 	<!-- Context ConfigLocation -->
 	<context-param>
