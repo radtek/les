@@ -118,8 +118,9 @@ public class CaseDecisionLaunchExport extends
 
 			// 拟稿日期 、印数
 			items = new String[] { "拟稿\n日期",
-					"       "+DateUtils.getDate("yyyy年MM月dd日  "), "\n     印数",
-					"       "+this.caseDecision.getPrintCount() };
+					"       " + this.caseDecision.getCompileDate(),
+					"\n     印数",
+					"       " + this.caseDecision.getPrintCount() };
 			
 			table = generateTableRows(items, fontContent, new float[] {
 					0.1f, 0.4f, 0.1f, 0.4f }, tableWidth,  Element.ALIGN_LEFT,Element.ALIGN_MIDDLE,
