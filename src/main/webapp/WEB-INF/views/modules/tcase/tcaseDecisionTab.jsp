@@ -140,7 +140,7 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">无锡市建设局行政处罚决定书内容：</label>
+			<label class="control-label">行政处罚决定书内容：</label>
 			<div class="controls">
 				<form:textarea path="content" htmlEscape="false"  style="width:800px;height:600px;" class="required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
@@ -149,7 +149,8 @@
 		<div class="control-group">
 			<label class="control-label">处罚金额（元）：</label>
 			<div class="controls">
-				<form:input path="punishMoney" htmlEscape="false" class="input-xlarge "/>
+				<form:input path="punishMoney" htmlEscape="false" class="input-xlarge required"/>
+				<span class="help-inline"><font color="red">*（无罚款填写0）</font> </span>
 			</div>
 		</div>		
 		<div class="control-group">
