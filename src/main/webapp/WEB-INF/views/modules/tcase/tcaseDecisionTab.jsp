@@ -163,9 +163,12 @@
 		<div class="control-group">
 			<label class="control-label">发证时间：</label>
 			<div class="controls">
+			    <fmt:formatDate value="${caseAct.tcase.decisionDate}" pattern="yyyy-MM-dd"/>
+			    <!--  
 				<input name="launchDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate "
 					value="<fmt:formatDate value="${caseDecision.launchDate}" pattern="yyyy-MM-dd"/>"
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+				-->
 			</div>
 		</div>
 		<div class="form-actions">

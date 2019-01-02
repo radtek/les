@@ -109,7 +109,7 @@
 			#{content},
 			#{punishMoney},
 			#{launchDept},
-			#{launchDate},
+			now(),
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -132,7 +132,6 @@
 			content = #{content},
 			punish_money = #{punishMoney},
 			launch_dept = #{launchDept},
-			launch_date = #{launchDate},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks}
