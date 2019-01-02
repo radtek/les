@@ -146,7 +146,7 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.status, a.update_date DESC
+				ORDER BY a.status, decision.year DESC, decision.seq ASC, a.update_date DESC
 			</otherwise>
 		</choose>
 	</select>
