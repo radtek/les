@@ -75,8 +75,9 @@ public class CaseDecisionListener implements ExecutionListener {
 					punishInfo4Xml.setPrjNum(tcase.getProjectCode());
 					punishInfo4Xml.setCflx(tcase.getPunishType());
 					punishInfo4Xml.setWfwgxm(tcase.getProjectName());
-					punishInfo4Xml.setWfwgdwry(tcase.getPartyCode());
-					punishInfo4Xml.setZzjgdmSfzh(tcase.getPartyDisplay()); 
+					punishInfo4Xml.setStlx(tcase.getPartyType());
+					punishInfo4Xml.setWfwgdwry(tcase.getPartyDisplay());
+					punishInfo4Xml.setZzjgdmSfzh(tcase.getPartyCode()); 
 					punishInfo4Xml.setWfxw(tcase.getCaseCause());
 					punishInfo4Xml.setUpdateFlag("U");
 					punishInfo4Xml.setSource("行政处罚"); 
@@ -87,7 +88,9 @@ public class CaseDecisionListener implements ExecutionListener {
 						tcase.setUploadStatusLib4("1");
 						this.caseDao.updateUploadStatusLib4(tcase);
 					}
-					logger.info("upload case info to lib4: {}, success: {}", tcase.getCaseSeq(), flag);
+					logger.info("upload case info to lib4: {}, success: {}", tcase.getCaseSeq(), flag);	
+					
+
 				}
 			}
 		}

@@ -173,10 +173,11 @@ public class WebServiceUtils {
 		
 		String xmlRst = (String)results[0];
 		
-		logger.debug("xmlRst:{}", xmlRst);
-		
 		if(xmlRst.contains("000")){
 			rst = true;
+			logger.debug("xmlRst:{}", xmlRst);
+		}else{
+			logger.error("xmlRst:{}", xmlRst);
 		}
 
 		return rst;

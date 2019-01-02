@@ -24,6 +24,9 @@ public class PunishInfo4Xml{
 	@XmlElement(name="wfwgxm") 
 	private String wfwgxm;
 	
+	@XmlElement(name="stlx") 
+	private String stlx;
+	
 	@XmlElement(name="wfwgdwry") 
 	private String wfwgdwry;
 	
@@ -71,11 +74,12 @@ public class PunishInfo4Xml{
 		buffer.append("<prjNum>").append(this.encode(this.prjNum)).append("</prjNum>");
 		buffer.append("<cflx>").append(this.encode(this.cflx)).append("</cflx>");
 		buffer.append("<wfwgxm>").append(this.encode(this.wfwgxm)).append("</wfwgxm>");
+		buffer.append("<stlx>").append(this.encode(this.stlx)).append("</stlx>");
 		buffer.append("<wfwgdwry>").append(this.encode(this.wfwgdwry)).append("</wfwgdwry>");
 		buffer.append("<zzjgdmSfzh>").append(this.encode(this.zzjgdmSfzh)).append("</zzjgdmSfzh>");
 		buffer.append("<wfxw>").append(this.encode(this.wfxw)).append("</wfxw>");
 		buffer.append("<lasj>").append(this.encode(this.lasj)).append("</lasj>");
-		buffer.append("<jasj>").append(this.encode(this.lasj)).append("</jasj>");
+		buffer.append("<jasj>").append(this.encode(this.jasj)).append("</jasj>");
 		buffer.append("<source>").append(this.encode(this.source)).append("</source>");
 		buffer.append("<updateFlag>").append(this.encode(this.updateFlag)).append("</updateFlag>");
 		buffer.append("</row>");		
@@ -97,6 +101,10 @@ public class PunishInfo4Xml{
 
 	public void setWfwgxm(String wfwgxm) {
 		this.wfwgxm = wfwgxm;
+	}
+
+	public void setStlx(String stlx) {
+		this.stlx = stlx;
 	}
 
 	public void setWfwgdwry(String wfwgdwry) {
