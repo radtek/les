@@ -97,7 +97,7 @@ public class CaseDecisionReachExport extends ExportBase<CaseDecisionReachExport>
             table = generateTableRows(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT,Element.ALIGN_MIDDLE, borderWidth, 50, true);
             document.add(table);
             //收到时间
-            items = new String[]{"收件人\n签名或印章", "\n                                                     "
+            items = new String[]{"收到时间", "\n                                                     "
             		+ "                                            年          月          日          时           分"};
             table =generateTableRows(items, fontContent,  new float[]{0.2f,0.8f}, tableWidth, Element.ALIGN_LEFT,Element.ALIGN_MIDDLE, borderWidth, 50, true);
             document.add(table);
