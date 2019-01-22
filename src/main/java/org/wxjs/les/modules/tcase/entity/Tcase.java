@@ -47,6 +47,8 @@ public class Tcase extends DataEntity<Tcase> {
 	
 	private String initialHandlerName;		// 临时属性，立案经办人
 	
+	private String projectType;
+	private String deductionMatter;
 	private String punishType;
 	
 	private Date decisionDate;       // 处罚决定日期
@@ -192,6 +194,22 @@ public class Tcase extends DataEntity<Tcase> {
 		this.initialHandler = initialHandler;
 	}
 	
+	public String getProjectType() {
+		return projectType;
+	}
+
+	public void setProjectType(String projectType) {
+		this.projectType = projectType;
+	}
+
+	public String getDeductionMatter() {
+		return deductionMatter;
+	}
+
+	public void setDeductionMatter(String deductionMatter) {
+		this.deductionMatter = deductionMatter;
+	}
+
 	public String getPunishType() {
 		return punishType;
 	}

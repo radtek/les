@@ -2,6 +2,7 @@ package org.wxjs.les.modules.tcase.listener;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.ExecutionListener;
@@ -14,9 +15,11 @@ import org.wxjs.les.common.utils.SpringContextHolder;
 import org.wxjs.les.modules.base.utils.WebServiceUtils;
 import org.wxjs.les.modules.tcase.dao.CaseDecisionDao;
 import org.wxjs.les.modules.tcase.dao.CaseProcessDao;
+import org.wxjs.les.modules.tcase.dao.DeductionMatterDao;
 import org.wxjs.les.modules.tcase.dao.TcaseDao;
 import org.wxjs.les.modules.tcase.entity.CaseDecision;
 import org.wxjs.les.modules.tcase.entity.CaseProcess;
+import org.wxjs.les.modules.tcase.entity.DeductionMatter;
 import org.wxjs.les.modules.tcase.entity.PunishInfo4Xml;
 import org.wxjs.les.modules.tcase.entity.Tcase;
 
@@ -35,6 +38,8 @@ public class CaseDecisionListener implements ExecutionListener {
 	CaseDecisionDao caseDecisionDao = SpringContextHolder.getBean(CaseDecisionDao.class);
 
 	CaseProcessDao caseProcessDao = SpringContextHolder.getBean(CaseProcessDao.class);
+	
+	DeductionMatterDao deductionMatterDao = SpringContextHolder.getBean(DeductionMatterDao.class);
 
 	@Override
 	public void notify(DelegateExecution execution) throws Exception {
@@ -73,7 +78,14 @@ public class CaseDecisionListener implements ExecutionListener {
 					punishInfo4Xml.setJasj(DateUtils.formatDate(decisionDate, "yyyy-MM-dd HH:mm:ss"));
 					punishInfo4Xml.setLasj(DateUtils.formatDate(tcase.getInitialDate(), "yyyy-MM-dd HH:mm:ss"));
 					punishInfo4Xml.setPrjNum(tcase.getProjectCode());
-					punishInfo4Xml.setCflx(tcase.getPunishType());
+					
+					punishInfo4Xml.setXykflb(tcase.getProjectType());
+					//get by xykflb,市政有单独编号
+					String cflx = this.handleCflx(tcase.getProjectType(), tcase.getPunishType());
+					punishInfo4Xml.setCflx(cflx);
+					//get by xykflb,cflx
+					punishInfo4Xml.setKfsx(this.handleKfsx(tcase.getProjectType(), cflx));
+					
 					punishInfo4Xml.setWfwgxm(tcase.getProjectName());
 					punishInfo4Xml.setStlx(tcase.getPartyType());
 					punishInfo4Xml.setWfwgdwry(tcase.getPartyDisplay());
@@ -94,6 +106,42 @@ public class CaseDecisionListener implements ExecutionListener {
 				}
 			}
 		}
+	}
+	
+	public String handleCflx(String xykflb, String cflx){
+		String rst = cflx;
+		if("SZ".equalsIgnoreCase(xykflb)){
+			if("100".equals(cflx)){
+				rst = "800";
+			}else if("200".equals(cflx)){
+				rst = "900";
+			}else if("300".equals(cflx)){
+				rst = "1000";
+			}else if("400".equals(cflx)){
+				rst = "1100";
+			}else if("500".equals(cflx)){
+				rst = "1200";
+			}else if("700".equals(cflx)){
+				rst = "1400";
+			}
+		}
+		
+		return rst;
+	}
+	
+	public String handleKfsx(String xykflb, String cflx){
+		String rst = "";
+		DeductionMatter deductionMatter = new DeductionMatter();
+		deductionMatter.setProjectType(xykflb);
+		deductionMatter.setPunishType(cflx);
+		List<DeductionMatter> list = deductionMatterDao.findList(deductionMatter);
+		
+		if(list!=null && !list.isEmpty()){
+			DeductionMatter item = list.get(0);
+			rst = item.getMatterCode();
+		}
+		
+		return rst;		
 	}
 
 }

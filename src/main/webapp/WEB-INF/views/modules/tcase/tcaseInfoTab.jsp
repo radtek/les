@@ -340,9 +340,24 @@
 		<div class="control-group container-fluid nopadding">
 			<div class="row-fluid">
 				<div class="span12">		
+			<label class="control-label">信用扣分类别：</label>
+			<div class="controls controls-tight">
+				<form:select id="tcase_projectType" path="tcase.projectType" class="input-medium required">
+				  <form:option value="" label="----"/>
+				  <form:options items="${fns:getDictList('project_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+				<span class="help-inline"><font color="red">*</font> </span>
+			</div>
+		        </div>
+		    </div>
+		</div>				
+		<div class="control-group container-fluid nopadding">
+			<div class="row-fluid">
+				<div class="span12">		
 			<label class="control-label">处罚类型：</label>
 			<div class="controls controls-tight">
-				<form:select path="tcase.punishType" class="input-medium">
+				<form:select id="tcase_punishType" path="tcase.punishType" class="input-medium required">
+				  <form:option value="" label="----"/>
 				  <form:options items="${fns:getDictList('punish_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 				<span class="help-inline"><font color="red">*</font> </span>

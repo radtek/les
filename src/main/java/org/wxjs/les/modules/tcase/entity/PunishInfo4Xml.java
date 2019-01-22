@@ -18,6 +18,12 @@ public class PunishInfo4Xml{
 	@XmlElement(name="prjNum") 
 	private String prjNum;
 	
+	@XmlElement(name="xykflb") 
+	private String xykflb;
+	
+	@XmlElement(name="kfsx") 
+	private String kfsx;
+	
 	@XmlElement(name="cflx") 
 	private String cflx;
 
@@ -72,6 +78,8 @@ public class PunishInfo4Xml{
 		buffer.append("<row>");
 		buffer.append("<ajNo>").append(this.encode(this.ajNo)).append("</ajNo>");
 		buffer.append("<prjNum>").append(this.encode(this.prjNum)).append("</prjNum>");
+		buffer.append("<xykflb>").append(this.encode(this.xykflb)).append("</xykflb>");
+		buffer.append("<kfsx>").append(this.encode(this.kfsx)).append("</kfsx>");
 		buffer.append("<cflx>").append(this.encode(this.cflx)).append("</cflx>");
 		buffer.append("<wfwgxm>").append(this.encode(this.wfwgxm)).append("</wfwgxm>");
 		buffer.append("<stlx>").append(this.encode(this.stlx)).append("</stlx>");
@@ -93,6 +101,14 @@ public class PunishInfo4Xml{
 
 	public void setPrjNum(String prjNum) {
 		this.prjNum = prjNum;
+	}
+
+	public void setXykflb(String xykflb) {
+		this.xykflb = xykflb;
+	}
+
+	public void setKfsx(String kfsx) {
+		this.kfsx = kfsx;
 	}
 
 	public void setCflx(String cflx) {

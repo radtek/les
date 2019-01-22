@@ -107,12 +107,31 @@ VALUES
 delete from sys_dict where `type`= 'punish_type';
 INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `parent_id`, `create_by`,`create_date`,`update_by`,`update_date`) 
 VALUES 
-('punish_type_1', '100', '安全生产', 'punish_type', 'punish_type', 10, '0','1',now(),'1',now()),
-('punish_type_2', '200', '工程质量', 'punish_type', 'punish_type', 20, '0','1',now(),'1',now()),
-('punish_type_3', '300', '文明施工', 'punish_type', 'punish_type', 30, '0','1',now(),'1',now()),
-('punish_type_4', '400', '市场行为', 'punish_type', 'punish_type', 40, '0','1',now(),'1',now()),
-('punish_type_5', '500', '招投标活动', 'punish_type', 'punish_type', 50, '0','1',now(),'1',now()),
+('punish_type_1', '100', '文明施工', 'punish_type', 'punish_type', 10, '0','1',now(),'1',now()),
+('punish_type_2', '200', '市场行为', 'punish_type', 'punish_type', 20, '0','1',now(),'1',now()),
+('punish_type_3', '300', '招投标活动', 'punish_type', 'punish_type', 30, '0','1',now(),'1',now()),
+('punish_type_4', '400', '工程质量', 'punish_type', 'punish_type', 40, '0','1',now(),'1',now()),
+('punish_type_5', '500', '安全生产', 'punish_type', 'punish_type', 50, '0','1',now(),'1',now()),
 ('punish_type_7', '700', '其他', 'punish_type', 'punish_type', 70, '0','1',now(),'1',now());
+
+delete from sys_dict where `type`= 'punish_type_sz';
+INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `parent_id`, `create_by`,`create_date`,`update_by`,`update_date`) 
+VALUES 
+('punish_type_8', '800', '文明施工', 'punish_type_sz', 'punish_type', 10, '0','1',now(),'1',now()),
+('punish_type_9', '900', '市场行为', 'punish_type_sz', 'punish_type', 20, '0','1',now(),'1',now()),
+('punish_type_10', '1000', '招投标活动', 'punish_type_sz', 'punish_type', 30, '0','1',now(),'1',now()),
+('punish_type_11', '1100', '工程质量', 'punish_type_sz', 'punish_type', 40, '0','1',now(),'1',now()),
+('punish_type_12', '1200', '工程安全', 'punish_type_sz', 'punish_type', 50, '0','1',now(),'1',now()),
+('punish_type_14', '1400', '其他', 'punish_type_sz', 'punish_type', 70, '0','1',now(),'1',now());
+
+delete from sys_dict where `type`= 'project_type';
+INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `parent_id`, `create_by`,`create_date`,`update_by`,`update_date`) 
+VALUES 
+('project_type_1', 'FJ', '房建', 'project_type', 'project_type', 10, '0','1',now(),'1',now()),
+('project_type_2', 'SZ', '市政', 'project_type', 'project_type', 20, '0','1',now(),'1',now()),
+('project_type_3', 'KC', '勘察', 'project_type', 'project_type', 30, '0','1',now(),'1',now()),
+('project_type_4', 'SJ', '设计', 'project_type', 'project_type', 40, '0','1',now(),'1',now()),
+('project_type_9', 'QT', '其他', 'project_type', 'project_type', 90, '0','1',now(),'1',now());
 
 
 

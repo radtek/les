@@ -34,6 +34,8 @@ CREATE TABLE `tcase` (
   `accept_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '受理时间',
   `initial_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '立案日期',
   `initial_handler` varchar(32) NULL COMMENT '立案经办人',
+  `project_type` varchar(32) NULL COMMENT '项目类别',
+  `deduction_matter` varchar(32) NULL COMMENT '扣分事项',
   `punish_type` varchar(32) NULL COMMENT '处罚类型',
   `decision_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '处罚决定日期',
   `settle_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '结案日期',
@@ -576,3 +578,22 @@ CREATE TABLE `tcase_doc_type` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文档类型';
 
 alter table sys_user add `allow_load_history_signature` char(1) DEFAULT '0' COMMENT '是否允许从历史库读取签名';
+
+-- ----------------------------
+-- Table structure for tdeduction_matter
+-- ----------------------------
+DROP TABLE IF EXISTS `tdeduction_matter`;
+CREATE TABLE `tdeduction_matter` (
+  `id` int(11) NOT NULL auto_increment  COMMENT '编号',
+  `matter_code` varchar(64) NOT NULL COMMENT '扣分事项代码',
+  `punish_type` varchar(64) NOT NULL COMMENT '处罚类型',
+  `project_type` varchar(64) NOT NULL COMMENT '信用扣分类别',
+  `matter` varchar(200) NOT NULL COMMENT '扣分事项',
+  `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_by` varchar(32) DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  `remarks` varchar(64) DEFAULT NULL COMMENT '备注信息',
+  `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='处罚扣分事项';

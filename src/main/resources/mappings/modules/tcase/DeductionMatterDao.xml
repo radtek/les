@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wxjs.les.modules.tcase.dao.DeductionMatterDao">
+    
+	<sql id="deductionMatterColumns">
+		a.id AS "id",
+		a.matter_code AS "matterCode",
+		a.punish_type AS "punishType",
+		a.project_type AS "projectType",
+		a.matter AS "matter",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="deductionMatterJoins">
+	</sql>
+    
+	<select id="get" resultType="DeductionMatter">
+		SELECT 
+			<include refid="deductionMatterColumns"/>
+		FROM tdeduction_matter a
+		<include refid="deductionMatterJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="DeductionMatter">
+		SELECT 
+			<include refid="deductionMatterColumns"/>
+		FROM tdeduction_matter a
+		<include refid="deductionMatterJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="projectType != null and projectType != ''">
+				AND a.project_type =#{projectType}
+			</if>	
+			<if test="punishType != null and punishType != ''">
+				AND a.punish_type =#{punishType}
+			</if>	
+									
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="DeductionMatter">
+		SELECT 
+			<include refid="deductionMatterColumns"/>
+		FROM tdeduction_matter a
+		<include refid="deductionMatterJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO tdeduction_matter(
+			id,
+			matter_code,
+			punish_type,
+			project_type,
+			matter,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{matterCode},
+			#{punishType},
+			#{projectType},
+			#{matter},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE tdeduction_matter SET 	
+			matter_code = #{matterCode},
+			punish_type = #{punishType},
+			project_type = #{projectType},
+			matter = #{matter},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE tdeduction_matter SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
