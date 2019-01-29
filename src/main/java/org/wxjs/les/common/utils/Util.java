@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.DecimalFormat;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 
 
@@ -375,7 +376,7 @@ public class Util {
 	
 	public static String formatText(String src){
 		String rst = src.replaceAll(Space4, Space2).replaceAll(Space3, Space2).replaceAll(Space2, "		");
-		return rst;
+		return StringEscapeUtils.unescapeHtml4(rst);
 	}
 }
 
