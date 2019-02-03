@@ -90,6 +90,8 @@ public class Tcase extends DataEntity<Tcase> {
 	
 	private String uploadStatusLib4;
 	
+	private String handleOrg;
+	
 	private CaseProcess caseProcess; //
 	
 	private CaseAttach caseAttach; //
@@ -542,6 +544,18 @@ public class Tcase extends DataEntity<Tcase> {
 
 	public void setUploadStatusLib4(String uploadStatusLib4) {
 		this.uploadStatusLib4 = uploadStatusLib4;
+	}	
+
+	public String getHandleOrg() {
+		return handleOrg;
+	}
+
+	public void setHandleOrg(String handleOrg) {
+		this.handleOrg = handleOrg;
+	}
+	
+	public String getHandleOrgName(){
+		return DictUtils.getDictLabel(this.handleOrg, "org_brief", "");
 	}
 
 	@ExcelField(title="案件状态", type=1, align=2, sort=110)
@@ -855,7 +869,7 @@ public class Tcase extends DataEntity<Tcase> {
 	public String getFullDecisionNumber(){
 		String rst = "";
 		if(this.caseDecision!=null){
-			rst = this.caseDecision.getFullDecisionNumber();
+			rst = this.caseDecision.getFullDecisionNumber(this.getHandleOrg());
 		}
 		return rst;
 	}

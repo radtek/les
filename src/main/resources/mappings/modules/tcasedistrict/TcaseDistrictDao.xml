@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wxjs.les.modules.tcasedistrict.dao.TcaseDistrictDao">
+    
+	<sql id="tcaseDistrictColumns">
+		a.id AS "id",
+		a.case_seq AS "caseSeq",
+		a.accepter AS "accepter",
+		a.accept_date AS "acceptDate",
+		a.initial_date AS "initialDate",
+		a.initial_handler AS "initialHandler",
+		a.project_type AS "projectType",
+		a.deduction_matter AS "deductionMatter",
+		a.punish_type AS "punishType",
+		a.decision_date AS "decisionDate",
+		a.settle_date AS "settleDate",
+		a.case_source AS "caseSource",
+		a.party_type AS "partyType",
+		a.org_name AS "orgName",
+		a.org_agent AS "orgAgent",
+		a.org_code AS "orgCode",
+		a.org_responsible_person AS "orgResponsiblePerson",
+		a.org_responsible_person_post AS "orgResponsiblePersonPost",
+		a.org_address AS "orgAddress",
+		a.org_phone AS "orgPhone",
+		a.psn_name AS "psnName",
+		a.psn_organization AS "psnOrganization",
+		a.psn_code AS "psnCode",
+		a.psn_birthday AS "psnBirthday",
+		a.psn_post AS "psnPost",
+		a.psn_address AS "psnAddress",
+		a.psn_phone AS "psnPhone",
+		a.psn_sex AS "psnSex",
+		a.case_happen_date AS "caseHappenDate",
+		a.case_happen_address AS "caseHappenAddress",
+		a.project_code AS "projectCode",
+		a.project_name AS "projectName",
+		a.case_cause AS "caseCause",
+		a.status AS "status",
+		a.handle_org AS "handleOrg",
+		a.decision_seq AS "decisionSeq",
+		a.punish_money AS "punishMoney",
+		a.filepath_initial AS "filepathInitial",
+		a.filepath_decision AS "filepathDecision",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="tcaseDistrictJoins">
+	</sql>
+    
+	<select id="get" resultType="TcaseDistrict">
+		SELECT 
+			<include refid="tcaseDistrictColumns"/>
+		FROM tcase_district a
+		<include refid="tcaseDistrictJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="TcaseDistrict">
+		SELECT 
+			<include refid="tcaseDistrictColumns"/>
+		FROM tcase_district a
+		<include refid="tcaseDistrictJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="dateFrom != null and dateFrom != ''">
+				AND DATE_FORMAT(a.create_date,'%Y-%m-%d') &gt;= DATE_FORMAT(#{dateFrom},'%Y-%m-%d')
+			</if>
+			<if test="dateTo != null and dateTo != ''">
+			    AND DATE_FORMAT(a.create_date,'%Y-%m-%d') &lt;= DATE_FORMAT(#{dateTo},'%Y-%m-%d')
+			</if>
+			<if test="handleOrg != null and handleOrg != ''">
+				AND a.handle_org = #{handleOrg}
+			</if>				
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>							
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.status, a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="TcaseDistrict">
+		SELECT 
+			<include refid="tcaseDistrictColumns"/>
+		FROM tcase_district a
+		<include refid="tcaseDistrictJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO tcase_district(
+		    id,
+			case_seq,
+			accepter,
+			accept_date,
+			initial_date,
+			initial_handler,
+			project_type,
+			deduction_matter,
+			punish_type,
+			decision_date,
+			settle_date,
+			case_source,
+			party_type,
+			org_name,
+			org_agent,
+			org_code,
+			org_responsible_person,
+			org_responsible_person_post,
+			org_address,
+			org_phone,
+			psn_name,
+			psn_organization,
+			psn_code,
+			psn_birthday,
+			psn_post,
+			psn_address,
+			psn_phone,
+			psn_sex,
+			case_happen_date,
+			case_happen_address,
+			project_code,
+			project_name,
+			case_cause,
+			status,
+			handle_org,
+			decision_seq,
+			punish_money,
+			filepath_initial,
+			filepath_decision,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+		    #{id},
+			#{caseSeq},
+			#{accepter},
+			#{acceptDate},
+			#{initialDate},
+			#{initialHandler},
+			#{projectType},
+			#{deductionMatter},
+			#{punishType},
+			#{decisionDate},
+			#{settleDate},
+			#{caseSource},
+			#{partyType},
+			#{orgName},
+			#{orgAgent},
+			#{orgCode},
+			#{orgResponsiblePerson},
+			#{orgResponsiblePersonPost},
+			#{orgAddress},
+			#{orgPhone},
+			#{psnName},
+			#{psnOrganization},
+			#{psnCode},
+			#{psnBirthday},
+			#{psnPost},
+			#{psnAddress},
+			#{psnPhone},
+			#{psnSex},
+			#{caseHappenDate},
+			#{caseHappenAddress},
+			#{projectCode},
+			#{projectName},
+			#{caseCause},
+			#{status},
+			#{handleOrg},
+			#{decisionSeq},
+			#{punishMoney},
+			#{filepathInitial},
+			#{filepathDecision},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE tcase_district SET 	
+			case_seq = #{caseSeq},
+			accepter = #{accepter},
+			accept_date = #{acceptDate},
+			initial_date = #{initialDate},
+			initial_handler = #{initialHandler},
+			project_type = #{projectType},
+			deduction_matter = #{deductionMatter},
+			punish_type = #{punishType},
+			decision_date = #{decisionDate},
+			settle_date = #{settleDate},
+			case_source = #{caseSource},
+			party_type = #{partyType},
+			org_name = #{orgName},
+			org_agent = #{orgAgent},
+			org_code = #{orgCode},
+			org_responsible_person = #{orgResponsiblePerson},
+			org_responsible_person_post = #{orgResponsiblePersonPost},
+			org_address = #{orgAddress},
+			org_phone = #{orgPhone},
+			psn_name = #{psnName},
+			psn_organization = #{psnOrganization},
+			psn_code = #{psnCode},
+			psn_birthday = #{psnBirthday},
+			psn_post = #{psnPost},
+			psn_address = #{psnAddress},
+			psn_phone = #{psnPhone},
+			psn_sex = #{psnSex},
+			case_happen_date = #{caseHappenDate},
+			case_happen_address = #{caseHappenAddress},
+			project_code = #{projectCode},
+			project_name = #{projectName},
+			case_cause = #{caseCause},
+			status = #{status},
+			handle_org = #{handleOrg},
+			decision_seq = #{decisionSeq},
+			punish_money = #{punishMoney},
+			filepath_initial = #{filepathInitial},
+			filepath_decision = #{filepathDecision},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE tcase_district SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

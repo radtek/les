@@ -40,11 +40,13 @@ import org.wxjs.les.modules.sys.utils.DictUtils;
 import org.wxjs.les.modules.sys.utils.UserUtils;
 import org.wxjs.les.modules.task.entity.CaseAct;
 import org.wxjs.les.modules.task.service.CaseTaskService;
+import org.wxjs.les.modules.tcase.entity.CaseHandle;
 import org.wxjs.les.modules.tcase.entity.CaseProcess;
 import org.wxjs.les.modules.tcase.entity.CaseSerious;
 import org.wxjs.les.modules.tcase.entity.Tcase;
 import org.wxjs.les.modules.tcase.export.CaseSeriousExport;
 import org.wxjs.les.modules.tcase.export.CaseSeriousRecordExport;
+import org.wxjs.les.modules.tcase.service.CaseHandleService;
 import org.wxjs.les.modules.tcase.service.CaseProcessService;
 import org.wxjs.les.modules.tcase.service.CaseSeriousService;
 import org.wxjs.les.modules.tcase.service.TcaseService;
@@ -63,6 +65,9 @@ public class CaseSeriousController extends BaseController {
 	
 	@Autowired
 	private TcaseService tcaseService;
+	
+	@Autowired
+	private CaseHandleService caseHandleService;
 	
 	@Autowired
 	private CaseProcessService caseProcessService;
@@ -113,6 +118,42 @@ public class CaseSeriousController extends BaseController {
 	@RequiresPermissions("case:tcase:view")
 	@RequestMapping(value = "form")
 	public String form(CaseSerious caseSerious, Model model) {
+		
+		logger.debug("caseSerious.getIsNewRecord():", caseSerious.getIsNewRecord());
+		
+		if(caseSerious.getIsNewRecord()){
+			//fact
+			CaseHandle caseHandle = caseHandleService.get(caseSerious.getCaseId());
+
+			caseSerious.setCaseSummary(caseHandle.getFact());
+			
+			//opinion
+			CaseProcess caseProcess = new CaseProcess();
+			caseProcess.setCaseId(caseHandle.getCaseId());
+			caseProcess.setCaseStage(Global.CASE_STAGE_HANDLE);
+			List<CaseProcess> caseProcessList = caseProcessService.findList(caseProcess);
+			
+			String procInstId = "";
+			if(caseProcessList.size()>0){
+				procInstId = caseProcessList.get(0).getProcDefId();
+			}
+			
+			String opinion = "";
+			if(StringUtils.isNotEmpty(procInstId)){
+				Signature signatureParam = new Signature(false);
+				signatureParam.setProcInstId(procInstId);
+				signatureParam.setTaskName("办案人意见");
+				List<Signature> signatureList = signatureService.findList4Export(signatureParam);
+				for(Signature sig : signatureList){
+					if(sig.getApproveOpinion().length()>opinion.length()){
+						opinion = sig.getApproveOpinion();
+					}
+				}
+				caseSerious.setPunishProposal(opinion);
+			}
+
+		}
+		
 		model.addAttribute("caseSerious", caseSerious);
 		return "modules/tcase/caseSeriousForm";
 	}

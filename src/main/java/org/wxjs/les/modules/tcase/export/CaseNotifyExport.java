@@ -79,7 +79,7 @@ public class CaseNotifyExport extends ExportBase<CaseNotifyExport> {
             
             document.add(PdfUtil.generateTable4Padding());
             
-            pragraph = new Paragraph(this.caseNotify.getFullNumber(), fontContent);
+            pragraph = new Paragraph(this.caseNotify.getFullNumber(this.tcase.getHandleOrg()), fontContent);
             pragraph.setAlignment(Paragraph.ALIGN_CENTER);
             document.add(pragraph);
             

@@ -7,6 +7,8 @@ import org.wxjs.les.common.utils.Util;
 import org.wxjs.les.modules.base.dao.SequenceDao;
 import org.wxjs.les.modules.base.entity.Sequence;
 
+import com.alibaba.druid.util.StringUtils;
+
 
 
 public class SequenceUtils {
@@ -38,14 +40,42 @@ public class SequenceUtils {
 	 * @return
 	 */
 	public static long fetchYearSeq(String name){
-		String key = name + Calendar.getInstance().get(Calendar.YEAR);
-		return fetchSeq(key);
+		return fetchYearSeq("", name);
 	}
 	
 	public static String fetchCaseSeqStr(){
+		return fetchCaseSeqStr("");
+	}
+	
+	/**
+	 * add year in unique key
+	 * @param org: ,AJ,ZJ 空为支队
+	 * @param name
+	 * @return
+	 */
+	public static long fetchYearSeq(String org,String name){
+		String key = name + Calendar.getInstance().get(Calendar.YEAR);
+		if(!StringUtils.isEmpty(org)){
+			key = org+"_"+key;
+		}
+		return fetchSeq(key);
+	}
+	
+	/**
+	 * 获取案件编号
+	 * @param org ,AJ,ZJ  空为支队
+	 * @return
+	 */
+	public static String fetchCaseSeqStr(String org){
+		String rst = "";
 		String year = Calendar.getInstance().get(Calendar.YEAR) + "";
 		String seq = fetchYearSeq("case_seq") +"";
-		return "T-"+year+extendStr(seq, 5);
+		if(!StringUtils.isEmpty(org)){
+			rst = org+"-"+year+extendStr(seq, 5);
+		}else{
+			rst = "T-"+year+extendStr(seq, 5);
+		}
+		return rst;
 	}
 	
 	public static String fetchCaseTransferSeqStr(){

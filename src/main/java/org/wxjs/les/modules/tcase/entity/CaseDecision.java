@@ -178,9 +178,16 @@ public class CaseDecision extends DataEntity<CaseDecision> {
 		this.launchDate = launchDate;
 	}
 	
-	public String getFullDecisionNumber(){
+	public String getFullDecisionNumber(String handleOrg){
 		StringBuffer buffer = new StringBuffer();
-		buffer.append(DictUtils.getDictLabel(this.decisionType, "case_decision_type", ""));
+		if("03".equals(handleOrg)){
+			buffer.append(DictUtils.getDictLabel(this.decisionType, "case_decision_type_aj", ""));
+		}else if("04".equals(handleOrg)){
+			buffer.append(DictUtils.getDictLabel(this.decisionType, "case_decision_type_zj", ""));
+		}else{
+			buffer.append(DictUtils.getDictLabel(this.decisionType, "case_decision_type", ""));
+		}
+		
 		buffer.append("[");
 		buffer.append(this.year);
 		buffer.append("]年第(");

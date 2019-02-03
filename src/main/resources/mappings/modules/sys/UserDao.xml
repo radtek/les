@@ -226,7 +226,10 @@
 	
 	<select id="findUserByRoleEnname" resultType="User">
 		SELECT
-				distinct a.id, a.name, a.login_name
+				distinct a.id, 
+				a.name, 
+				a.login_name,
+				a.office_id AS "office.id"
 		FROM sys_user a
 		LEFT JOIN sys_user_role ur on a.id=ur.user_id
 		LEFT JOIN sys_role r on r.id=ur.role_id

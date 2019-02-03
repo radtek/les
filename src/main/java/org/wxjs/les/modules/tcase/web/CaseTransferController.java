@@ -78,6 +78,8 @@ public class CaseTransferController extends TcaseController {
 		
 		Tcase tcase = new Tcase();
 		
+		this.setHandleOrg(tcase);
+		
 		tcase.setIsNewRecord(true);
 		tcase.setPartyType(Global.PartyTypeOrg);
 		tcase.setAcceptDate(Calendar.getInstance().getTime());
@@ -88,7 +90,7 @@ public class CaseTransferController extends TcaseController {
 		tcase.setCaseProcess(caseProcess);
 		
 		if("start".equals(caseAct.getOperateType())){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess());
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);			
 		}
 		
@@ -110,7 +112,7 @@ public class CaseTransferController extends TcaseController {
 		logger.debug("businesskey:{}", businesskey);
 		
 		if(tcase.getCaseProcess() != null){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess());
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);			
 		}
 	

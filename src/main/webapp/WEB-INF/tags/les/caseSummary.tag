@@ -28,7 +28,10 @@
 			</tr>
 			<tr>
 				<td class="tit">案由：</td><td colspan="3">${caseAttr.caseCause}</td>
-			</tr>											
+			</tr>
+			<tr>
+				<td class="tit">经办单位：</td><td colspan="3">${caseAttr.handleOrgName}</td>
+			</tr>														
 		</table>
 	</fieldset>		
 </form:form>	

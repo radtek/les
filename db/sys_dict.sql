@@ -54,11 +54,40 @@ VALUES
 ('case_decision_type_1', '1', '锡建监罚字', 'case_decision_type', 'case_decision_type', 10, '0','1',now(),'1',now()),
 ('case_decision_type_2', '2', '锡建监不罚字', 'case_decision_type', 'case_decision_type', 20, '0','1',now(),'1',now());
 
+delete from sys_dict where `type`= 'case_decision_type_zj';
+INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `parent_id`, `create_by`,`create_date`,`update_by`,`update_date`) 
+VALUES 
+('case_decision_type_zj_1', '1', '锡建质监罚字', 'case_decision_type_zj', 'case_decision_type', 10, '0','1',now(),'1',now()),
+('case_decision_type_zj_2', '2', '锡建质监不罚字', 'case_decision_type_zj', 'case_decision_type', 20, '0','1',now(),'1',now());
+
+delete from sys_dict where `type`= 'case_decision_type_aj';
+INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `parent_id`, `create_by`,`create_date`,`update_by`,`update_date`) 
+VALUES 
+('case_decision_type_aj_1', '1', '锡建安监罚字', 'case_decision_type_aj', 'case_decision_type', 10, '0','1',now(),'1',now()),
+('case_decision_type_aj_2', '2', '锡建安监不罚字', 'case_decision_type_aj', 'case_decision_type', 20, '0','1',now(),'1',now());
+
 delete from sys_dict where `type`= 'case_notify_type';
 INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `parent_id`, `create_by`,`create_date`,`update_by`,`update_date`) 
 VALUES 
 ('case_notify_type_1', '1', '锡建监权告字', 'case_notify_type', 'case_notify_type', 20, '0','1',now(),'1',now()),
 ('case_notify_type_2', '2', '锡建监听告字', 'case_notify_type', 'case_notify_type', 10, '0','1',now(),'1',now());
+
+delete from sys_dict where `type`= 'case_notify_type_zj';
+INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `parent_id`, `create_by`,`create_date`,`update_by`,`update_date`) 
+VALUES 
+('case_notify_type_zj_1', '1', '锡建质监告字', 'case_notify_type_zj', 'case_notify_type', 20, '0','1',now(),'1',now());
+
+delete from sys_dict where `type`= 'case_notify_type_aj';
+INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `parent_id`, `create_by`,`create_date`,`update_by`,`update_date`) 
+VALUES 
+('case_notify_type_aj_1', '1', '锡建安监告字', 'case_notify_type_aj', 'case_notify_type', 20, '0','1',now(),'1',now());
+
+delete from sys_dict where `type`= 'org_brief';
+INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `parent_id`, `create_by`,`create_date`,`update_by`,`update_date`) 
+VALUES 
+('org_brief_1', '01', '监察支队', 'org_brief', 'org_brief', 10, '0','1',now(),'1',now()),
+('org_brief_2', '03', '安监站', 'org_brief', 'org_brief', 20, '0','1',now(),'1',now()),
+('org_brief_3', '04', '质监站', 'org_brief', 'org_brief', 30, '0','1',now(),'1',now());
 
 delete from sys_dict where `type`= 'sys_user_type';
 INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `parent_id`, `create_by`,`create_date`,`update_by`,`update_date`) 
@@ -132,6 +161,13 @@ VALUES
 ('project_type_3', 'KC', '勘察', 'project_type', 'project_type', 30, '0','1',now(),'1',now()),
 ('project_type_4', 'SJ', '设计', 'project_type', 'project_type', 40, '0','1',now(),'1',now()),
 ('project_type_9', 'QT', '其他', 'project_type', 'project_type', 90, '0','1',now(),'1',now());
+
+
+delete from sys_dict where `type`= 'case_district_status';
+INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `parent_id`, `create_by`,`create_date`,`update_by`,`update_date`) 
+VALUES 
+('case_district_status_1', '0', '编辑', 'case_district_status', 'case_district_status', 10, '0','1',now(),'1',now()),
+('case_district_status_2', '1', '提交', 'case_district_status', 'case_district_status', 20, '0','1',now(),'1',now());
 
 
 

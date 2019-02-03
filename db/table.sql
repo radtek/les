@@ -69,6 +69,7 @@ CREATE TABLE `tcase` (
   `attach_upload_progress` varchar(32) default '0' COMMENT '附件上传进度',
   `attach_upload_detail` varchar(200) NULL COMMENT '附件上传详情',
   `upload_status_lib4`  varchar(32) default '0' COMMENT '上报四库状态',
+  `handle_org` varchar(32) NULL COMMENT '经办单位代码',
   `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
   `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_by` varchar(32) DEFAULT NULL COMMENT '更新者',
@@ -597,3 +598,57 @@ CREATE TABLE `tdeduction_matter` (
   `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='处罚扣分事项';
+
+
+-- ----------------------------
+-- Table structure for tcase_district
+-- ----------------------------
+DROP TABLE IF EXISTS `tcase_district`;
+CREATE TABLE `tcase_district` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `case_seq` varchar(100) NOT NULL COMMENT '事项编号',
+  `accepter` varchar(32) DEFAULT NULL COMMENT '受理人',
+  `accept_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '受理时间',
+  `initial_date` datetime DEFAULT NULL COMMENT '立案日期',
+  `initial_handler` varchar(32) DEFAULT NULL COMMENT '立案经办人',
+  `project_type` varchar(32) DEFAULT NULL COMMENT '信用扣分类型',
+  `deduction_matter` varchar(32) DEFAULT NULL COMMENT '扣分事项',
+  `punish_type` varchar(32) DEFAULT NULL COMMENT '处罚类型',
+  `decision_date` datetime DEFAULT NULL COMMENT '处罚决定日期',
+  `settle_date` datetime DEFAULT NULL COMMENT '结案日期',
+  `case_source` varchar(100) DEFAULT NULL COMMENT '案件来源',
+  `party_type` varchar(32) NOT NULL COMMENT '当事人类型',
+  `org_name` varchar(100) DEFAULT NULL COMMENT '名称',
+  `org_agent` varchar(32) DEFAULT NULL COMMENT '法定代表人',
+  `org_code` varchar(32) DEFAULT NULL COMMENT '统一社会信用代码',
+  `org_responsible_person` varchar(100) DEFAULT NULL COMMENT '负责人',
+  `org_responsible_person_post` varchar(100) DEFAULT NULL COMMENT '职务',
+  `org_address` varchar(100) DEFAULT NULL COMMENT '住址',
+  `org_phone` varchar(32) DEFAULT NULL COMMENT '联系电话',
+  `psn_name` varchar(32) DEFAULT NULL COMMENT '姓名',
+  `psn_organization` varchar(100) DEFAULT NULL COMMENT '工作单位',
+  `psn_code` varchar(32) DEFAULT NULL COMMENT '身份证',
+  `psn_birthday` datetime DEFAULT NULL COMMENT '出生年月',
+  `psn_post` varchar(100) DEFAULT NULL COMMENT '职务',
+  `psn_address` varchar(100) DEFAULT NULL COMMENT '住址',
+  `psn_phone` varchar(32) DEFAULT NULL COMMENT '联系电话',
+  `psn_sex` varchar(8) DEFAULT NULL COMMENT '性别',
+  `case_happen_date` varchar(32) NOT NULL COMMENT '案发时间',
+  `case_happen_address` varchar(100) NOT NULL COMMENT '案发地点',
+  `project_code` varchar(32) DEFAULT NULL COMMENT '案件所涉项目代码',
+  `project_name` varchar(100) NOT NULL COMMENT '案件所涉项目名称',
+  `case_cause` varchar(200) NOT NULL COMMENT '案由',
+  `status` varchar(32) DEFAULT '0' COMMENT '状态',
+  `handle_org` varchar(32) DEFAULT NULL COMMENT '经办单位',
+  `decision_seq` varchar(32) DEFAULT NULL COMMENT '决定书编号',
+  `punish_money` decimal(15,2) NULL COMMENT '罚款金额（元）',
+  `filepath_initial` varchar(300) NULL COMMENT '立案审批表',
+  `filepath_decision` varchar(300) NULL COMMENT '决定书',
+  `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_by` varchar(32) DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  `remarks` varchar(64) DEFAULT NULL COMMENT '备注信息',
+  `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8 COMMENT='案件(区县)';

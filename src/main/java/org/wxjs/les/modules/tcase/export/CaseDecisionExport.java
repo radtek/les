@@ -67,21 +67,15 @@ public class CaseDecisionExport extends ExportBase<CaseDecisionExport> {
         	pragraph = new Paragraph(Global.getConfig("defaultLaunchDept"), fontTitle);
 	       	pragraph.setAlignment(Paragraph.ALIGN_CENTER);
 	        document.add(pragraph);
-			
-			 String type=this.caseDecision.getDecisionType();
-	            String name="("+this.caseDecision.getYear()+")"+"第"+this.caseDecision.getSeq()+"号";
-	            if(type.equals("1")) {
-	            	name="锡建监罚字"+name;
-	            }else {
-	            	name="锡建监不罚字"+name;
-	            }
-            
+	            
+	        String fullNumber = this.caseDecision.getFullDecisionNumber(this.tcase.getHandleOrg());
+	        		
             pragraph = new Paragraph("行政处罚决定书", fontTitle);
             pragraph.setAlignment(Paragraph.ALIGN_CENTER);
             document.add(pragraph);
             document.add(PdfUtil.generateTable4Padding());
             
-            pragraph = new Paragraph(name, fontContent);
+            pragraph = new Paragraph(fullNumber, fontContent);
             pragraph.setAlignment(Paragraph.ALIGN_CENTER);
             document.add(pragraph);
             

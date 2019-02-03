@@ -4,6 +4,7 @@
 package org.wxjs.les.modules.tcase.web;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -86,6 +87,8 @@ import com.google.common.collect.Lists;
 @RequestMapping(value = "${adminPath}/case/tcase")
 public class TcaseController extends BaseController {
 	
+	private static final String[] NoneZhiduiZhanRoles = {"jld", "fgcblr", "fgcfzr", "csblr", "csfzr"}; //非支队、站角色
+	
 	@Autowired
 	private SystemService systemService;
 
@@ -166,6 +169,9 @@ public class TcaseController extends BaseController {
 		
 		tcase.setCaseTransfer("0");
 		
+		//set data range by user org
+		this.setHandleOrg(tcase);
+		
 		if(tcase.getAcceptDateFrom() == null){
 			Calendar cal=Calendar.getInstance();
 			cal.add(Calendar.DATE, -180);
@@ -209,6 +215,9 @@ public class TcaseController extends BaseController {
 		}
 		
 		tcase.setUnfinishedFlag("0");
+		
+		//set data range by user org
+		this.setHandleOrg(tcase);
 		
 		List<Dict> yearList = Lists.newArrayList();
 		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
@@ -278,7 +287,7 @@ public class TcaseController extends BaseController {
 		logger.debug("businesskey:{}", businesskey);
 		
 		if(tcase.getCaseProcess() != null){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess());
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
 		}
 		
@@ -301,7 +310,7 @@ public class TcaseController extends BaseController {
 		logger.debug("businesskey:{}", businesskey);
 		
 		if(tcase.getCaseProcess() != null){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess());
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
 		}
 		
@@ -335,7 +344,7 @@ public class TcaseController extends BaseController {
 		logger.debug("businesskey:{}", businesskey);
 		
 		if(tcase.getCaseProcess() != null){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess());
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
 		}
 		
@@ -367,7 +376,7 @@ public class TcaseController extends BaseController {
 		logger.debug("businesskey:{}", businesskey);
 		
 		if(tcase.getCaseProcess() != null){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess());
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
 		}
 		
@@ -417,7 +426,7 @@ public class TcaseController extends BaseController {
 		logger.debug("businesskey:{}", businesskey);
 		
 		if(tcase.getCaseProcess() != null){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess());
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
 		}
 		
@@ -459,7 +468,7 @@ public class TcaseController extends BaseController {
 		logger.debug("businesskey:{}", businesskey);
 		
 		if(tcase.getCaseProcess() != null){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess());
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
 		}
 		
@@ -503,7 +512,7 @@ public class TcaseController extends BaseController {
 		logger.debug("businesskey:{}", businesskey);
 		
 		if(tcase.getCaseProcess() != null){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess());
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
 		}
 		
@@ -546,7 +555,7 @@ public class TcaseController extends BaseController {
 		logger.debug("businesskey:{}", businesskey);
 		
 		if(tcase.getCaseProcess() != null){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess());
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
 		}
 		
@@ -578,7 +587,7 @@ public class TcaseController extends BaseController {
 		Tcase tcase = tcaseService.getCaseAndProcess(caseId, Global.CASE_STAGE_SERIOUS);
 		
 		if(tcase.getCaseProcess() != null){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess());
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
 		}
 		
@@ -591,6 +600,36 @@ public class TcaseController extends BaseController {
 		
 		if(caseSerious==null){
 			caseSerious = CaseSerious.getInstance(tcase);
+			
+			//copy fact
+			CaseHandle caseHandle = caseHandleService.get(caseSerious.getCaseId());
+
+			caseSerious.setCaseSummary(caseHandle.getFact());
+			
+			//copy opinion
+			CaseProcess caseProcess = new CaseProcess();
+			caseProcess.setCaseId(caseHandle.getCaseId());
+			caseProcess.setCaseStage(Global.CASE_STAGE_HANDLE);
+			List<CaseProcess> caseProcessList = caseProcessService.findList(caseProcess);
+			
+			String procInstId = "";
+			if(caseProcessList.size()>0){
+				procInstId = caseProcessList.get(0).getProcInsId();
+			}
+			
+			String opinion = "";
+			if(StringUtils.isNotEmpty(procInstId)){
+				Signature signatureParam = new Signature(false);
+				signatureParam.setProcInstId(procInstId);
+				signatureParam.setTaskName("办案人意见");
+				List<Signature> signatureList = signatureService.findList4Export(signatureParam);
+				for(Signature sig : signatureList){
+					if(sig.getApproveOpinion().length()>opinion.length()){
+						opinion = sig.getApproveOpinion();
+					}
+				}
+				caseSerious.setPunishProposal(opinion);
+			}			
 		}
 		
 		model.addAttribute("caseSerious", caseSerious);
@@ -613,7 +652,7 @@ public class TcaseController extends BaseController {
 		Tcase tcase = tcaseService.getCaseAndProcess(caseId, Global.CASE_STAGE_CANCEL);
 		
 		if(tcase.getCaseProcess() != null){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess());
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
 		}
 		
@@ -644,6 +683,8 @@ public class TcaseController extends BaseController {
 		
 		Tcase tcase = new Tcase();
 		
+		this.setHandleOrg(tcase);
+		
 		tcase.setIsNewRecord(true);
 		tcase.setPartyType(Global.PartyTypeOrg);
 		tcase.setAcceptDate(Calendar.getInstance().getTime());
@@ -654,7 +695,7 @@ public class TcaseController extends BaseController {
 		tcase.setCaseProcess(caseProcess);
 		
 		if("start".equals(caseAct.getOperateType())){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess());
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);			
 		}
 		
@@ -686,7 +727,7 @@ public class TcaseController extends BaseController {
 		
 		Tcase tcase = tcaseService.getCaseAndProcess(businesskey);
 		
-		List<User> availableHandlers = this.getCaseHandler4Handle(caseAct.getTaskId());
+		List<User> availableHandlers = this.getCaseHandler4Handle(caseAct.getTaskId(), tcase.getHandleOrg());
 		tcase.getCaseProcess().setAvailableHandlers(availableHandlers);
 
 		model.addAttribute("operateType", "handle");
@@ -695,7 +736,7 @@ public class TcaseController extends BaseController {
 		return "modules/tcase/tcaseInfoTab";
 	}
 	
-	protected List<User> getCaseHandler4Start(CaseProcess caseProcess){
+	protected List<User> getCaseHandler4Start(CaseProcess caseProcess, String handleOrg){
 
 		String caseStage = caseProcess.getCaseStage();
 		
@@ -707,10 +748,10 @@ public class TcaseController extends BaseController {
 		
 		logger.debug("caseStage:{}, group:{}, roleEnname:{}", caseStage, group, roleEnname);
 		
-		return this.getCaseHandlerByGroup(group);
+		return this.getCaseHandlerByGroup(group, handleOrg);
 	}
 	
-	protected List<User> getCaseHandler4Handle(String taskId){
+	protected List<User> getCaseHandler4Handle(String taskId, String handleOrg){
 		
 		List<User> list = Lists.newArrayList();
 
@@ -719,18 +760,19 @@ public class TcaseController extends BaseController {
 		logger.debug("group:{}", group);
 		
 		if(!StringUtils.isEmpty(group)){
-			list = this.getCaseHandlerByGroup(group);
+			list = this.getCaseHandlerByGroup(group, handleOrg);
 		}
 		
 		return list;
 	}
 	
-	private List<User> getCaseHandlerByGroup(String group){
+	private List<User> getCaseHandlerByGroup(String group, String handleOrg){
 		List<User> rst = Lists.newArrayList();
 		
 		List<User> list = systemService.findUserByRoleEname(group);	
 		
 		//filter by office
+		/*
 		if(!group.contains("syblr") && !group.contains("syfzr")){
 			rst.addAll(list);
 		}else{
@@ -744,6 +786,18 @@ public class TcaseController extends BaseController {
 					if(e.getOffice().getId().startsWith(deptId)){
 						rst.add(e);
 					}
+				}
+			}			
+		}
+		*/
+		
+		if(Arrays.asList(NoneZhiduiZhanRoles).contains(group)){
+			rst.addAll(list);
+		}else{
+			logger.debug("handleOrg:{}", handleOrg);
+			for(User e : list){
+				if(e.getOffice().getId().startsWith(handleOrg)){
+					rst.add(e);
 				}
 			}			
 		}
@@ -783,10 +837,10 @@ public class TcaseController extends BaseController {
 		if(!StringUtils.isEmpty(caseAct.getTaskId())){
 			List<User> availableHandlers = Lists.newArrayList();
 			if("0".equals(tcase.getCaseProcess().getCaseStageStatus())){
-				availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess());
+				availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg());
 				tcase.getCaseProcess().setMultiple(true);			
 			}else{
-				availableHandlers = this.getCaseHandler4Handle(caseAct.getTaskId());	
+				availableHandlers = this.getCaseHandler4Handle(caseAct.getTaskId(), tcase.getHandleOrg());	
 				tcase.getCaseProcess().setMultiple(false);	
 			}
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);	
@@ -885,13 +939,15 @@ public class TcaseController extends BaseController {
 			return;
 		}
 		
+		Tcase tcase = tcaseService.getCaseAndProcess(businesskey);	
+		
 		if(!StringUtils.isEmpty(caseAct.getTaskId())){
 			List<User> availableHandlers = Lists.newArrayList();
 			if("0".equals(process.getCaseStageStatus())){
-				availableHandlers = this.getCaseHandler4Start(process);
+				availableHandlers = this.getCaseHandler4Start(process, tcase.getHandleOrg());
 				process.setMultiple(true);			
 			}else{
-				availableHandlers = this.getCaseHandler4Handle(caseAct.getTaskId());	
+				availableHandlers = this.getCaseHandler4Handle(caseAct.getTaskId(), tcase.getHandleOrg());	
 				process.setMultiple(false);	
 			}
 			process.setAvailableHandlers(availableHandlers);	
@@ -1205,6 +1261,20 @@ public class TcaseController extends BaseController {
 		tcaseService.deleteCaseStage(caseId, caseStage);
 		
 		return "redirect:"+Global.getAdminPath()+"/case/tcase/list?repage";
+	}
+	
+	protected void setHandleOrg(Tcase tcase){
+		User user = UserUtils.getUser();
+		String orgId = user.getOffice().getParentId();
+		if(orgId.startsWith("02")){
+			//no filter
+		}else if(orgId.startsWith("03")){
+			tcase.setHandleOrg("03");
+		}else if(orgId.startsWith("04")){
+			tcase.setHandleOrg("04");
+		}else{
+			tcase.setHandleOrg("01");
+		}
 	}
 
 }

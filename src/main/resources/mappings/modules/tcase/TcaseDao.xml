@@ -54,7 +54,8 @@
 		decision.decision_type AS "caseDecision.decisionType", 
 		decision.year AS "caseDecision.year", 
 		decision.seq AS "caseDecision.seq",
-		decision.punish_money AS "caseDecision.punishMoney"
+		decision.punish_money AS "caseDecision.punishMoney",
+		a.handle_org AS "handleOrg"
 	</sql>
 	
 	<sql id="tcaseJoins">
@@ -133,7 +134,10 @@
 			</if>	
 			<if test="unfinishedFlag != null and unfinishedFlag == '1'">
 				AND a.status != '2' 
-			</if>					
+			</if>
+			<if test="handleOrg != null and handleOrg != ''">
+				AND a.handle_org = #{handleOrg} 
+			</if>								
 			<choose>
 				<when test="caseTransfer != null and caseTransfer != ''">
 					AND a.case_transfer=#{caseTransfer}
@@ -203,6 +207,7 @@
 			punish_type,
 			case_transfer,
 			case_transfer_unit,
+			handle_org,
 			create_by,
 			create_date,
 			update_by,
@@ -240,6 +245,7 @@
 			#{punishType},
 			#{caseTransfer},	
 			#{transferUnit},
+			#{handleOrg,},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},

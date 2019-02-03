@@ -455,10 +455,18 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 	public void save(Tcase tcase) {
 		boolean isNew = tcase.getIsNewRecord();
 		if(isNew){
-			tcase.setCaseSeq(SequenceUtils.fetchCaseSeqStr());
+			User user = UserUtils.getUser();
+			String handleOrg = user.getOffice().getParentId();
+			
+			tcase.setCaseSeq(SequenceUtils.fetchCaseSeqStr(handleOrg));
 			tcase.setCaseTransfer("0");
 			
 			logger.debug("tcase.getCaseSeq():{}",tcase.getCaseSeq());
+			//set handleOrg
+
+			tcase.setHandleOrg(handleOrg);
+			
+			logger.debug("handleOrg:{}",handleOrg);
 		}
 		super.save(tcase);
 		

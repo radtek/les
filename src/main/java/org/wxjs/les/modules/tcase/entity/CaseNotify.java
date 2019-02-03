@@ -137,10 +137,18 @@ public class CaseNotify extends DataEntity<CaseNotify> {
 		this.paramUri = paramUri;
 	}
 	
-	public String getFullNumber(){
+	public String getFullNumber(String handleOrg){
 		StringBuffer buffer = new StringBuffer();
 		
-		String notifyType = DictUtils.getDictLabel(this.notifyType, "case_notify_type", "锡建监权告字");
+		String notifyType = "";
+		
+		if("03".equals(handleOrg)){
+			buffer.append(DictUtils.getDictLabel(this.notifyType, "case_notify_type_aj", ""));
+		}else if("04".equals(handleOrg)){
+			buffer.append(DictUtils.getDictLabel(this.notifyType, "case_notify_type_zj", ""));
+		}else{
+			buffer.append(DictUtils.getDictLabel(this.notifyType, "case_notify_type", "锡建监权告字"));
+		}
 		
 		buffer.append(notifyType);
 		buffer.append("[").append(this.year).append("]");
