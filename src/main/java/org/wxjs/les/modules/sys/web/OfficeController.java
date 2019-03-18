@@ -173,4 +173,35 @@ public class OfficeController extends BaseController {
 		}
 		return mapList;
 	}
+	
+	@RequiresPermissions("user")
+	@ResponseBody
+	@RequestMapping(value = "treeDataDistrict")
+	public List<Map<String, Object>> treeDataDistrict(HttpServletResponse response) {
+		List<Map<String, Object>> mapList = Lists.newArrayList();
+		Office officeParam = new Office();
+		officeParam.setParentIds("0,07,");
+		List<Office> list = officeService.findList(officeParam);
+		
+		Map<String, Object> map = Maps.newHashMap();
+		
+		map.put("id", "07");
+		map.put("pId", "0");
+		map.put("pIds", "0,");
+		map.put("name", "区县");
+		map.put("isParent", true);
+		mapList.add(map);
+		
+		for (int i=0; i<list.size(); i++){
+			Office e = list.get(i);
+			map = Maps.newHashMap();
+			map.put("id", e.getId());
+			map.put("pId", e.getParentId());
+			map.put("pIds", e.getParentIds());
+			map.put("name", e.getName());
+			map.put("isParent", false);
+			mapList.add(map);
+		}
+		return mapList;
+	}
 }

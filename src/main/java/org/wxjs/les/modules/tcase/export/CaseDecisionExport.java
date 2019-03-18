@@ -68,7 +68,7 @@ public class CaseDecisionExport extends ExportBase<CaseDecisionExport> {
 	       	pragraph.setAlignment(Paragraph.ALIGN_CENTER);
 	        document.add(pragraph);
 	            
-	        String fullNumber = this.caseDecision.getFullDecisionNumber(this.tcase.getHandleOrg());
+	        String fullNumber = this.caseDecision.getFullDecisionNumber(this.tcase.getAreaId(), this.tcase.getHandleOrg());
 	        		
             pragraph = new Paragraph("行政处罚决定书", fontTitle);
             pragraph.setAlignment(Paragraph.ALIGN_CENTER);

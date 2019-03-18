@@ -76,10 +76,12 @@ public class TcaseDistrictController extends BaseController {
 		model.addAttribute("page", page);
 		return "modules/tcasedistrict/tcaseDistrictList";
 	}
-
+	
 	@RequiresPermissions("tcasedistrict:tcaseDistrict:view")
 	@RequestMapping(value = "form")
 	public String form(TcaseDistrict tcaseDistrict, Model model) {
+		
+		logger.debug("tcaseDistrict.getReadonly():{}", tcaseDistrict.getReadonly());
 		
 		if(tcaseDistrict.getIsNewRecord()){
 			tcaseDistrict.setPartyType(Global.PartyTypeOrg);
@@ -101,7 +103,41 @@ public class TcaseDistrictController extends BaseController {
 		}
 		
 		model.addAttribute("tcaseDistrict", tcaseDistrict);
+		String readonly = tcaseDistrict.getReadonly();
+		if("1".equals(readonly)){
+			model.addAttribute("readonly", readonly);
+		}
+		
 		return "modules/tcasedistrict/tcaseDistrictForm";
+	}
+	
+	@RequiresPermissions("tcasedistrict:tcaseDistrict:view")
+	@RequestMapping(value = {"query"})
+	public String query(TcaseDistrict tcaseDistrict, HttpServletRequest request, HttpServletResponse response, Model model) {
+		
+		if(tcaseDistrict.getDateFrom() == null){
+			Calendar cal=Calendar.getInstance();
+			cal.add(Calendar.DATE, -90);
+			tcaseDistrict.setDateFrom(cal.getTime());
+		}
+		
+		if(tcaseDistrict.getDateTo() == null){
+			Calendar cal=Calendar.getInstance();
+			tcaseDistrict.setDateTo(cal.getTime());			
+		}
+		
+		User user = UserUtils.getUser();
+		String handleOrg = user.getOffice().getId();
+		if(handleOrg.startsWith("320")){
+			tcaseDistrict.setHandleOrg(handleOrg);
+		}
+		
+		Page<TcaseDistrict> page = tcaseDistrictService.findPage(new Page<TcaseDistrict>(request, response), tcaseDistrict); 
+		model.addAttribute("page", page);
+		logger.debug("handleOrg:{}", handleOrg);
+		model.addAttribute("userOffice", handleOrg);
+		
+		return "modules/tcasedistrict/tcaseDistrictQuery";
 	}
 
 	@RequiresPermissions("tcasedistrict:tcaseDistrict:edit")

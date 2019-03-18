@@ -28,7 +28,7 @@ public class Base64Utils {
 			if(in!=null){
 				try {
 					in.close();
-					data = null;
+					//data = null;
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

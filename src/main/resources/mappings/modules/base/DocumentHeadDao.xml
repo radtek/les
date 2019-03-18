@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wxjs.les.modules.base.dao.DocumentHeadDao">
+    
+	<sql id="documentHeadColumns">
+		a.id AS "id",
+		a.area_id AS "areaId",
+		a.handle_org AS "handleOrg",
+		a.stage AS "stage",
+		a.type AS "type",
+		a.sort AS "sort",
+		a.doc_head AS "docHead",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="documentHeadJoins">
+	</sql>
+    
+	<select id="get" resultType="DocumentHead">
+		SELECT 
+			<include refid="documentHeadColumns"/>
+		FROM tdocument_head a
+		<include refid="documentHeadJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="DocumentHead">
+		SELECT 
+			<include refid="documentHeadColumns"/>
+		FROM tdocument_head a
+		<include refid="documentHeadJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="areaId != null and areaId != ''">
+				AND a.area_id = #{areaId}
+			</if>	
+			<if test="handleOrg != null and handleOrg != ''">
+				AND a.handle_org = #{handleOrg}
+			</if>
+			<if test="stage != null and stage != ''">
+				AND a.stage = #{stage}
+			</if>	
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>										
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.handle_org,a.stage,a.sort
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="DocumentHead">
+		SELECT 
+			<include refid="documentHeadColumns"/>
+		FROM tdocument_head a
+		<include refid="documentHeadJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO tdocument_head(
+			area_id,
+			handle_org,
+			stage,
+			type,
+			sort,
+			doc_head,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{areaId},
+			#{handleOrg},
+			#{stage},
+			#{type},
+			#{sort},
+			#{docHead},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE tdocument_head SET 	
+			area_id = #{areaId},
+			handle_org = #{handleOrg},
+			stage = #{stage},
+			type = #{type},
+			sort = #{sort},
+			doc_head = #{docHead},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE tdocument_head SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

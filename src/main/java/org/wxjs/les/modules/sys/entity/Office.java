@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
 import org.wxjs.les.common.persistence.TreeEntity;
+import org.wxjs.les.modules.sys.utils.DictUtils;
 
 /**
  * 机构Entity
@@ -37,6 +38,8 @@ public class Office extends TreeEntity<Office> {
 	private User primaryPerson;//主负责人
 	private User deputyPerson;//副负责人
 	private List<String> childDeptList;//快速添加子部门
+	
+	private String areaId;
 	
 	public Office(){
 		super();
@@ -133,6 +136,10 @@ public class Office extends TreeEntity<Office> {
 	public void setType(String type) {
 		this.type = type;
 	}
+	
+	public String getTypeName() {
+		return DictUtils.getDictLabel(this.type, "org_brief", "");
+	}
 
 	@Length(min=1, max=1)
 	public String getGrade() {
@@ -205,11 +212,25 @@ public class Office extends TreeEntity<Office> {
 	public void setCode(String code) {
 		this.code = code;
 	}
+	
+	
 
 //	public String getParentId() {
 //		return parent != null && parent.getId() != null ? parent.getId() : "0";
 //	}
 	
+	public String getAreaId() {
+		return areaId;
+	}
+
+	public void setAreaId(String areaId) {
+		this.areaId = areaId;
+	}
+	
+	public String getAreaName() {
+		return DictUtils.getDictLabel(this.areaId, "wx_area", "");
+	}
+
 	@Override
 	public String toString() {
 		return name;

@@ -83,7 +83,7 @@
 			<label class="control-label">受理人：</label>
 			<div class="controls controls-tight">
                 <sys:treeselectAllowInput id="tcaseaccepter" name="tcase.accepter" value="${caseAct.tcase.accepter}" labelName="tcase.accepter" labelValue="${caseAct.tcase.accepter}" 
-				title="受理人" url="/sys/user/treeDataWithLoginName?officeId=" checked="true" cssClass="input-xlarge" allowClear="true" notAllowSelectParent="true"/>				
+				title="受理人" url="/sys/user/treeDataWithLoginNameMyArea" checked="true" cssClass="input-xlarge" allowClear="true" notAllowSelectParent="true"/>				
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		        </div>

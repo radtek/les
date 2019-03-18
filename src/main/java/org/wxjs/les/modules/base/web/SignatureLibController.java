@@ -63,6 +63,7 @@ public class SignatureLibController extends BaseController {
 	@RequiresPermissions("base:signatureLib:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(SignatureLib signatureLib, HttpServletRequest request, HttpServletResponse response, Model model) {
+		
 		Page<SignatureLib> page = signatureLibService.findPage(new Page<SignatureLib>(request, response), signatureLib); 
 		model.addAttribute("page", page);
 		return "modules/base/signatureLibList";
@@ -117,13 +118,15 @@ public class SignatureLibController extends BaseController {
 		File f = new File(realPath);
 		
 		long fileSize = f.length();
-		logger.debug("fileSize:{}", fileSize);
+		logger.debug("realPath:{}, fileSize:{}", realPath, fileSize);
 		if(fileSize > MaxFileSize){
 			addMessage(redirectAttributes, "上传失败！签名图片大小应小于50KB！");
 			//model.addAttribute("message", "上传失败！签名图片大小应小于50KB！");
 			logger.debug("文件太大");
 		}else{
 			signatureLib.setSignature(Base64Utils.ImageToBase64(realPath));
+			
+			logger.debug("signature:{}", signatureLib.getSignature());
 			
 			signatureLibService.save(signatureLib);	
 			

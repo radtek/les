@@ -89,6 +89,7 @@
     	ca.parent_id AS "company.area.parent.id",
     	ca.parent_ids AS "company.area.parentIds",
     	o.name AS "office.name",
+    	o.area_id AS "office.areaId",
     	o.parent_id AS "office.parent.id",
     	o.parent_ids AS "office.parentIds",
     	oa.id AS "office.area.id",
@@ -168,6 +169,9 @@
 					<if test="dbName == 'mssql'">'%,'+#{office.id}+',%')</if>
 					<if test="dbName == 'mysql'">CONCAT('%,', #{office.id}, ',%'))</if>
 		</if>
+		<if test="office != null and office.areaId != null and office.areaId != ''">
+			AND o.area_id=#{office.areaId}
+		</if>		
 		<!-- 如果不是超级管理员，则不显示超级管理员用户 -->
 		<if test="!currentUser.admin">
 			AND a.id != '1'
@@ -229,10 +233,13 @@
 				distinct a.id, 
 				a.name, 
 				a.login_name,
-				a.office_id AS "office.id"
+				a.office_id AS "office.id",
+				o.area_id AS "office.areaId",
+				o.type AS "office.type"
 		FROM sys_user a
 		LEFT JOIN sys_user_role ur on a.id=ur.user_id
 		LEFT JOIN sys_role r on r.id=ur.role_id
+		LEFT JOIN sys_office o ON o.id = a.office_id
 		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
 		<if test="role != null and role.enname != null and role.enname != ''">
 			<choose>

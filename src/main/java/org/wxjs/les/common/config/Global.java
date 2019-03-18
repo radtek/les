@@ -17,7 +17,7 @@ import org.wxjs.les.common.utils.StringUtils;
 
 /**
  * 全局配置类
- * @author ThinkGem
+ * @author 
  * @version 2014-06-25
  */
 public class Global {
@@ -257,5 +257,8 @@ public class Global {
     
     public static final String AttachExistsFlag = "(✔)";
     public static final String AttachInexistsFlag = "(✖)";
+    
+    public static final String WXAreaCode = "320200";
+    public static final String WXZhiduiHandleOrg = "01";
 	
 }

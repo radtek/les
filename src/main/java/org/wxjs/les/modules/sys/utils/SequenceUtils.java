@@ -2,6 +2,7 @@ package org.wxjs.les.modules.sys.utils;
 
 import java.util.Calendar;
 
+import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.utils.SpringContextHolder;
 import org.wxjs.les.common.utils.Util;
 import org.wxjs.les.modules.base.dao.SequenceDao;
@@ -36,40 +37,33 @@ public class SequenceUtils {
 	
 	/**
 	 * add year in unique key
+	 * @param org: 01:支队,03：安监,04：质监 
 	 * @param name
 	 * @return
 	 */
 	public static long fetchYearSeq(String name){
-		return fetchYearSeq("", name);
-	}
-	
-	public static String fetchCaseSeqStr(){
-		return fetchCaseSeqStr("");
-	}
-	
-	/**
-	 * add year in unique key
-	 * @param org: ,AJ,ZJ 空为支队
-	 * @param name
-	 * @return
-	 */
-	public static long fetchYearSeq(String org,String name){
 		String key = name + Calendar.getInstance().get(Calendar.YEAR);
-		if(!StringUtils.isEmpty(org)){
-			key = org+"_"+key;
-		}
 		return fetchSeq(key);
 	}
 	
 	/**
 	 * 获取案件编号
-	 * @param org ,AJ,ZJ  空为支队
+	 * @param areaId 
+	 * @param org 01:支队,03：安监,04：质监 
 	 * @return
 	 */
-	public static String fetchCaseSeqStr(String org){
+	public static String fetchCaseSeqStr(String areaId, String org){
 		String rst = "";
 		String year = Calendar.getInstance().get(Calendar.YEAR) + "";
-		String seq = fetchYearSeq("case_seq") +"";
+		
+		String seqKey = "";
+		if(Global.WXAreaCode.equals(areaId) && Global.WXZhiduiHandleOrg.equals(org)){
+			seqKey = "case_seq";
+		}else{
+			seqKey = "case_seq_"+areaId+"_"+org;
+		}
+		
+		String seq = fetchYearSeq(seqKey) +"";
 		if(!StringUtils.isEmpty(org)){
 			rst = org+"-"+year+extendStr(seq, 5);
 		}else{

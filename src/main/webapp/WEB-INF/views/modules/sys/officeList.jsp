@@ -40,9 +40,9 @@
 	<script type="text/template" id="treeTableTpl">
 		<tr id="{{row.id}}" pId="{{pid}}">
 			<td><a href="${ctx}/sys/office/form?id={{row.id}}">{{row.name}}</a></td>
-			<td>{{row.area.name}}</td>
+			<td>{{row.areaName}}</td>
 			<td>{{row.code}}</td>
-			<td>{{dict.type}}</td>
+			<td>{{row.typeName}}</td>
 			<td>{{row.remarks}}</td>
 			<shiro:hasPermission name="sys:office:edit"><td>
 				<a href="${ctx}/sys/office/form?id={{row.id}}">修改</a>

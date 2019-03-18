@@ -14,6 +14,7 @@ import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.DataEntity;
 import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.Util;
+import org.wxjs.les.modules.base.utils.DocumentHeadUtils;
 import org.wxjs.les.modules.sys.utils.DictUtils;
 
 /**
@@ -34,6 +35,11 @@ public class CaseNotify extends DataEntity<CaseNotify> {
 	private Date launchDate;		// 发证时间
 	
 	//临时属性
+	private String areaId;
+	
+	private String handleOrg;
+	
+	
 	private String paramUri;		// uri
 	
 	public CaseNotify() {
@@ -49,6 +55,9 @@ public class CaseNotify extends DataEntity<CaseNotify> {
 			entity.setLaunchDept(Global.getConfig("defaultLaunchDept"));
 			entity.setLaunchDate(Calendar.getInstance().getTime());
 			entity.setYear(DateUtils.getYear());
+			
+			entity.setAreaId(tcase.getAreaId());
+			entity.setHandleOrg(tcase.getHandleOrg());
 		}
 		
 		return entity;
@@ -137,20 +146,11 @@ public class CaseNotify extends DataEntity<CaseNotify> {
 		this.paramUri = paramUri;
 	}
 	
-	public String getFullNumber(String handleOrg){
+	public String getFullNumber(String areaId, String handleOrg){
 		StringBuffer buffer = new StringBuffer();
 		
-		String notifyType = "";
+		buffer.append(DocumentHeadUtils.getDocumentHead(areaId, handleOrg, "notify", this.notifyType));
 		
-		if("03".equals(handleOrg)){
-			buffer.append(DictUtils.getDictLabel(this.notifyType, "case_notify_type_aj", ""));
-		}else if("04".equals(handleOrg)){
-			buffer.append(DictUtils.getDictLabel(this.notifyType, "case_notify_type_zj", ""));
-		}else{
-			buffer.append(DictUtils.getDictLabel(this.notifyType, "case_notify_type", "锡建监权告字"));
-		}
-		
-		buffer.append(notifyType);
 		buffer.append("[").append(this.year).append("]");
 		buffer.append("第").append(this.seq).append("号");
 		
@@ -158,9 +158,33 @@ public class CaseNotify extends DataEntity<CaseNotify> {
 	}
 	
 	public String getSeqKey(){
-		return "NotifySeq_"+this.getNotifyType()+"_"+this.getYear();
+		String rst = "";
+		
+		if(Global.WXAreaCode.equals(this.areaId) && Global.WXZhiduiHandleOrg.equals(this.handleOrg)){
+			//to compatible seq for zhidui 
+			rst = "NotifySeq_"+this.getNotifyType()+"_"+this.getYear();
+		}else{
+			//seq for new
+			rst = "NotifySeq_"+this.getNotifyType()+"_"+this.areaId+"_"+this.handleOrg+"_"+this.getYear();
+		}
+		
+		return rst;
 	}
-	
-	
+
+	public String getAreaId() {
+		return areaId;
+	}
+
+	public void setAreaId(String areaId) {
+		this.areaId = areaId;
+	}
+
+	public String getHandleOrg() {
+		return handleOrg;
+	}
+
+	public void setHandleOrg(String handleOrg) {
+		this.handleOrg = handleOrg;
+	}
 	
 }

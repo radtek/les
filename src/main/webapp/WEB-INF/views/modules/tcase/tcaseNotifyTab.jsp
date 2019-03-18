@@ -81,18 +81,10 @@
 		<div class="control-group">
 			<label class="control-label">告知书编号：</label>
 			<div class="controls">
-			    <form:select path="notifyType">			       
-			       <c:choose>
-			       <c:when test="${caseAct.tcase.handleOrg eq '03'}">
-			         <form:options items="${fns:getDictList('case_notify_type_aj')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-			       </c:when>
-				   <c:when test="${caseAct.tcase.handleOrg eq '04'}">
-				     <form:options items="${fns:getDictList('case_notify_type_zj')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				   </c:when>
-				   <c:otherwise>
-				     <form:options items="${fns:getDictList('case_notify_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				   </c:otherwise>
-			       </c:choose>			       
+			    <form:select path="notifyType">	
+			       
+			       <form:options items="${documentHeads}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+			       		       
 			    </form:select>
 				[<form:input path="year" htmlEscape="false" maxlength="8" class="input-mini required"/>
 				<span class="help-inline"><font color="red">*</font> </span>]年第(

@@ -59,11 +59,20 @@
 			DISTINCT case_id AS "caseId"
 		FROM tcase_process a
 		<where>
-		    a.proc_inst_id in (
+		    a.del_flag = #{DEL_FLAG_NORMAL}
+		<choose>
+			<when test="procInsIds !=null and  procInsIds.size() gt 0">
+		    AND a.proc_inst_id in (
 		    <foreach collection="procInsIds" item="tempStr" separator=",">
                '${tempStr}'
             </foreach>
-            )			
+            )
+			</when>
+			<otherwise>
+				AND a.proc_inst_id in ('9999999999')
+			</otherwise>
+		</choose>
+			
 		</where>
 	</select>	
 	

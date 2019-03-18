@@ -43,8 +43,10 @@
 		<div class="control-group">
 			<label class="control-label">归属区域:</label>
 			<div class="controls">
-                <sys:treeselect id="area" name="area.id" value="${office.area.id}" labelName="area.name" labelValue="${office.area.name}"
-					title="区域" url="/sys/area/treeData" cssClass="required"/>
+					
+			<form:select path="areaId" class="input-xlarge required">
+				<form:options items="${fns:getDictList('wx_area')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+			</form:select>					
 			</div>
 		</div>
 		<div class="control-group">
@@ -64,7 +66,7 @@
 			<label class="control-label">机构类型:</label>
 			<div class="controls">
 				<form:select path="type" class="input-medium">
-					<form:options items="${fns:getDictList('sys_office_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+					<form:options items="${fns:getDictList('org_brief')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</div>
 		</div>

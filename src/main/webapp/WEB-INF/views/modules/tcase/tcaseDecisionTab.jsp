@@ -99,7 +99,8 @@
 		<div class="control-group">
 			<label class="control-label">决定书编号：</label>
 			<div class="controls">
-			    <form:select path="decisionType">
+			    <form:select path="decisionType" class="input-medium">
+			       <!--  
 			       <c:choose>
 			       <c:when test="${caseAct.tcase.handleOrg eq '03'}">
 			         <form:options items="${fns:getDictList('case_decision_type_aj')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
@@ -111,6 +112,9 @@
 				     <form:options items="${fns:getDictList('case_decision_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				   </c:otherwise>
 			       </c:choose>
+			       -->
+			       
+			       <form:options items="${documentHeads}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 			       
 			    </form:select>
 				[<form:input path="year" htmlEscape="false" maxlength="8" class="input-mini required"/>

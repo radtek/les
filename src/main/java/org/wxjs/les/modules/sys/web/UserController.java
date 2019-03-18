@@ -388,6 +388,51 @@ public class UserController extends BaseController {
 		}
 		return mapList;
 	}
+	
+	@RequiresPermissions("user")
+	@ResponseBody
+	@RequestMapping(value = "treeDataWithLoginNameByAreaId")
+	public List<Map<String, Object>> treeDataWithLoginNameByAreaId(@RequestParam(required=false) String areaId, HttpServletResponse response) {
+		List<Map<String, Object>> mapList = Lists.newArrayList();
+		Map<String, Object> map;
+		//add office
+		Office officeParam = new Office();
+		officeParam.setAreaId(areaId);
+		List<Office> officeList = officeService.findList(officeParam);
+		for(Office o : officeList){
+			map = Maps.newHashMap();
+			map.put("id", o.getId());
+			map.put("loginName", "");
+			map.put("pId", o.getParentId());
+			map.put("name", StringUtils.replace(o.getName(), " ", ""));		
+			mapList.add(map);
+		}
+		
+		//add user
+		List<User> list = systemService.findUserByAreaId(areaId);
+		for (int i=0; i<list.size(); i++){
+			User e = list.get(i);
+			map = Maps.newHashMap();
+			map.put("id", e.getLoginName());
+			map.put("loginName", e.getLoginName());
+			map.put("pId", e.getOffice().getId());
+			map.put("name", StringUtils.replace(e.getName(), " ", ""));
+			mapList.add(map);
+		}
+		return mapList;
+	}
+	
+	@RequiresPermissions("user")
+	@ResponseBody
+	@RequestMapping(value = "treeDataWithLoginNameMyArea")
+	public List<Map<String, Object>> treeDataWithLoginNameMyArea(HttpServletResponse response) {
+		User user = UserUtils.getUser();
+		String areaId = "";
+		if(!user.isAdmin()){
+			areaId = user.getOffice().getAreaId();
+		}
+		return this.treeDataWithLoginNameByAreaId(areaId, response);
+	}
     
 //	@InitBinder
 //	public void initBinder(WebDataBinder b) {

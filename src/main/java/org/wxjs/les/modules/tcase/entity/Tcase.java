@@ -92,6 +92,8 @@ public class Tcase extends DataEntity<Tcase> {
 	
 	private String handleOrg;
 	
+	private String areaId;
+	
 	private CaseProcess caseProcess; //
 	
 	private CaseAttach caseAttach; //
@@ -558,6 +560,18 @@ public class Tcase extends DataEntity<Tcase> {
 		return DictUtils.getDictLabel(this.handleOrg, "org_brief", "");
 	}
 
+	public String getAreaId() {
+		return areaId;
+	}
+
+	public void setAreaId(String areaId) {
+		this.areaId = areaId;
+	}
+	
+	public String getAreaName(){
+		return DictUtils.getDictLabel(this.areaId, "wx_area", "");
+	}
+
 	@ExcelField(title="案件状态", type=1, align=2, sort=110)
 	public String getStatusLabel(){
 		String statusStr = this.status;
@@ -869,7 +883,7 @@ public class Tcase extends DataEntity<Tcase> {
 	public String getFullDecisionNumber(){
 		String rst = "";
 		if(this.caseDecision!=null){
-			rst = this.caseDecision.getFullDecisionNumber(this.getHandleOrg());
+			rst = this.caseDecision.getFullDecisionNumber(this.getAreaId(), this.getHandleOrg());
 		}
 		return rst;
 	}

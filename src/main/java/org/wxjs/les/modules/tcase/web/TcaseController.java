@@ -18,6 +18,7 @@ import org.wxjs.les.modules.base.entity.ActTask;
 import org.wxjs.les.modules.base.entity.Signature;
 import org.wxjs.les.modules.base.entity.SignatureLib;
 import org.wxjs.les.modules.base.service.SignatureService;
+import org.wxjs.les.modules.base.utils.DocumentHeadUtils;
 import org.wxjs.les.modules.message.DbMessageSender;
 import org.wxjs.les.modules.message.MessageSender;
 import org.wxjs.les.modules.sys.utils.DictUtils;
@@ -287,7 +288,7 @@ public class TcaseController extends BaseController {
 		logger.debug("businesskey:{}", businesskey);
 		
 		if(tcase.getCaseProcess() != null){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg());
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg(), tcase.getAreaId());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
 		}
 		
@@ -310,7 +311,7 @@ public class TcaseController extends BaseController {
 		logger.debug("businesskey:{}", businesskey);
 		
 		if(tcase.getCaseProcess() != null){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg());
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg(), tcase.getAreaId());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
 		}
 		
@@ -344,7 +345,7 @@ public class TcaseController extends BaseController {
 		logger.debug("businesskey:{}", businesskey);
 		
 		if(tcase.getCaseProcess() != null){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg());
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg(), tcase.getAreaId());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
 		}
 		
@@ -376,7 +377,7 @@ public class TcaseController extends BaseController {
 		logger.debug("businesskey:{}", businesskey);
 		
 		if(tcase.getCaseProcess() != null){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg());
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg(), tcase.getAreaId());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
 		}
 		
@@ -426,7 +427,7 @@ public class TcaseController extends BaseController {
 		logger.debug("businesskey:{}", businesskey);
 		
 		if(tcase.getCaseProcess() != null){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg());
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg(), tcase.getAreaId());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
 		}
 		
@@ -442,6 +443,10 @@ public class TcaseController extends BaseController {
 		}
 		
 		model.addAttribute("caseNotify", caseNotify );
+		
+		List<Dict> documentHeads = DocumentHeadUtils.getDocumentHeads(tcase.getAreaId(), tcase.getHandleOrg(), "notify");
+		
+		model.addAttribute("documentHeads", documentHeads);
 		
 		this.prepare4Approve(caseAct, model);
 		
@@ -468,7 +473,7 @@ public class TcaseController extends BaseController {
 		logger.debug("businesskey:{}", businesskey);
 		
 		if(tcase.getCaseProcess() != null){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg());
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg(), tcase.getAreaId());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
 		}
 		
@@ -485,6 +490,10 @@ public class TcaseController extends BaseController {
 		}
 		
 		model.addAttribute("caseDecision", caseDecision);
+		
+		List<Dict> documentHeads = DocumentHeadUtils.getDocumentHeads(tcase.getAreaId(), tcase.getHandleOrg(), "decision");
+		
+		model.addAttribute("documentHeads", documentHeads);
 		
 		this.prepare4Approve(caseAct, model);
 		
@@ -512,7 +521,7 @@ public class TcaseController extends BaseController {
 		logger.debug("businesskey:{}", businesskey);
 		
 		if(tcase.getCaseProcess() != null){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg());
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg(), tcase.getAreaId());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
 		}
 		
@@ -555,7 +564,7 @@ public class TcaseController extends BaseController {
 		logger.debug("businesskey:{}", businesskey);
 		
 		if(tcase.getCaseProcess() != null){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg());
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg(), tcase.getAreaId());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
 		}
 		
@@ -587,7 +596,7 @@ public class TcaseController extends BaseController {
 		Tcase tcase = tcaseService.getCaseAndProcess(caseId, Global.CASE_STAGE_SERIOUS);
 		
 		if(tcase.getCaseProcess() != null){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg());
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg(), tcase.getAreaId());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
 		}
 		
@@ -652,7 +661,7 @@ public class TcaseController extends BaseController {
 		Tcase tcase = tcaseService.getCaseAndProcess(caseId, Global.CASE_STAGE_CANCEL);
 		
 		if(tcase.getCaseProcess() != null){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg());
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg(), tcase.getAreaId());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);				
 		}
 		
@@ -695,7 +704,7 @@ public class TcaseController extends BaseController {
 		tcase.setCaseProcess(caseProcess);
 		
 		if("start".equals(caseAct.getOperateType())){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg());
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg(), tcase.getAreaId());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);			
 		}
 		
@@ -727,7 +736,7 @@ public class TcaseController extends BaseController {
 		
 		Tcase tcase = tcaseService.getCaseAndProcess(businesskey);
 		
-		List<User> availableHandlers = this.getCaseHandler4Handle(caseAct.getTaskId(), tcase.getHandleOrg());
+		List<User> availableHandlers = this.getCaseHandler4Handle(caseAct.getTaskId(), tcase.getHandleOrg(), tcase.getAreaId());
 		tcase.getCaseProcess().setAvailableHandlers(availableHandlers);
 
 		model.addAttribute("operateType", "handle");
@@ -736,7 +745,7 @@ public class TcaseController extends BaseController {
 		return "modules/tcase/tcaseInfoTab";
 	}
 	
-	protected List<User> getCaseHandler4Start(CaseProcess caseProcess, String handleOrg){
+	protected List<User> getCaseHandler4Start(CaseProcess caseProcess, String handleOrg, String area){
 
 		String caseStage = caseProcess.getCaseStage();
 		
@@ -748,10 +757,10 @@ public class TcaseController extends BaseController {
 		
 		logger.debug("caseStage:{}, group:{}, roleEnname:{}", caseStage, group, roleEnname);
 		
-		return this.getCaseHandlerByGroup(group, handleOrg);
+		return this.getCaseHandlerByGroup(group, handleOrg, area);
 	}
 	
-	protected List<User> getCaseHandler4Handle(String taskId, String handleOrg){
+	protected List<User> getCaseHandler4Handle(String taskId, String handleOrg, String area){
 		
 		List<User> list = Lists.newArrayList();
 
@@ -760,13 +769,13 @@ public class TcaseController extends BaseController {
 		logger.debug("group:{}", group);
 		
 		if(!StringUtils.isEmpty(group)){
-			list = this.getCaseHandlerByGroup(group, handleOrg);
+			list = this.getCaseHandlerByGroup(group, handleOrg, area);
 		}
 		
 		return list;
 	}
 	
-	private List<User> getCaseHandlerByGroup(String group, String handleOrg){
+	private List<User> getCaseHandlerByGroup(String group, String handleOrg, String area){
 		List<User> rst = Lists.newArrayList();
 		
 		List<User> list = systemService.findUserByRoleEname(group);	
@@ -792,11 +801,18 @@ public class TcaseController extends BaseController {
 		*/
 		
 		if(Arrays.asList(NoneZhiduiZhanRoles).contains(group)){
-			rst.addAll(list);
-		}else{
-			logger.debug("handleOrg:{}", handleOrg);
+			//rst.addAll(list);
 			for(User e : list){
-				if(e.getOffice().getId().startsWith(handleOrg)){
+				if(e.getOffice().getAreaId().equals(area)){
+					rst.add(e);
+				}
+			}
+		}else{
+			logger.debug("handleOrg:{}, area:{}", handleOrg, area);
+			for(User e : list){
+				logger.debug("e.getOffice().getType():{},e.getOffice().getAreaId():{}", e.getOffice().getType(), e.getOffice().getAreaId());
+				
+				if(e.getOffice().getType().equals(handleOrg) && e.getOffice().getAreaId().equals(area)){
 					rst.add(e);
 				}
 			}			
@@ -837,10 +853,10 @@ public class TcaseController extends BaseController {
 		if(!StringUtils.isEmpty(caseAct.getTaskId())){
 			List<User> availableHandlers = Lists.newArrayList();
 			if("0".equals(tcase.getCaseProcess().getCaseStageStatus())){
-				availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg());
+				availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg(), tcase.getAreaId());
 				tcase.getCaseProcess().setMultiple(true);			
 			}else{
-				availableHandlers = this.getCaseHandler4Handle(caseAct.getTaskId(), tcase.getHandleOrg());	
+				availableHandlers = this.getCaseHandler4Handle(caseAct.getTaskId(), tcase.getHandleOrg(), tcase.getAreaId());	
 				tcase.getCaseProcess().setMultiple(false);	
 			}
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);	
@@ -944,10 +960,10 @@ public class TcaseController extends BaseController {
 		if(!StringUtils.isEmpty(caseAct.getTaskId())){
 			List<User> availableHandlers = Lists.newArrayList();
 			if("0".equals(process.getCaseStageStatus())){
-				availableHandlers = this.getCaseHandler4Start(process, tcase.getHandleOrg());
+				availableHandlers = this.getCaseHandler4Start(process, tcase.getHandleOrg(), tcase.getAreaId());
 				process.setMultiple(true);			
 			}else{
-				availableHandlers = this.getCaseHandler4Handle(caseAct.getTaskId(), tcase.getHandleOrg());	
+				availableHandlers = this.getCaseHandler4Handle(caseAct.getTaskId(), tcase.getHandleOrg(), tcase.getAreaId());	
 				process.setMultiple(false);	
 			}
 			process.setAvailableHandlers(availableHandlers);	
@@ -1265,7 +1281,7 @@ public class TcaseController extends BaseController {
 	
 	protected void setHandleOrg(Tcase tcase){
 		User user = UserUtils.getUser();
-		String orgId = user.getOffice().getParentId();
+		String orgId = user.getOffice().getType();
 		if(orgId.startsWith("02")){
 			//no filter
 		}else if(orgId.startsWith("03")){

@@ -24,6 +24,12 @@
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
+	        <li><label>区域：</label>	
+					<form:select path="user.office.areaId" class="input-xlarge ">
+					    <form:option value="" label="全部"/>
+						<form:options items="${fns:getDictList('wx_area')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+					</form:select>			    
+			</li>		
 			<li><label>登录名：</label>
 				<form:input path="user.loginName" htmlEscape="false" maxlength="32" class="input-medium"/>
 			</li>
@@ -41,6 +47,7 @@
 			<tr>
 				<th>登录名</th>
 				<th>姓名</th>
+				<th>区域</th>
 				<th>签名</th>
 				<shiro:hasPermission name="base:signatureLib:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
@@ -51,9 +58,11 @@
 				<td><a href="${ctx}/base/signatureLib/form?id=${signatureLib.user.loginName}">
 					${signatureLib.user.loginName}
 				</a></td>
+				
 				<td>
 					${signatureLib.user.name}
 				</td>
+				<td>${fns:getDictLabel(signatureLib.user.office.areaId, 'wx_area', '')}</td>
 				<td>
 				<c:if test="${not empty signatureLib.data}">
 				  <img style="height:80px; width:160px; margin:0px" src="${signatureLib.data}"/>

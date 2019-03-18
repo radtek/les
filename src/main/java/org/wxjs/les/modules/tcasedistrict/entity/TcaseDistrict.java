@@ -55,6 +55,7 @@ public class TcaseDistrict extends DataEntity<TcaseDistrict> {
 	private String caseCause;		// 案由
 	private String status;		// 状态
 	private String handleOrg;		// 经办单位
+	private String handleOrgName;		// 经办单位
 	private String decisionSeq;		// 决定书编号
 	private String punishMoney;		// 罚款金额（元）
 	private String filepathInitial;		// 立案审批表
@@ -62,6 +63,8 @@ public class TcaseDistrict extends DataEntity<TcaseDistrict> {
 	
 	private Date dateFrom;		// 起始时间
 	private Date dateTo;		// 结束时间
+	
+	private String readonly;    //临时属性
 	
 	public TcaseDistrict() {
 		super();
@@ -377,6 +380,14 @@ public class TcaseDistrict extends DataEntity<TcaseDistrict> {
 		this.handleOrg = handleOrg;
 	}
 	
+	public String getHandleOrgName() {
+		return handleOrgName;
+	}
+
+	public void setHandleOrgName(String handleOrgName) {
+		this.handleOrgName = handleOrgName;
+	}
+
 	@ExcelField(title="当事人", type=1, align=2, sort=30)
 	public String getPartyDisplay(){
 		return Global.PartyTypeOrg.equals(this.partyType)? this.orgName:this.psnName;
@@ -451,6 +462,14 @@ public class TcaseDistrict extends DataEntity<TcaseDistrict> {
 
 	public void setDateTo(Date dateTo) {
 		this.dateTo = dateTo;
+	}
+
+	public String getReadonly() {
+		return readonly;
+	}
+
+	public void setReadonly(String readonly) {
+		this.readonly = readonly;
 	}
 
 	private String parseFilename(String filepath){

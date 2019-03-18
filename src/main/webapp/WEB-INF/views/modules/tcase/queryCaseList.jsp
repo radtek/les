@@ -205,7 +205,13 @@
 			    <input type="checkbox" name="case_id" value="${tcase.id}" />
 			    </td>
 			    <td>${status.index+1}</td>
-			    <td>${tcase.caseDecision.fullDecisionNumber}</td>
+			    <td>
+			    <c:choose>
+			      <c:when test="${tcase.handleOrg eq '03'}">${tcase.caseDecision.fullDecisionNumberAj}</c:when>
+			      <c:when test="${tcase.handleOrg eq '04'}">${tcase.caseDecision.fullDecisionNumberZj}</c:when>
+			      <c:otherwise>${tcase.caseDecision.fullDecisionNumber}</c:otherwise>
+			    </c:choose>
+			    </td>
 				<td>${tcase.partyDisplay}</td>
 				<td width="10%"><a href="${ctx}/case/tcase/infoTab?businesskey=${tcase.id}" target="_blank">${tcase.projectNameDisplay}</a></td>
 				<td width="10%">${tcase.caseCauseDisplay}</td>

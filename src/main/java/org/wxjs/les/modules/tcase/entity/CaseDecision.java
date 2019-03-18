@@ -14,6 +14,7 @@ import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.DataEntity;
 import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.Util;
+import org.wxjs.les.modules.base.utils.DocumentHeadUtils;
 import org.wxjs.les.modules.sys.utils.DictUtils;
 
 /**
@@ -39,6 +40,10 @@ public class CaseDecision extends DataEntity<CaseDecision> {
 	private Date launchDate;		// 发证时间
 	
 	//临时属性
+	private String areaId;
+	private String handleOrg;
+	
+	
 	private String paramUri;		// uri
 	
 	public CaseDecision() {
@@ -59,6 +64,9 @@ public class CaseDecision extends DataEntity<CaseDecision> {
 			entity.setRecordOrg(Global.getConfig("defaultRecordOrg"));
 			entity.setLaunchDate(Calendar.getInstance().getTime());
 			entity.setYear(DateUtils.getYear());
+			
+			entity.setAreaId(tcase.getAreaId());
+			entity.setHandleOrg(tcase.getHandleOrg());
 		}
 		
 		return entity;
@@ -178,15 +186,10 @@ public class CaseDecision extends DataEntity<CaseDecision> {
 		this.launchDate = launchDate;
 	}
 	
-	public String getFullDecisionNumber(String handleOrg){
+	public String getFullDecisionNumber(String areaId, String handleOrg){
 		StringBuffer buffer = new StringBuffer();
-		if("03".equals(handleOrg)){
-			buffer.append(DictUtils.getDictLabel(this.decisionType, "case_decision_type_aj", ""));
-		}else if("04".equals(handleOrg)){
-			buffer.append(DictUtils.getDictLabel(this.decisionType, "case_decision_type_zj", ""));
-		}else{
-			buffer.append(DictUtils.getDictLabel(this.decisionType, "case_decision_type", ""));
-		}
+
+		buffer.append(DocumentHeadUtils.getDocumentHead(areaId, handleOrg, "decision", this.decisionType));
 		
 		buffer.append("[");
 		buffer.append(this.year);
@@ -194,6 +197,18 @@ public class CaseDecision extends DataEntity<CaseDecision> {
 		buffer.append(this.seq);
 		buffer.append(")号");
 		return buffer.toString();
+	}
+	
+	public String getFullDecisionNumberAj(){
+		return this.getFullDecisionNumber(this.areaId, "03");
+	}
+	
+	public String getFullDecisionNumberZj(){
+		return this.getFullDecisionNumber(this.areaId, "04");
+	}
+	
+	public String getFullDecisionNumber(){
+		return this.getFullDecisionNumber(this.areaId, "01");
 	}
 	
 	public String getDocNumber(){
@@ -215,7 +230,33 @@ public class CaseDecision extends DataEntity<CaseDecision> {
 	}
 	
 	public String getSeqKey(){
-		return "DecisionSeq_"+this.getDecisionType()+"_"+this.getYear();
+		String rst = "";
+		
+		if(Global.WXAreaCode.equals(this.areaId) && Global.WXZhiduiHandleOrg.equals(this.handleOrg)){
+			//to compatible seq for zhidui 
+			rst = "DecisionSeq_"+this.getDecisionType()+"_"+this.getYear();
+		}else{
+			//seq for new
+			rst = "DecisionSeq_"+this.getDecisionType()+"_"+this.areaId+"_"+this.handleOrg+"_"+this.getYear();
+		}
+		
+		return rst;
+	}
+
+	public String getAreaId() {
+		return areaId;
+	}
+
+	public void setAreaId(String areaId) {
+		this.areaId = areaId;
+	}
+
+	public String getHandleOrg() {
+		return handleOrg;
+	}
+
+	public void setHandleOrg(String handleOrg) {
+		this.handleOrg = handleOrg;
 	}
 	
 }

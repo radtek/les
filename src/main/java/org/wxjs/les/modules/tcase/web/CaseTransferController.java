@@ -90,7 +90,7 @@ public class CaseTransferController extends TcaseController {
 		tcase.setCaseProcess(caseProcess);
 		
 		if("start".equals(caseAct.getOperateType())){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg());
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg(), tcase.getAreaId());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);			
 		}
 		
@@ -112,7 +112,7 @@ public class CaseTransferController extends TcaseController {
 		logger.debug("businesskey:{}", businesskey);
 		
 		if(tcase.getCaseProcess() != null){
-			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg());
+			List<User> availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg(), tcase.getAreaId());
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);			
 		}
 	

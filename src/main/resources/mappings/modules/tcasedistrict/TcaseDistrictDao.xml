@@ -38,6 +38,7 @@
 		a.case_cause AS "caseCause",
 		a.status AS "status",
 		a.handle_org AS "handleOrg",
+		o.name AS "handleOrgName",
 		a.decision_seq AS "decisionSeq",
 		a.punish_money AS "punishMoney",
 		a.filepath_initial AS "filepathInitial",
@@ -51,6 +52,7 @@
 	</sql>
 	
 	<sql id="tcaseDistrictJoins">
+	    LEFT JOIN sys_office o ON o.id=a.handle_org
 	</sql>
     
 	<select id="get" resultType="TcaseDistrict">

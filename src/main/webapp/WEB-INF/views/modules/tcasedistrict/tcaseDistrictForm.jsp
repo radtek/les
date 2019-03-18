@@ -443,7 +443,7 @@
 
 		<div class="form-actions">
 			<shiro:hasPermission name="tcasedistrict:tcaseDistrict:edit">
-			<c:if test="${tcaseDistrict.status eq '0'}">
+			<c:if test="${tcaseDistrict.status eq '0' && tcaseDistrict.readonly ne '1'}">
 			<input id="btnSubmit" class="btn btn-primary" type="button" value="保  存"/>&nbsp;&nbsp;
 			<input id="btnCommit" class="btn btn-primary" type="button" value="提  交"/>&nbsp;&nbsp;			
 			</c:if>

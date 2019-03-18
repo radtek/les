@@ -273,6 +273,13 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 	public List<Tcase> findList(Tcase tcase) {
 
 		List<Tcase> rst = Lists.newArrayList();
+		
+		//filter by areaId except admin
+		User user = UserUtils.getUser();
+		if(!user.isAdmin()){
+			tcase.setAreaId(user.getOffice().getAreaId());
+		}
+		
 		List<Tcase> list = dao.findList(tcase);
 		
 		logger.debug("entity.getUnfinishedFlag():{}", tcase.getUnfinishedFlag());
@@ -456,9 +463,13 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 		boolean isNew = tcase.getIsNewRecord();
 		if(isNew){
 			User user = UserUtils.getUser();
-			String handleOrg = user.getOffice().getParentId();
 			
-			tcase.setCaseSeq(SequenceUtils.fetchCaseSeqStr(handleOrg));
+			String areaId = user.getOffice().getAreaId();
+			tcase.setAreaId(areaId);
+			
+			String handleOrg = user.getOffice().getType();
+			
+			tcase.setCaseSeq(SequenceUtils.fetchCaseSeqStr(areaId, handleOrg));
 			tcase.setCaseTransfer("0");
 			
 			logger.debug("tcase.getCaseSeq():{}",tcase.getCaseSeq());
@@ -466,7 +477,7 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 
 			tcase.setHandleOrg(handleOrg);
 			
-			logger.debug("handleOrg:{}",handleOrg);
+			logger.debug("areaId:{}, handleOrg:{}", areaId, handleOrg);
 		}
 		super.save(tcase);
 		

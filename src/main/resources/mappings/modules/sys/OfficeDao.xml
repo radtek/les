@@ -7,6 +7,7 @@
 		a.parent_id AS "parent.id",
 		a.parent_ids,
 		a.area_id AS "area.id",
+		a.area_id AS "areaId",
 		a.code,
 		a.name,
 		a.sort,
@@ -55,6 +56,12 @@
 		FROM sys_office a
 		<include refid="officeJoins"/>
 		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		<if test="areaId != null and areaId != ''">
+			AND a.area_id = #{areaId} 
+		</if>		
+		<if test="parentIds != null and parentIds != ''">
+			AND a.parent_ids LIKE concat(#{parentIds},'%')
+		</if>
 		<!-- 数据范围过滤 -->
 		${sqlMap.dsf}
 		OR a.id = #{currentUser.office.id}

@@ -46,6 +46,7 @@
 		a.upload_status_lib4 AS "uploadStatusLib4",
 		a.create_by AS "createBy.id",
 		u.office_id AS "createBy.office.id",
+		a.area_id AS "areaId",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
@@ -135,9 +136,13 @@
 			<if test="unfinishedFlag != null and unfinishedFlag == '1'">
 				AND a.status != '2' 
 			</if>
+			<if test="areaId != null and areaId != ''">
+				AND a.area_id = #{areaId} 
+			</if>			
 			<if test="handleOrg != null and handleOrg != ''">
 				AND a.handle_org = #{handleOrg} 
-			</if>								
+			</if>
+											
 			<choose>
 				<when test="caseTransfer != null and caseTransfer != ''">
 					AND a.case_transfer=#{caseTransfer}
@@ -208,6 +213,7 @@
 			case_transfer,
 			case_transfer_unit,
 			handle_org,
+			area_id,
 			create_by,
 			create_date,
 			update_by,
@@ -245,7 +251,8 @@
 			#{punishType},
 			#{caseTransfer},	
 			#{transferUnit},
-			#{handleOrg,},
+			#{handleOrg},
+			#{areaId},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},

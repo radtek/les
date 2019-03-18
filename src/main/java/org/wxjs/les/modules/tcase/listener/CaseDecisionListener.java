@@ -71,7 +71,7 @@ public class CaseDecisionListener implements ExecutionListener {
 					
 					CaseUploadUtils utils = new CaseUploadUtils();
 					
-					punishInfo4Xml.setAjNo(caseDecision.getFullDecisionNumber(tcase.getHandleOrg()));
+					punishInfo4Xml.setAjNo(caseDecision.getFullDecisionNumber(tcase.getAreaId(), tcase.getHandleOrg()));
 					//punishInfo4Xml.setJasj(DateUtils.formatDate(tcase.getSettleDate(), "yyyy-MM-dd HH:mm:ss"));
 					//决定书签发时间
 					Date decisionDate = Calendar.getInstance().getTime();

@@ -32,12 +32,17 @@
 		SELECT u.login_name AS "user.loginName", 
 		       u.name AS "user.name",
 			   a.title AS "title",
-			   a.signature AS "signature"		        
+			   a.signature AS "signature",
+			   o.area_id AS "user.office.areaId"		        
 		FROM sys_user u
+		LEFT JOIN sys_office o on o.id=u.office_id
 		LEFT JOIN tsignature_lib a on a.login_name=u.login_name
 		<where>
 			u.del_flag = #{DEL_FLAG_NORMAL}
 			AND u.user_type='1'
+			<if test="user != null and user.office!= null and user.office.areaId != '' and user.office.areaId != null">
+				AND o.area_id = #{user.office.areaId}
+			</if>			
 			<if test="user != null and user.loginName != null and user.loginName != ''">
 				AND u.login_name = #{user.loginName}
 			</if>
