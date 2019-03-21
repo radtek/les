@@ -92,6 +92,7 @@
     	o.area_id AS "office.areaId",
     	o.parent_id AS "office.parent.id",
     	o.parent_ids AS "office.parentIds",
+    	o.type AS "office.type",
     	oa.id AS "office.area.id",
     	oa.name AS "office.area.name",
     	oa.parent_id AS "office.area.parent.id",

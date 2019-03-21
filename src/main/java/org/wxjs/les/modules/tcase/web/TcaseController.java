@@ -1282,6 +1282,9 @@ public class TcaseController extends BaseController {
 	protected void setHandleOrg(Tcase tcase){
 		User user = UserUtils.getUser();
 		String orgId = user.getOffice().getType();
+		
+		logger.debug("orgId:{}", orgId);
+		
 		if(orgId.startsWith("02")){
 			//no filter
 		}else if(orgId.startsWith("03")){
