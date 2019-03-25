@@ -1,3 +1,51 @@
 2019 支持安监、质监相关升级
 1、角色名 支队负责人 改为 支队（站）负责人
 2、管理账户 super \ admin  officeId改为 02，局看到全局
+3、tcase表中添加`handle_org` varchar(32) NULL COMMENT '经办单位代码',
+4、菜单加上
+
+
+#20190315 支持区县使用
+#tcase中加area_id用于区分区域
+#tcase中原来的handle_org字段重定义，01：支队，03：安监， 04：质监， 02：局机关
+#sys_office中的area_id重定义， type：字段重定义（意义与tcase中handle_org一致），01：支队，03：安监， 04：质监， 02：局机关
+
+1 sys_office中现有市局机构areaId 改为 320200
+update sys_office 
+set area_id='320200'
+where id like '0%';
+
+2 tcase中加area_id，现有的areaId设为320200, 原来的type字段重定义，01：支队，03：安监， 04：质监， 02：局机关
+update tcase 
+set area_id='320200';
+
+3.加菜单项“发文字号”，并加权限给admin
+
+4.创建测试用户
+
+宜兴测试用户：
+yx5    监察办案人、监察科室负责人（测试）	
+yx6    站负责人（测试）
+yx1    局领导（测试）		
+yx2    处室（测试）		
+yx3    审理科（测试）		
+yx4    法规处（测试）	
+yx7    办公室（测试）
+
+5.设置签名，否则无法通过审核
+
+6.更新org_brief
+
+delete from sys_dict where `type`= 'org_brief';
+INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `parent_id`, `create_by`,`create_date`,`update_by`,`update_date`) 
+VALUES 
+('org_brief_1', '01', '监察支队', 'org_brief', 'org_brief', 10, '0','1',now(),'1',now()),
+('org_brief_2', '03', '安监站', 'org_brief', 'org_brief', 20, '0','1',now(),'1',now()),
+('org_brief_3', '04', '质监站', 'org_brief', 'org_brief', 30, '0','1',now(),'1',now()),
+('org_brief_4', '02', '局机关', 'org_brief', 'org_brief', 40, '0','1',now(),'1',now());
+
+7. sys_office中的type属性，类型改为varchar(32),设为01,03,04，02, 分别对应支队，安监，质监, 局机关
+update sys_office set type='01' where id like '01%';
+update sys_office set type='02' where id like '02%';
+update sys_office set type='03' where id like '03%';
+update sys_office set type='04' where id like '04%';

@@ -70,6 +70,7 @@ CREATE TABLE `tcase` (
   `attach_upload_detail` varchar(200) NULL COMMENT '附件上传详情',
   `upload_status_lib4`  varchar(32) default '0' COMMENT '上报四库状态',
   `handle_org` varchar(32) NULL COMMENT '经办单位代码',
+  `area_id` varchar(32) NULL  default '320200' COMMENT '区域代码',
   `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
   `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_by` varchar(32) DEFAULT NULL COMMENT '更新者',
@@ -652,3 +653,24 @@ CREATE TABLE `tcase_district` (
   `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8 COMMENT='案件(区县)';
+
+-- ----------------------------
+-- Table structure for tdocument_head
+-- ----------------------------
+DROP TABLE IF EXISTS `tdocument_head`;
+CREATE TABLE `tdocument_head` (
+  `id` int(11) NOT NULL auto_increment  COMMENT '编号',
+  `area_id` varchar(32) NOT NULL COMMENT '区域代码',
+  `handle_org` varchar(32) NOT NULL COMMENT '经办单位',
+  `stage` varchar(32) NOT NULL COMMENT '阶段：decision, notify',
+  `type` varchar(32) NOT NULL COMMENT '类型',
+  `sort` varchar(32) NOT NULL COMMENT '排序',
+  `doc_head` varchar(32) NOT NULL COMMENT '发文字号',
+  `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_by` varchar(32) DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  `remarks` varchar(64) DEFAULT NULL COMMENT '备注信息',
+  `del_flag` char(1) DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='发文字号';

@@ -87,7 +87,8 @@ INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `
 VALUES 
 ('org_brief_1', '01', '监察支队', 'org_brief', 'org_brief', 10, '0','1',now(),'1',now()),
 ('org_brief_2', '03', '安监站', 'org_brief', 'org_brief', 20, '0','1',now(),'1',now()),
-('org_brief_3', '04', '质监站', 'org_brief', 'org_brief', 30, '0','1',now(),'1',now());
+('org_brief_3', '04', '质监站', 'org_brief', 'org_brief', 30, '0','1',now(),'1',now()),
+('org_brief_4', '02', '局机关', 'org_brief', 'org_brief', 40, '0','1',now(),'1',now());
 
 delete from sys_dict where `type`= 'sys_user_type';
 INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `parent_id`, `create_by`,`create_date`,`update_by`,`update_date`) 
@@ -168,6 +169,18 @@ INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `
 VALUES 
 ('case_district_status_1', '0', '编辑', 'case_district_status', 'case_district_status', 10, '0','1',now(),'1',now()),
 ('case_district_status_2', '1', '提交', 'case_district_status', 'case_district_status', 20, '0','1',now(),'1',now());
+
+delete from sys_dict where `type`= 'wx_area';
+INSERT INTO `sys_dict` (`id`, `value`, `label`, `type`, `description`, `sort`, `parent_id`, `create_by`,`create_date`,`update_by`,`update_date`) 
+VALUES 
+('wx_area_1', '320200', '无锡市', 'wx_area', 'wx_area', 10, '0','1',now(),'1',now()),
+('wx_area_2', '320205', '锡山区', 'wx_area', 'wx_area', 20, '0','1',now(),'1',now()),
+('wx_area_3', '320206', '惠山区', 'wx_area', 'wx_area', 30, '0','1',now(),'1',now()),
+('wx_area_4', '320207', '梁溪区', 'wx_area', 'wx_area', 40, '0','1',now(),'1',now()),
+('wx_area_5', '320208', '新吴区', 'wx_area', 'wx_area', 50, '0','1',now(),'1',now()),
+('wx_area_6', '320211', '滨湖区', 'wx_area', 'wx_area', 60, '0','1',now(),'1',now()),
+('wx_area_7', '320281', '江阴市', 'wx_area', 'wx_area', 70, '0','1',now(),'1',now()),
+('wx_area_8', '320282', '宜兴市', 'wx_area', 'wx_area', 80, '0','1',now(),'1',now());
 
 
 
