@@ -116,7 +116,7 @@
 			#{id}, 
 			#{parent.id}, 
 			#{parentIds}, 
-			#{area.id}, 
+			#{areaId}, 
 			#{code}, 
 			#{name}, 
 			#{sort}, 
@@ -144,7 +144,7 @@
 		UPDATE sys_office SET 
 			parent_id = #{parent.id}, 
 			parent_ids = #{parentIds}, 
-			area_id = #{area.id}, 
+			area_id = #{areaId}, 
 			code = #{code}, 
 			name = #{name}, 
 			type = #{type}, 
