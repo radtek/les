@@ -20,7 +20,7 @@
 				}
 			});				
 		    
-		    $('#btnSubmit').click(function() {
+		    $('#btnSaveProcess').click(function() {
 				$("#processForm").attr("action","${ctx}/case/tcase/saveProcess");
 				$("#processForm").submit();		    	
 		    });
