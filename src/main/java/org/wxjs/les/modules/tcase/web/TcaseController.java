@@ -1128,7 +1128,7 @@ public class TcaseController extends BaseController {
 			}else{
 				addMessage(redirectAttributes, "操作失败！请先设置您的签名！");
 				
-				logger.debug("signature not found, loginName:{}", userid);
+				logger.debug("approve fail, signature not found, loginName:{}", userid);
 				
 				return "redirect:"+Global.getAdminPath()+"/task/todo";
 			}

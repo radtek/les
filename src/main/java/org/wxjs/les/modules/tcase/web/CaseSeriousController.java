@@ -293,8 +293,11 @@ public class CaseSeriousController extends BaseController {
 			if(signatureLib!=null && StringUtils.isNotEmpty(signatureLib.getSignature())){
 				signatureStr = signatureLib.getSignature();
 			}else{
-				addMessage(redirectAttributes, "请先设置您的签名！");
-				return null;
+				addMessage(redirectAttributes, "操作失败！请先设置您的签名！");
+				
+				logger.debug("approve fail, signature not found, loginName:{}", userid);
+				
+				return "redirect:"+Global.getAdminPath()+"/task/todo";				
 			}
 		}else if("return".equals(actTask.getApprove())){
 			comment.append("[退回]");
