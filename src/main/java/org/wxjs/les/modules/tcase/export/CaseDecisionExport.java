@@ -4,6 +4,7 @@
 package org.wxjs.les.modules.tcase.export;
 
 import java.io.OutputStream;
+import java.util.Date;
 
 import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.utils.DateUtils;
@@ -107,7 +108,15 @@ public class CaseDecisionExport extends ExportBase<CaseDecisionExport> {
             table = generateTableRow(items, fontContent,  new float[]{0.5f, 0.5f}, tableWidth, Element.ALIGN_CENTER, 0, 0,false);
             document.add(table); 
             
-            items = new String[]{"", DateUtils.getDate("yyyy年MM月dd日")};
+            Date decisionDate = this.tcase.getDecisionDate();
+            String dateStr = "";
+            if(decisionDate == null){
+            	dateStr = DateUtils.getDate("yyyy年MM月dd日");
+            }else{
+            	dateStr = DateUtils.formatDate(decisionDate, "yyyy年MM月dd日");
+            }
+            
+            items = new String[]{"", dateStr};
             table =generateTableRow(items, fontContent,  new float[]{0.5f, 0.5f}, tableWidth, Element.ALIGN_CENTER, 0, 0,false);
             document.add(table);  
             
