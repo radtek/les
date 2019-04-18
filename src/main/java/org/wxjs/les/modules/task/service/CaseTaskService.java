@@ -53,6 +53,7 @@ import org.springframework.util.CollectionUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.service.BaseService;
 import org.wxjs.les.common.utils.StringUtils;
@@ -65,6 +66,8 @@ import org.wxjs.les.modules.act.service.creator.SimpleRuntimeActivityDefinitionE
 import org.wxjs.les.modules.act.utils.ActUtils;
 import org.wxjs.les.modules.act.utils.ProcessDefCache;
 import org.wxjs.les.modules.act.utils.ProcessDefUtils;
+import org.wxjs.les.modules.check.entity.Tsitecheck;
+import org.wxjs.les.modules.check.service.TsitecheckService;
 import org.wxjs.les.modules.sys.entity.User;
 import org.wxjs.les.modules.sys.utils.UserUtils;
 import org.wxjs.les.modules.task.dao.CaseActDao;
@@ -104,6 +107,9 @@ public class CaseTaskService extends BaseService {
 	
 	@Autowired
 	private TcaseService tcaseService;
+	
+	@Autowired
+	private TsitecheckService tsitecheckService;
 	
 	/**
 	 * 获取待办列表
@@ -145,7 +151,21 @@ public class CaseTaskService extends BaseService {
 			
 			logger.debug("businesskey:{}", businesskey);
 			
-			Tcase tcase = tcaseService.getRelateCaseByBusinesskey(businesskey);
+			Tcase tcase = null;
+			if(businesskey.startsWith(Global.TsitecheckBusinessKeyPrefix)){
+				//借用tcase保存几个属性，有时间可以优化
+				String id = businesskey.substring(businesskey.indexOf(":")+1);
+				Tsitecheck entity = tsitecheckService.get(id);
+				tcase = new Tcase();
+				tcase.setCaseSeq(businesskey);
+				tcase.setPartyType(Global.PartyTypeOrg);
+				tcase.setOrgName(entity.getConstructionOrg());
+				tcase.setProjectName(entity.getProjectName());
+				tcase.setCaseCause("");
+			}else{
+				tcase = tcaseService.getRelateCaseByBusinesskey(businesskey);
+			}
+			
 			e.setTcase(tcase);
 
 //			e.setTaskVars(task.getTaskLocalVariables());

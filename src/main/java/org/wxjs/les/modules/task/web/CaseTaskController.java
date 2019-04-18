@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.Page;
+import org.wxjs.les.common.utils.Encodes;
 import org.wxjs.les.common.web.BaseController;
 import org.wxjs.les.modules.act.entity.Act;
 import org.wxjs.les.modules.sys.utils.UserUtils;
@@ -113,15 +114,23 @@ public class CaseTaskController extends BaseController {
 		}
 		*/
 		
+		String formUrl = "";
+		
 		String businesskey = caseAct.getBusinesskey();
 		
-		String caseStage = this.getCaseStageByBusinesskey(businesskey);
-		
-		String formKey = this.getFormkey(caseStage);
-		
-		logger.debug("businesskey:{},caseStage:{},formKey:{}", businesskey, caseStage, formKey);
-		
-		String formUrl = CaseActUtils.getFormUrl(formKey, caseAct);
+		if(businesskey.startsWith(Global.TsitecheckBusinessKeyPrefix)){
+			String id = businesskey.substring(Global.TsitecheckBusinessKeyPrefix.length()+1);
+			logger.debug("businesskey:{},id:{}", businesskey, id);
+			formUrl = CaseActUtils.getFormUrl4SiteCheck(id, caseAct);
+		}else{
+			String caseStage = this.getCaseStageByBusinesskey(businesskey);
+			
+			String formKey = this.getFormkey(caseStage);
+			
+			logger.debug("businesskey:{},caseStage:{},formKey:{}", businesskey, caseStage, formKey);
+			
+			formUrl = CaseActUtils.getFormUrl(formKey, caseAct);			
+		}
 		
 		logger.debug("formUrl:{}", formUrl);
 		

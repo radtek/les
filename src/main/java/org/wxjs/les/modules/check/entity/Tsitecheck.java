@@ -3,14 +3,19 @@
  */
 package org.wxjs.les.modules.check.entity;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.google.common.collect.Lists;
 
 import org.wxjs.les.common.persistence.DataEntity;
 import org.wxjs.les.modules.base.entity.Signature;
+import org.wxjs.les.modules.sys.entity.User;
 
 /**
  * 现场踏勘Entity
@@ -34,11 +39,38 @@ public class Tsitecheck extends DataEntity<Tsitecheck> {
 	private String siteCheckResult;		// 现场踏勘情况
 	private String checker;		// 勘查人
 	private Date checkDate;		// 勘查时间
+	
+	private String attachment;		// 现场踏勘示意图
+	
 	private Date beginDate;
 	private Date endDate;
 	
 	private Signature checkerSig = new Signature(); // 勘察人签名
 	private Signature partySig = new Signature();		// 当事人签名
+	
+	//流程相关
+	private String handler;		// 办案人
+	
+	private String caseStatus;
+	
+	private String procInsId;		// 受理流程号
+
+	private List<User> availableHandlers = Lists.newArrayList();
+	
+	private String procDefId;		// 流程定义号
+	
+	private String executionId;		// 执行号
+	
+	//临时属性
+	private String taskDefKey;
+	
+	private String taskId;
+	
+	private String taskName;
+	
+	private String operateType = "";
+	
+	private String businesskey = "";
 	
 	public Date getBeginDate() {
 		return beginDate;
@@ -188,6 +220,14 @@ public class Tsitecheck extends DataEntity<Tsitecheck> {
 
 	public void setCheckDate(Date checkDate) {
 		this.checkDate = checkDate;
+	}	
+
+	public String getAttachment() {
+		return attachment;
+	}
+
+	public void setAttachment(String attachment) {
+		this.attachment = attachment;
 	}
 
 	public Signature getCheckerSig() {
@@ -205,6 +245,105 @@ public class Tsitecheck extends DataEntity<Tsitecheck> {
 	public void setPartySig(Signature partySig) {
 		this.partySig = partySig;
 	}
+
+	public String getHandler() {
+		return handler;
+	}
+
+	public void setHandler(String handler) {
+		this.handler = handler;
+	}
 	
+	public List<String> getHandlerList() {
+		List<String> list = Lists.newArrayList();
+		if(!StringUtils.isEmpty(this.handler)){
+			String[] strs = this.handler.split(",");
+			for(String str : strs){
+				list.add(str);
+			}
+		}
+		
+		return list;
+	}
+
+	public String getCaseStatus() {
+		return caseStatus;
+	}
+
+	public void setCaseStatus(String caseStatus) {
+		this.caseStatus = caseStatus;
+	}
+
+	public String getProcInsId() {
+		return procInsId;
+	}
+
+	public void setProcInsId(String procInsId) {
+		this.procInsId = procInsId;
+	}
+
+	public List<User> getAvailableHandlers() {
+		return availableHandlers;
+	}
+
+	public void setAvailableHandlers(List<User> availableHandlers) {
+		this.availableHandlers = availableHandlers;
+	}
+
+	public String getProcDefId() {
+		return procDefId;
+	}
+
+	public void setProcDefId(String procDefId) {
+		this.procDefId = procDefId;
+	}
+
+	public String getExecutionId() {
+		return executionId;
+	}
+
+	public void setExecutionId(String executionId) {
+		this.executionId = executionId;
+	}
+	
+	public String getTaskDefKey() {
+		return taskDefKey;
+	}
+
+	public void setTaskDefKey(String taskDefKey) {
+		this.taskDefKey = taskDefKey;
+	}
+
+	public String getTaskId() {
+		return taskId;
+	}
+
+	public void setTaskId(String taskId) {
+		this.taskId = taskId;
+	}
+
+	public String getTaskName() {
+		return taskName;
+	}
+
+	public void setTaskName(String taskName) {
+		this.taskName = taskName;
+	}
+
+	public String getOperateType() {
+		return operateType;
+	}
+
+	public void setOperateType(String operateType) {
+		this.operateType = operateType;
+	}
+
+	public String getBusinesskey() {
+		return businesskey;
+	}
+
+	public void setBusinesskey(String businesskey) {
+		this.businesskey = businesskey;
+	}
 	
 }

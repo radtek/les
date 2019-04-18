@@ -105,7 +105,7 @@
         <omgdi:waypoint x="847.0" y="186.0"></omgdi:waypoint>
         <omgdi:waypoint x="900.0" y="185.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="849.0" y="194.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="24.0" x="849.0" y="194.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sid-275A8280-138C-4875-8068-BDFA8CA94F7C" id="BPMNEdge_sid-275A8280-138C-4875-8068-BDFA8CA94F7C">

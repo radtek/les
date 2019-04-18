@@ -27,6 +27,11 @@
 				$("#inputForm").attr("action","${ctx}/check/tsitecheck/saveInfo");
 				$("#inputForm").submit();		    	
 		    });	
+			
+			$('#btnStart').click(function() {
+				$("#inputForm").attr("action","${ctx}/check/tsitecheck/saveAndStart");
+				$("#inputForm").submit();		    	
+		    });				
 			 
 			 $('#btnExportPdf').click(function() {
 				$("#inputForm").attr("action","${ctx}/check/tsitecheck/exportPDF");
@@ -136,7 +141,7 @@
 			<label class="control-label control-tight">现场踏勘示意图:</label>
 			<div class="controls controls-tight">
 				<form:hidden id="nameImage" path="sitePicture" htmlEscape="false" maxlength="255" class="input-xxlarge required"/>
-				<sys:ckfinder input="nameImage" type="images" uploadPath="/test/test" selectMultiple="true"/>
+				<sys:ckfinder input="nameImage" type="images" uploadPath="/sitecheck/picture" selectMultiple="true"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
@@ -173,10 +178,26 @@
 		</div>	
 		</div>
 		
+		<div class="control-group container-fluid nopadding"> 
+		<div class="control-group ">
+			<label class="control-label control-tight">附件:</label>
+			<div class="controls controls-tight">
+				<form:hidden id="attachment" path="attachment" htmlEscape="false" maxlength="255" class="input-xxlarge"/>
+				<sys:ckfinder input="attachment" type="files" uploadPath="/sitecheck/attachment" selectMultiple="true"/>
+				<span class="help-inline"><font color="red">*</font> </span>
+			</div>
+		</div>
+		</div>		
+		
 		<div class="form-actions">
 			<shiro:hasPermission name="check:tsitecheck:edit">
 				<input id="btnSubmit" class="btn btn-primary" type="button" value="保 存"/>&nbsp;
-				<input id="btnExportPdf" class="btn btn-primary" type="button" value="导出PDF" />
+				<c:if test="${empty tsitecheck.caseStatus or tsitecheck.caseStatus eq '0' }">
+				<input id="btnStart" class="btn btn-primary" type="button" value="启动事件"/>&nbsp;
+				</c:if>
+				<c:if test="${not empty tsitecheck.id}">
+				<input id="btnExportPdf" class="btn btn-primary" type="button" value="导出PDF" />&nbsp;
+				</c:if>
 			</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
@@ -202,5 +223,21 @@
 		</div>		
 		
 	</form:form>
+
+<!-- 流程 -->	procInsId：${tsitecheck.procInsId}；operateType：${tsitecheck.operateType}
+<c:if test="${not empty tsitecheck.procInsId and tsitecheck.operateType eq 'handle'}">
+
+    <h5>&nbsp;流程处理</h5>
+    <les:processHandleTag handleAction="${ctx}/check/tsitecheck/handletask"
+    availableHandlers="${tsitecheck.availableHandlers}" 
+    caseStageName="现场勘查"
+    actTaskAttr="${actTask}" >
+    </les:processHandleTag>
+
+</c:if>
+<c:if test="${not empty tsitecheck.procInsId}">
+<act:histoicFlow procInsId="${tsitecheck.procInsId}"/>
+</c:if>
+	
 </body>
 </html>

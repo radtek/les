@@ -1,5 +1,6 @@
 package org.wxjs.les.modules.act.service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -23,7 +24,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.service.BaseService;
+import org.wxjs.les.common.utils.StringUtils;
+import org.wxjs.les.modules.sys.entity.User;
+import org.wxjs.les.modules.sys.service.SystemService;
+
+import com.google.common.collect.Lists;
 
 @Service
 @Transactional(readOnly = true)
@@ -39,6 +46,9 @@ public class ProcessService extends BaseService {
 
 	@Autowired
 	private RepositoryService repositoryService;
+	
+	@Autowired
+	private SystemService systemService;
 
 	/**
 	 * 获取用户任务定义
@@ -512,6 +522,61 @@ public class ProcessService extends BaseService {
 		if (ins != null) {
 			rst = ins.getBusinessKey();
 		}
+		return rst;
+	}
+	
+	/**
+	 * get handlers for next task
+	 * @param taskId
+	 * @param handleOrg
+	 * @param area
+	 * @return
+	 */
+	public List<User> getHandler4Handle(String taskId, String handleOrg, String area){
+		
+		List<User> list = Lists.newArrayList();
+
+		String group = this.getNextTaskGroupText(taskId);
+		
+		logger.debug("group:{}", group);
+		
+		if(!StringUtils.isEmpty(group)){
+			list = this.getHandlerByGroup(group, handleOrg, area);
+		}
+		
+		return list;
+	}
+	
+	/**
+	 * get handler by group
+	 * @param group
+	 * @param handleOrg
+	 * @param area
+	 * @return
+	 */
+	public List<User> getHandlerByGroup(String group, String handleOrg, String area){
+		List<User> rst = Lists.newArrayList();
+		
+		List<User> list = systemService.findUserByRoleEname(group);	
+		
+		if(Arrays.asList(Global.NoneZhiduiZhanRoles).contains(group)){
+			//rst.addAll(list);
+			for(User e : list){
+				if(e.getOffice().getAreaId().equals(area)){
+					rst.add(e);
+				}
+			}
+		}else{
+			logger.debug("handleOrg:{}, area:{}", handleOrg, area);
+			for(User e : list){
+				logger.debug("e.getOffice().getType():{},e.getOffice().getAreaId():{}", e.getOffice().getType(), e.getOffice().getAreaId());
+				
+				if(e.getOffice().getType().equals(handleOrg) && e.getOffice().getAreaId().equals(area)){
+					rst.add(e);
+				}
+			}			
+		}
+		
 		return rst;
 	}
 

@@ -175,6 +175,30 @@ public class CaseActUtils {
 		return formUrl.toString();
 	}
 	
+	public static String getFormUrl4SiteCheck(String id, CaseAct caseAct){
+		StringBuilder formUrl = new StringBuilder();
+		
+		String formServerUrl = Global.getConfig("activiti.form.server.url");
+		if (StringUtils.isBlank(formServerUrl)){
+			formUrl.append(Global.getAdminPath());
+		}else{
+			formUrl.append(formServerUrl);
+		}
+		
+		formUrl.append("/check/tsitecheck/toHandle?");
+		formUrl.append("taskId=").append(caseAct.getTaskId() != null ? caseAct.getTaskId() : "");
+		formUrl.append("&taskName=").append(caseAct.getTaskName() != null ? Encodes.urlEncode(caseAct.getTaskName()) : "");
+		formUrl.append("&taskDefKey=").append(caseAct.getTaskDefKey() != null ? caseAct.getTaskDefKey() : "");
+		formUrl.append("&procInsId=").append(caseAct.getProcInsId() != null ? caseAct.getProcInsId() : "");
+		formUrl.append("&procDefId=").append(caseAct.getProcDefId() != null ? caseAct.getProcDefId() : "");
+		formUrl.append("&status=").append(caseAct.getStatus() != null ? caseAct.getStatus() : "");
+		formUrl.append("&id=").append(id);
+		formUrl.append("&businesskey=").append(caseAct.getBusinesskey());	
+		formUrl.append("&operateType=").append(caseAct.getOperateType());
+		
+		return formUrl.toString();
+	}
+	
 	/**
 	 * 转换流程节点类型为中文说明
 	 * @param type 英文名称

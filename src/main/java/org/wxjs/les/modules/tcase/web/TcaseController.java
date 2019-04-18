@@ -88,8 +88,6 @@ import com.google.common.collect.Lists;
 @RequestMapping(value = "${adminPath}/case/tcase")
 public class TcaseController extends BaseController {
 	
-	private static final String[] NoneZhiduiZhanRoles = {"jld", "fgcblr", "fgcfzr", "csblr", "csfzr"}; //非支队、站角色
-	
 	@Autowired
 	private SystemService systemService;
 
@@ -736,7 +734,7 @@ public class TcaseController extends BaseController {
 		
 		Tcase tcase = tcaseService.getCaseAndProcess(businesskey);
 		
-		List<User> availableHandlers = this.getCaseHandler4Handle(caseAct.getTaskId(), tcase.getHandleOrg(), tcase.getAreaId());
+		List<User> availableHandlers = processService.getHandler4Handle(caseAct.getTaskId(), tcase.getHandleOrg(), tcase.getAreaId());
 		tcase.getCaseProcess().setAvailableHandlers(availableHandlers);
 
 		model.addAttribute("operateType", "handle");
@@ -757,68 +755,7 @@ public class TcaseController extends BaseController {
 		
 		logger.debug("caseStage:{}, group:{}, roleEnname:{}", caseStage, group, roleEnname);
 		
-		return this.getCaseHandlerByGroup(group, handleOrg, area);
-	}
-	
-	protected List<User> getCaseHandler4Handle(String taskId, String handleOrg, String area){
-		
-		List<User> list = Lists.newArrayList();
-
-		String group = processService.getNextTaskGroupText(taskId);
-		
-		logger.debug("group:{}", group);
-		
-		if(!StringUtils.isEmpty(group)){
-			list = this.getCaseHandlerByGroup(group, handleOrg, area);
-		}
-		
-		return list;
-	}
-	
-	private List<User> getCaseHandlerByGroup(String group, String handleOrg, String area){
-		List<User> rst = Lists.newArrayList();
-		
-		List<User> list = systemService.findUserByRoleEname(group);	
-		
-		//filter by office
-		/*
-		if(!group.contains("syblr") && !group.contains("syfzr")){
-			rst.addAll(list);
-		}else{
-			User user = UserUtils.getUser();
-			String officeId = user.getOffice().getId();
-			if(officeId.startsWith("01") || officeId.startsWith("02")){
-				rst.addAll(list);
-			}else{
-				String deptId = officeId.substring(0, 2);
-				for(User e : list){
-					if(e.getOffice().getId().startsWith(deptId)){
-						rst.add(e);
-					}
-				}
-			}			
-		}
-		*/
-		
-		if(Arrays.asList(NoneZhiduiZhanRoles).contains(group)){
-			//rst.addAll(list);
-			for(User e : list){
-				if(e.getOffice().getAreaId().equals(area)){
-					rst.add(e);
-				}
-			}
-		}else{
-			logger.debug("handleOrg:{}, area:{}", handleOrg, area);
-			for(User e : list){
-				logger.debug("e.getOffice().getType():{},e.getOffice().getAreaId():{}", e.getOffice().getType(), e.getOffice().getAreaId());
-				
-				if(e.getOffice().getType().equals(handleOrg) && e.getOffice().getAreaId().equals(area)){
-					rst.add(e);
-				}
-			}			
-		}
-		
-		return rst;
+		return processService.getHandlerByGroup(group, handleOrg, area);
 	}
 	
 	@RequiresPermissions("case:tcase:view")
@@ -856,7 +793,7 @@ public class TcaseController extends BaseController {
 				availableHandlers = this.getCaseHandler4Start(tcase.getCaseProcess(), tcase.getHandleOrg(), tcase.getAreaId());
 				tcase.getCaseProcess().setMultiple(true);			
 			}else{
-				availableHandlers = this.getCaseHandler4Handle(caseAct.getTaskId(), tcase.getHandleOrg(), tcase.getAreaId());	
+				availableHandlers = processService.getHandler4Handle(caseAct.getTaskId(), tcase.getHandleOrg(), tcase.getAreaId());	
 				tcase.getCaseProcess().setMultiple(false);	
 			}
 			tcase.getCaseProcess().setAvailableHandlers(availableHandlers);	
@@ -963,7 +900,7 @@ public class TcaseController extends BaseController {
 				availableHandlers = this.getCaseHandler4Start(process, tcase.getHandleOrg(), tcase.getAreaId());
 				process.setMultiple(true);			
 			}else{
-				availableHandlers = this.getCaseHandler4Handle(caseAct.getTaskId(), tcase.getHandleOrg(), tcase.getAreaId());	
+				availableHandlers = processService.getHandler4Handle(caseAct.getTaskId(), tcase.getHandleOrg(), tcase.getAreaId());	
 				process.setMultiple(false);	
 			}
 			process.setAvailableHandlers(availableHandlers);	

@@ -17,14 +17,14 @@
 		a.site_check_result AS "siteCheckResult",
 		a.checker AS "checker",
 		a.check_date AS "checkDate",
-		
+		a.attachment AS "attachment",
 		a.checker_sig AS "checkerSig.id",
 		s1.title AS "checkerSig.title",
 		s1.signature AS "checkerSig.signature",
 	    s2.title AS "partySig.title",
 		s2.signature AS "partySig.signature",
 		a.party_sig AS "partySig.id",
-		
+		a.case_status AS "caseStatus",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -50,7 +50,7 @@
 		WHERE a.id = #{id}
 	</select>
 	
-		<select id="findList" resultType="Tsitecheck">
+	<select id="findList" resultType="Tsitecheck">
 		SELECT 
 			<include refid="tsitecheckColumns"/>
 		FROM tsitecheck a
@@ -141,8 +141,10 @@
 			site_check_result,
 			checker,
 			check_date,
+			attachment,
 			checker_sig,
 			party_sig,
+			case_status,
 			create_by,
 			create_date,
 			update_by,
@@ -163,8 +165,10 @@
 			#{siteCheckResult},
 			#{checker},
 			#{checkDate},
+			#{attachment},
 			#{checkerSig.id},
 			#{partySig.id},
+			#{caseStatus},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -198,6 +202,35 @@
 			remarks = #{remarks}
 		WHERE id = #{id}
 	</update>
+	
+	<update id="updateProcInfo">
+		UPDATE tsitecheck SET 	
+			case_status = #{caseStatus},
+			proc_inst_id = #{procInsId},
+			proc_def_id = #{procDefId}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="updateStatus">
+		UPDATE tcase_process SET 
+			case_status = #{caseStatus},
+			update_date = #{updateDate}			
+		WHERE 1=1
+		<if test="procInsId != null and procInsId != ''">
+		AND proc_inst_id = #{procInsId}
+		</if>
+		<if test="id != null and id != ''">
+		AND id = #{id}
+		</if>				
+	</update>	
+	
+	<update id="updateAttachment">
+		UPDATE tsitecheck SET 	
+			attachment = #{attachment},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate}
+		WHERE id = #{id}
+	</update>	
 	
 	<update id="delete">
 		UPDATE tsitecheck SET 

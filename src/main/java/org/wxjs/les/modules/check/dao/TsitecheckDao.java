@@ -16,5 +16,11 @@ import org.wxjs.les.modules.check.entity.Tsitecheck;
  */
 @MyBatisDao
 public interface TsitecheckDao extends CrudDao<Tsitecheck> {
+	
+	public void updateAttachment(Tsitecheck entity);
+	
+	public void updateProcInfo(Tsitecheck entity);
+	
+	public void updateStatus(Tsitecheck entity);
 
 }

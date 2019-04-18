@@ -131,8 +131,11 @@
 					<fmt:formatDate value="${tsitecheck.checkDate}" pattern="yyyy-MM-dd "/>
 				</td>
 				<shiro:hasPermission name="check:tsitecheck:edit"><td>
-    				<a href="${ctx}/check/tsitecheck/form?id=${tsitecheck.id}">修改</a>
-					<a href="${ctx}/check/tsitecheck/delete?id=${tsitecheck.id}" onclick="return confirmx('确认要删除该现场踏勘信息吗？', this.href)">删除</a>
+    				<a href="${ctx}/check/tsitecheck/form?id=${tsitecheck.id}">进入</a>
+    				<c:if test="${empty tsitecheck.caseStatus or tsitecheck.caseStatus eq '0'}">
+    				<a href="${ctx}/check/tsitecheck/delete?id=${tsitecheck.id}" onclick="return confirmx('确认要删除该现场踏勘信息吗？', this.href)">删除</a>
+    				</c:if>
+					
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>

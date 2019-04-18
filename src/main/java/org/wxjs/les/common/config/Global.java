@@ -223,6 +223,8 @@ public class Global {
     public static final String PN_caseCancelProcess3 = "caseCancelProcess3";
     public static final String PN_caseCancelProcess4 = "caseCancelProcess4";
     
+    public static final String PN_siteCheckProcess = "siteCheckProcess";
+    
     
     public static final String GROUP_caseTransferProcess = "csblr,syblr";
     
@@ -260,5 +262,9 @@ public class Global {
     
     public static final String WXAreaCode = "320200";
     public static final String WXZhiduiHandleOrg = "01";
+    
+    public static final String TsitecheckBusinessKeyPrefix = "tsitecheck";
+    
+    public static final String[] NoneZhiduiZhanRoles = {"jld", "fgcblr", "fgcfzr", "csblr", "csfzr"}; //非支队、站角色
 	
 }
