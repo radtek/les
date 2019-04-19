@@ -15,7 +15,9 @@ import org.wxjs.les.modules.base.dao.SequencePoolDao;
 import org.wxjs.les.modules.base.entity.SequencePool;
 import org.wxjs.les.modules.sys.utils.SequenceUtils;
 import org.wxjs.les.modules.tcase.entity.CaseNotify;
+import org.wxjs.les.modules.tcase.entity.Tcase;
 import org.wxjs.les.modules.tcase.dao.CaseNotifyDao;
+import org.wxjs.les.modules.tcase.dao.TcaseDao;
 
 /**
  * 案件告知书Service
@@ -28,6 +30,9 @@ public class CaseNotifyService extends CrudService<CaseNotifyDao, CaseNotify> {
 	
 	@Autowired
 	private SequencePoolDao sequencePoolDao;
+	
+	@Autowired
+	private TcaseDao tcaseDao;
 
 	public CaseNotify get(String caseId) {
 		return super.get(caseId);
@@ -59,6 +64,12 @@ public class CaseNotifyService extends CrudService<CaseNotifyDao, CaseNotify> {
 	
 	@Transactional(readOnly = false)
 	public void recallNumber(CaseNotify caseNotify) {
+		
+		//fill handleOrg, areaId
+		Tcase tcase = tcaseDao.get(caseNotify.getCaseId());
+		caseNotify.setHandleOrg(tcase.getHandleOrg());
+		caseNotify.setAreaId(tcase.getAreaId());
+		
 		dao.recallNumber(caseNotify);
 		
 		//put the recalled id to pool
@@ -71,6 +82,12 @@ public class CaseNotifyService extends CrudService<CaseNotifyDao, CaseNotify> {
 	public synchronized String fetchNumber(CaseNotify caseNotify){
 		String seq = "";
 		//get from sequecne pool
+		
+		//fill handleOrg, areaId
+		Tcase tcase = tcaseDao.get(caseNotify.getCaseId());
+		caseNotify.setHandleOrg(tcase.getHandleOrg());
+		caseNotify.setAreaId(tcase.getAreaId());
+		
 		SequencePool sequencePoolParam = new SequencePool();
 		sequencePoolParam.setName(caseNotify.getSeqKey());
 		

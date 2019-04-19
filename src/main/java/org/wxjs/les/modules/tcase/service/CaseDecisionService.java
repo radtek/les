@@ -15,8 +15,9 @@ import org.wxjs.les.modules.base.dao.SequencePoolDao;
 import org.wxjs.les.modules.base.entity.SequencePool;
 import org.wxjs.les.modules.sys.utils.SequenceUtils;
 import org.wxjs.les.modules.tcase.entity.CaseDecision;
-import org.wxjs.les.modules.tcase.entity.CaseNotify;
+import org.wxjs.les.modules.tcase.entity.Tcase;
 import org.wxjs.les.modules.tcase.dao.CaseDecisionDao;
+import org.wxjs.les.modules.tcase.dao.TcaseDao;
 
 /**
  * 案件决定书Service
@@ -29,6 +30,9 @@ public class CaseDecisionService extends CrudService<CaseDecisionDao, CaseDecisi
 	
 	@Autowired
 	private SequencePoolDao sequencePoolDao;
+	
+	@Autowired
+	private TcaseDao tcaseDao;
 
 	public CaseDecision get(String caseId) {
 		return super.get(caseId);
@@ -45,7 +49,7 @@ public class CaseDecisionService extends CrudService<CaseDecisionDao, CaseDecisi
 	@Transactional(readOnly = false)
 	public void save(CaseDecision caseDecision) {
 		boolean isNew = caseDecision.getIsNewRecord();
-		if(isNew){
+		if(isNew){			
 			caseDecision.setSeq(this.fetchNumber(caseDecision));
 		}
 		super.save(caseDecision);
@@ -58,6 +62,10 @@ public class CaseDecisionService extends CrudService<CaseDecisionDao, CaseDecisi
 	
 	@Transactional(readOnly = false)
 	public void recallNumber(CaseDecision caseDecision) {
+		//fill handleOrg, areaId
+		Tcase tcase = tcaseDao.get(caseDecision.getCaseId());
+		caseDecision.setHandleOrg(tcase.getHandleOrg());
+		caseDecision.setAreaId(tcase.getAreaId());
 		
 		dao.recallNumber(caseDecision);
 		
@@ -70,6 +78,12 @@ public class CaseDecisionService extends CrudService<CaseDecisionDao, CaseDecisi
 	
 	public synchronized String fetchNumber(CaseDecision caseDecision){
 		String seq = "";
+		
+		//fill handleOrg, areaId
+		Tcase tcase = tcaseDao.get(caseDecision.getCaseId());
+		caseDecision.setHandleOrg(tcase.getHandleOrg());
+		caseDecision.setAreaId(tcase.getAreaId());
+		
 		//get from sequecne pool
 		SequencePool sequencePoolParam = new SequencePool();
 		sequencePoolParam.setName(caseDecision.getSeqKey());

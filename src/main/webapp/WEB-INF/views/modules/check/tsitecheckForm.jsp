@@ -191,8 +191,8 @@
 		
 		<div class="form-actions">
 			<shiro:hasPermission name="check:tsitecheck:edit">
-				<input id="btnSubmit" class="btn btn-primary" type="button" value="保 存"/>&nbsp;
 				<c:if test="${empty tsitecheck.caseStatus or tsitecheck.caseStatus eq '0' }">
+				<input id="btnSubmit" class="btn btn-primary" type="button" value="保 存"/>&nbsp;
 				<input id="btnStart" class="btn btn-primary" type="button" value="启动事件"/>&nbsp;
 				</c:if>
 				<c:if test="${not empty tsitecheck.id}">
@@ -224,7 +224,7 @@
 		
 	</form:form>
 
-<!-- 流程 -->	procInsId：${tsitecheck.procInsId}；operateType：${tsitecheck.operateType}
+<!-- 流程 -->
 <c:if test="${not empty tsitecheck.procInsId and tsitecheck.operateType eq 'handle'}">
 
     <h5>&nbsp;流程处理</h5>

@@ -484,8 +484,10 @@ public class TcaseController extends BaseController {
 		
 		if(caseDecision==null){
 			caseDecision = CaseDecision.getInstance(tcase);
-			
 		}
+		
+		//caseDecision.setHandleOrg(tcase.getHandleOrg());
+		//caseDecision.setAreaId(tcase.getAreaId());
 		
 		model.addAttribute("caseDecision", caseDecision);
 		
