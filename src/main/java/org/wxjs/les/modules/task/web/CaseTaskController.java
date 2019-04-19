@@ -27,6 +27,8 @@ import org.wxjs.les.modules.task.utils.CaseActUtils;
 import org.wxjs.les.modules.tcase.entity.CaseProcess;
 import org.wxjs.les.modules.tcase.service.CaseProcessService;
 
+import com.google.common.collect.Lists;
+
 
 /**
  * TaskController
@@ -52,11 +54,44 @@ public class CaseTaskController extends BaseController {
 	@RequestMapping(value = {"todo", ""})
 	public String todoList(CaseAct caseAct, HttpServletResponse response, Model model) throws Exception {
 		List<CaseAct> list = actTaskService.todoList(caseAct);
-		model.addAttribute("list", list);
+		
+		//filter
+		List<CaseAct> rst = Lists.newArrayList();
+		for(CaseAct act : list){
+			if(!act.getBusinesskey().startsWith(Global.TsitecheckBusinessKeyPrefix)){
+				rst.add(act);
+			}
+		}
+		
+		model.addAttribute("list", rst);
 		if (UserUtils.getPrincipal().isMobileLogin()){
-			return renderString(response, list);
+			return renderString(response, rst);
 		}
 		return "modules/task/actTaskTodoList";
+	}
+	
+	/**
+	 * 获取待办列表
+	 * @param procDefKey 流程定义标识
+	 * @return
+	 */
+	@RequestMapping(value = {"todo4SiteCheck"})
+	public String todoList4SiteCheck(CaseAct caseAct, HttpServletResponse response, Model model) throws Exception {
+		List<CaseAct> list = actTaskService.todoList(caseAct);
+		
+		//filter
+		List<CaseAct> rst = Lists.newArrayList();
+		for(CaseAct act : list){
+			if(act.getBusinesskey().startsWith(Global.TsitecheckBusinessKeyPrefix)){
+				rst.add(act);
+			}
+		}
+		
+		model.addAttribute("list", rst);
+		if (UserUtils.getPrincipal().isMobileLogin()){
+			return renderString(response, rst);
+		}
+		return "modules/task/actTaskTodoList4SiteCheck";
 	}
 	
 	/**

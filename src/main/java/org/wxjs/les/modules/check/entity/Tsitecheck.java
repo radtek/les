@@ -61,6 +61,8 @@ public class Tsitecheck extends DataEntity<Tsitecheck> {
 	
 	private String executionId;		// 执行号
 	
+	private String approveOpinion;
+	
 	//临时属性
 	private String taskDefKey;
 	
@@ -306,6 +308,14 @@ public class Tsitecheck extends DataEntity<Tsitecheck> {
 		this.executionId = executionId;
 	}
 	
+	public String getApproveOpinion() {
+		return approveOpinion;
+	}
+
+	public void setApproveOpinion(String approveOpinion) {
+		this.approveOpinion = approveOpinion;
+	}
+
 	public String getTaskDefKey() {
 		return taskDefKey;
 	}

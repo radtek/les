@@ -90,6 +90,7 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
+				<th>编号</th>
 				<th>工程名称</th>
 				<th>建设单位</th>
 				<th>建设单位负责人及电话</th>
@@ -98,6 +99,7 @@
 				<th>工程地址</th>
 				<th>勘查人</th>
 				<th>踏勘时间</th>
+				<th>状态</th>
 				<th>操作</th>
 			</tr>
 		</thead>
@@ -105,8 +107,11 @@
 		<c:forEach items="${page.list}" var="tsitecheck">
 			<tr>
 				<td>
-					${tsitecheck.projectName}
+					${tsitecheck.id}
 				</td>
+				<td>
+					${tsitecheck.projectName}
+				</td>				
 				<td>
 					${tsitecheck.developOrg}
 				</td>
@@ -128,8 +133,11 @@
 					${tsitecheck.checker}
 				</td>
 				<td>
-					<fmt:formatDate value="${tsitecheck.checkDate}" pattern="yyyy-MM-dd "/>
+					<fmt:formatDate value="${tsitecheck.checkDate}" pattern="yyyy-MM-dd"/>
 				</td>
+				<td>
+					${fns:getDictLabel(tsitecheck.caseStatus, 'case_status', '')}
+				</td>				
 				<shiro:hasPermission name="check:tsitecheck:edit"><td>
     				<a href="${ctx}/check/tsitecheck/form?id=${tsitecheck.id}">进入</a>
     				<c:if test="${empty tsitecheck.caseStatus or tsitecheck.caseStatus eq '0'}">

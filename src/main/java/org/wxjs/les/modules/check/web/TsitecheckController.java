@@ -91,6 +91,16 @@ public class TsitecheckController extends BaseController {
 		model.addAttribute("page", page);
 		return "modules/check/tsitecheckList";
 	}
+	
+	@RequiresPermissions("check:tsitecheck:view")
+	@RequestMapping(value = {"listFinished"})
+	public String listFinished(HttpServletRequest request, HttpServletResponse response, Model model) {
+		Tsitecheck tsitecheck = new Tsitecheck();
+		tsitecheck.setCaseStatus(Global.CASE_STATUS_FINISHED);
+		Page<Tsitecheck> page = tsitecheckService.findPage(new Page<Tsitecheck>(request, response), tsitecheck); 
+		model.addAttribute("page", page);
+		return "modules/check/tsitecheckList";
+	}
 
 	@RequiresPermissions("check:tsitecheck:view")
 	@RequestMapping(value = "form")
@@ -193,9 +203,10 @@ public class TsitecheckController extends BaseController {
 		return form(tsitecheck, model);
 		}
 		tsitecheckService.saveAndStartFlow(tsitecheck);
-		//return "redirect:"+Global.getAdminPath()+"/check/tsitecheck/?repage";
 		
-		return "redirect:"+Global.getAdminPath()+"/task/todo";
+		return "redirect:"+Global.getAdminPath()+"/check/tsitecheck/?repage";
+		
+		//return "redirect:"+Global.getAdminPath()+"/task/todo";
 	}
 										
 	@RequiresPermissions("check:tsitecheck:edit")
@@ -278,7 +289,7 @@ public class TsitecheckController extends BaseController {
 				
 				logger.debug("approve fail, signature not found, loginName:{}", userid);
 				
-				return "redirect:"+Global.getAdminPath()+"/task/todo";
+				return "redirect:"+Global.getAdminPath()+"/task/todo4SiteCheck";
 			}
 			
 		}else if("return".equals(actTask.getApprove())){
@@ -295,7 +306,9 @@ public class TsitecheckController extends BaseController {
 		taskService.complete(actTask.getTaskId(), variables);
 		
 		//update status if necessary
-
+		String businesskey = actTask.getBusinesskey();
+		Tsitecheck tsitecheck = new Tsitecheck();
+		tsitecheck.setId(businesskey.substring(businesskey.indexOf(":")+1));
 		if("pass".equals(actTask.getApprove())){
 			
 			//update opinion to signature
@@ -312,9 +325,7 @@ public class TsitecheckController extends BaseController {
 			signatureService.updateOpinion(signature);
 			
 			logger.debug("nextTaskDef==null:{}",(nextTaskDef==null));
-			String businesskey = actTask.getBusinesskey();
-			Tsitecheck tsitecheck = new Tsitecheck();
-			tsitecheck.setId(businesskey.substring(businesskey.indexOf(":")+1));
+			
 			if(nextTaskDef == null){ //if nextTaskDef is null, it is the last userTask 
 				tsitecheck.setCaseStatus(Global.CASE_STAGE_STATUS_FINISHED);
 				this.tsitecheckService.updateStatus(tsitecheck);
@@ -329,9 +340,12 @@ public class TsitecheckController extends BaseController {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}		
+		}else if("return".equals(actTask.getApprove())){
+			tsitecheck.setCaseStatus(Global.CASE_STATUS_NOSTART);
+			this.tsitecheckService.updateStatus(tsitecheck);			
+		}
 		
-		return "redirect:"+Global.getAdminPath()+"/task/todo";
+		return "redirect:"+Global.getAdminPath()+"/task/todo4SiteCheck";
 	}
 	
 }

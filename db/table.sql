@@ -330,6 +330,7 @@ CREATE TABLE `tsitecheck` (
   `attachment` varchar(500) NULL COMMENT '附件',
   `checker_sig` varchar(64) NULL COMMENT '勘查人签名',
   `party_sig` varchar(64) NULL COMMENT '当事人签名',  
+  `approve_opinion` varchar(500) NOT NULL COMMENT '办理意见',
   `case_status` varchar(8) NULL COMMENT '事项状态',
   `proc_inst_id` varchar(64) NULL COMMENT '受理流程号',
   `proc_def_id` varchar(64) NULL COMMENT '流程定义号',  

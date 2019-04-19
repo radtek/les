@@ -1,0 +1,1 @@
+alter table tsitecheck add `approve_opinion` varchar(500) NOT NULL COMMENT '办理意见';

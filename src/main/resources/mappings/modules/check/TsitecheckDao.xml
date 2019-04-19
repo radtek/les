@@ -25,6 +25,9 @@
 		s2.signature AS "partySig.signature",
 		a.party_sig AS "partySig.id",
 		a.case_status AS "caseStatus",
+		a.proc_inst_id AS "procInsId",
+		a.proc_def_id AS "procDefId",	
+		a.approve_opinion AS "approveOpinion",	
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -96,12 +99,15 @@
 				<![CDATA[AND a.check_date >= DATE_FORMAT(#{beginDate},'%Y-%m-%d %T') and a.check_date <= DATE_FORMAT(#{endDate},'%Y-%m-%d %T')]]>
 			</if>
 		</if>
+		<if test="caseStatus != null and caseStatus != ''">
+			AND a.case_status = #{caseStatus}
+		</if>		
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC
+				ORDER BY a.case_status, a.update_date DESC
 			</otherwise>
 		</choose>
 	</select>
@@ -144,6 +150,7 @@
 			attachment,
 			checker_sig,
 			party_sig,
+			approve_opinion,
 			case_status,
 			create_by,
 			create_date,
@@ -168,6 +175,7 @@
 			#{attachment},
 			#{checkerSig.id},
 			#{partySig.id},
+			#{approveOpinion},
 			#{caseStatus},
 			#{createBy.id},
 			#{createDate},
@@ -197,6 +205,7 @@
 			checker_sig = #{checkerSig},
 			party_sig = #{partySig},
 			-->
+			approve_opinion=#{approveOpinion},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks}
@@ -212,7 +221,7 @@
 	</update>
 	
 	<update id="updateStatus">
-		UPDATE tcase_process SET 
+		UPDATE tsitecheck SET 
 			case_status = #{caseStatus},
 			update_date = #{updateDate}			
 		WHERE 1=1

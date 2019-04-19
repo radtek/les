@@ -23,14 +23,20 @@
 					}
 				}
 			});
-			$('#btnSubmit').click(function() {
+			$('#btnSave').click(function() {
 				$("#inputForm").attr("action","${ctx}/check/tsitecheck/saveInfo");
 				$("#inputForm").submit();		    	
 		    });	
 			
-			$('#btnStart').click(function() {
-				$("#inputForm").attr("action","${ctx}/check/tsitecheck/saveAndStart");
-				$("#inputForm").submit();		    	
+			$('#btnSubmit').click(function() {
+	    		top.$.jBox.confirm("确定要提交吗？","系统提示",function(v,h,f){
+	    			if(v=="ok"){
+	    				$("#inputForm").attr("action","${ctx}/check/tsitecheck/saveAndStart");
+	    				$("#inputForm").submit();	
+	    			}
+	    		},{buttonsFocus:1});
+	    		top.$('.jbox-body .jbox-icon').css('top','55px');				
+				    	
 		    });				
 			 
 			 $('#btnExportPdf').click(function() {
@@ -50,6 +56,7 @@
 	
 	<form:form id="inputForm" modelAttribute="tsitecheck" action="${ctx}/check/tsitecheck/saveInfo" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
+		<form:hidden path="procInsId"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group container-fluid nopadding">
 				<div class="row-fluid">
@@ -187,13 +194,24 @@
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
-		</div>		
+		</div>	
+		
+		<c:if test="${empty tsitecheck.caseStatus or tsitecheck.caseStatus eq '0' }">
+		<div class="control-group container-fluid nopadding"> 
+		<div class="control-group ">
+			<label class="control-label control-tight">处理意见：</label>
+			<div class="controls" style="margin-left:30px">
+				<form:textarea path="approveOpinion" htmlEscape="false"  style="width:520px;height:150px;" class="required"/>
+			</div>
+		    </div>
+		</div>	
+		</c:if>		
 		
 		<div class="form-actions">
 			<shiro:hasPermission name="check:tsitecheck:edit">
 				<c:if test="${empty tsitecheck.caseStatus or tsitecheck.caseStatus eq '0' }">
-				<input id="btnSubmit" class="btn btn-primary" type="button" value="保 存"/>&nbsp;
-				<input id="btnStart" class="btn btn-primary" type="button" value="启动事件"/>&nbsp;
+				<input id="btnSave" class="btn btn-primary" type="button" value="保   存"/>&nbsp;
+				<input id="btnSubmit" class="btn btn-primary" type="button" value="提   交"/>&nbsp;
 				</c:if>
 				<c:if test="${not empty tsitecheck.id}">
 				<input id="btnExportPdf" class="btn btn-primary" type="button" value="导出PDF" />&nbsp;
@@ -225,7 +243,7 @@
 	</form:form>
 
 <!-- 流程 -->
-<c:if test="${not empty tsitecheck.procInsId and tsitecheck.operateType eq 'handle'}">
+<c:if test="${not empty tsitecheck.procInsId and tsitecheck.operateType eq 'handle' and tsitecheck.caseStatus eq '1'}">
 
     <h5>&nbsp;流程处理</h5>
     <les:processHandleTag handleAction="${ctx}/check/tsitecheck/handletask"
