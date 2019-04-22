@@ -23,12 +23,31 @@
 					}
 				}
 			});
+			
 			$('#btnSave').click(function() {
+
+				$("#inputForm").attr("action","${ctx}/check/tsitecheck/saveInfo");
+				$("#inputForm").submit();		    	
+		    });	
+			
+			$('#btnSave1').click(function() {
+				
+				var msg = checkAttachAndOpinion();
+				if(msg != ""){
+					alert(msg);
+					return;
+				}		
 				$("#inputForm").attr("action","${ctx}/check/tsitecheck/saveInfo");
 				$("#inputForm").submit();		    	
 		    });	
 			
 			$('#btnSubmit').click(function() {
+
+				var msg = checkAttachAndOpinion();
+				if(msg != ""){
+					alert(msg);
+					return;
+				}
 	    		top.$.jBox.confirm("确定要提交吗？","系统提示",function(v,h,f){
 	    			if(v=="ok"){
 	    				$("#inputForm").attr("action","${ctx}/check/tsitecheck/saveAndStart");
@@ -37,14 +56,27 @@
 	    		},{buttonsFocus:1});
 	    		top.$('.jbox-body .jbox-icon').css('top','55px');				
 				    	
-		    });				
+		    });		
+
 			 
 			 $('#btnExportPdf').click(function() {
 				$("#inputForm").attr("action","${ctx}/check/tsitecheck/exportPDF");
 				$("#inputForm").submit();		    	
 			 });
-		});
+		});	
 		
+		function checkAttachAndOpinion(){
+			var msg = "";
+			var attach = $('#attachment').val();
+			var opinion = $('#approveOpinion').val();
+			if(attach==""){
+				msg += "附件不能为空！";
+			}
+			if(opinion==""){
+				msg += "处理意见不能为空！";
+			}
+			return msg;
+		};		
 		
 		 
 	</script>
@@ -183,41 +215,17 @@
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
 			</div>
 		</div>	
-		</div>
-		
-		<div class="control-group container-fluid nopadding"> 
-		<div class="control-group ">
-			<label class="control-label control-tight">附件:</label>
-			<div class="controls controls-tight">
-				<form:hidden id="attachment" path="attachment" htmlEscape="false" maxlength="255" class="input-xxlarge"/>
-				<sys:ckfinder input="attachment" type="files" uploadPath="/sitecheck/attachment" selectMultiple="true"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
 		</div>	
-		
-		<c:if test="${empty tsitecheck.caseStatus or tsitecheck.caseStatus eq '0' }">
-		<div class="control-group container-fluid nopadding"> 
-		<div class="control-group ">
-			<label class="control-label control-tight">处理意见：</label>
-			<div class="controls" style="margin-left:30px">
-				<form:textarea path="approveOpinion" htmlEscape="false"  style="width:520px;height:150px;" class="required"/>
-			</div>
-		    </div>
-		</div>	
-		</c:if>		
 		
 		<div class="form-actions">
 			<shiro:hasPermission name="check:tsitecheck:edit">
 				<c:if test="${empty tsitecheck.caseStatus or tsitecheck.caseStatus eq '0' }">
 				<input id="btnSave" class="btn btn-primary" type="button" value="保   存"/>&nbsp;
-				<input id="btnSubmit" class="btn btn-primary" type="button" value="提   交"/>&nbsp;
 				</c:if>
 				<c:if test="${not empty tsitecheck.id}">
 				<input id="btnExportPdf" class="btn btn-primary" type="button" value="导出PDF" />&nbsp;
 				</c:if>
 			</shiro:hasPermission>
-			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 		
 		<div class="control-group container-fluid nopadding">
@@ -238,7 +246,38 @@
 			</div>
 		        </div>
 		    </div>
-		</div>		
+		</div>	
+		
+		<div class="control-group container-fluid nopadding"> 
+		<div class="control-group ">
+			<label class="control-label control-tight">附件:</label>
+			<div class="controls controls-tight">
+				<form:hidden id="attachment" path="attachment" htmlEscape="false" maxlength="255" class="input-xxlarge"/>
+				<sys:ckfinder input="attachment" type="files" uploadPath="/sitecheck/attachment" selectMultiple="true"/>
+			</div>
+		</div>
+		</div>	
+		
+		<c:if test="${empty tsitecheck.caseStatus or tsitecheck.caseStatus eq '0' }">
+		<div class="control-group container-fluid nopadding"> 
+		<div class="control-group ">
+			<label class="control-label control-tight">处理意见：</label>
+			<div class="controls" style="margin-left:30px">
+				<form:textarea path="approveOpinion" htmlEscape="false"  style="width:520px;height:150px;" />
+			</div>
+		    </div>
+		</div>	
+		</c:if>		
+		
+		<div class="form-actions">
+			<shiro:hasPermission name="check:tsitecheck:edit">
+				<c:if test="${empty tsitecheck.caseStatus or tsitecheck.caseStatus eq '0' }">
+				<input id="btnSave1" class="btn btn-primary" type="button" value="保   存"/>&nbsp;
+				<input id="btnSubmit" class="btn btn-primary" type="button" value="提   交"/>&nbsp;
+				</c:if>
+			</shiro:hasPermission>
+			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
+		</div>				
 		
 	</form:form>
 
