@@ -205,6 +205,7 @@
 			checker_sig = #{checkerSig},
 			party_sig = #{partySig},
 			-->
+			attachment=#{attachment},
 			approve_opinion=#{approveOpinion},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},

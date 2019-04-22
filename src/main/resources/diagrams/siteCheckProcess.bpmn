@@ -2,11 +2,7 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef">
   <process id="siteCheckProcess" name="现场踏勘流程" isExecutable="true">
     <startEvent id="start" name="Start"></startEvent>
-    <sequenceFlow id="sid-60689434-EF4F-4210-A888-9C047100FA6C" sourceRef="start" targetRef="sid-B61C936E-F27C-4023-BCB0-CDD43CF27CFA">
-      <extensionElements>
-        <activiti:executionListener event="take" class="org.wxjs.les.modules.tcase.listener.CaseStartListener"></activiti:executionListener>
-      </extensionElements>
-    </sequenceFlow>
+    <sequenceFlow id="sid-60689434-EF4F-4210-A888-9C047100FA6C" sourceRef="start" targetRef="sid-B61C936E-F27C-4023-BCB0-CDD43CF27CFA"></sequenceFlow>
     <userTask id="sid-B61C936E-F27C-4023-BCB0-CDD43CF27CFA" name="踏勘人提出意见" activiti:assignee="${jcbarAssignee}" activiti:candidateGroups="jcbar"></userTask>
     <sequenceFlow id="sid-AAA97DA6-06B7-4C68-8B17-4B880E7EA82A" sourceRef="sid-B61C936E-F27C-4023-BCB0-CDD43CF27CFA" targetRef="sid-E2AF9AE3-1D2C-42A8-A85F-9EE0317DB275"></sequenceFlow>
     <userTask id="sid-E2AF9AE3-1D2C-42A8-A85F-9EE0317DB275" name="支队负责人意见" activiti:assignee="${zdfzrAssignee}" activiti:candidateGroups="zdfzr"></userTask>
@@ -68,7 +64,7 @@
         <omgdi:waypoint x="741.0" y="110.0"></omgdi:waypoint>
         <omgdi:waypoint x="781.0" y="109.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="743.0" y="118.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="24.0" x="743.0" y="118.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sid-FF0AC8AF-516C-401F-B1BC-BDE7C078B6D7" id="BPMNEdge_sid-FF0AC8AF-516C-401F-B1BC-BDE7C078B6D7">
