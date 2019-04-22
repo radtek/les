@@ -35,6 +35,7 @@
 		
 	</form:form>
 	<sys:message content="${message}"/>
+
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
@@ -80,5 +81,45 @@
 		</tbody>
 	</table>
 	<div class="pagination">${page}</div>
+	<!--  
+	<h4>现场踏勘已办</h4>
+	<table id="contentTable" class="table table-striped table-bordered table-condensed">
+		<thead>
+			<tr>
+				<th>编号</th>
+				<th>当事人</th>
+				<th>项目名称</th>
+				<th>事项名称</th>
+				<th>流程名称</th>
+				<th>完成时间</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<c:forEach items="${page4Sitecheck.list}" var="act">
+				<c:set var="task" value="${act.histTask}" />
+				<c:set var="tcase" value="${act.tcase}" />
+				<c:set var="vars" value="${act.vars}" />
+				<c:set var="procDef" value="${act.procDef}" /><%--
+				<c:set var="procExecUrl" value="${act.procExecUrl}" /> --%>
+				<c:set var="status" value="${act.status}" />
+				<tr>
+				    <td>
+                        ${tcase.caseSeq}				    
+				    </td>
+				    <td>${tcase.partyDisplay}</td>
+				    <td>${tcase.projectNameShort}</td>
+				    <td>${tcase.caseCauseShort}</td>
+					<td>${procDef.name}</td>
+					<td><fmt:formatDate value="${task.endTime}" type="both"/></td>
+					<td>
+						<a href="${ctx}/task/form?taskId=${task.id}&taskName=${fns:urlEncode(task.name)}&taskDefKey=${task.taskDefinitionKey}&procInsId=${task.processInstanceId}&procDefId=${task.processDefinitionId}&status=${status}&businesskey=${act.businesskey}&caseTransfer=${tcase.caseTransfer}">详情</a>
+					</td>
+				</tr>
+			</c:forEach>
+		</tbody>
+	</table>
+	<div class="pagination">${page4Sitecheck}</div>	
+	-->
 </body>
 </html>

@@ -270,6 +270,101 @@ public class CaseTaskService extends BaseService {
 		return page;
 	}
 	
+	public Page<CaseAct> historicList4Case(Page<CaseAct> page, CaseAct act){
+		String userId = UserUtils.getUser().getLoginName();//ObjectUtils.toString(UserUtils.getUser().getId());
+
+		HistoricTaskInstanceQuery histTaskQuery = historyService.createHistoricTaskInstanceQuery().taskAssignee(userId).finished()
+				.includeProcessVariables().orderByHistoricTaskInstanceEndTime().desc();
+		
+		// 设置查询条件
+		if (StringUtils.isNotBlank(act.getProcDefKey())){
+			histTaskQuery.processDefinitionKey(act.getProcDefKey());
+		}
+		if (act.getBeginDate() != null){
+			histTaskQuery.taskCompletedAfter(act.getBeginDate());
+		}
+		if (act.getEndDate() != null){
+			histTaskQuery.taskCompletedBefore(act.getEndDate());
+		}
+		
+		List<String> processDefinitionKeys = Lists.newArrayList();
+		processDefinitionKeys.add(Global.PN_caseAcceptanceProcess);
+		processDefinitionKeys.add(Global.PN_caseCancelProcess1);
+		processDefinitionKeys.add(Global.PN_caseDecisionProcess);
+		processDefinitionKeys.add(Global.PN_caseFinishProcess);
+		processDefinitionKeys.add(Global.PN_caseHandleProcess);
+		processDefinitionKeys.add(Global.PN_caseInitialProcess);
+		processDefinitionKeys.add(Global.PN_caseNotifyProcess);
+		processDefinitionKeys.add(Global.PN_caseSeriousProcess);
+		processDefinitionKeys.add(Global.PN_caseSettleProcess);
+		
+		histTaskQuery.processDefinitionKeyIn(processDefinitionKeys);
+		
+		return this.historicList(page, histTaskQuery);
+		
+	}
+	
+	public Page<CaseAct> historicList4Sitecheck(Page<CaseAct> page, CaseAct act){
+		String userId = UserUtils.getUser().getLoginName();//ObjectUtils.toString(UserUtils.getUser().getId());
+
+		HistoricTaskInstanceQuery histTaskQuery = historyService.createHistoricTaskInstanceQuery().taskAssignee(userId).finished()
+				.includeProcessVariables().orderByHistoricTaskInstanceEndTime().desc();
+		
+		// 设置查询条件
+		if (StringUtils.isNotBlank(act.getProcDefKey())){
+			histTaskQuery.processDefinitionKey(act.getProcDefKey());
+		}
+		if (act.getBeginDate() != null){
+			histTaskQuery.taskCompletedAfter(act.getBeginDate());
+		}
+		if (act.getEndDate() != null){
+			histTaskQuery.taskCompletedBefore(act.getEndDate());
+		}
+		
+		histTaskQuery.processDefinitionKey(Global.PN_siteCheckProcess);
+		
+		return this.historicList(page, histTaskQuery);
+		
+	}
+	
+	public Page<CaseAct> historicList(Page<CaseAct> page, HistoricTaskInstanceQuery histTaskQuery){
+		
+		// 查询总数
+		page.setCount(histTaskQuery.count());
+		
+		// 查询列表
+		List<HistoricTaskInstance> histList = histTaskQuery.listPage(page.getFirstResult(), page.getMaxResults());
+		//处理分页问题
+		List<CaseAct> actList=Lists.newArrayList();
+		for (HistoricTaskInstance histTask : histList) {
+			CaseAct e = new CaseAct();
+			e.setHistTask(histTask);
+			e.setVars(histTask.getProcessVariables());
+			
+			HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(histTask.getProcessInstanceId()).singleResult();
+			
+			String businesskey = processInstance.getBusinessKey();
+			
+			e.setBusinesskey(businesskey);
+			
+			logger.debug("businesskey:{}", businesskey);
+			
+			Tcase tcase = tcaseService.getRelateCaseByBusinesskey(businesskey);
+			e.setTcase(tcase);
+			
+//			e.setTaskVars(histTask.getTaskLocalVariables());
+//			System.out.println(histTask.getId()+"  =  "+histTask.getProcessVariables() + "  ========== " + histTask.getTaskLocalVariables());
+			e.setProcDef(ProcessDefCache.get(histTask.getProcessDefinitionId()));
+//			e.setProcIns(runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult());
+//			e.setProcExecUrl(ActUtils.getProcExeUrl(task.getProcessDefinitionId()));
+			e.setStatus("finish");
+			actList.add(e);
+			//page.getList().add(e);
+		}
+		page.setList(actList);
+		return page;
+	}
+	
 	/**
 	 * 获取流转历史列表
 	 * @param procInsId 流程实例

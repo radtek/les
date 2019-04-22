@@ -56,16 +56,22 @@ public class CaseTaskController extends BaseController {
 		List<CaseAct> list = actTaskService.todoList(caseAct);
 		
 		//filter
-		List<CaseAct> rst = Lists.newArrayList();
+		List<CaseAct> list1 = Lists.newArrayList();
+		List<CaseAct> list2 = Lists.newArrayList();
+		
 		for(CaseAct act : list){
-			if(!act.getBusinesskey().startsWith(Global.TsitecheckBusinessKeyPrefix)){
-				rst.add(act);
+			if(act.getBusinesskey().startsWith(Global.TsitecheckBusinessKeyPrefix)){
+				//sitecheck
+				list2.add(act);
+			}else{
+				list1.add(act);
 			}
 		}
 		
-		model.addAttribute("list", rst);
+		model.addAttribute("list", list1);
+		model.addAttribute("list2", list2);
 		if (UserUtils.getPrincipal().isMobileLogin()){
-			return renderString(response, rst);
+			return renderString(response, list1);
 		}
 		return "modules/task/actTaskTodoList";
 	}
@@ -103,8 +109,15 @@ public class CaseTaskController extends BaseController {
 	@RequestMapping(value = "historic")
 	public String historicList(CaseAct caseAct, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 		Page<CaseAct> page = new Page<CaseAct>(request, response);
-		page = actTaskService.historicList(page, caseAct);
+		page = actTaskService.historicList4Case(page, caseAct);
 		model.addAttribute("page", page);
+		
+		/*
+		Page<CaseAct> page4Sitecheck = new Page<CaseAct>(request, response);
+		page4Sitecheck = actTaskService.historicList4Sitecheck(page4Sitecheck, caseAct);
+		model.addAttribute("page4Sitecheck", page4Sitecheck);
+		*/
+		
 		if (UserUtils.getPrincipal().isMobileLogin()){
 			return renderString(response, page);
 		}
