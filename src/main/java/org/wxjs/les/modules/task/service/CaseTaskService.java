@@ -57,6 +57,8 @@ import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.persistence.Page;
 import org.wxjs.les.common.service.BaseService;
 import org.wxjs.les.common.utils.StringUtils;
+import org.wxjs.les.modules.act.dao.ActDao;
+import org.wxjs.les.modules.act.entity.Act;
 import org.wxjs.les.modules.act.service.cmd.CreateAndTakeTransitionCmd;
 import org.wxjs.les.modules.act.service.cmd.JumpTaskCmd;
 import org.wxjs.les.modules.act.service.creator.ChainedActivitiesCreator;
@@ -66,12 +68,16 @@ import org.wxjs.les.modules.act.service.creator.SimpleRuntimeActivityDefinitionE
 import org.wxjs.les.modules.act.utils.ActUtils;
 import org.wxjs.les.modules.act.utils.ProcessDefCache;
 import org.wxjs.les.modules.act.utils.ProcessDefUtils;
+import org.wxjs.les.modules.base.dao.SignatureDao;
+import org.wxjs.les.modules.base.entity.Signature;
 import org.wxjs.les.modules.check.entity.Tsitecheck;
 import org.wxjs.les.modules.check.service.TsitecheckService;
 import org.wxjs.les.modules.sys.entity.User;
 import org.wxjs.les.modules.sys.utils.UserUtils;
 import org.wxjs.les.modules.task.dao.CaseActDao;
 import org.wxjs.les.modules.task.entity.CaseAct;
+import org.wxjs.les.modules.tcase.dao.CaseProcessDao;
+import org.wxjs.les.modules.tcase.entity.CaseProcess;
 import org.wxjs.les.modules.tcase.entity.Tcase;
 import org.wxjs.les.modules.tcase.service.TcaseService;
 
@@ -83,9 +89,12 @@ import org.wxjs.les.modules.tcase.service.TcaseService;
 @Service
 @Transactional(readOnly = true)
 public class CaseTaskService extends BaseService {
+	
+	@Autowired
+	private ActDao actDao;
 
 	@Autowired
-	private CaseActDao actDao;
+	private CaseActDao caseActDao;
 
 	@Autowired
 	private ProcessEngineFactoryBean processEngineFactory;
@@ -110,6 +119,12 @@ public class CaseTaskService extends BaseService {
 	
 	@Autowired
 	private TsitecheckService tsitecheckService;
+	
+	@Autowired
+	private CaseProcessDao caseProcessDao;
+	
+	@Autowired
+	private SignatureDao signatureDao;
 	
 	/**
 	 * 获取待办列表
@@ -587,7 +602,7 @@ public class CaseTaskService extends BaseService {
 		act.setBusinessTable(businessTable);// 业务表名
 		act.setBusinessId(businessId);	// 业务表ID
 		act.setProcInsId(procIns.getId());
-		actDao.updateProcInsIdByBusinessId(act); 
+		caseActDao.updateProcInsIdByBusinessId(act); 
 		return act.getProcInsId();
 	}
 
@@ -1116,6 +1131,53 @@ public class CaseTaskService extends BaseService {
 		return processEngine;
 	}
 	
+	@Transactional(readOnly = false)
+	public void callBackProcess(CaseProcess caseProcess){
+		/*
+		Act act = new Act();
+		act.setProcInsId(procInstId);
+		
+		actDao.clearByProcInsId(act);
+		*/
+		
+		/*
+		//finish all related active tasks
+		List<Task> taskList = taskService.createTaskQuery().processInstanceId(procInstId).active().list();
+		for(Task task : taskList){
+			taskService.complete(task.getId());
+			logger.debug("complete task :{}", task.getId());
+		}
+		*/
+		
+		String procInstId = caseProcess.getProcInsId();
+		
+		ProcessInstance pi = runtimeService.createProcessInstanceQuery()
+				.processInstanceId(procInstId)
+				.singleResult();
+		
+		if(pi != null){
+			runtimeService.deleteProcessInstance(procInstId,"");
+		}
+		
+		HistoricProcessInstance hpi = historyService.createHistoricProcessInstanceQuery()
+				.processInstanceId(procInstId)
+				.singleResult();
+		
+		if(hpi != null){
+			historyService.deleteHistoricProcessInstance(procInstId);
+		}
+		
+		//clear process info
+		caseProcess.setCaseStageStatus(Global.CASE_STAGE_STATUS_NOSTART);
+		caseProcess.setProcInsId("");
+		caseProcess.setProcDefId("");
+		caseProcessDao.updateProcInfo(caseProcess);
+		
+		//clear signature
+		Signature signature = new Signature();
+		signature.setProcInstId(procInstId);
+		signatureDao.deleteByProcInsId(signature);
 
+	}
 	
 }

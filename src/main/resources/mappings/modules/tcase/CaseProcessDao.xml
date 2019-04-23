@@ -220,7 +220,7 @@
 	
 	<update id="updateProcInfo">
 		UPDATE tcase_process SET 
-			case_stage_status = '1',
+			case_stage_status = #{caseStageStatus},
 			proc_inst_id = #{procInsId},
 			proc_def_id = #{procDefId}
 		WHERE id = #{id}
@@ -231,6 +231,9 @@
 			case_stage_status = #{caseStageStatus},
 			update_date = #{updateDate}			
 		WHERE 1=1
+		<if test="id != null and id != ''">
+		AND id = #{id}
+		</if>		
 		<if test="procInsId != null and procInsId != ''">
 		AND proc_inst_id = #{procInsId}
 		</if>

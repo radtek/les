@@ -17,4 +17,6 @@ public interface ActDao extends CrudDao<Act> {
 
 	public int updateProcInsIdByBusinessId(Act act);
 	
+	//public int clearByProcInsId(Act act);
+	
 }

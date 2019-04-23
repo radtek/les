@@ -24,6 +24,7 @@ import org.wxjs.les.common.utils.StringUtils;
 import org.wxjs.les.modules.base.dao.SignatureDao;
 import org.wxjs.les.modules.base.entity.Signature;
 import org.wxjs.les.modules.base.service.SignatureService;
+import org.wxjs.les.modules.task.service.CaseTaskService;
 import org.wxjs.les.modules.tcase.dao.TcaseDao;
 import org.wxjs.les.modules.tcase.entity.CaseProcess;
 import org.wxjs.les.modules.tcase.entity.Tcase;
@@ -37,6 +38,9 @@ import org.wxjs.les.modules.tcase.service.CaseProcessService;
 @Controller
 @RequestMapping(value = "${adminPath}/tcase/caseProcess")
 public class CaseProcessController extends BaseController {
+	
+	@Autowired
+	private CaseTaskService caseTaskService;
 
 	@Autowired
 	private CaseProcessService caseProcessService;
@@ -118,6 +122,16 @@ public class CaseProcessController extends BaseController {
 		caseProcessService.delete(caseProcess);
 		addMessage(redirectAttributes, "删除案件流程成功");
 		return "redirect:"+Global.getAdminPath()+"/tcase/caseProcess/?repage";
+	}
+	
+	@RequiresPermissions("tcase:caseProcess:callBackProcess")
+	@RequestMapping(value = "callBackProcess")
+	public String callBackProcess(CaseProcess caseProcess, RedirectAttributes redirectAttributes) {
+
+		caseTaskService.callBackProcess(caseProcess);
+		
+		addMessage(redirectAttributes, "撤回案件流程成功");
+		return "redirect:"+Global.getAdminPath()+"/task/todo/?repage";
 	}
 
 }

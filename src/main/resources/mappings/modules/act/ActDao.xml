@@ -8,4 +8,21 @@
 		WHERE id = #{businessId}
 	</update>
 	
+	<update id="clearByProcInsId">
+        DELETE FROM act_hi_varinst WHERE PROC_INST_ID_ = #{procInsId};
+        DELETE FROM act_hi_detail WHERE PROC_INST_ID_ = #{procInsId};
+	    DELETE FROM act_hi_comment WHERE PROC_INST_ID_ = #{procInsId};
+	    DELETE FROM act_hi_identitylink WHERE PROC_INST_ID_ = #{procInsId};
+		DELETE FROM act_hi_taskinst WHERE PROC_INST_ID_ = #{procInsId};
+		DELETE FROM act_hi_actinst WHERE PROC_INST_ID_ = #{procInsId};
+		DELETE FROM act_hi_procinst WHERE PROC_INST_ID_ = #{procInsId};
+	
+	    DELETE FROM act_ru_variable WHERE PROC_INST_ID_ = #{procInsId};
+	    DELETE FROM act_ru_execution WHERE PROC_INST_ID_ = #{procInsId};
+		DELETE FROM act_ru_task WHERE PROC_INST_ID_ = #{procInsId};		
+		DELETE FROM act_ru_identitylink WHERE PROC_INST_ID_ = #{procInsId};
+		
+	</update>
+			
+	
 </mapper>

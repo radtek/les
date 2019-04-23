@@ -99,6 +99,7 @@
 			</c:forEach>
 		</tbody>
 	</table>
+	<BR><BR>
 	<h4>现场踏勘待办</h4>
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>

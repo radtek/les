@@ -131,8 +131,10 @@
 				  <a target="_blank" href="${ctx}/common/activiti/toProcTrack?procDefId=${process.procDefId}&procInsId=${process.procInsId}&executionId=${process.executionId}">跟踪</a>&nbsp;
 				
 				</c:if>
-				<c:if test="${process.caseStageStatus eq '2'}">
-				  <a href="">修改办理时间</a>
+				<c:if test="${process.caseStageStatus eq '1' or (process.caseStageStatus eq '2' and fns:getUserIsAdmin() eq '1')}">
+                  <shiro:hasPermission name="tcase:caseProcess:callBackProcess">
+				  <a href="${ctx}//tcase/caseProcess/callBackProcess?id=${process.id}&procInsId=${process.procInsId}" onclick="return confirmx('此操作不可恢复！确认要撤回该流程吗？', this.href)">撤回流程</a>&nbsp;
+				  </shiro:hasPermission>
 				</c:if>		
 					<shiro:hasPermission name="case:tcase:caseDelete4Admin">
 					  <a href="${ctx}/case/tcase/deleteCaseStage?caseId=${tcase.id}&caseStage=${process.caseStage}" onclick="return confirmx('此操作不可恢复！确认要删除该流程吗？', this.href)">管理员删除</a>

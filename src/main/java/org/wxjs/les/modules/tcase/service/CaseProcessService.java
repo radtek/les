@@ -92,8 +92,15 @@ public class CaseProcessService extends CrudService<CaseProcessDao, CaseProcess>
 	}
 	
 	@Transactional(readOnly = false)
+	public void updateProcInfo(CaseProcess caseProcess){
+		dao.updateProcInfo(caseProcess);
+	}
+	
+	@Transactional(readOnly = false)
 	public void delete(CaseProcess caseProcess) {
 		super.delete(caseProcess);
 	}
+	
+	
 	
 }
