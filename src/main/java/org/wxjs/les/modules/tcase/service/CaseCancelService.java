@@ -100,6 +100,7 @@ public class CaseCancelService extends CrudService<CaseCancelDao, CaseCancel> {
 		//set process instance id
 		String procInstId = instance.getId();
 		String procDefId = instance.getProcessDefinitionId();
+		tcase.getCaseProcess().setCaseStageStatus(Global.CASE_STAGE_STATUS_STARTED);
 		tcase.getCaseProcess().setProcInsId(procInstId);
 		tcase.getCaseProcess().setProcDefId(procDefId);
 		caseProcessDao.updateProcInfo(tcase.getCaseProcess());
