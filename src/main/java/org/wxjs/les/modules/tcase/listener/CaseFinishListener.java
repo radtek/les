@@ -22,6 +22,8 @@ import org.wxjs.les.modules.tcase.dao.TcaseDao;
 import org.wxjs.les.modules.tcase.entity.CaseProcess;
 import org.wxjs.les.modules.tcase.entity.Tcase;
 
+import com.google.common.collect.Lists;
+
 public class CaseFinishListener implements ExecutionListener {
 
 	/**
@@ -109,25 +111,39 @@ public class CaseFinishListener implements ExecutionListener {
 			String cause = tcase.getCaseCause();
 			String stage = caseProcess.getCaseStage();
 			
+			List<User> targets = Lists.newArrayList();
+			
+			User userParam = new User();
+			userParam.setLoginName(handler);
+			
+			User user = userDao.getByLoginName(userParam);
+			if(user != null){
+				targets.add(user);
+				logger.debug("handler:{}", user.getLoginName());
+			}
+			
 			if(Global.CASE_STAGE_HANDLE.equals(stage)){
 				//因下一环节告知书的发起由审理科来做，需要通知审理科
 				String roleStr = "slkky,slkfzr";
-				User user = new User();
+				user = new User();
 				Role role = new Role();
 				role.setEnname(roleStr);
 				user.setRole(role);
 				List<User> users = userDao.findUserByRoleEnname(user);
-				StringBuffer buffer = new StringBuffer();
-				for(User e: users){
-					buffer.append(",");
-					buffer.append(e.getLoginName());
+				
+				//filter
+				String areaId = tcase.getAreaId();
+				String handleOrg = tcase.getHandleOrg();
+				for(User u : users){
+					if(areaId.equals(u.getOffice().getAreaId()) && handleOrg.equals(u.getOffice().getType())){
+						targets.add(u);
+						logger.debug("slk:{}", u.getLoginName());
+					}
 				}
-				if(buffer.length()>0){
-					handler = handler + buffer.toString();
-				}
+				
 			}
 			
-			sender.send(handler, 
+			sender.send(targets, 
 					"综合行政执法系统事项办结通知。项目名称："+ cause
 					+", 事项："+DictUtils.getDictLabel(stage, "case_stage", "")+"。");
 		} catch (SQLException e) {

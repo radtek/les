@@ -1,6 +1,7 @@
 package org.wxjs.les.modules.message;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -32,10 +33,16 @@ public class DbMessageSender implements MessageSender {
 		
 		int effects = SmsDAOHelper.executeSQL(buffer.toString());
 		
-		logger.info("Post "+effects+" items to SMS database");
+		logger.info("Post "+effects+" items to SMS database, mobile:{}, user:{}", user.getMobile(), user.getLoginName());
 		
 		return true;
 		
+	}
+	
+	public void send(List<User> users, String message) throws SQLException{
+		for(User user : users){
+			this.send(user, message);
+		}
 	}
 
 	@Override
