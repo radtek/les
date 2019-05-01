@@ -5,6 +5,8 @@ package org.wxjs.upload.modules.upload.entity;
 
 import org.hibernate.validator.constraints.Length;
 import org.wxjs.les.common.persistence.DataEntity;
+import org.wxjs.les.common.utils.DateUtils;
+import org.wxjs.les.common.utils.Util;
 
 import java.util.Date;
 
@@ -58,7 +60,7 @@ public class InfPunishProcess extends DataEntity<InfPunishProcess> {
 
 	@Length(min=1, max=50, message="no长度必须介于 1 和 50 之间")
 	public String getNo() {
-		return no;
+		return Util.getString(no);
 	}
 
 	public void setNo(String no) {
@@ -66,7 +68,7 @@ public class InfPunishProcess extends DataEntity<InfPunishProcess> {
 	}
 	
 	public String getNoOrd() {
-		return noOrd;
+		return Util.getString(noOrd);
 	}
 
 	public void setNoOrd(String noOrd) {
@@ -75,7 +77,7 @@ public class InfPunishProcess extends DataEntity<InfPunishProcess> {
 	
 	@Length(min=1, max=10, message="org_id长度必须介于 1 和 10 之间")
 	public String getOrgId() {
-		return orgId;
+		return Util.getString(orgId);
 	}
 
 	public void setOrgId(String orgId) {
@@ -84,7 +86,7 @@ public class InfPunishProcess extends DataEntity<InfPunishProcess> {
 	
 	@Length(min=1, max=100, message="internal_no长度必须介于 1 和 100 之间")
 	public String getInternalNo() {
-		return internalNo;
+		return Util.getString(internalNo);
 	}
 
 	public void setInternalNo(String internalNo) {
@@ -93,7 +95,7 @@ public class InfPunishProcess extends DataEntity<InfPunishProcess> {
 	
 	@Length(min=1, max=100, message="item_id长度必须介于 1 和 100 之间")
 	public String getItemId() {
-		return itemId;
+		return Util.getString(itemId);
 	}
 
 	public void setItemId(String itemId) {
@@ -102,7 +104,7 @@ public class InfPunishProcess extends DataEntity<InfPunishProcess> {
 	
 	@Length(min=0, max=30, message="tache_code长度必须介于 0 和 30 之间")
 	public String getTacheCode() {
-		return tacheCode;
+		return Util.getString(tacheCode);
 	}
 
 	public void setTacheCode(String tacheCode) {
@@ -111,7 +113,7 @@ public class InfPunishProcess extends DataEntity<InfPunishProcess> {
 	
 	@Length(min=0, max=100, message="tache_name长度必须介于 0 和 100 之间")
 	public String getTacheName() {
-		return tacheName;
+		return Util.getString(tacheName);
 	}
 
 	public void setTacheName(String tacheName) {
@@ -120,7 +122,7 @@ public class InfPunishProcess extends DataEntity<InfPunishProcess> {
 	
 	@Length(min=1, max=100, message="department长度必须介于 1 和 100 之间")
 	public String getDepartment() {
-		return department;
+		return Util.getString(department);
 	}
 
 	public void setDepartment(String department) {
@@ -129,7 +131,7 @@ public class InfPunishProcess extends DataEntity<InfPunishProcess> {
 	
 	@Length(min=1, max=30, message="user_staff_code长度必须介于 1 和 30 之间")
 	public String getUserStaffCode() {
-		return userStaffCode;
+		return Util.getString(userStaffCode);
 	}
 
 	public void setUserStaffCode(String userStaffCode) {
@@ -138,7 +140,7 @@ public class InfPunishProcess extends DataEntity<InfPunishProcess> {
 	
 	@Length(min=1, max=100, message="user_name长度必须介于 1 和 100 之间")
 	public String getUserName() {
-		return userName;
+		return Util.getString(userName);
 	}
 
 	public void setUserName(String userName) {
@@ -147,7 +149,7 @@ public class InfPunishProcess extends DataEntity<InfPunishProcess> {
 	
 	@Length(min=1, max=2, message="status长度必须介于 1 和 2 之间")
 	public String getStatus() {
-		return status;
+		return Util.getString(status);
 	}
 
 	public void setStatus(String status) {
@@ -164,7 +166,7 @@ public class InfPunishProcess extends DataEntity<InfPunishProcess> {
 	
 	@Length(min=0, max=2, message="promise_type长度必须介于 0 和 2 之间")
 	public String getPromiseType() {
-		return promiseType;
+		return Util.getString(promiseType);
 	}
 
 	public void setPromiseType(String promiseType) {
@@ -173,7 +175,7 @@ public class InfPunishProcess extends DataEntity<InfPunishProcess> {
 	
 	@Length(min=0, max=1, message="promise_start_sign长度必须介于 0 和 1 之间")
 	public String getPromiseStartSign() {
-		return promiseStartSign;
+		return Util.getString(promiseStartSign);
 	}
 
 	public void setPromiseStartSign(String promiseStartSign) {
@@ -190,7 +192,7 @@ public class InfPunishProcess extends DataEntity<InfPunishProcess> {
 	
 	@Length(min=0, max=50, message="risktype长度必须介于 0 和 50 之间")
 	public String getRisktype() {
-		return risktype;
+		return Util.getString(risktype);
 	}
 
 	public void setRisktype(String risktype) {
@@ -199,7 +201,7 @@ public class InfPunishProcess extends DataEntity<InfPunishProcess> {
 	
 	@Length(min=0, max=200, message="riskdescription长度必须介于 0 和 200 之间")
 	public String getRiskdescription() {
-		return riskdescription;
+		return Util.getString(riskdescription);
 	}
 
 	public void setRiskdescription(String riskdescription) {
@@ -208,7 +210,7 @@ public class InfPunishProcess extends DataEntity<InfPunishProcess> {
 	
 	@Length(min=0, max=200, message="riskresult长度必须介于 0 和 200 之间")
 	public String getRiskresult() {
-		return riskresult;
+		return Util.getString(riskresult);
 	}
 
 	public void setRiskresult(String riskresult) {
@@ -217,7 +219,7 @@ public class InfPunishProcess extends DataEntity<InfPunishProcess> {
 	
 	@Length(min=1, max=4000, message="note长度必须介于 1 和 4000 之间")
 	public String getNote() {
-		return note;
+		return Util.getString(note);
 	}
 
 	public void setNote(String note) {
@@ -225,7 +227,7 @@ public class InfPunishProcess extends DataEntity<InfPunishProcess> {
 	}
 	
 	public String getAttachment() {
-		return attachment;
+		return Util.getString(attachment);
 	}
 
 	public void setAttachment(String attachment) {
@@ -233,7 +235,7 @@ public class InfPunishProcess extends DataEntity<InfPunishProcess> {
 	}
 	
 	public String getEvidence() {
-		return evidence;
+		return Util.getString(evidence);
 	}
 
 	public void setEvidence(String evidence) {
@@ -244,6 +246,10 @@ public class InfPunishProcess extends DataEntity<InfPunishProcess> {
 	public Date getReadDate() {
 		return readDate;
 	}
+	
+	public String getReadDateStr() {
+		return DateUtils.formatDate(readDate, "yyyy-MM-dd");
+	}
 
 	public void setReadDate(Date readDate) {
 		this.readDate = readDate;
@@ -251,7 +257,7 @@ public class InfPunishProcess extends DataEntity<InfPunishProcess> {
 	
 	@Length(min=0, max=1, message="sync_sign长度必须介于 0 和 1 之间")
 	public String getSyncSign() {
-		return syncSign;
+		return Util.getString(syncSign);
 	}
 
 	public void setSyncSign(String syncSign) {
@@ -260,7 +266,7 @@ public class InfPunishProcess extends DataEntity<InfPunishProcess> {
 	
 	@Length(min=0, max=1000, message="sync_error_desc长度必须介于 0 和 1000 之间")
 	public String getSyncErrorDesc() {
-		return syncErrorDesc;
+		return Util.getString(syncErrorDesc);
 	}
 
 	public void setSyncErrorDesc(String syncErrorDesc) {
@@ -272,6 +278,10 @@ public class InfPunishProcess extends DataEntity<InfPunishProcess> {
 	public Date getProcessStartTime() {
 		return processStartTime;
 	}
+	
+	public String getProcessStartTimeStr() {
+		return DateUtils.formatDate(processStartTime, "yyyy-MM-dd");
+	}
 
 	public void setProcessStartTime(Date processStartTime) {
 		this.processStartTime = processStartTime;
@@ -281,9 +291,21 @@ public class InfPunishProcess extends DataEntity<InfPunishProcess> {
 	public Date getProcessEndTime() {
 		return processEndTime;
 	}
+	
+	public String getProcessEndTimeStr() {
+		return DateUtils.formatDate(processEndTime, "yyyy-MM-dd");
+	}
 
 	public void setProcessEndTime(Date processEndTime) {
 		this.processEndTime = processEndTime;
+	}
+	
+	public String getUpdateDateStr() {
+		return DateUtils.formatDate(this.updateDate, "yyyy-MM-dd");
+	}
+	
+	public String getCreateDateStr() {
+		return DateUtils.formatDate(this.createDate, "yyyy-MM-dd");
 	}
 	
 }

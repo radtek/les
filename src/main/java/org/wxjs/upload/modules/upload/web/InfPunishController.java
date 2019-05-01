@@ -32,8 +32,10 @@ import org.wxjs.upload.modules.upload.service.InfPunishService;
 @RequestMapping(value = "${adminPath}/upload/infPunish")
 public class InfPunishController extends BaseController {
 
-	@Autowired
-	private InfPunishService infPunishService;
+	//@Autowired
+	//private InfPunishService infPunishService;
+	
+	/*
 	
 	@ModelAttribute
 	public InfPunish get(@RequestParam(required=false) String id) {
@@ -83,5 +85,7 @@ public class InfPunishController extends BaseController {
 		addMessage(redirectAttributes, "删除inf_punish成功");
 		return "redirect:"+Global.getAdminPath()+"/upload/infPunish/?repage";
 	}
+	
+	*/
 
 }

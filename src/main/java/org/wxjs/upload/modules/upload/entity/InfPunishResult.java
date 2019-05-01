@@ -8,6 +8,8 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.validation.constraints.NotNull;
 import org.wxjs.les.common.persistence.DataEntity;
+import org.wxjs.les.common.utils.DateUtils;
+import org.wxjs.les.common.utils.Util;
 
 /**
  * inf_punish_resultEntity
@@ -51,7 +53,7 @@ public class InfPunishResult extends DataEntity<InfPunishResult> {
 
 	@Length(min=1, max=50, message="no长度必须介于 1 和 50 之间")
 	public String getNo() {
-		return no;
+		return Util.getString(no);
 	}
 
 	public void setNo(String no) {
@@ -60,7 +62,7 @@ public class InfPunishResult extends DataEntity<InfPunishResult> {
 	
 	@Length(min=1, max=10, message="org_id长度必须介于 1 和 10 之间")
 	public String getOrgId() {
-		return orgId;
+		return Util.getString(orgId);
 	}
 
 	public void setOrgId(String orgId) {
@@ -69,7 +71,7 @@ public class InfPunishResult extends DataEntity<InfPunishResult> {
 	
 	@Length(min=1, max=100, message="internal_no长度必须介于 1 和 100 之间")
 	public String getInternalNo() {
-		return internalNo;
+		return Util.getString(internalNo);
 	}
 
 	public void setInternalNo(String internalNo) {
@@ -78,7 +80,7 @@ public class InfPunishResult extends DataEntity<InfPunishResult> {
 	
 	@Length(min=1, max=50, message="item_id长度必须介于 1 和 50 之间")
 	public String getItemId() {
-		return itemId;
+		return Util.getString(itemId);
 	}
 
 	public void setItemId(String itemId) {
@@ -87,7 +89,7 @@ public class InfPunishResult extends DataEntity<InfPunishResult> {
 	
 	@Length(min=1, max=10, message="program长度必须介于 1 和 10 之间")
 	public String getProgram() {
-		return program;
+		return Util.getString(program);
 	}
 
 	public void setProgram(String program) {
@@ -96,7 +98,7 @@ public class InfPunishResult extends DataEntity<InfPunishResult> {
 	
 	@Length(min=1, max=100, message="punish_sort长度必须介于 1 和 100 之间")
 	public String getPunishSort() {
-		return punishSort;
+		return Util.getString(punishSort);
 	}
 
 	public void setPunishSort(String punishSort) {
@@ -105,7 +107,7 @@ public class InfPunishResult extends DataEntity<InfPunishResult> {
 	
 	@Length(min=1, max=2000, message="standard长度必须介于 1 和 2000 之间")
 	public String getStandard() {
-		return standard;
+		return Util.getString(standard);
 	}
 
 	public void setStandard(String standard) {
@@ -114,7 +116,7 @@ public class InfPunishResult extends DataEntity<InfPunishResult> {
 	
 	@Length(min=1, max=2000, message="accordance长度必须介于 1 和 2000 之间")
 	public String getAccordance() {
-		return accordance;
+		return Util.getString(accordance);
 	}
 
 	public void setAccordance(String accordance) {
@@ -123,7 +125,7 @@ public class InfPunishResult extends DataEntity<InfPunishResult> {
 	
 	@Length(min=1, max=10, message="punish_deside长度必须介于 1 和 10 之间")
 	public String getPunishDeside() {
-		return punishDeside;
+		return Util.getString(punishDeside);
 	}
 
 	public void setPunishDeside(String punishDeside) {
@@ -132,7 +134,7 @@ public class InfPunishResult extends DataEntity<InfPunishResult> {
 	
 	@Length(min=1, max=100, message="punish_class长度必须介于 1 和 100 之间")
 	public String getPunishClass() {
-		return punishClass;
+		return Util.getString(punishClass);
 	}
 
 	public void setPunishClass(String punishClass) {
@@ -141,7 +143,7 @@ public class InfPunishResult extends DataEntity<InfPunishResult> {
 	
 	@Length(min=1, max=2000, message="punish_result长度必须介于 1 和 2000 之间")
 	public String getPunishResult() {
-		return punishResult;
+		return Util.getString(punishResult);
 	}
 
 	public void setPunishResult(String punishResult) {
@@ -209,13 +211,17 @@ public class InfPunishResult extends DataEntity<InfPunishResult> {
 	public Date getFinishTime() {
 		return finishTime;
 	}
+	
+	public String getFinishTimeStr() {
+		return DateUtils.formatDate(finishTime, "yyyy-MM-dd");
+	}
 
 	public void setFinishTime(Date finishTime) {
 		this.finishTime = finishTime;
 	}
 	
 	public String getAttachment() {
-		return attachment;
+		return Util.getString(attachment);
 	}
 
 	public void setAttachment(String attachment) {
@@ -233,7 +239,7 @@ public class InfPunishResult extends DataEntity<InfPunishResult> {
 	
 	@Length(min=0, max=1, message="sync_sign长度必须介于 0 和 1 之间")
 	public String getSyncSign() {
-		return syncSign;
+		return Util.getString(syncSign);
 	}
 
 	public void setSyncSign(String syncSign) {
@@ -244,9 +250,21 @@ public class InfPunishResult extends DataEntity<InfPunishResult> {
 	public Date getReadDate() {
 		return readDate;
 	}
+	
+	public String getReadDateStr() {
+		return DateUtils.formatDate(readDate, "yyyy-MM-dd");
+	}
 
 	public void setReadDate(Date readDate) {
 		this.readDate = readDate;
+	}
+	
+	public String getUpdateDateStr() {
+		return DateUtils.formatDate(this.updateDate, "yyyy-MM-dd");
+	}
+	
+	public String getCreateDateStr() {
+		return DateUtils.formatDate(this.createDate, "yyyy-MM-dd");
 	}
 	
 }

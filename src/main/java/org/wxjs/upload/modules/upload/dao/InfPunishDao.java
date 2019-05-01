@@ -3,8 +3,6 @@
  */
 package org.wxjs.upload.modules.upload.dao;
 
-import org.wxjs.les.common.persistence.CrudDao;
-import org.wxjs.upload.common.persistence.annotation.MyBatisDao;
 import org.wxjs.upload.modules.upload.entity.InfPunish;
 
 /**
@@ -13,7 +11,14 @@ import org.wxjs.upload.modules.upload.entity.InfPunish;
  * @version 2018-08-21
  */
 
-@MyBatisDao
-public interface InfPunishDao extends CrudDao<InfPunish> {
+public interface InfPunishDao{
+	
+	public InfPunish get(InfPunish entity);
+	
+	public void insert(InfPunish entity);
+	
+	public void update(InfPunish entity);
+	
+	public void delete(InfPunish entity);
 	
 }

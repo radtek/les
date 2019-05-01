@@ -6,17 +6,15 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import javax.sql.DataSource;
-
 import org.apache.log4j.Logger;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.wxjs.les.common.config.Global;
 import org.wxjs.les.common.utils.Util;
 
 public class UploadDAOHelper{
@@ -33,13 +31,11 @@ public class UploadDAOHelper{
 	 */
 	public static int executeSQL(String sql) throws SQLException {
 		int rst = 0;
-	    ApplicationContext ctx = new ClassPathXmlApplicationContext("spring-context.xml");  
-	    DataSource dataSource = ctx.getBean("dataSourceUpload",DataSource.class); 
 	    
 		Connection conn = null;
 		Statement st = null;
 		try{
-			conn = dataSource.getConnection();
+			conn = getConnection();
 			st = conn.createStatement();
 			rst = st.executeUpdate(sql);
 		}catch(SQLException ex){
@@ -236,12 +232,20 @@ public class UploadDAOHelper{
 	}		
 	
 	private static Connection getConnection() throws SQLException{
-
-	    ApplicationContext ctx = new ClassPathXmlApplicationContext("spring-context.xml");  
 	    
-	    DataSource dataSource = ctx.getBean("dataSourceUpload",DataSource.class);  
-	  
-	    return dataSource.getConnection(); 
+	    try {
+			Class.forName(Global.getConfig("upload.jdbc.driver")).newInstance();
+		} catch (InstantiationException e) {
+			throw new SQLException(e);
+		} catch (IllegalAccessException e) {
+			throw new SQLException(e);
+		} catch (ClassNotFoundException e) {
+			throw new SQLException(e);
+		}
+	    String url = Global.getConfig("upload.jdbc.url");
+	    String user = Global.getConfig("upload.jdbc.username");
+	    String password = Global.getConfig("upload.jdbc.password");
+	    return DriverManager.getConnection(url, user, password);
 		
 	}
 

@@ -3,6 +3,7 @@
  */
 package org.wxjs.les.modules.tcase.service;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -52,8 +53,11 @@ import org.wxjs.les.modules.tcase.dao.CaseSeriousDao;
 import org.wxjs.les.modules.tcase.dao.CaseSettleDao;
 import org.wxjs.les.modules.tcase.dao.TcaseDao;
 import org.wxjs.upload.modules.upload.dao.InfPunishDao;
+import org.wxjs.upload.modules.upload.dao.InfPunishDaoImpl;
 import org.wxjs.upload.modules.upload.dao.InfPunishProcessDao;
+import org.wxjs.upload.modules.upload.dao.InfPunishProcessDaoImpl;
 import org.wxjs.upload.modules.upload.dao.InfPunishResultDao;
+import org.wxjs.upload.modules.upload.dao.InfPunishResultDaoImpl;
 import org.wxjs.upload.modules.upload.entity.InfPunish;
 import org.wxjs.upload.modules.upload.entity.InfPunishProcess;
 import org.wxjs.upload.modules.upload.entity.InfPunishResult;
@@ -127,14 +131,11 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
 	@Autowired
 	ActTaskService actTaskService;
 	
-	@Autowired
-	InfPunishDao infPunishDao;
+	InfPunishDao infPunishDao = new InfPunishDaoImpl();
 	
-	@Autowired
-	InfPunishProcessDao infPunishProcessDao;
+	InfPunishProcessDao infPunishProcessDao = new InfPunishProcessDaoImpl();
 	
-	@Autowired
-	InfPunishResultDao infPunishResultDao;
+	InfPunishResultDao infPunishResultDao = new InfPunishResultDaoImpl();
 
 	public Tcase get(String id) {
 		Tcase tcase = super.get(id);
@@ -931,7 +932,13 @@ public class TcaseService extends CrudService<TcaseDao, Tcase> {
             sb.append("</FILE_NAME>");
             //FILE_CONTENT
             sb.append("<FILE_CONTENT>CDATA[");
-            sb.append(FileUtils.encryptToBase64(PathUtils.getRealPath(attach.getFilepath())));
+            
+            String realPath = PathUtils.getRealPath(attach.getFilepath());
+            File f = new File(realPath);
+            if(f.exists()){
+            	sb.append(FileUtils.encryptToBase64(realPath));
+            }
+            
             sb.append("]</FILE_CONTENT>");
 
             sb.append("</DOCUMENT>");

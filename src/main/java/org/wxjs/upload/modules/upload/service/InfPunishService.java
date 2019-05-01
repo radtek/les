@@ -18,9 +18,16 @@ import org.wxjs.upload.modules.upload.dao.InfPunishDao;
  * @author GLQ
  * @version 2018-08-21
  */
+public class InfPunishService{
+	
+}
+
+/*
 @Service
 @Transactional(readOnly = true)
 public class InfPunishService extends CrudService<InfPunishDao, InfPunish> {
+
+
 
 	public InfPunish get(String id) { 
 		return super.get(id);
@@ -45,3 +52,4 @@ public class InfPunishService extends CrudService<InfPunishDao, InfPunish> {
 	}
 	
 }
+*/

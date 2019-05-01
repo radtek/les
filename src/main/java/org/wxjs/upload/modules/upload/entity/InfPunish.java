@@ -5,6 +5,8 @@ package org.wxjs.upload.modules.upload.entity;
 
 import org.hibernate.validator.constraints.Length;
 import org.wxjs.les.common.persistence.DataEntity;
+import org.wxjs.les.common.utils.DateUtils;
+import org.wxjs.les.common.utils.Util;
 
 import java.util.Date;
 
@@ -73,7 +75,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 
 	@Length(min=1, max=50, message="no长度必须介于 1 和 50 之间")
 	public String getNo() {
-		return no;
+		return Util.getString(no);
 	}
 
 	public void setNo(String no) {
@@ -82,7 +84,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 	
 	@Length(min=1, max=100, message="org_id长度必须介于 1 和 100 之间")
 	public String getOrgId() {
-		return orgId;
+		return Util.getString(orgId);
 	}
 
 	public void setOrgId(String orgId) {
@@ -91,7 +93,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 	
 	@Length(min=1, max=100, message="internal_no长度必须介于 1 和 100 之间")
 	public String getInternalNo() {
-		return internalNo;
+		return Util.getString(internalNo);
 	}
 
 	public void setInternalNo(String internalNo) {
@@ -100,7 +102,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 	
 	@Length(min=1, max=100, message="item_id长度必须介于 1 和 100 之间")
 	public String getItemId() {
-		return itemId;
+		return Util.getString(itemId);
 	}
 
 	public void setItemId(String itemId) {
@@ -109,7 +111,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 	
 	@Length(min=1, max=100, message="department长度必须介于 1 和 100 之间")
 	public String getDepartment() {
-		return department;
+		return Util.getString(department);
 	}
 
 	public void setDepartment(String department) {
@@ -118,7 +120,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 	
 	@Length(min=1, max=200, message="aj_addr长度必须介于 1 和 200 之间")
 	public String getAjAddr() {
-		return ajAddr;
+		return Util.getString(ajAddr);
 	}
 
 	public void setAjAddr(String ajAddr) {
@@ -130,6 +132,10 @@ public class InfPunish extends DataEntity<InfPunish> {
 	public Date getAjOccurDate() {
 		return ajOccurDate;
 	}
+	
+	public String getAjOccurDateStr() {
+		return DateUtils.formatDate(ajOccurDate, "yyyy-MM-dd");
+	}
 
 	public void setAjOccurDate(Date ajOccurDate) {
 		this.ajOccurDate = ajOccurDate;
@@ -137,7 +143,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 	
 	@Length(min=0, max=1, message="source长度必须介于 0 和 1 之间")
 	public String getSource() {
-		return source;
+		return Util.getString(source);
 	}
 
 	public void setSource(String source) {
@@ -146,7 +152,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 	
 	@Length(min=0, max=4000, message="fact长度必须介于 0 和 4000 之间")
 	public String getFact() {
-		return fact;
+		return Util.getString(fact);
 	}
 
 	public void setFact(String fact) {
@@ -155,7 +161,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 	
 	@Length(min=1, max=1, message="target_type长度必须介于 1 和 1 之间")
 	public String getTargetType() {
-		return targetType;
+		return Util.getString(targetType);
 	}
 
 	public void setTargetType(String targetType) {
@@ -164,7 +170,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 	
 	@Length(min=1, max=200, message="punish_target长度必须介于 1 和 200 之间")
 	public String getPunishTarget() {
-		return punishTarget;
+		return Util.getString(punishTarget);
 	}
 
 	public void setPunishTarget(String punishTarget) {
@@ -173,7 +179,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 	
 	@Length(min=0, max=50, message="target_code长度必须介于 0 和 50 之间")
 	public String getTargetCode() {
-		return targetCode;
+		return Util.getString(targetCode);
 	}
 
 	public void setTargetCode(String targetCode) {
@@ -182,7 +188,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 	
 	@Length(min=0, max=2, message="target_paper_type长度必须介于 0 和 2 之间")
 	public String getTargetPaperType() {
-		return targetPaperType;
+		return Util.getString(targetPaperType);
 	}
 
 	public void setTargetPaperType(String targetPaperType) {
@@ -191,7 +197,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 	
 	@Length(min=0, max=50, message="target_paper_number长度必须介于 0 和 50 之间")
 	public String getTargetPaperNumber() {
-		return targetPaperNumber;
+		return Util.getString(targetPaperNumber);
 	}
 
 	public void setTargetPaperNumber(String targetPaperNumber) {
@@ -200,7 +206,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 	
 	@Length(min=0, max=40, message="target_phone长度必须介于 0 和 40 之间")
 	public String getTargetPhone() {
-		return targetPhone;
+		return Util.getString(targetPhone);
 	}
 
 	public void setTargetPhone(String targetPhone) {
@@ -209,7 +215,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 	
 	@Length(min=0, max=20, message="target_mobile长度必须介于 0 和 20 之间")
 	public String getTargetMobile() {
-		return targetMobile;
+		return Util.getString(targetMobile);
 	}
 
 	public void setTargetMobile(String targetMobile) {
@@ -218,7 +224,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 	
 	@Length(min=0, max=200, message="target_address长度必须介于 0 和 200 之间")
 	public String getTargetAddress() {
-		return targetAddress;
+		return Util.getString(targetAddress);
 	}
 
 	public void setTargetAddress(String targetAddress) {
@@ -227,7 +233,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 	
 	@Length(min=0, max=6, message="target_zipcode长度必须介于 0 和 6 之间")
 	public String getTargetZipcode() {
-		return targetZipcode;
+		return Util.getString(targetZipcode);
 	}
 
 	public void setTargetZipcode(String targetZipcode) {
@@ -236,7 +242,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 	
 	@Length(min=0, max=100, message="target_email长度必须介于 0 和 100 之间")
 	public String getTargetEmail() {
-		return targetEmail;
+		return Util.getString(targetEmail);
 	}
 
 	public void setTargetEmail(String targetEmail) {
@@ -245,7 +251,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 	
 	@Length(min=0, max=200, message="reporter长度必须介于 0 和 200 之间")
 	public String getReporter() {
-		return reporter;
+		return Util.getString(reporter);
 	}
 
 	public void setReporter(String reporter) {
@@ -256,6 +262,10 @@ public class InfPunish extends DataEntity<InfPunish> {
 	public Date getReporterDate() {
 		return reporterDate;
 	}
+	
+	public String getReporterDateStr() {
+		return DateUtils.formatDate(reporterDate, "yyyy-MM-dd");
+	}
 
 	public void setReporterDate(Date reporterDate) {
 		this.reporterDate = reporterDate;
@@ -263,7 +273,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 	
 	@Length(min=0, max=2, message="reporter_paper_type长度必须介于 0 和 2 之间")
 	public String getReporterPaperType() {
-		return reporterPaperType;
+		return Util.getString(reporterPaperType);
 	}
 
 	public void setReporterPaperType(String reporterPaperType) {
@@ -272,7 +282,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 	
 	@Length(min=0, max=50, message="reporter_paper_number长度必须介于 0 和 50 之间")
 	public String getReporterPaperNumber() {
-		return reporterPaperNumber;
+		return Util.getString(reporterPaperNumber);
 	}
 
 	public void setReporterPaperNumber(String reporterPaperNumber) {
@@ -281,7 +291,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 	
 	@Length(min=0, max=40, message="reporter_phone长度必须介于 0 和 40 之间")
 	public String getReporterPhone() {
-		return reporterPhone;
+		return Util.getString(reporterPhone);
 	}
 
 	public void setReporterPhone(String reporterPhone) {
@@ -290,7 +300,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 	
 	@Length(min=0, max=20, message="reporter_mobile长度必须介于 0 和 20 之间")
 	public String getReporterMobile() {
-		return reporterMobile;
+		return Util.getString(reporterMobile);
 	}
 
 	public void setReporterMobile(String reporterMobile) {
@@ -299,7 +309,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 	
 	@Length(min=0, max=200, message="reporter_address长度必须介于 0 和 200 之间")
 	public String getReporterAddress() {
-		return reporterAddress;
+		return Util.getString(reporterAddress);
 	}
 
 	public void setReporterAddress(String reporterAddress) {
@@ -308,7 +318,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 	
 	@Length(min=0, max=6, message="reporter_zipcode长度必须介于 0 和 6 之间")
 	public String getReporterZipcode() {
-		return reporterZipcode;
+		return Util.getString(reporterZipcode);
 	}
 
 	public void setReporterZipcode(String reporterZipcode) {
@@ -317,7 +327,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 	
 	@Length(min=0, max=100, message="reporter_email长度必须介于 0 和 100 之间")
 	public String getReporterEmail() {
-		return reporterEmail;
+		return Util.getString(reporterEmail);
 	}
 
 	public void setReporterEmail(String reporterEmail) {
@@ -326,7 +336,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 	
 	@Length(min=0, max=200, message="content长度必须介于 0 和 200 之间")
 	public String getContent() {
-		return content;
+		return Util.getString(content);
 	}
 
 	public void setContent(String content) {
@@ -334,7 +344,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 	}
 	
 	public String getForm() {
-		return form;
+		return Util.getString(form);
 	}
 
 	public void setForm(String form) {
@@ -342,7 +352,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 	}
 	
 	public String getPromise() {
-		return promise;
+		return Util.getString(promise);
 	}
 
 	public void setPromise(String promise) {
@@ -351,7 +361,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 	
 	@Length(min=1, max=2, message="promise_type长度必须介于 1 和 2 之间")
 	public String getPromiseType() {
-		return promiseType;
+		return Util.getString(promiseType);
 	}
 
 	public void setPromiseType(String promiseType) {
@@ -359,7 +369,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 	}
 	
 	public String getIsrisk() {
-		return isrisk;
+		return Util.getString(isrisk);
 	}
 
 	public void setIsrisk(String isrisk) {
@@ -368,7 +378,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 	
 	@Length(min=0, max=50, message="risktype长度必须介于 0 和 50 之间")
 	public String getRisktype() {
-		return risktype;
+		return Util.getString(risktype);
 	}
 
 	public void setRisktype(String risktype) {
@@ -377,7 +387,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 	
 	@Length(min=0, max=200, message="riskdescription长度必须介于 0 和 200 之间")
 	public String getRiskdescription() {
-		return riskdescription;
+		return Util.getString(riskdescription);
 	}
 
 	public void setRiskdescription(String riskdescription) {
@@ -386,7 +396,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 	
 	@Length(min=0, max=200, message="riskresult长度必须介于 0 和 200 之间")
 	public String getRiskresult() {
-		return riskresult;
+		return Util.getString(riskresult);
 	}
 
 	public void setRiskresult(String riskresult) {
@@ -395,7 +405,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 	
 	@Length(min=0, max=1, message="sync_sign长度必须介于 0 和 1 之间")
 	public String getSyncSign() {
-		return syncSign;
+		return Util.getString(syncSign);
 	}
 
 	public void setSyncSign(String syncSign) {
@@ -404,7 +414,7 @@ public class InfPunish extends DataEntity<InfPunish> {
 	
 	@Length(min=0, max=1000, message="sync_error_desc长度必须介于 0 和 1000 之间")
 	public String getSyncErrorDesc() {
-		return syncErrorDesc;
+		return Util.getString(syncErrorDesc);
 	}
 
 	public void setSyncErrorDesc(String syncErrorDesc) {
@@ -415,17 +425,29 @@ public class InfPunish extends DataEntity<InfPunish> {
 	public Date getReadDate() {
 		return readDate;
 	}
+	
+	public String getReadDateStr() {
+		return DateUtils.formatDate(readDate, "yyyy-MM-dd");
+	}
 
 	public void setReadDate(Date readDate) {
 		this.readDate = readDate;
 	}
 	
 	public String getItemVersion() {
-		return itemVersion;
+		return Util.getString(itemVersion);
 	}
 
 	public void setItemVersion(String itemVersion) {
 		this.itemVersion = itemVersion;
+	}
+	
+	public String getUpdateDateStr() {
+		return DateUtils.formatDate(this.updateDate, "yyyy-MM-dd");
+	}
+	
+	public String getCreateDateStr() {
+		return DateUtils.formatDate(this.createDate, "yyyy-MM-dd");
 	}
 	
 }
