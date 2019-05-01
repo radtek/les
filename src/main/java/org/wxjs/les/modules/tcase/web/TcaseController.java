@@ -44,6 +44,7 @@ import org.wxjs.les.common.web.BaseController;
 import org.wxjs.les.common.utils.DateUtils;
 import org.wxjs.les.common.utils.StringUtils;
 import org.wxjs.les.common.utils.excel.ExportExcel;
+import org.wxjs.les.modules.sys.dao.UserDao;
 import org.wxjs.les.modules.sys.entity.Dict;
 import org.wxjs.les.modules.sys.entity.Role;
 import org.wxjs.les.modules.sys.entity.User;
@@ -90,6 +91,10 @@ public class TcaseController extends BaseController {
 	
 	@Autowired
 	private SystemService systemService;
+	
+	@Autowired
+	private UserDao userDao;
+
 
 	@Autowired
 	private TcaseService tcaseService;
@@ -610,6 +615,17 @@ public class TcaseController extends BaseController {
 		if(caseSerious==null){
 			caseSerious = CaseSerious.getInstance(tcase);
 			
+			//主持人默认
+			String masterLoginName = Global.getConfig("DEFAULT_SERIOUS_MASTER");
+			logger.debug("masterLoginName:{}", masterLoginName);
+			User master = this.getUserByLoginName(masterLoginName);
+			caseSerious.setMaster(master);
+			//参会人员默认
+			String voterLoginName = Global.getConfig("DEFAULT_SERIOUS_VOTER");
+			logger.debug("voterLoginName:{}", voterLoginName);
+			User voter = this.getUserByLoginName(voterLoginName);
+			caseSerious.setVoter(voter);			
+			
 			//copy fact
 			CaseHandle caseHandle = caseHandleService.get(caseSerious.getCaseId());
 
@@ -630,14 +646,26 @@ public class TcaseController extends BaseController {
 			if(StringUtils.isNotEmpty(procInstId)){
 				Signature signatureParam = new Signature(false);
 				signatureParam.setProcInstId(procInstId);
-				signatureParam.setTaskName("办案人意见");
+				//signatureParam.setTaskName("办案人意见");
 				List<Signature> signatureList = signatureService.findList4Export(signatureParam);
+				String csLoginName = "";
+				String csName = "";
 				for(Signature sig : signatureList){
-					if(sig.getApproveOpinion().length()>opinion.length()){
+					if("办案人意见".equals(sig.getTaskName()) && sig.getApproveOpinion().length()>opinion.length()){
 						opinion = sig.getApproveOpinion();
+					}
+					if("业务处室意见".equals(sig.getTaskName())){
+						csLoginName = sig.getCreateBy().getLoginName();
+						csName = sig.getCreateBy().getName();
 					}
 				}
 				caseSerious.setPunishProposal(opinion);
+				
+				//append the 4th voter
+				if(StringUtils.isNotEmpty(csLoginName)){
+					caseSerious.getVoter().setLoginName(caseSerious.getVoter().getLoginName()+","+csLoginName);
+					caseSerious.getVoter().setName(caseSerious.getVoter().getName()+","+csName);
+				}
 			}			
 		}
 		
@@ -646,6 +674,29 @@ public class TcaseController extends BaseController {
 		this.prepare4Approve(caseAct, model);
 		
 		return "modules/tcase/tcaseSeriousTab";
+	}
+	
+	private User getUserByLoginName(String loginName){
+		User rst = new User();
+		User param = new User();
+		param.setLoginName(loginName);	
+		List<User> users = userDao.findList(param);
+		
+		StringBuffer bufferLoginName = new StringBuffer();
+		StringBuffer bufferName = new StringBuffer();
+		for(User u : users){
+			bufferLoginName.append(",").append(u.getLoginName());
+			bufferName.append(",").append(u.getName());
+		}
+		if(bufferLoginName.length()>1){
+			rst.setLoginName(bufferLoginName.substring(1));
+		}
+		
+		if(bufferName.length()>1){
+			rst.setName(bufferName.substring(1));
+		}
+		
+		return rst;
 	}
 	
 	@RequiresPermissions("case:tcase:view")

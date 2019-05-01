@@ -36,6 +36,8 @@ import org.wxjs.les.modules.base.entity.SignatureLib;
 import org.wxjs.les.modules.base.service.SignatureService;
 import org.wxjs.les.modules.message.DbMessageSender;
 import org.wxjs.les.modules.message.MessageSender;
+import org.wxjs.les.modules.sys.entity.User;
+import org.wxjs.les.modules.sys.service.SystemService;
 import org.wxjs.les.modules.sys.utils.DictUtils;
 import org.wxjs.les.modules.sys.utils.UserUtils;
 import org.wxjs.les.modules.task.entity.CaseAct;
@@ -95,6 +97,9 @@ public class CaseSeriousController extends BaseController {
 	@Autowired
 	ProcessService processService;
 	
+	@Autowired
+	SystemService systemService;
+	
 	@ModelAttribute
 	public CaseSerious get(@RequestParam(required=false) String id) {
 		CaseSerious entity = null;
@@ -122,10 +127,21 @@ public class CaseSeriousController extends BaseController {
 		logger.debug("caseSerious.getIsNewRecord():", caseSerious.getIsNewRecord());
 		
 		if(caseSerious.getIsNewRecord()){
+			//主持人默认
+			String masterLoginName = Global.getConfig("DEFAULT_SERIOUS_MASTER");
+			logger.debug("masterLoginName:{}", masterLoginName);
+			User master = this.getUserByLoginName(masterLoginName);
+			caseSerious.setMaster(master);
+			//参会人员默认
+			String voterLoginName = Global.getConfig("DEFAULT_SERIOUS_VOTER");
+			logger.debug("voterLoginName:{}", voterLoginName);
+			User voter = this.getUserByLoginName(voterLoginName);
+			caseSerious.setVoter(voter);
+			
 			//fact
 			CaseHandle caseHandle = caseHandleService.get(caseSerious.getCaseId());
 
-			caseSerious.setCaseSummary(caseHandle.getFact());
+			caseSerious.setCaseSummary(caseHandle.getFact());			
 			
 			//opinion
 			CaseProcess caseProcess = new CaseProcess();
@@ -157,6 +173,29 @@ public class CaseSeriousController extends BaseController {
 		model.addAttribute("caseSerious", caseSerious);
 		return "modules/tcase/caseSeriousForm";
 	}
+	
+	private User getUserByLoginName(String loginName){
+		User rst = new User();
+		User param = new User();
+		param.setLoginName(loginName);	
+		List<User> users = systemService.findUser(param);
+		
+		StringBuffer bufferLoginName = new StringBuffer();
+		StringBuffer bufferName = new StringBuffer();
+		for(User u : users){
+			bufferLoginName.append(",").append(u.getLoginName());
+			bufferName.append(",").append(u.getName());
+		}
+		if(bufferLoginName.length()>1){
+			rst.setLoginName(bufferLoginName.substring(1));
+		}
+		
+		if(bufferName.length()>1){
+			rst.setName(bufferName.substring(1));
+		}
+		
+		return rst;
+	}
 
 	@RequiresPermissions("case:tcase:edit")
 	@RequestMapping(value = "save")
@@ -185,7 +224,6 @@ public class CaseSeriousController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/tcase/caseSerious/?repage";
 	}
 	
-
 	@RequestMapping(value = "exportPDF")
 	public String exportPDF(CaseSerious entity, HttpServletResponse response,  Model model, RedirectAttributes redirectAttributes) {
 		
